@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3x4 Table</title>
+    <title>2x3 Table with Lists</title>
 </head>
 <body>
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+
     <table border="1">
         <tr>
             <th>Header 1</th>
@@ -14,18 +20,19 @@
         </tr>
         <tr>
             <td>Row 1, Cell 1</td>
-            <td>Row 1, Cell 2</td>
+            <td>
+                <ol>
+                    <li>First</li>
+                    <li>Second</li>
+                    <li>Third</li>
+                </ol>
+            </td>
             <td>Row 1, Cell 3</td>
         </tr>
         <tr>
             <td>Row 2, Cell 1</td>
             <td>Row 2, Cell 2</td>
             <td>Row 2, Cell 3</td>
-        </tr>
-        <tr>
-            <td>Row 3, Cell 1</td>
-            <td>Row 3, Cell 2</td>
-            <td>Row 3, Cell 3</td>
         </tr>
     </table>
 </body>
