@@ -50,15 +50,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Unordered List</title>
+    <title>Simple Unordered List with Border</title>
+    <style>
+        ul {
+            border: 2px solid black; /* Border around the entire list */
+            padding: 10px; /* Space between the border and the list items */
+            list-style-type: none; /* Remove bullet points */
+        }
+        li {
+            border: 1px solid gray; /* Border around each list item */
+            padding: 5px; /* Space inside each listed item */
+            margin: 5px 0; /* Space between each list item */
+        }
+    </style>
 </head>
 <body>
 
 <h2>Unordered List</h2>
 <ul>
-    <li>Dog</li>
-    <li>Kawala</li>
-    <li>turtle</li>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
     <li>Item 4</li>
 </ul>
 
@@ -69,7 +81,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Ordered List</title>
+    <title>Simple Ordered List with Border</title>
+    <style>
+        ol {
+            border: 2px solid black; /* Border around the entire list */
+            padding: 10px; /* Space between the border and the list items */
+            list-style-position: inside; /* Position numbers inside the border */
+        }
+        li {
+            border: 1px solid gray; /* Border around each list item */
+            padding: 5px; /* Space inside each listed item */
+            margin: 5px 0; /* Space between each list item */
+        }
+    </style>
 </head>
 <body>
 
