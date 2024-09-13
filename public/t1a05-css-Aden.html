@@ -8,19 +8,31 @@ this is <i style="border-style:groove;">something idk</i><br><br>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Change Example</title>
+    <title>Color Changing Text</title>
     <style>
-        .color-blue { color: blue; }
-        .color-red { color: red; }
-        .color-green { color: green; }
-        .color-yellow { color: yellow; }
+        body {
+            text-align: center;
+            margin-top: 50px;
+            font-family: Arial, sans-serif;
+        }
+
+        .color-changing {
+            font-size: 48px;
+            font-weight: bold;
+            animation: colorChange 4s infinite;
+        }
+
+        @keyframes colorChange {
+            0%   { color: red; }
+            25%  { color: blue; }
+            50%  { color: green; }
+            75%  { color: yellow; }
+            100% { color: red; }
+        }
     </style>
 </head>
 <body>
-    <h1 class="color-blue">Fantastic</h1>
-    <h1 class="color-red">Fantastic</h1>
-    <h1 class="color-green">Fantastic</h1>
-    <h1 class="color-yellow">Fantastic</h1>
+    <div class="color-changing">Change my color!</div>
 </body>
 </html>
 
