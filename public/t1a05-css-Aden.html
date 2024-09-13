@@ -50,27 +50,28 @@ This is <!DOCTYPE html>
             background-color: #282c34;
             margin: 0;
             font-family: Arial, sans-serif;
-            color: white;
+        }
+
+        .barrel-roll {
             font-size: 3em; /* Adjust size as necessary */
+            color: white;
             animation: barrelRoll 2s infinite; /* Animation name, duration, and infinite loop */
         }
 
         @keyframes barrelRoll {
-            from {
+            0% {
                 transform: rotateY(0deg);
             }
-            to {
+            100% {
                 transform: rotateY(360deg);
             }
         }
     </style>
 </head>
 <body>
-    <div>ROLL</div>
+    <div class="barrel-roll">ROLL</div>
 </body>
 </html>
-
-
 
 
   
