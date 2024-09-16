@@ -94,7 +94,37 @@ This is <!DOCTYPE html>
     <div class="upside-down">This text is upside down!</div>
 </body>
 </html>
-  
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Hide scrollbars */
+            background-color: white; /* Optional: Background color */
+        }
+        .marquee {
+            position: absolute;
+            white-space: nowrap; /* Prevent text from wrapping */
+            animation: scroll 5s linear infinite; /* Animation properties */
+        }
+        @keyframes scroll {
+            from {
+                transform: translateX(100%); /* Start from right */
+            }
+            to {
+                transform: translateX(-100%); /* End off screen to the left */
+            }
+        }
+    </style>
+    <title>Scrolling Text</title>
+</head>
+<body>
+    <div class="marquee">hello this text is moving across the screen!</div>
+</body>
+</html>
   
 <h1 style="font-size:5vw">this is cool</h1><br><br>
 </h1>
