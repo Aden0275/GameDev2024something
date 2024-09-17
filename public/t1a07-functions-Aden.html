@@ -274,20 +274,41 @@
 </div>
 
 <script>
+    // Load tasks from localStorage when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        tasks.forEach(task => {
+            addTaskToList(task.text, task.completed);
+        });
+    });
+
     function addTask() {
         const taskInput = document.getElementById("taskInput");
         const taskValue = taskInput.value.trim();
-        const taskList = document.getElementById("taskList");
 
         if (taskValue === "") {
             alert("Please enter a task.");
             return;
         }
 
+        addTaskToList(taskValue, false);
+        saveTasks();
+        taskInput.value = ""; // Clear the input box
+        taskInput.focus(); // Focus back to input
+    }
+
+    function addTaskToList(taskValue, completed) {
+        const taskList = document.getElementById("taskList");
         const li = document.createElement("li");
         li.textContent = taskValue;
+
+        if (completed) {
+            li.classList.add("complete");
+        }
+
         li.onclick = () => {
             li.classList.toggle("complete");
+            saveTasks(); // Save changes after marking as complete
         };
 
         const removeButton = document.createElement("button");
@@ -296,12 +317,25 @@
         removeButton.onclick = (event) => {
             event.stopPropagation(); // Prevent triggering the 'complete' toggle on the parent li
             taskList.removeChild(li);
+            saveTasks(); // Save changes after removing task
         };
 
         li.appendChild(removeButton);
         taskList.appendChild(li);
-        taskInput.value = ""; // Clear the input box
-        taskInput.focus(); // Focus back to input
+    }
+
+    function saveTasks() {
+        const taskListItems = document.querySelectorAll("#taskList li");
+        const tasks = [];
+
+        taskListItems.forEach(item => {
+            tasks.push({
+                text: item.childNodes[0].textContent, // Get text of the li
+                completed: item.classList.contains("complete") // Check if it is complete
+            });
+        });
+
+        localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 </script>
 
