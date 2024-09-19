@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
+    <title>Enhanced Snake Game</title>
     <style>
         body {
             display: flex;
@@ -52,24 +52,19 @@
         document.addEventListener('keydown', changeDirection);
 
         function draw() {
-            // Draw the checkerboard
-            drawCheckerboard();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // Draw snake
             for (let i = 0; i < snake.length; i++) {
-                if (i === 0) {
-                    ctx.fillStyle = 'green'; // Head is green
-                } else {
-                    ctx.fillStyle = 'lightgreen'; // Body as light green
-                }
-                ctx.fillRect(snake[i].x + 1, snake[i].y + 1, box - 2, box - 2); // offset to create the inner box effect
+                ctx.fillStyle = (i === 0) ? 'green' : 'lightgreen';
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
                 ctx.strokeStyle = 'darkgreen';
-                ctx.strokeRect(snake[i].x + 1, snake[i].y + 1, box - 2, box - 2);
+                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
             }
 
             // Draw food
             ctx.fillStyle = 'red';
-            ctx.fillRect(food.x + 1, food.y + 1, box - 2, box - 2);  // offset for food
+            ctx.fillRect(food.x, food.y, box, box);
 
             // Move Snake
             let snakeX = snake[0].x;
@@ -96,27 +91,11 @@
             if (collision(newHead)) {
                 clearInterval(game);
                 alert(`Game Over! Your score is: ${score}. Click OK to try again.`);
-                resetGame();
+                resetGame(); // Reset game after acknowledgment
                 return;
             }
 
-            // Dim the snake if the head or the body is not in the box
-            if (!isInBox(newHead)) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas for visual effect
-                drawCheckerboard(); // Redraw the checkerboard
-                return; // Exit so the snake does not draw
-            }
-
             snake.unshift(newHead);
-        }
-
-        function drawCheckerboard() {
-            for (let i = 0; i < canvas.width; i += box) {
-                for (let j = 0; j < canvas.height; j += box) {
-                    ctx.strokeStyle = '#ddd';
-                    ctx.strokeRect(i, j, box, box);
-                }
-            }
         }
 
         function spawnFood() {
@@ -155,10 +134,6 @@
                 head.y >= canvas.height ||
                 snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)
             );
-        }
-
-        function isInBox(head) {
-            return head.x >= 0 && head.x < canvas.width && head.y >= 0 && head.y < canvas.height;
         }
 
     </script>
