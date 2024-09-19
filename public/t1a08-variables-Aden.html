@@ -18,7 +18,7 @@
             text-align: center;
             color: #4c6ef5;
         }
-        input[type="text"] {
+        input[type="text"], input[type="number"] {
             margin: 5px 0;
             padding: 10px;
             border: 1px solid #007bff;
@@ -50,11 +50,14 @@
             padding: 10px;
             border-radius: 5px;
         }
+        .type-section {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>t1a08 - Variables - Aden</h1>
+    <h1>Variable Operations</h1>
     <p>W3Schools link to variables: <a href="https://www.w3schools.com/ja/ja_variables.asp" target="_blank">Click here</a></p>
     
     <label for="myIn01">Input 1:</label>
@@ -70,18 +73,20 @@
     
     <div id="myDiv">Your answer will appear here...</div>
     
-    <p>Copy and fix. Use <code>parseInt()</code> or <code>parseFloat()</code>. Try to use <code>let</code> instead of <code>var</code>.</p>
-    
-    <pre>
-Other programming languages use defined variables:
-boolean
-int8 or byte 
-int
-double
-float
-char
-string
-    </pre>
+    <div class="type-section">
+        <h2>Variable Types Example</h2>
+        <p><strong>Boolean:</strong> <input type="text" id="booleanInput" placeholder="true / false"></p>
+        <p><strong>int8 or byte:</strong> <input type="number" id="int8Input" min="0" max="255" placeholder="0 to 255"></p>
+        <p><strong>int:</strong> <input type="number" id="intInput" placeholder="Integer value"></p>
+        <p><strong>double:</strong> <input type="number" id="doubleInput" step="any" placeholder="Floating-point value"></p>
+        <p><strong>float:</strong> <input type="number" id="floatInput" step="any" placeholder="Floating-point value"></p>
+        <p><strong>char:</strong> <input type="text" id="charInput" maxlength="1" placeholder="Single character"></p>
+        <p><strong>string:</strong> <input type="text" id="stringInput" placeholder="Any string"></p>
+        
+        <input type="button" value="Show Variable Types" onclick="showVariableTypes()">
+        
+        <div id="typeDiv">Variable Types Output will appear here...</div>
+    </div>
 
     <script>
         function performOperation(operation) {
@@ -111,6 +116,26 @@ string
             }
 
             document.getElementById('myDiv').innerHTML = 'Your answer is ' + myTotal;
+        }
+
+        function showVariableTypes() {
+            const booleanValue = document.getElementById('booleanInput').value.toLowerCase() === 'true';
+            const int8Value = parseInt(document.getElementById('int8Input').value) || 0;
+            const intValue = parseInt(document.getElementById('intInput').value) || 0;
+            const doubleValue = parseFloat(document.getElementById('doubleInput').value) || 0;
+            const floatValue = parseFloat(document.getElementById('floatInput').value) || 0;
+            const charValue = document.getElementById('charInput').value;
+            const stringValue = document.getElementById('stringInput').value;
+
+            document.getElementById('typeDiv').innerHTML = `
+                <strong>Boolean:</strong> ${booleanValue}<br>
+                <strong>int8/byte:</strong> ${int8Value}<br>
+                <strong>int:</strong> ${intValue}<br>
+                <strong>double:</strong> ${doubleValue}<br>
+                <strong>float:</strong> ${floatValue}<br>
+                <strong>char:</strong> '${charValue}'<br>
+                <strong>string:</strong> "${stringValue}"
+            `;
         }
     </script>
 
