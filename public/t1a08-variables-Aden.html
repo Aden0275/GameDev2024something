@@ -24,3 +24,105 @@ Input 2 <input type=text id"myIn02" value="7"><br>
     char
     string
     </pre>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variable Addition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4c6ef5;
+        }
+        input[type="text"] {
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+        }
+        input[type="button"] {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+        #myDiv {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>t1a08 - Variables - Aden</h1>
+    <p>W3Schools link to variables: <a href="https://www.w3schools.com/ja/ja_variables.asp" target="_blank">Click here</a></p>
+    
+    <label for="myIn01">Input 1:</label>
+    <input type="text" id="myIn01" value="5"><br>
+    
+    <label for="myIn02">Input 2:</label>
+    <input type="text" id="myIn02" value="7"><br>
+    
+    <input type="button" value="Add and Fix" onclick="addAndFix()">
+
+    <div id="myDiv">Your answer will appear here...</div>
+    
+    <p>Copy and fix. Use <code>parseInt()</code> or <code>parseFloat()</code>. Try to use <code>let</code> instead of <code>var</code>.</p>
+    
+    <input type="button" value="Add2 and Fix" onclick="add2AndFix()">
+    
+    <pre>
+Other programming languages use defined variables:
+boolean
+int8 or byte 
+int
+double
+float
+char
+string
+    </pre>
+
+    <script>
+        function addAndFix() {
+            let myX = parseFloat(document.getElementById('myIn01').value);
+            let myY = parseFloat(document.getElementById('myIn02').value);
+            let myTotal = myX + myY;
+            document.getElementById('myDiv').innerHTML = 'Your answer is ' + myTotal;
+        }
+
+        function add2AndFix() {
+            let myX = parseFloat(document.getElementById('myIn01').value);
+            let myY = parseFloat(document.getElementById('myIn02').value);
+            let myTotal = myX + myY;
+            document.getElementById('myDiv').innerHTML = 'Your answer is ' + myTotal;
+        }
+    </script>
+
+</body>
+</html>
