@@ -23,32 +23,16 @@
         #score {
             font-size: 24px;
         }
-        #gameOver {
-            display: none;
-            font-size: 32px;
-            color: red;
-        }
-        #restartButton {
-            display: none;
-            font-size: 20px;
-            margin-top: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
     <div id="score">Score: 0</div>
-    <div id="gameOver">Game Over!</div>
-    <button id="restartButton">Restart</button>
     
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score');
-        const gameOverDisplay = document.getElementById('gameOver');
-        const restartButton = document.getElementById('restartButton');
 
         const box = 20;
         let snake, direction, food, score, game;
@@ -59,8 +43,6 @@
             food = spawnFood();
             score = 0;
             scoreDisplay.innerText = `Score: ${score}`;
-            gameOverDisplay.style.display = 'none';
-            restartButton.style.display = 'none';
             clearInterval(game);
             game = setInterval(draw, 100);
         }
@@ -68,7 +50,6 @@
         resetGame();
         
         document.addEventListener('keydown', changeDirection);
-        restartButton.addEventListener('click', resetGame);
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -109,8 +90,8 @@
             // Game over
             if (collision(newHead)) {
                 clearInterval(game);
-                gameOverDisplay.style.display = 'block';
-                restartButton.style.display = 'block';
+                alert(`Game Over! Your score is: ${score}. Click OK to try again.`);
+                resetGame(); // Reset game after acknowledgment
                 return;
             }
 
