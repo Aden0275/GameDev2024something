@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Variable Addition</title>
+    <title>Variable Operations</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,13 +63,14 @@
     <label for="myIn02">Input 2:</label>
     <input type="text" id="myIn02" value="7"><br>
     
-    <input type="button" value="Add and Fix" onclick="addAndFix()">
-
+    <input type="button" value="Add" onclick="performOperation('+')">
+    <input type="button" value="Subtract" onclick="performOperation('-')">
+    <input type="button" value="Multiply" onclick="performOperation('*')">
+    <input type="button" value="Divide" onclick="performOperation('/')">
+    
     <div id="myDiv">Your answer will appear here...</div>
     
     <p>Copy and fix. Use <code>parseInt()</code> or <code>parseFloat()</code>. Try to use <code>let</code> instead of <code>var</code>.</p>
-    
-    <input type="button" value="Add2 and Fix" onclick="add2AndFix()">
     
     <pre>
 Other programming languages use defined variables:
@@ -84,17 +84,32 @@ string
     </pre>
 
     <script>
-        function addAndFix() {
+        function performOperation(operation) {
             let myX = parseFloat(document.getElementById('myIn01').value);
             let myY = parseFloat(document.getElementById('myIn02').value);
-            let myTotal = myX + myY;
-            document.getElementById('myDiv').innerHTML = 'Your answer is ' + myTotal;
-        }
+            let myTotal;
 
-        function add2AndFix() {
-            let myX = parseFloat(document.getElementById('myIn01').value);
-            let myY = parseFloat(document.getElementById('myIn02').value);
-            let myTotal = myX + myY;
+            switch (operation) {
+                case '+':
+                    myTotal = myX + myY;
+                    break;
+                case '-':
+                    myTotal = myX - myY;
+                    break;
+                case '*':
+                    myTotal = myX * myY;
+                    break;
+                case '/':
+                    if (myY !== 0) {
+                        myTotal = myX / myY;
+                    } else {
+                        myTotal = 'Error: Division by zero';
+                    }
+                    break;
+                default:
+                    myTotal = 'Invalid operation';
+            }
+
             document.getElementById('myDiv').innerHTML = 'Your answer is ' + myTotal;
         }
     </script>
