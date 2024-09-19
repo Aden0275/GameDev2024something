@@ -3,39 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
+    <title>Enhanced Snake Game</title>
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
+            font-family: Arial, sans-serif;
         }
         canvas {
             border: 1px solid #000;
             background-color: #fff;
+            margin-bottom: 20px;
+        }
+        #score {
+            font-size: 24px;
+        }
+        #gameOver {
+            display: none;
+            font-size: 32px;
+            color: red;
+        }
+        #restartButton {
+            display: none;
+            font-size: 20px;
+            margin-top: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div id="score">Score: 0</div>
+    <div id="gameOver">Game Over!</div>
+    <button id="restartButton">Restart</button>
+    
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+        const gameOverDisplay = document.getElementById('gameOver');
+        const restartButton = document.getElementById('restartButton');
 
         const box = 20;
-        let snake = [{ x: 9 * box, y: 9 * box }];
-        let direction = '';
-        let food = spawnFood();
-        let score = 0;
+        let snake, direction, food, score, game;
 
+        function resetGame() {
+            snake = [{ x: 9 * box, y: 9 * box }];
+            direction = '';
+            food = spawnFood();
+            score = 0;
+            scoreDisplay.innerText = `Score: ${score}`;
+            gameOverDisplay.style.display = 'none';
+            restartButton.style.display = 'none';
+            clearInterval(game);
+            game = setInterval(draw, 100);
+        }
+
+        resetGame();
+        
         document.addEventListener('keydown', changeDirection);
+        restartButton.addEventListener('click', resetGame);
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
             // Draw snake
             for (let i = 0; i < snake.length; i++) {
                 ctx.fillStyle = (i === 0) ? 'green' : 'lightgreen';
@@ -60,6 +97,7 @@
             // Check if snake eats the food
             if (snakeX === food.x && snakeY === food.y) {
                 score++;
+                scoreDisplay.innerText = `Score: ${score}`;
                 food = spawnFood();
             } else {
                 snake.pop(); // Remove the last part of the snake
@@ -71,7 +109,8 @@
             // Game over
             if (collision(newHead)) {
                 clearInterval(game);
-                alert(`Game Over! Your score is: ${score}`);
+                gameOverDisplay.style.display = 'block';
+                restartButton.style.display = 'block';
                 return;
             }
 
@@ -79,10 +118,19 @@
         }
 
         function spawnFood() {
-            return {
-                x: Math.floor(Math.random() * (canvas.width / box)) * box,
-                y: Math.floor(Math.random() * (canvas.height / box)) * box
-            };
+            let newFood;
+            while (true) {
+                newFood = {
+                    x: Math.floor(Math.random() * (canvas.width / box)) * box,
+                    y: Math.floor(Math.random() * (canvas.height / box)) * box
+                };
+                
+                // Ensure food doesn't spawn on the snake
+                if (!snake.some(segment => segment.x === newFood.x && segment.y === newFood.y)) {
+                    break;
+                }
+            }
+            return newFood;
         }
 
         function changeDirection(event) {
@@ -107,7 +155,6 @@
             );
         }
 
-        const game = setInterval(draw, 100);
     </script>
 </body>
 </html>
