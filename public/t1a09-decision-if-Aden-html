@@ -20,3 +20,99 @@ if (myIn1 == 'Aden'){
   document.getElementById('myDiv01').innerHTML = 'Was expecting Aden >:'
 }
 }"><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Making Buttons</title>
+</head>
+<body>
+
+Input:<input type="text" id="myText1" value="Aden"><br>
+Input:<input type="number" id="myNum1" value="14"><br>
+<div id="myDiv01">...</div>
+
+<input type="button" value="Is Aden" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myIn1 == 'Aden') {
+        document.getElementById('myDiv01').innerHTML = 'Hi Aden';
+    }
+}"><br>
+
+<input type="button" value="Is Aden else" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myIn1 == 'Aden') {
+        document.getElementById('myDiv01').innerHTML = 'Hi Aden';
+    } else {
+        document.getElementById('myDiv01').innerHTML = 'Was expecting Aden >:';
+    }
+}"><br>
+
+<input type="button" value="Is Not Aden" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myIn1 !== 'Aden') {
+        document.getElementById('myDiv01').innerHTML = 'You are not Aden!';
+    } else {
+        document.getElementById('myDiv01').innerHTML = 'Hello Aden!';
+    }
+}"><br>
+
+<input type="button" value="Is Number Greater Than 10" onclick="{
+    let myNum1 = document.getElementById('myNum1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myNum1 > 10) {
+        document.getElementById('myDiv01').innerHTML = 'The number is greater than 10';
+    } else {
+        document.getElementById('myDiv01').innerHTML = 'The number is 10 or less';
+    }
+}"><br>
+
+<input type="button" value="Aden AND Number Greater Than 10" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    let myNum1 = document.getElementById('myNum1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myIn1 == 'Aden' && myNum1 > 10) {
+        document.getElementById('myDiv01').innerHTML = 'Hi Aden, and the number is greater than 10!';
+    } else {
+        document.getElementById('myDiv01').innerHTML = 'Either not Aden or number is 10 or less.';
+    }
+}"><br>
+
+<input type="button" value="Aden OR Number Less Than 15" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    let myNum1 = document.getElementById('myNum1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myIn1 == 'Aden' || myNum1 < 15) {
+        document.getElementById('myDiv01').innerHTML = 'Either you are Aden or the number is less than 15.';
+    } else {
+        document.getElementById('myDiv01').innerHTML = 'Neither condition is met!';
+    }
+}"><br>
+
+<input type="button" value="Not Greater Than 20" onclick="{
+    let myNum1 = document.getElementById('myNum1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (!(myNum1 > 20)) {
+        document.getElementById('myDiv01').innerHTML = 'The number is not greater than 20!';
+    } else {
+        document.getElementById('myDiv01').innerHTML = 'The number is greater than 20!';
+    }
+}"><br>
+
+<input type="button" value="Complex Decision" onclick="{
+    let myIn1 = document.getElementById('myText1').value;
+    let myNum1 = document.getElementById('myNum1').value;
+    document.getElementById('myDiv01').innerHTML = '<br>';
+    if (myIn1 == 'Aden' && myNum1 >= 14 || myNum1 < 5) {
+        document.getElementById('myDiv01').innerHTML = 'You are Aden, and the number is reasonable or too low!';
+    } else {
+        document.getElementById('myDiv01').innerHTML = 'Condition not satisfied!';
+    }
+}"><br>
+
+</body>
+</html>
