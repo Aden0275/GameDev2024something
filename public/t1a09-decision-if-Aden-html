@@ -3,18 +3,18 @@ Input:<input  type=text id="myText1" value="Aden">
 Input:<input type=number id="myNum1" value="14">
 <div id="myDiv01">...</div>
 
-<input type=button value="is Aden" on click="{
+<input type=button value="Is Aden" onclick="{
  let myIn1 = document.getElementById('myText1').value
  document.getElementById('myDiv01').innerHTML = '<br>'
- if (myIn1 == 'Fred'){
+ if (myIn1 == 'Aden'){
    document.getElementById('myDiv01').innerHTML = 'Hi Aden'
 }
 }"><br>
 
-<input type=button value="is Aden else" on click="{
+<input type=button value="is Aden else" onclick="{
  let myIn1 = document.getElementById('myText1').value
  document.getElementById('myDiv01').innerHTML = '<br>'
-if (myIn1 == 'Fred'){
+if (myIn1 == 'Aden'){
   document.getElementById('myDiv01').innerHTML = 'Hi Aden'
 }  else {
   document.getElementById('myDiv01').innerHTML = 'Was expecting Aden >:'
