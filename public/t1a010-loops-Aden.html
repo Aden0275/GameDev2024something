@@ -1,31 +1,51 @@
 <h2 align=center>t1a010-loops-by-Aden.html</h2>
 
-<a href="">Good reference to Javascript Loops</a><br>
+<a href="#" title="Learn more about JavaScript Loops">Excellent Reference on JavaScript Loops</a><br>
 
-
-
-<h4> Example input output code</h4>
+<h4>Example Input and Output Code</h4>
 <pre>
-  
+// This is a simple demonstration of looping in JavaScript
+// The code iterates based on user input and applies a basic condition.
 </pre>
 
-<h4> Example working code</h4>
+<h4>Example Working Code</h4>
 
-Max loops: <input id="myNum01" type=number value="4" ><br>
+<label for="myNum01">Max loops:</label> 
+<input id="myNum01" type="number" value="4" min="1"><br><br>
 
-<input type=button value="Basic For Loop with Decisions" onclick="{
-      document.getElementById('myDiv01').innerHTML = ''
-  let myTemp = '' 
-  
-  let myMax = parseInt(document.getElementById('myNum1').value)
+<input 
+  type="button" 
+  value="Run Basic For Loop with Conditions" 
+  onclick="runBasicLoop()"
+><br><br>
 
-  for (let myLoop = 0; myLoop < myMax; myLoop++ ){
-     if (myLoop * 2 > myMax){
-      myTemp += ' cool '
+<div id="myDiv01">Output will appear here...</div>
+
+<script>
+  function runBasicLoop() {
+    // Clear previous output
+    document.getElementById('myDiv01').innerHTML = '';
+    let output = ''; 
+
+    // Get the maximum number of loops from the input
+    const maxLoops = parseInt(document.getElementById('myNum01').value);
+
+    // Validate input
+    if (isNaN(maxLoops) || maxLoops < 1) {
+      document.getElementById('myDiv01').innerHTML = 'Please enter a valid positive number.';
+      return;
+    }
+
+    // Loop through the specified number of times
+    for (let loopIndex = 0; loopIndex < maxLoops; loopIndex++) {
+      // Check a condition to add special text
+      if (loopIndex * 2 > maxLoops) {
+        output += 'Cool! ';
+      }
+      output += 'Loop number: ' + loopIndex + '<br>'; 
+    } 
+
+    // Display the output
+    document.getElementById('myDiv01').innerHTML = output; 
   }
-  myTemp += 'Loop number: ' + myLoop + '<br>' 
-  } 
-  document.getElementById('myDiv01').innerHTML = myTemp 
-  }">
-
-  <div id="myDiv01">...</div>
+</script>
