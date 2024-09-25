@@ -1,6 +1,5 @@
 <h2 align=center>t1a010-loops-by-Aden.html</h2> 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,70 +57,55 @@
 <input type="button" value="Run For and While Loops" onclick="runLoops()">
 <input type="button" value="Run Do-While Loop" onclick="runDoWhileLoop()">
 
-<h4>Adjust Values</h4>
-<input type="button" value="Add 1 to Loop Count" onclick="modifyLoopCount(1)">
-<input type="button" value="Add 2 to Loop Count" onclick="modifyLoopCount(2)">
-<input type="button" value="Add 3 to Loop Count" onclick="modifyLoopCount(3)">
-<input type="button" value="Add 10 to Weird Number" onclick="modifyWeirdNumber(10)">
-<input type="button" value="Subtract 5 from Weird Number" onclick="modifyWeirdNumber(-5)">
-<input type="button" value="Reset Weird Number to 0" onclick="resetWeirdNumber()">
-
 <h4>Output</h4>
 <div id="output" aria-live="polite">Output will appear here...</div>
 
 <script>
     function runLoops() {
+        // Get values from input fields
         const maxLoops = parseInt(document.getElementById('myNum01').value);
         const weirdNumber = parseInt(document.getElementById('myWeird').value);
         let output = '';
 
+        // For Loop
         output += '<strong>For Loop Output:</strong><br>';
         for (let i = 0; i < maxLoops; i++) {
             if (i * 2 > weirdNumber) {
-                output += 'Cool! ';
+                output += 'Cool! '; // Decision-based message
             }
-            output += 'For Loop number: ' + i + '<br>';
+            output += 'For Loop number: ' + i + '<br>'; // Display loop number
         }
 
+        // While Loop
         output += '<br><strong>While Loop Output:</strong><br>';
         let j = 0;
         while (j < maxLoops) {
             if (j % 2 === 0) {
-                output += 'Even iteration: ' + j + '<br>'; 
+                output += 'Even iteration: ' + j + '<br>'; // Display if the iteration index is even
             }
-            j += 2; 
+            j += 2; // Increment by 2
         }
 
+        // Output results to the designated section
         document.getElementById('output').innerHTML = output;
     }
 
     function runDoWhileLoop() {
+        // Get max loop count from input fields
         const maxLoops = parseInt(document.getElementById('myNum01').value);
         let output = '';
 
+        // Do-While Loop
         output += '<br><strong>Do-While Loop Output:</strong><br>';
         let k = 0;
 
         do {
-            output += 'Do-While iteration: ' + k + '<br>'; 
+            output += 'Do-While iteration: ' + k + '<br>'; // Display current iteration
             k++;
-        } while (k < maxLoops);
+        } while (k < maxLoops); // Loop until k reaches the max number of loops
 
-        document.getElementById('output').innerHTML += output;
-    }
-
-    function modifyLoopCount(value) {
-        const loopCountInput = document.getElementById('myNum01');
-        loopCountInput.value = parseInt(loopCountInput.value) + value;
-    }
-
-    function modifyWeirdNumber(value) {
-        const weirdNumberInput = document.getElementById('myWeird');
-        weirdNumberInput.value = Math.max(0, parseInt(weirdNumberInput.value) + value); // Prevent negative weird number
-    }
-
-    function resetWeirdNumber() {
-        document.getElementById('myWeird').value = 0;
+        // Output results to the designated section
+        document.getElementById('output').innerHTML += output; // Append to existing output
     }
 </script>
 
