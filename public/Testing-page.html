@@ -58,7 +58,6 @@
 <p>Weird Number: <input id="myWeird" type="number" value="2" min="0" aria-label="Weird number" /></p>
 <input type="button" value="Run For and While Loops" onclick="runLoops()">
 <input type="button" value="Run Do-While Loop" onclick="runDoWhileLoop()">
-<input type="button" value="Run ForEach Loop" onclick="runForEachLoop()">
 
 <h4>Output</h4>
 <div id="output" aria-live="polite">Output will appear here...</div>
@@ -106,22 +105,6 @@
             output += 'Do-While iteration: ' + k + '<br>'; // Display current iteration
             k++;
         } while (k < maxLoops); // Loop until k reaches the max number of loops
-
-        // Output results to the designated section
-        document.getElementById('output').innerHTML += output; // Append to existing output
-    }
-
-    function runForEachLoop() {
-        // Get max loop count from input fields
-        const maxLoops = parseInt(document.getElementById('myNum01').value);
-        const numbersArray = Array.from({length: maxLoops}, (_, index) => index); // Create an array [0, 1, 2, ..., maxLoops - 1]
-        let output = '';
-
-        // ForEach Loop
-        output += '<br><strong>ForEach Loop Output:</strong><br>';
-        numbersArray.forEach(num => {
-            output += 'ForEach iteration: ' + num + '<br>'; // Display current iteration
-        });
 
         // Output results to the designated section
         document.getElementById('output').innerHTML += output; // Append to existing output
