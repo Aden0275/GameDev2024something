@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Extended HTML Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 0;
+            background: #333;
+            color: #fff;
+        }
+        .content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+        ul {
+            margin: 10px 0;
+        }
+        form {
+            margin-top: 20px;
+        }
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to My Extended HTML Page</h1>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#list">My Favorite Fruits</a>
+    <a href="#table">Data Table</a>
+    <a href="#form">Contact Form</a>
+</nav>
+
+<div class="content">
+    <section id="home">
+        <h2>Home</h2>
+        <p>This is an extended version of my simple HTML page. You can find various types of content here!</p>
+        <img src="https://via.placeholder.com/800x400" alt="Sample Image">
+    </section>
+
+    <section id="about">
+        <h2>About</h2>
+        <p>This page contains various elements such as images, lists, tables, and forms. It's designed to showcase what can be added to an HTML page.</p>
+    </section>
+
+    <section id="gallery">
+        <h2>Gallery</h2>
+        <p>Here are some images related to nature:</p>
+        <img src="https://via.placeholder.com/200.png/09f/fff?text=Image+1" alt="Gallery Image 1">
+        <img src="https://via.placeholder.com/200.png/90f/fff?text=Image+2" alt="Gallery Image 2">
+        <img src="https://via.placeholder.com/200.png/f90/fff?text=Image+3" alt="Gallery Image 3">
+    </section>
+
+    <section id="list">
+        <h2>My Favorite Fruits</h2>
+        <ul>
+            <li>Apples</li>
+            <li>Bananas</li>
+            <li>Cherries</li>
+            <li>Dates</li>
+            <li>Grapes</li>
+        </ul>
+    </section>
+
+    <section id="table">
+        <h2>Data Table</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+            </tr>
+            <tr>
+                <td>John Doe</td>
+                <td>30</td>
+                <td>New York</td>
+            </tr>
+            <tr>
+                <td>Jane Smith</td>
+                <td>25</td>
+                <td>Los Angeles</td>
+            </tr>
+            <tr>
+                <td>Sam Johnson</td>
+                <td>22</td>
+                <td>Chicago</td>
+            </tr>
+        </table>
+    </section>
+
+    <section id="contact">
+        <h2>Contact</h2>
+        <p>If you have any questions, feel free to reach out!</p>
+        <p>You can contact me at <a href="mailto:example@example.com">example@example.com</a>.</p>
+    </section>
+
+    <section id="form">
+        <h2>Contact Form</h2>
+        <form action="#" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <input type="submit" value="Send Message">
+        </form>
+    </section>
+</div>
+
+<footer>
+    <p>&copy; 2023 My Extended HTML Page</p>
+</footer>
+
+</body>
+</html>
