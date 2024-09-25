@@ -113,31 +113,3 @@
 
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loop Example</title>
-</head>
-<body>
-    <h1>My List</h1>
-    <ul id="myList"></ul> <!-- This is where the list will be rendered -->
-
-    <script>
-        // Array of items to display
-        const items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
-
-        // Get the unordered list element
-        const myList = document.getElementById('myList');
-
-        // Loop through the items array
-        for (let i = 0; i < items.length; i++) {
-            // Create a list item for each item in the array
-            const listItem = document.createElement('li');
-            listItem.textContent = items[i]; // Set the text content
-            myList.appendChild(listItem); // Append the list item to the unordered list
-        }
-    </script>
-</body>
-</html>
