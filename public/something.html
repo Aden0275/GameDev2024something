@@ -86,6 +86,13 @@
             padding: 10px;
             margin: 5px;
         }
+        .dice-result {
+            font-size: 24px;
+        }
+        #hangmanWord {
+            font-size: 24px;
+            letter-spacing: 10px;
+        }
     </style>
 </head>
 <body>
@@ -194,6 +201,31 @@
             <input type="text" id="stickyNoteInput" placeholder="Type your note..." />
             <button onclick="addStickyNote()">Add Sticky Note</button>
             <div id="stickyNotes"></div>
+        </div>
+        
+        <!-- Virtual Dice Roller -->
+        <div class="card">
+            <h3>Virtual Dice Roller</h3>
+            <button onclick="rollDice(1)">Roll 1 Die</button>
+            <button onclick="rollDice(2)">Roll 2 Dice</button>
+            <div class="dice-result" id="diceResults"></div>
+        </div>
+
+        <!-- Simple Hangman Game -->
+        <div class="card">
+            <h3>Simple Hangman Game</h3>
+            <button onclick="startHangman()">Start Game</button>
+            <div id="hangmanWord"></div>
+            <input type="text" id="hangmanInput" placeholder="Guess a letter..." maxlength="1" />
+            <button onclick="guessLetter()">Guess</button>
+            <div id="hangmanFeedback"></div>
+        </div>
+
+        <!-- Random Quote from API -->
+        <div class="card">
+            <h3>Random Quote</h3>
+            <button onclick="fetchRandomQuote()">Get Random Quote</button>
+            <div id="apiQuote"></div>
         </div>
 
     </div>
@@ -391,6 +423,58 @@
 
             stickyNotesContainer.appendChild(noteDiv);
             document.getElementById('stickyNoteInput').value = ''; // Clear input
+        }
+
+        // Virtual Dice Roller
+        function rollDice(numDice) {
+            const results = [];
+            for (let i = 0; i < numDice; i++) {
+                results.push(Math.floor(Math.random() * 6) + 1);
+            }
+            document.getElementById('diceResults').innerHTML = `Results: ${results.join(", ")}`;
+        }
+
+        // Simple Hangman Game
+        let hangmanWord = "";
+        let guessedLetters = [];
+        
+        function startHangman() {
+            const words = ["javascript", "html", "css", "programming", "developer"];
+            hangmanWord = words[Math.floor(Math.random() * words.length)];
+            guessedLetters = [];
+            document.getElementById('hangmanFeedback').innerText = '';
+            displayHangmanWord();
+        }
+
+        function displayHangmanWord() {
+            const display = hangmanWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : "_")).join(" ");
+            document.getElementById('hangmanWord').innerText = display;
+        }
+
+        function guessLetter() {
+            const letter = document.getElementById('hangmanInput').value.toLowerCase();
+            if (letter && !guessedLetters.includes(letter)) {
+                guessedLetters.push(letter);
+                if (!hangmanWord.includes(letter)) {
+                    document.getElementById('hangmanFeedback').innerText = "Incorrect Guess!";
+                } else {
+                    document.getElementById('hangmanFeedback').innerText = "Good Guess!";
+                }
+                displayHangmanWord();
+            }
+            document.getElementById('hangmanInput').value = ''; // Clear input
+        }
+
+        // Random Quote from API
+        async function fetchRandomQuote() {
+            const quoteElement = document.getElementById('apiQuote');
+            const response = await fetch('https://api.quotable.io/random');
+            if (response.ok) {
+                const quoteData = await response.json();
+                quoteElement.innerHTML = `${quoteData.content} — ${quoteData.author}`;
+            } else {
+                quoteElement.innerHTML = "Failed to fetch a quote.";
+            }
         }
     </script>
 </body>
