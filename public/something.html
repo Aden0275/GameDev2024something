@@ -12,10 +12,12 @@
             text-align: center;
             padding: 50px;
             margin: 0;
+            transition: background-color 0.5s;
         }
         h1 {
             font-size: 48px;
             color: #ff69b4; /* Hot pink */
+            margin-bottom: 20px;
         }
         button {
             padding: 15px 20px;
@@ -26,39 +28,80 @@
             cursor: pointer;
             border-radius: 5px;
             margin: 10px;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #45a049; /* Darker green */
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            width: 300px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
         }
         .fun-image {
             width: 300px;
             margin-top: 20px;
         }
-        .quote {
+        .quote, .fact {
             font-size: 24px;
             margin: 20px;
             font-style: italic;
             color: #555;
         }
-        input {
+        input[type="text"], input[type="color"] {
             padding: 10px;
             font-size: 18px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
     <h1>Welcome to My Fun HTML Page!</h1>
-    <p id="dynamicText">Click the button below to change this text!</p>
-    
-    <button onclick="changeText()">Click Me!</button>
-    
-    <input type="text" id="userInput" placeholder="Type something fun!" />
-    <button onclick="showInput()">Show Input</button>
-    
-    <div class="quote" id="funQuote">"Life is short, smile while you still have teeth!"</div>
-    <button onclick="changeQuote()">Get a New Quote</button>
+
+    <div class="container">
+        <div class="card">
+            <p id="dynamicText">Click the button below to change this text!</p>
+            <button onclick="changeText()">Click Me!</button>
+        </div>
+
+        <div class="card">
+            <input type="text" id="userInput" placeholder="Type something fun!" />
+            <button onclick="showInput()">Show Input</button>
+            <div class="quote" id="funQuote">"Life is short, smile while you still have teeth!"</div>
+            <button onclick="changeQuote()">Get a New Quote</button>
+        </div>
+
+        <div class="card">
+            <input type="color" id="bgColorPicker" onchange="changeBackgroundColor(this.value)" />
+            <label for="bgColorPicker">Pick a Background Color</label>
+        </div>
+
+        <div class="card">
+            <button onclick="startGuessingGame()">Start Guessing Game</button>
+            <p id="gameMessage"></p>
+        </div>
+
+        <div class="card">
+            <button onclick="showFunFact()">Show Random Fun Fact</button>
+            <div class="fact" id="funFact">Click the button to get a fun fact!</div>
+        </div>
+    </div>
 
     <img class="fun-image" src="https://media.giphy.com/media/l0HlFQ0wgBj7s2gbG/giphy.gif" alt="Fun GIF">
     
@@ -80,13 +123,55 @@
             "If you think you’re too small to make a difference, try sleeping with a mosquito.",
             "You only live once, but if you do it right, once is enough.",
             "Be yourself; everyone else is already taken.",
-            "Why fit in when you were born to stand out?"
+            "Why fit in when you were born to stand out?",
+            "The only way to do great work is to love what you do.",
+            "Success is not the key to happiness. Happiness is the key to success.",
+            "Don't watch the clock; do what it does. Keep going."
         ];
 
         function changeQuote() {
             const quoteElement = document.getElementById('funQuote');
             const randomIndex = Math.floor(Math.random() * quotes.length);
             quoteElement.innerHTML = quotes[randomIndex];
+        }
+
+        function changeBackgroundColor(color) {
+            document.body.style.backgroundColor = color;
+        }
+
+        let randomNumber = 0; // Stores the random number for the guessing game
+
+        function startGuessingGame() {
+            randomNumber = Math.floor(Math.random() * 100) + 1; // Random number between 1-100
+            const userGuess = prompt("Guess a number between 1 and 100");
+            checkGuess(userGuess);
+        }
+
+        function checkGuess(guess) {
+            const gameMessage = document.getElementById('gameMessage');
+            if (guess == randomNumber) {
+                gameMessage.innerHTML = "🎉 Congrats! You guessed right! 🎉";
+            } else if (guess < randomNumber) {
+                gameMessage.innerHTML = "Too low! Try again!";
+            } else {
+                gameMessage.innerHTML = "Too high! Try again!";
+            }
+        }
+
+        const funFacts = [
+            "Honey never spoils.",
+            "A flock of flamingos is called a 'flamboyance.'",
+            "Bananas are berries, but strawberries aren't.",
+            "Octopuses have three hearts.",
+            "Wombat poop is cube-shaped.",
+            "Cows have best friends.",
+            "Sea otters hold hands while sleeping."
+        ];
+
+        function showFunFact() {
+            const factElement = document.getElementById('funFact');
+            const randomIndex = Math.floor(Math.random() * funFacts.length);
+            factElement.innerHTML = funFacts[randomIndex];
         }
     </script>
 </body>
