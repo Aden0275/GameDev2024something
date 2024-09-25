@@ -8,9 +8,10 @@
         body {
             background-color: #ffcccb; /* Light pink background */
             color: #333;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
             padding: 50px;
+            margin: 0;
         }
         h1 {
             font-size: 48px;
@@ -24,26 +25,68 @@
             color: white;
             cursor: pointer;
             border-radius: 5px;
+            margin: 10px;
         }
         button:hover {
             background-color: #45a049; /* Darker green */
         }
         .fun-image {
-            width: 400px;
+            width: 300px;
             margin-top: 20px;
+        }
+        .quote {
+            font-size: 24px;
+            margin: 20px;
+            font-style: italic;
+            color: #555;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
     <h1>Welcome to My Fun HTML Page!</h1>
     <p id="dynamicText">Click the button below to change this text!</p>
+    
     <button onclick="changeText()">Click Me!</button>
+    
+    <input type="text" id="userInput" placeholder="Type something fun!" />
+    <button onclick="showInput()">Show Input</button>
+    
+    <div class="quote" id="funQuote">"Life is short, smile while you still have teeth!"</div>
+    <button onclick="changeQuote()">Get a New Quote</button>
+
     <img class="fun-image" src="https://media.giphy.com/media/l0HlFQ0wgBj7s2gbG/giphy.gif" alt="Fun GIF">
     
     <script>
         function changeText() {
             const textElement = document.getElementById('dynamicText');
             textElement.innerHTML = "🎉 You just clicked the button! 🎉";
+        }
+
+        function showInput() {
+            const inputElement = document.getElementById('userInput');
+            const textElement = document.getElementById('dynamicText');
+            textElement.innerHTML = `You entered: "${inputElement.value}"`;
+            inputElement.value = ''; // Clear the input after showing
+        }
+
+        const quotes = [
+            "Life is short, smile while you still have teeth!",
+            "If you think you’re too small to make a difference, try sleeping with a mosquito.",
+            "You only live once, but if you do it right, once is enough.",
+            "Be yourself; everyone else is already taken.",
+            "Why fit in when you were born to stand out?"
+        ];
+
+        function changeQuote() {
+            const quoteElement = document.getElementById('funQuote');
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            quoteElement.innerHTML = quotes[randomIndex];
         }
     </script>
 </body>
