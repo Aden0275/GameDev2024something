@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun HTML Page with Many Features</title>
+    <title>Fun HTML Page with Multiple Features</title>
     <style>
         body {
             background-color: #ffcccb;
@@ -62,13 +62,29 @@
             border-radius: 5px;
             border: 1px solid #ccc;
             margin: 10px;
-            width: calc(100% - 22px); /* 100% width accounting for padding */
+            width: calc(100% - 22px);
         }
-        .quote, .fact, .joke, .quiz-question, .feedback {
+        .quote, .fact, .joke, .quiz-question, .feedback, .sticky-note {
             font-size: 18px;
             margin: 10px;
             font-style: italic;
             color: #555;
+        }
+        .carousel img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .sticky-notes-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sticky-note {
+            background-color: yellow;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px;
         }
     </style>
 </head>
@@ -103,10 +119,10 @@
             <div class="joke" id="jokeDisplay">Click the button for a joke!</div>
         </div>
 
-        <!-- Image Upload -->
+        <!-- Image Upload with Carousel -->
         <div class="card">
-            <input type="file" id="imageUpload" accept="image/*" onchange="displayImage(event)" />
-            <div><img id="uploadedImage" class="fun-image" alt="Uploaded Image" /></div>
+            <input type="file" id="imageUpload" accept="image/*" onchange="displayImage(event)" multiple />
+            <div class="carousel" id="imageCarousel"></div>
         </div>
 
         <!-- Countdown Timer -->
@@ -152,35 +168,32 @@
             <div class="quote" id="emojiText">Selected Emoji: None</div>
         </div>
 
-        <!-- Random Trivia Fact -->
+        <!-- Random Fun Fact -->
         <div class="card">
             <button onclick="showFunFact()">Show Random Fun Fact</button>
             <div class="fact" id="funFact">Click the button to get a fun fact!</div>
         </div>
 
-        <!-- Music Player -->
+        <!-- Random Name Generator -->
         <div class="card">
-            <h3>Play Background Music</h3>
-            <audio controls>
-                <source src="your-audio-file.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
+            <h3>Random Name Generator</h3>
+            <button onclick="generateRandomName()">Generate Name</button>
+            <div id="randomNameDisplay"></div>
         </div>
 
-        <!-- Feedback Form -->
+        <!-- Color Palette Generator -->
         <div class="card">
-            <h3>Feedback Form</h3>
-            <input type="text" id="feedbackInput" placeholder="Your feedback..." />
-            <button onclick="submitFeedback()">Submit Feedback</button>
-            <div class="feedback" id="feedbackDisplay"></div>
+            <h3>Random Color Palette</h3>
+            <button onclick="generateColorPalette()">Generate Palette</button>
+            <div id="colorPalette"></div>
         </div>
 
-        <!-- Simple Calculator -->
-        <div class="card">
-            <h3>Simple Calculator</h3>
-            <input type="text" id="calcInput" placeholder="Enter calculation..." />
-            <button onclick="calculate()">Calculate</button>
-            <div id="calcResult"></div>
+        <!-- Sticky Notes -->
+        <div class="card sticky-notes-container">
+            <h3>Sticky Notes</h3>
+            <input type="text" id="stickyNoteInput" placeholder="Type your note..." />
+            <button onclick="addStickyNote()">Add Sticky Note</button>
+            <div id="stickyNotes"></div>
         </div>
 
     </div>
@@ -197,7 +210,6 @@
             const inputElement = document.getElementById('userInput');
             const textElement = document.getElementById('dynamicText');
             textElement.innerHTML = `You entered: "${inputElement.value}"`;
-            // Add to user input history
             addToHistory(inputElement.value);
             inputElement.value = ''; // Clear the input after showing
         }
@@ -234,10 +246,17 @@
             jokeDisplay.innerHTML = `${joke.setup} - ${joke.punchline}`;
         }
 
-        // Image Upload Preview
+        // Image Upload with Carousel
         function displayImage(event) {
-            const image = document.getElementById('uploadedImage');
-            image.src = URL.createObjectURL(event.target.files[0]);
+            const files = event.target.files;
+            const carousel = document.getElementById('imageCarousel');
+            carousel.innerHTML = "";
+            for (let i = 0; i < files.length; i++) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(files[i]);
+                img.alt = `Uploaded Image ${i + 1}`;
+                carousel.appendChild(img);
+            }
         }
 
         // Countdown Timer
@@ -245,7 +264,7 @@
         function startCountdown() {
             const countdownInput = document.getElementById('countdownInput').value;
             const endTime = new Date(countdownInput).getTime();
-            
+
             clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
                 const now = new Date().getTime();
@@ -255,7 +274,7 @@
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
+
                 document.getElementById('countdownDisplay').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
                 if (distance < 0) {
@@ -335,25 +354,43 @@
             factElement.innerHTML = funFacts[randomIndex];
         }
 
-        // Simple Music Player
-        // Included in the HTML as an audio element
+        // Random Name Generator
+        const names = ["John", "Sarah", "Alex", "Mike", "Jessica", "Emily", "Tom", "Nancy", "Robert", "Lisa"];
 
-        // Feedback Form
-        function submitFeedback() {
-            const feedbackInput = document.getElementById('feedbackInput').value;
-            document.getElementById('feedbackDisplay').innerHTML = "Thank you for your feedback! \"" + feedbackInput + "\" received.";
-            document.getElementById('feedbackInput').value = ''; // Clear input
+        function generateRandomName() {
+            const nameElement = document.getElementById('randomNameDisplay');
+            const randomIndex = Math.floor(Math.random() * names.length);
+            nameElement.innerHTML = `Random Name: ${names[randomIndex]}`;
         }
 
-        // Simple Calculator
-        function calculate() {
-            const calcInput = document.getElementById('calcInput').value;
-            try {
-                const result = eval(calcInput);
-                document.getElementById('calcResult').innerHTML = "Result: " + result;
-            } catch (e) {
-                document.getElementById('calcResult').innerHTML = "Error in calculation.";
+        // Color Palette Generator
+        function generateColorPalette() {
+            const paletteElement = document.getElementById('colorPalette');
+            paletteElement.innerHTML = "";
+            for (let i = 0; i < 5; i++) {
+                const color = "#" + Math.floor(Math.random()*16777215).toString(16);
+                const colorBox = document.createElement('div');
+                colorBox.style.backgroundColor = color;
+                colorBox.style.width = "50px";
+                colorBox.style.height = "50px";
+                colorBox.style.display = "inline-block";
+                colorBox.style.margin = "5px";
+                paletteElement.appendChild(colorBox);
             }
+        }
+
+        // Sticky Notes
+        function addStickyNote() {
+            const noteInput = document.getElementById('stickyNoteInput').value;
+            const stickyNotesContainer = document.getElementById('stickyNotes');
+
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'sticky-note';
+            noteDiv.innerText = noteInput;
+            noteDiv.onclick = () => noteDiv.remove(); // Remove on click
+
+            stickyNotesContainer.appendChild(noteDiv);
+            document.getElementById('stickyNoteInput').value = ''; // Clear input
         }
     </script>
 </body>
