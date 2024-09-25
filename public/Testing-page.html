@@ -1,6 +1,5 @@
 <h2 align=center>t1a010-loops-by-Aden.html</h2> 
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -64,7 +63,6 @@
 
 <script>
     function runLoops() {
-        // Get values from input fields
         const maxLoops = parseInt(document.getElementById('myNum01').value);
         const weirdNumber = parseInt(document.getElementById('myWeird').value);
         let output = '';
@@ -85,7 +83,7 @@
             if (j % 2 === 0) {
                 output += 'Even iteration: ' + j + '<br>'; // Display if the iteration index is even
             }
-            j += 2; // Increment by 2
+            j += 1; // Increment by 1 for each iteration
         }
 
         // Output results to the designated section
@@ -93,7 +91,6 @@
     }
 
     function runDoWhileLoop() {
-        // Get max loop count from input fields
         const maxLoops = parseInt(document.getElementById('myNum01').value);
         let output = '';
 
@@ -120,4 +117,30 @@
 
     function showPrimes() {
         const maxLoops = parseInt(document.getElementById('myNum01').value);
-        let output = '<br><strong>Prime Numbers:</strong><br
+        let output = '<br><strong>Prime Numbers:</strong><br>';
+
+        for (let i = 0; i <= maxLoops; i++) {
+            if (isPrime(i)) {
+                output += i + ' ';
+            }
+        }
+
+        document.getElementById('output').innerHTML += output; // Append to existing output
+    }
+
+    function showEvens() {
+        const maxLoops = parseInt(document.getElementById('myNum01').value);
+        let output = '<br><strong>Even Numbers:</strong><br>';
+
+        for (let i = 0; i <= maxLoops; i++) {
+            if (i % 2 === 0) {
+                output += i + ' ';
+            }
+        }
+
+        document.getElementById('output').innerHTML += output; // Append to existing output
+    }
+</script>
+
+</body>
+</html>
