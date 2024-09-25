@@ -7,148 +7,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loops Example</title>
+    <title>To-Do List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #f0f0f0;
         }
-        h2, h4 {
-            color: #333;
-        }
-        h4 {
-            margin-top: 20px;
-        }
-        #output {
-            margin-top: 10px;
-            border: 1px solid #ccc;
+        input[type="text"] {
             padding: 10px;
-            background-color: #ffffff;
-            min-height: 50px;
-            border-radius: 5px;
+            width: 300px;
         }
-        input[type="number"], input[type="button"] {
-            margin-top: 10px;
-            padding: 8px;
-            font-size: 16px;
-        }
-        input[type="button"] {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        input[type="button"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-
-<h2>JavaScript Loops Example</h2>
-<p>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#for_statement" target="_blank">Good Reference to JavaScript Loops</a>
-</p>
-
-<h4>Input Values</h4>
-<p>Set the maximum number of loops and a reference number:</p>
-<p>Max Loop Count: <input id="myNum01" type="number" value="4" min="1" aria-label="Maximum number of loops" /></p>
-<p>Weird Number: <input id="myWeird" type="number" value="2" min="0" aria-label="Weird number" /></p>
-<input type="button" value="Run For and While Loops" onclick="runLoops()">
-<input type="button" value="Run Do-While Loop" onclick="runDoWhileLoop()">
-
-<h4>Output</h4>
-<div id="output" aria-live="polite">Output will appear here...</div>
-
-<script>
-    function runLoops() {
-        // Get values from input fields
-        const maxLoops = parseInt(document.getElementById('myNum01').value);
-        const weirdNumber = parseInt(document.getElementById('myWeird').value);
-        let output = '';
-
-        // For Loop
-        output += '<strong>For Loop Output:</strong><br>';
-        for (let i = 0; i < maxLoops; i++) {
-            if (i * 2 > weirdNumber) {
-                output += 'Cool! '; // Decision-based message
-            }
-            output += 'For Loop number: ' + i + '<br>'; // Display loop number
-        }
-
-        // While Loop
-        output += '<br><strong>While Loop Output:</strong><br>';
-        let j = 0;
-        while (j < maxLoops) {
-            if (j % 2 === 0) {
-                output += 'Even iteration: ' + j + '<br>'; // Display if the iteration index is even
-            }
-            j += 2; // Increment by 2
-        }
-
-        // Output results to the designated section
-        document.getElementById('output').innerHTML = output;
-    }
-
-    function runDoWhileLoop() {
-        // Get max loop count from input fields
-        const maxLoops = parseInt(document.getElementById('myNum01').value);
-        let output = '';
-
-        // Do-While Loop
-        output += '<br><strong>Do-While Loop Output:</strong><br>';
-        let k = 0;
-
-        do {
-            output += 'Do-While iteration: ' + k + '<br>'; // Display current iteration
-            k++;
-        } while (k < maxLoops); // Loop until k reaches the max number of loops
-
-        // Output results to the designated section
-        document.getElementById('output').innerHTML += output; // Append to existing output
-    }
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loop Example</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
+        button {
+            padding: 10px;
         }
         ul {
             list-style-type: none;
+            padding: 0;
         }
     </style>
 </head>
 <body>
 
-    <h1>Items List</h1>
-    <ul id="itemList"></ul>
+<h1>To-Do List</h1>
+<input type="text" id="taskInput" placeholder="Enter a new task...">
+<button id="addButton">Add Task</button>
+<h2>Tasks:</h2>
+<ul id="taskList"></ul>
 
-    <script>
-        // Array of items to display
-        const items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
+<script>
+// Class definition for a Task
+class Task {
+    constructor(description) {
+        this.description = description;
+        this.completed = false;
+    }
 
-        // Get the UL element where the list items will be added
-        const itemList = document.getElementById('itemList');
+    completeTask() {
+        this.completed = true;
+    }
+}
 
-        // Loop through the array of items
-        for (let i = 0; i < items.length; i++) {
-            // Create a new list item
-            const listItem = document.createElement('li');
-            // Set the text content of the list item
-            listItem.textContent = items[i];
-            // Append the list item to the UL
-            itemList.appendChild(listItem);
+// Array to hold tasks
+let tasks = [];
+
+// Function to display tasks
+function displayTasks() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = ''; // Clear the current list
+
+    for (let i = 0; i < tasks.length; i++) {
+        const taskItem = document.createElement('li');
+        taskItem.textContent = tasks[i].description;
+
+        // Adding remove button for each task
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.onclick = () => removeTask(i);
+        taskItem.appendChild(removeButton);
+
+        // Marking completed tasks
+        if (tasks[i].completed) {
+            taskItem.style.textDecoration = 'line-through';
         }
-    </script>
+
+        taskList.appendChild(taskItem);
+    }
+}
+
+// Function to add a new task
+function addTask() {
+    const taskInput = document.getElementById('taskInput');
+    const taskDescription = taskInput.value.trim();
+
+    // Decision making: check if input is not empty
+    if (taskDescription) {
+        const newTask = new Task(taskDescription);
+        tasks.push(newTask);
+        taskInput.value = ''; // Clear input field
+        displayTasks(); // Update the display
+    } else {
+        alert("Please enter a task.");
+    }
+}
+
+// Function to remove a task
+function removeTask(index) {
+    tasks.splice(index, 1); // Remove task from the array
+    displayTasks(); // Update the display
+}
+
+// Adding event listener to the button
+document.getElementById('addButton').addEventListener('click', addTask);
+
+</script>
 </body>
 </html>
