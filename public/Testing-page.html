@@ -56,6 +56,8 @@
 <p>Weird Number: <input id="myWeird" type="number" value="2" min="0" aria-label="Weird number" /></p>
 <input type="button" value="Run For and While Loops" onclick="runLoops()">
 <input type="button" value="Run Do-While Loop" onclick="runDoWhileLoop()">
+<input type="button" value="Show Primes" onclick="showPrimes()">
+<input type="button" value="Show Evens" onclick="showEvens()">
 
 <h4>Output</h4>
 <div id="output" aria-live="polite">Output will appear here...</div>
@@ -107,25 +109,15 @@
         // Output results to the designated section
         document.getElementById('output').innerHTML += output; // Append to existing output
     }
-</script>
 
-</body>
-</html>
-def is_prime(n):
-    if n <= 1:
-        return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
+    function isPrime(num) {
+        if (num <= 1) return false;
+        for (let i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i === 0) return false;
+        }
+        return true;
+    }
 
-# Loop through a range of numbers and print prime numbers
-for num in range(2, 100):  # Change 100 to any upper limit
-    if is_prime(num):
-        print(num)
-     
-        
-        # Loop through a range of numbers and print even numbers
-for num in range(0, 100):  # Change 100 to any upper limit
-    if num % 2 == 0:
-        print(num) 
+    function showPrimes() {
+        const maxLoops = parseInt(document.getElementById('myNum01').value);
+        let output = '<br><strong>Prime Numbers:</strong><br
