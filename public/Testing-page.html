@@ -111,3 +111,21 @@
 
 </body>
 </html>
+def is_prime(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+# Loop through a range of numbers and print prime numbers
+for num in range(2, 100):  # Change 100 to any upper limit
+    if is_prime(num):
+        print(num)
+     
+        
+        # Loop through a range of numbers and print even numbers
+for num in range(0, 100):  # Change 100 to any upper limit
+    if num % 2 == 0:
+        print(num) 
