@@ -341,3 +341,162 @@
 
 </body>
 </html></h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input, select {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: left;
+        }
+        li {
+            padding: 8px;
+            margin: 5px 0;
+            background-color: #e1ffe1;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .remove {
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .summary {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Expense Tracker</h1>
+    <input type="text" id="expenseName" placeholder="Expense Name" />
+    <input type="number" id="expenseAmount" placeholder="Amount" />
+    <select id="expenseCategory">
+        <option value="Food">Food</option>
+        <option value="Transport">Transport</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Other">Other</option>
+    </select>
+    <button onclick="addExpense()">Add Expense</button>
+    <ul id="expenseList"></ul>
+    <div class="summary" id="totalAmount">Total: $0.00</div>
+</div>
+
+<script>
+    // Load expenses from localStorage on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+        expenses.forEach(expense => {
+            addExpenseToList(expense.name, expense.amount, expense.category);
+        });
+        updateTotal();
+    });
+
+    function addExpense() {
+        const name = document.getElementById("expenseName").value.trim();
+        const amount = parseFloat(document.getElementById("expenseAmount").value);
+        const category = document.getElementById("expenseCategory").value;
+
+        if (name === "" || isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid expense name and amount.");
+            return;
+        }
+
+        addExpenseToList(name, amount, category);
+        saveExpenses();
+        updateTotal();
+
+        document.getElementById("expenseName").value = ""; // Clear input
+        document.getElementById("expenseAmount").value = ""; // Clear input
+    }
+
+    function addExpenseToList(name, amount, category) {
+        const expenseList = document.getElementById("expenseList");
+        const li = document.createElement("li");
+        
+        li.innerHTML = `${name} - $${amount.toFixed(2)} <span>${category}</span>`;
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "X";
+        removeButton.className = "remove";
+        removeButton.onclick = (event) => {
+            event.stopPropagation();
+            expenseList.removeChild(li);
+            saveExpenses();
+            updateTotal();
+        };
+
+        li.appendChild(removeButton);
+        expenseList.appendChild(li);
+    }
+
+    function saveExpenses() {
+        const expenseListItems = document.querySelectorAll("#expenseList li");
+        const expenses = [];
+
+        expenseListItems.forEach(item => {
+            const textParts = item.childNodes[0].textContent.split(' - $');
+            const name = textParts[0];
+            const amount = parseFloat(textParts[1]);
+            const category = item.getElementsByTagName('span')[0].textContent;
+            expenses.push({ name, amount, category });
+        });
+
+        localStorage.setItem('expenses', JSON.stringify(expenses));
+    }
+
+    function updateTotal() {
+        const expenseListItems = document.querySelectorAll("#expenseList li");
+        let total = 0;
+
+        expenseListItems.forEach(item => {
+            const amount = parseFloat(item.childNodes[0].textContent.split(' - $')[1]);
+            total += amount;
+        });
+
+        document.getElementById("totalAmount").textContent = `Total: $${total.toFixed(2)}`;
+    }
+</script>
+
+</body>
+</html>
