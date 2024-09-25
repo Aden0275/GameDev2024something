@@ -10,6 +10,10 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f0f0f0;
+        }
+        h2, h4 {
+            color: #333;
         }
         h4 {
             margin-top: 20px;
@@ -18,46 +22,59 @@
             margin-top: 10px;
             border: 1px solid #ccc;
             padding: 10px;
-            background-color: #f9f9f9;
+            background-color: #ffffff;
             min-height: 50px;
+            border-radius: 5px;
+        }
+        input[type="number"], input[type="button"] {
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        input[type="button"] {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
-<h2>JavaScript Loops Reference</h2>
+<h2>JavaScript Loops Example</h2>
 <p>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#for_statement">Good Reference to JavaScript Loops</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling#for_statement" target="_blank">Good Reference to JavaScript Loops</a>
 </p>
 
-<h4>Example Input/Output Code</h4>
-<pre>
-  // Input: Number of loops and a weird number
-  // Output: Loop numbers with a decision-based message
-</pre>
-
-<h4>Example Working Code</h4>
-
-Max loops: <input id="myNum01" type="number" value="4"><br>
-Weird number: <input id="myWeird" type="number" value="2"><br><br>
-
+<h4>Input Values</h4>
+<p>Set the maximum number of loops and a reference number:</p>
+<p>Max loops: <input id="myNum01" type="number" value="4" min="1" aria-label="Maximum number of loops" /></p>
+<p>Weird number: <input id="myWeird" type="number" value="2" min="0" aria-label="Weird number" /></p>
 <input type="button" value="Run Basic For Loop with Decisions" onclick="runLoop()">
 
-<div id="output">Output will appear here...</div>
+<h4>Output</h4>
+<div id="output" aria-live="polite">Output will appear here...</div>
 
 <script>
     function runLoop() {
+        // Get values from input fields
         const maxLoops = parseInt(document.getElementById('myNum01').value);
         const weirdNumber = parseInt(document.getElementById('myWeird').value);
         let output = '';
 
+        // Loop from 0 to maxLoops - 1
         for (let i = 0; i < maxLoops; i++) {
             if (i * 2 > weirdNumber) {
-                output += 'Cool! ';
+                output += 'Cool! '; // Decision-based message
             }
-            output += 'Loop number: ' + i + '<br>';
+            output += 'Loop number: ' + i + '<br>'; // Display loop number
         }
         
+        // Output results to the designated section
         document.getElementById('output').innerHTML = output;
     }
 </script>
