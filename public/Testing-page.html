@@ -9,7 +9,7 @@
             transition: background-color 0.5s ease;
             height: 100vh;
             display: flex;
-            justify-content: center; 
+            justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
             flex-direction: column; /* Allows stacking elements vertically */
@@ -43,16 +43,10 @@
             }
         }
 
-        // Background Color Changer
-        document.addEventListener('DOMContentLoaded', () => {
-            const button = document.getElementById('colorChanger');
-            const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFBD33', '#33FFF6'];
-
-            button.addEventListener('click', () => {
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                document.body.style.backgroundColor = randomColor;
-            });
-        });
+        function changeBackgroundColor() {
+            const colorPicker = document.getElementById('colorPicker');
+            document.body.style.backgroundColor = colorPicker.value;
+        }
     </script>
 </head>
 <body>
@@ -69,7 +63,8 @@
 
     <div id="myDiv01">...</div>
 
-    <button id="colorChanger">Change Background Color</button>
+    <label for="colorPicker">Choose Background Color:</label>
+    <input type="color" id="colorPicker" value="#ffffff" oninput="changeBackgroundColor()">
 
 </body>
 </html>
