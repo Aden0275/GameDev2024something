@@ -27,65 +27,87 @@
     <script>
         // Global Variables for Arrays
         let myMax = 6;
-        let myArray1 = new Array(myMax);
+        let myArray = new Array(myMax);
         let myArray2 = new Array(myMax);
         let myArray3 = new Array(myMax);
         let myArray4 = new Array(myMax);
         let myArray5 = new Array(myMax);
         let myArray6 = new Array(myMax);
         let myArray7 = new Array(myMax);
-        let myArray8 = new Array(myMax); // Total of 8 arrays now
+        let myArray8 = new Array(myMax);
 
         function setArray() {
-            myArray1[0] = 'Aden';
-            myArray1[1] = 'Mary';
-            myArray1[2] = 'John';
-
-            myArray2[0] = 'Emma';
-            myArray2[1] = 'Liam';
-            myArray2[2] = 'Olivia';
-
-            myArray3[0] = 'James';
-            myArray3[1] = 'Sophia';
-            myArray3[2] = 'Benjamin';
-
-            myArray4[0] = 'Lucas';
-            myArray4[1] = 'Mia';
-            myArray4[2] = 'Noah';
-
-            myArray5[0] = 'Isabella';
-            myArray5[1] = 'Henry';
-            myArray5[2] = 'Amelia';
-
-            myArray6[0] = 'Ethan';
-            myArray6[1] = 'Ava';
-            myArray6[2] = 'Madison';
-
-            myArray7[0] = 'Aiden';
-            myArray7[1] = 'Skylar';
-            myArray7[2] = 'Jackson';
-
-            myArray8[0] = 'Mason';
-            myArray8[1] = 'Chloe';
-            myArray8[2] = 'Ella';
-
-            document.getElementById('myDiv01').innerHTML = 'You set the arrays';
+            myArray[0] = 'Aden';
+            myArray[1] = 'Mary';
+            myArray[2] = 'John';
+            document.getElementById('myDiv01').innerHTML = 'You set the first array';
         }
 
-        function showArrays() {
+        function setArray2() {
+            myArray2[0] = 'Alice';
+            myArray2[1] = 'Bob';
+            myArray2[2] = 'Charlie';
+            document.getElementById('myDiv01').innerHTML = 'You set the second array';
+        }
+
+        // Add functions for the remaining arrays
+        function setArray3() {
+            myArray3[0] = 'David';
+            myArray3[1] = 'Emma';
+            myArray3[2] = 'Frank';
+            document.getElementById('myDiv01').innerHTML = 'You set the third array';
+        }
+        
+        function setArray4() {
+            myArray4[0] = 'Grace';
+            myArray4[1] = 'Henry';
+            myArray4[2] = 'Ivy';
+            document.getElementById('myDiv01').innerHTML = 'You set the fourth array';
+        }
+
+        function setArray5() {
+            myArray5[0] = 'Jack';
+            myArray5[1] = 'Kathy';
+            myArray5[2] = 'Leo';
+            document.getElementById('myDiv01').innerHTML = 'You set the fifth array';
+        }
+
+        function setArray6() {
+            myArray6[0] = 'Mia';
+            myArray6[1] = 'Noah';
+            myArray6[2] = 'Olivia';
+            document.getElementById('myDiv01').innerHTML = 'You set the sixth array';
+        }
+
+        function setArray7() {
+            myArray7[0] = 'Paul';
+            myArray7[1] = 'Quinn';
+            myArray7[2] = 'Rose';
+            document.getElementById('myDiv01').innerHTML = 'You set the seventh array';
+        }
+
+        function setArray8() {
+            myArray8[0] = 'Sam';
+            myArray8[1] = 'Tina';
+            myArray8[2] = 'Victor';
+            document.getElementById('myDiv01').innerHTML = 'You set the eighth array';
+        }
+
+        function showArray(array, name) {
             document.getElementById('myDiv01').innerHTML = '';
-            for (let i = 0; i < 3; i++) {
-                document.getElementById('myDiv01').innerHTML +=
-                    'myArray1[' + i + '] = ' + myArray1[i] + '<br>' +
-                    'myArray2[' + i + '] = ' + myArray2[i] + '<br>' + 
-                    'myArray3[' + i + '] = ' + myArray3[i] + '<br>' + 
-                    'myArray4[' + i + '] = ' + myArray4[i] + '<br>' + 
-                    'myArray5[' + i + '] = ' + myArray5[i] + '<br>' + 
-                    'myArray6[' + i + '] = ' + myArray6[i] + '<br>' + 
-                    'myArray7[' + i + '] = ' + myArray7[i] + '<br>' + 
-                    'myArray8[' + i + '] = ' + myArray8[i] + '<br><br>';
+            for (let myLoop = 0; myLoop < 3; myLoop++) {
+                document.getElementById('myDiv01').innerHTML += name + '[' + myLoop + '] = ' + array[myLoop] + '<br>';
             }
         }
+
+        function showArray1() { showArray(myArray, 'myArray'); }
+        function showArray2() { showArray(myArray2, 'myArray2'); }
+        function showArray3() { showArray(myArray3, 'myArray3'); }
+        function showArray4() { showArray(myArray4, 'myArray4'); }
+        function showArray5() { showArray(myArray5, 'myArray5'); }
+        function showArray6() { showArray(myArray6, 'myArray6'); }
+        function showArray7() { showArray(myArray7, 'myArray7'); }
+        function showArray8() { showArray(myArray8, 'myArray8'); }
 
         function changeBackgroundColor() {
             const colorPicker = document.getElementById('colorPicker');
@@ -101,12 +123,35 @@
         <label for="myFirstName">Input:</label>
         <input type="text" id="myFirstName" value="Aden"><br>
 
-        <input type="button" value="Set Arrays" onClick="setArray()">
-        <input type="button" value="Show Arrays" onClick="showArrays()"><br>
+        <input type="button" value="Set Array 1" onClick="setArray()">
+        <input type="button" value="Show Array 1" onClick="showArray1()"><br>
+
+        <input type="button" value="Set Array 2" onClick="setArray2()">
+        <input type="button" value="Show Array 2" onClick="showArray2()"><br>
+
+        <input type="button" value="Set Array 3" onClick="setArray3()">
+        <input type="button" value="Show Array 3" onClick="showArray3()"><br>
+
+        <input type="button" value="Set Array 4" onClick="setArray4()">
+        <input type="button" value="Show Array 4" onClick="showArray4()"><br>
+
+        <input type="button" value="Set Array 5" onClick="setArray5()">
+        <input type="button" value="Show Array 5" onClick="showArray5()"><br>
+
+        <input type="button" value="Set Array 6" onClick="setArray6()">
+        <input type="button" value="Show Array 6" onClick="showArray6()"><br>
+
+        <input type="button" value="Set Array 7" onClick="setArray7()">
+        <input type="button" value="Show Array 7" onClick="showArray7()"><br>
+
+        <input type="button" value="Set Array 8" onClick="setArray8()">
+        <input type="button" value="Show Array 8" onClick="showArray8()"><br>
+
+        <input type="color" id="colorPicker" value="#ffffff">
+        <input type="button" value="Change Background Color" onClick="changeBackgroundColor()">
     </div>
-    
+
     <div id="myDiv01"></div>
-    
-    <input type="color" id="colorPicker" onchange="changeBackgroundColor()">
+
 </body>
 </html>
