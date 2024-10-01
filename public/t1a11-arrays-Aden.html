@@ -21,7 +21,118 @@ Input:<input type=text id="myFirstName" value="Aden"><br>
        }
     }"><br> 
      <div id="myDiv01">...</div>
+<h1 align="center"><script> 
+// Set a few global variables
+let myMax = 6;
+let myArray = new Array(myMax);
+let secondArray = new Array(myMax);
+let thirdArray = new Array(myMax);
+let fourthArray = new Array(myMax);
+let fifthArray = new Array(myMax);
+let sixthArray = new Array(myMax);
+let seventhArray = new Array(myMax);
+</script>
 
+Input:<input type="text" id="myFirstName" value="Aden"><br>
+
+<input type="button" value="Set Main Array" onClick="{ 
+    myArray[0] = 'Aden';
+    myArray[1] = 'Mary';
+    myArray[2] = 'John';
+    document.getElementById('myDiv01').innerHTML = 'You set the main array';
+}">
+
+<input type="button" value="Set Second Array" onClick="{ 
+    secondArray[0] = 'Alice';
+    secondArray[1] = 'Bob';
+    secondArray[2] = 'Charlie';
+    document.getElementById('myDiv01').innerHTML = 'You set the second array';
+}">
+
+<input type="button" value="Set Third Array" onClick="{ 
+    thirdArray[0] = 'Eve';
+    thirdArray[1] = 'Frank';
+    thirdArray[2] = 'Grace';
+    document.getElementById('myDiv01').innerHTML = 'You set the third array';
+}">
+
+<input type="button" value="Set Fourth Array" onClick="{ 
+    fourthArray[0] = 'Hannah';
+    fourthArray[1] = 'Isaac';
+    fourthArray[2] = 'Jack';
+    document.getElementById('myDiv01').innerHTML = 'You set the fourth array';
+}">
+
+<input type="button" value="Set Fifth Array" onClick="{ 
+    fifthArray[0] = 'Karen';
+    fifthArray[1] = 'Leo';
+    fifthArray[2] = 'Mia';
+    document.getElementById('myDiv01').innerHTML = 'You set the fifth array';
+}">
+
+<input type="button" value="Set Sixth Array" onClick="{ 
+    sixthArray[0] = 'Noah';
+    sixthArray[1] = 'Olivia';
+    sixthArray[2] = 'Paul';
+    document.getElementById('myDiv01').innerHTML = 'You set the sixth array';
+}">
+
+<input type="button" value="Set Seventh Array" onClick="{ 
+    seventhArray[0] = 'Quinn';
+    seventhArray[1] = 'Rachel';
+    seventhArray[2] = 'Steve';
+    document.getElementById('myDiv01').innerHTML = 'You set the seventh array';
+}">
+
+<input type="button" value="Show Main Array" onClick="{ 
+    document.getElementById('myDiv01').innerHTML = '';
+    for (let myLoop = 0; myLoop < 3; myLoop++) {
+        document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+    }
+}">
+
+<input type="button" value="Show Second Array" onClick="{ 
+    document.getElementById('myDiv01').innerHTML = '';
+    for (let myLoop = 0; myLoop < 3; myLoop++) {
+        document.getElementById('myDiv01').innerHTML += 'secondArray[' + myLoop + '] = ' + secondArray[myLoop] + '<br>';
+    }
+}">
+
+<input type="button" value="Show Third Array" onClick="{ 
+    document.getElementById('myDiv01').innerHTML = '';
+    for (let myLoop = 0; myLoop < 3; myLoop++) {
+        document.getElementById('myDiv01').innerHTML += 'thirdArray[' + myLoop + '] = ' + thirdArray[myLoop] + '<br>';
+    }
+}">
+
+<input type="button" value="Show Fourth Array" onClick="{ 
+    document.getElementById('myDiv01').innerHTML = '';
+    for (let myLoop = 0; myLoop < 3; myLoop++) {
+        document.getElementById('myDiv01').innerHTML += 'fourthArray[' + myLoop + '] = ' + fourthArray[myLoop] + '<br>';
+    }
+}">
+
+<input type="button" value="Show Fifth Array" onClick="{ 
+    document.getElementById('myDiv01').innerHTML = '';
+    for (let myLoop = 0; myLoop < 3; myLoop++) {
+        document.getElementById('myDiv01').innerHTML += 'fifthArray[' + myLoop + '] = ' + fifthArray[myLoop] + '<br>';
+    }
+}">
+
+<input type="button" value="Show Sixth Array" onClick="{ 
+    document.getElementById('myDiv01').innerHTML = '';
+    for (let myLoop = 0; myLoop < 3; myLoop++) {
+        document.getElementById('myDiv01').innerHTML += 'sixthArray[' + myLoop + '] = ' + sixthArray[myLoop] + '<br>';
+    }
+}">
+
+<input type="button" value="Show Seventh Array" onClick="{ 
+    document.getElementById('myDiv01').innerHTML = '';
+    for (let myLoop = 0; myLoop < 3; myLoop++) {
+        document.getElementById('myDiv01').innerHTML += 'seventhArray[' + myLoop + '] = ' + seventhArray[myLoop] + '<br>';
+    }
+}"></br>
+<div id="myDiv01">...</div>
 
 
  
