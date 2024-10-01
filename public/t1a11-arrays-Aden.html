@@ -1,147 +1,10 @@
  <h1 align="center">t1a11-arrays-Aden.html</h1>
-<h1 align="center"><script> 
-// set a few Global Variables
-    let myMax = 6
-    let myArray = new Array(myMax)
-</script>
-
-Input:<input type=text id="myFirstName" value="Aden"><br>
-
-<input type=button value="Set Array" onClick="{ 
-   myArray[0] = 'Aden'
-   myArray[1] = 'Mary'
-   myArray[2] = 'John'
-   document.getElementById('myDiv01').innerHTML = 'You set the array'
-}">
-<input type=button value="Show Array" onClick="{ 
-   document.getElementById('myDiv01').innerHTML = ''
-    for (myLoop=0;   myLoop < 3;   myLoop++){
-      document.getElementById('myDiv01').innerHTML +=  'myArray[' + myLoop + '] = ' +
-        myArray[myLoop] + '<br>'
-       }
-    }"><br> 
-     <div id="myDiv01">...</div>
-<h1 align="center"><script> 
-// Set a few global variables
-let myMax = 6;
-let myArray = new Array(myMax);
-let secondArray = new Array(myMax);
-let thirdArray = new Array(myMax);
-let fourthArray = new Array(myMax);
-let fifthArray = new Array(myMax);
-let sixthArray = new Array(myMax);
-let seventhArray = new Array(myMax);
-</script>
-
-Input:<input type="text" id="myFirstName" value="Aden"><br>
-
-<input type="button" value="Set Main Array" onClick="{ 
-    myArray[0] = 'Aden';
-    myArray[1] = 'Mary';
-    myArray[2] = 'John';
-    document.getElementById('myDiv01').innerHTML = 'You set the main array';
-}">
-
-<input type="button" value="Set Second Array" onClick="{ 
-    secondArray[0] = 'Alice';
-    secondArray[1] = 'Bob';
-    secondArray[2] = 'Charlie';
-    document.getElementById('myDiv01').innerHTML = 'You set the second array';
-}">
-
-<input type="button" value="Set Third Array" onClick="{ 
-    thirdArray[0] = 'Eve';
-    thirdArray[1] = 'Frank';
-    thirdArray[2] = 'Grace';
-    document.getElementById('myDiv01').innerHTML = 'You set the third array';
-}">
-
-<input type="button" value="Set Fourth Array" onClick="{ 
-    fourthArray[0] = 'Hannah';
-    fourthArray[1] = 'Isaac';
-    fourthArray[2] = 'Jack';
-    document.getElementById('myDiv01').innerHTML = 'You set the fourth array';
-}">
-
-<input type="button" value="Set Fifth Array" onClick="{ 
-    fifthArray[0] = 'Karen';
-    fifthArray[1] = 'Leo';
-    fifthArray[2] = 'Mia';
-    document.getElementById('myDiv01').innerHTML = 'You set the fifth array';
-}">
-
-<input type="button" value="Set Sixth Array" onClick="{ 
-    sixthArray[0] = 'Noah';
-    sixthArray[1] = 'Olivia';
-    sixthArray[2] = 'Paul';
-    document.getElementById('myDiv01').innerHTML = 'You set the sixth array';
-}">
-
-<input type="button" value="Set Seventh Array" onClick="{ 
-    seventhArray[0] = 'Quinn';
-    seventhArray[1] = 'Rachel';
-    seventhArray[2] = 'Steve';
-    document.getElementById('myDiv01').innerHTML = 'You set the seventh array';
-}">
-
-<input type="button" value="Show Main Array" onClick="{ 
-    document.getElementById('myDiv01').innerHTML = '';
-    for (let myLoop = 0; myLoop < 3; myLoop++) {
-        document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
-    }
-}">
-
-<input type="button" value="Show Second Array" onClick="{ 
-    document.getElementById('myDiv01').innerHTML = '';
-    for (let myLoop = 0; myLoop < 3; myLoop++) {
-        document.getElementById('myDiv01').innerHTML += 'secondArray[' + myLoop + '] = ' + secondArray[myLoop] + '<br>';
-    }
-}">
-
-<input type="button" value="Show Third Array" onClick="{ 
-    document.getElementById('myDiv01').innerHTML = '';
-    for (let myLoop = 0; myLoop < 3; myLoop++) {
-        document.getElementById('myDiv01').innerHTML += 'thirdArray[' + myLoop + '] = ' + thirdArray[myLoop] + '<br>';
-    }
-}">
-
-<input type="button" value="Show Fourth Array" onClick="{ 
-    document.getElementById('myDiv01').innerHTML = '';
-    for (let myLoop = 0; myLoop < 3; myLoop++) {
-        document.getElementById('myDiv01').innerHTML += 'fourthArray[' + myLoop + '] = ' + fourthArray[myLoop] + '<br>';
-    }
-}">
-
-<input type="button" value="Show Fifth Array" onClick="{ 
-    document.getElementById('myDiv01').innerHTML = '';
-    for (let myLoop = 0; myLoop < 3; myLoop++) {
-        document.getElementById('myDiv01').innerHTML += 'fifthArray[' + myLoop + '] = ' + fifthArray[myLoop] + '<br>';
-    }
-}">
-
-<input type="button" value="Show Sixth Array" onClick="{ 
-    document.getElementById('myDiv01').innerHTML = '';
-    for (let myLoop = 0; myLoop < 3; myLoop++) {
-        document.getElementById('myDiv01').innerHTML += 'sixthArray[' + myLoop + '] = ' + sixthArray[myLoop] + '<br>';
-    }
-}">
-
-<input type="button" value="Show Seventh Array" onClick="{ 
-    document.getElementById('myDiv01').innerHTML = '';
-    for (let myLoop = 0; myLoop < 3; myLoop++) {
-        document.getElementById('myDiv01').innerHTML += 'seventhArray[' + myLoop + '] = ' + seventhArray[myLoop] + '<br>';
-    }
-}"></br>
-<div id="myDiv01">...</div>
-
-
- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Color Changer</title>
+    <title>Arrays and Background Color Changer</title>
     <style>
         body {
             transition: background-color 0.5s ease;
@@ -150,28 +13,59 @@ Input:<input type="text" id="myFirstName" value="Aden"><br>
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
+            flex-direction: column; /* Allows stacking elements vertically */
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            margin: 5px; /* Adds space between buttons */
+        }
+        #myDiv01 {
+            margin-top: 20px; /* Adds space above the output div */
         }
     </style>
+    <script>
+        // Global Variables for Array
+        let myMax = 6;
+        let myArray = new Array(myMax);
+
+        function setArray() {
+            myArray[0] = 'Aden';
+            myArray[1] = 'Mary';
+            myArray[2] = 'John';
+            document.getElementById('myDiv01').innerHTML = 'You set the array';
+        }
+
+        function showArray() {
+            document.getElementById('myDiv01').innerHTML = '';
+            for (let myLoop = 0; myLoop < 3; myLoop++) {
+                document.getElementById('myDiv01').innerHTML += 'myArray[' + myLoop + '] = ' + myArray[myLoop] + '<br>';
+            }
+        }
+
+        function changeBackgroundColor() {
+            const colorPicker = document.getElementById('colorPicker');
+            document.body.style.backgroundColor = colorPicker.value;
+        }
+    </script>
 </head>
 <body>
 
-    <button id="colorChanger">Change Background Color</button>
+    <h1 align="center">t1a11-arrays-Aden.html</h1>
 
-    <script>
-        const button = document.getElementById('colorChanger');
-        
-        const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FFBD33', '#33FFF6'];
-        
-        button.addEventListener('click', () => {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            document.body.style.backgroundColor = randomColor;
-        });
-    </script>
-    
+    <line class="container">
+        <label for="myFirstName">Input:</label>
+        <input type="text" id="myFirstName" value="Aden"><br>
+
+        <input type="button" value="Set Array" onClick="setArray()">
+        <input type="button" value="Show Array" onClick="showArray()"><br>
+    </line>
+
+    <div id="myDiv01">...</div>
+
+    <label for="colorPicker">Choose Background Color:</label>
+    <input type="color" id="colorPicker" value="#ffffff" oninput="changeBackgroundColor()">
+
 </body>
-</html></h1>
+</html>
