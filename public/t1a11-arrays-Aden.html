@@ -21,6 +21,33 @@ Input:<input type=text id="myFirstName" value="Aden"><br>
        }
     }"><br> 
      <div id="myDiv01">...</div>
+
+<script> 
+// set a few Global Variables
+    let myMax = 6
+    let myArray = new Array(myMax)
+</script>
+
+Input:<input type=text id="myFirstName" value="Array"><br>
+
+<input type=button value="Set Array" onClick="{ 
+   myArray[0] = 'code'
+   myArray[1] = 'hurts'
+   myArray[2] = 'me'
+   document.getElementById('myDiv01').innerHTML = 'You set the array'
+}">
+<input type=button value="Show Array" onClick="{ 
+   document.getElementById('myDiv01').innerHTML = ''
+    for (myLoop=0;   myLoop < 3;   myLoop++){
+      document.getElementById('myDiv01').innerHTML +=  'myArray[' + myLoop + '] = ' +
+        myArray[myLoop] + '<br>'
+       }
+    }"><br> 
+     <div id="myDiv01">...</div>
+
+
+
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
