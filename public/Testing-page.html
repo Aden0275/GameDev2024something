@@ -1,115 +1,35 @@
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>t1a12-objects-Aden.html</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
-        a {
-            color: #2980b9;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        h4 {
-            border-bottom: 2px solid #2980b9;
-            padding-bottom: 5px;
-            color: #16a085;
-        }
-        pre {
-            background-color: #e8e8e8;
-            border-left: 4px solid #2980b9;
-            padding: 10px;
-            overflow: auto;
-        }
-        .input-group {
-            margin: 15px 0;
-        }
-        input[type="text"] {
-            padding: 10px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="button"] {
-            background-color: #2980b9;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        input[type="button"]:hover {
-            background-color: #1a67a2;
-        }
-        #myDiv01 {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
-<body>
+class Car:
+    def __init__(self, make, model, year, color):
+        self.make = make
+        self.model = model
+        self.year = year
+        self.color = color
+        self.mileage = 0  # Initialize mileage to 0
 
-<h2>t1a12-objects-Aden.html</h2>
+    def start(self):
+        print(f"The {self.color} {self.year} {self.make} {self.model} is starting.")
 
-<a href="#">Good reference to JavaScript Objects</a><br>
+    def stop(self):
+        print(f"The {self.color} {self.year} {self.make} {self.model} is stopping.")
 
-<p>Objects are stored named variables.</p>
+    def drive(self, distance):
+        if distance > 0:
+            self.mileage += distance
+            print(f"The {self.year} {self.make} {self.model} is driving for {distance} miles.")
+        else:
+            print("Distance must be greater than 0.")
 
-<h4>Example Objects Code</h4>
-<pre>
-let myPerson = {
-    "firstName": "John",
-    "lastName": "Doe",
-    "age": 50,
-    "eyeColor": "blue"
-};
-</pre>
+    def display_info(self):
+        print(f"Car Info: {self.year} {self.make} {self.model}, Color: {self.color}, Mileage: {self.mileage} miles")
 
-<h4>Example Working Objects Code</h4>
 
-<div class="input-group">
-    Nothing: <input type="text" id="myText01" value="Useless at the moment">
-</div>
-<input type="button" value="Example Object Set and Show" onClick="showObjectProperties()">
+# Creating an object of the Car class
+my_car = Car(make="Toyota", model="Camry", year=2020, color="Red")
 
-<div id="myDiv01">...</div>
-
-<script>
-function showObjectProperties() {
-    let myPerson = { 
-        'firstName': 'John',
-        'lastName': 'Doe', 
-        'age': 50,
-        'eyeColor': 'blue'
-    };
-
-    document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has properties: <br>';
-    document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>';
-    document.getElementById('myDiv01').innerHTML += 'lastName: ' + myPerson.lastName + '<br>';
-    document.getElementById('myDiv01').innerHTML += 'age: ' + myPerson.age + '<br>';
-    document.getElementById('myDiv01').innerHTML += 'eyeColor: ' + myPerson.eyeColor + '<br>';
-}
-</script>
-
-</body>
-</html>
+# Using the object
+my_car.start()
+my_car.drive(50)
+my_car.drive(20)
+my_car.stop()
+my_car.display_info()
