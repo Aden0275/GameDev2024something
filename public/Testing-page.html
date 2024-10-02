@@ -1,116 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sample HTML Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-        }
-        header, footer {
-            text-align: center;
-            padding: 1em;
-            background-color: #333;
-            color: white;
-        }
-        main {
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Welcome to My Sample HTML Page</h1>
-    </header>
+<h1 align=cemter>t1a12-objects-Aden.html</h1>
+
+<a href="">Good reference to Javascript Objects</a><br>
+Objects are stored named variables
+<h4> Example Objects code</h4>
+<pre>
+let myPerson =} {
+    "firstName": "John",
+    "lastName": "Doe"'
+    "age": 50, 
+    "eyeColor": "blue"
+    }
     
-    <main>
-        <section>
-            <h2>About This Page</h2>
-            <p>This is a sample page created to demonstrate basic HTML elements.</p>
-            
-            <img src="https://via.placeholder.com/300" alt="Sample Image" width="300" height="200">
+</pre>
 
-            <p>Check out my favorite site: <a href="https://www.example.com" target="_blank">Visit Example.com</a></p>
-        </section>
+Nothing: <input type=text id="myText01" value="Useless at the moment"><br>
 
-        <section>
-            <h2>My Favorite Fruits</h2>
-            <ul>
-                <li>Apple</li>
-                <li>Banana</li>
-                <li>Cherry</li>
-            </ul>
 
-            <h3>Top 3 Vegetables</h3>
-            <ol>
-                <li>Carrot</li>
-                <li>Broccoli</li>
-                <li>Spinach</li>
-            </ol>
-        </section>
+<input type=button value="Example Object Srt and Show" onClick={
 
-        <section>
-            <h2>User Information</h2>
-            <form action="/submit" method="post">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name"><br><br>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email"><br><br>
-                
-                <input type="submit" value="Submit">
-            </form>
-        </section>
+    let myPerson = { 
+     'firstName' : 'John',
+     'lastName'  : 'Doe', 
+     'age'       :  50,
+     'eyeColor'  : 'blue'
+ }
+ document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has properties: <br>'
+ document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>'
+ document.getElementById('myDiv01').innerHTML += 'you do the others  <br> '
 
-        <section>
-            <h2>Sample Table</h2>
-            <table>
-                <tr>
-                    <th>Item</th>
-                    <th>Price</th>
-                </tr>
-                <tr>
-                    <td>Apple</td>
-                    <td>$1</td>
-                </tr>
-                <tr>
-                    <td>Banana</td>
-                    <td>$0.50</td>
-                </tr>
-                <tr>
-                    <td>Cherry</td>
-                    <td>$2</td>
-                </tr>
-            </table>
-        </section>
-
-        <section>
-            <h2>Blockquote Example</h2>
-            <blockquote cite="https://www.example.com">
-                <p>This is a quote from an external source to illustrate the blockquote element.</p>
-            </blockquote>
-        </section>
-
-        <section>
-            <button type="button" onclick="alert('Button clicked!')">Click Me!</button>
-            <p>This is a <span style="color: red;">red</span> word in a paragraph.</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2023 My Sample HTML Page</p>
-    </footer>
-</body>
-</html>
+}">
+<div id="myDiv01">...</div>
