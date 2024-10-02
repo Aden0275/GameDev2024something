@@ -3,30 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Objects Example</title>
+    <title>JavaScript Objects Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        h4 {
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 5px;
+            color: #16a085;
+        }
+        pre {
+            background-color: #e8e8e8;
+            border-left: 4px solid #2980b9;
+            padding: 10px;
+            overflow: auto;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="button"] {
+            background-color: #2980b9;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="button"]:hover {
+            background-color: #1a67a2;
+        }
+        #myDiv01 {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
 
-<h2 align="center">t1a12-objects-Aden.html</h2>
+<h2>JavaScript Objects Example</h2>
 
-<a href="#">Good reference to Javascript Objects</a><br>
+<a href="#">Good reference to JavaScript Objects</a><br>
 
-<p>Objects are stored named variables</p>
+<p>Objects are stored named variables.</p>
 
 <h4>Example Objects Code</h4>
 <pre>
 let myPerson = {
     "firstName": "John",
     "lastName": "Doe",
-    "age": 50, 
+    "age": 50,
     "eyeColor": "blue"
 };
 </pre>
 
 <h4>Example Working Objects Code</h4>
 
-Nothing: <input type="text" id="myText01" value="Useless at the moment"><br>
-
+<div class="input-group">
+    Nothing: <input type="text" id="myText01" value="Useless at the moment">
+</div>
 <input type="button" value="Example Object Set and Show" onClick="showObjectProperties()">
 
 <div id="myDiv01">...</div>
