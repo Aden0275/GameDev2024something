@@ -580,3 +580,32 @@
     </script>
 </body>
 </html>
+<!-- Rock, Paper, Scissors Game -->
+<div class="card">
+    <h3>Rock, Paper, Scissors</h3>
+    <p>Choose your option:</p>
+    <button onclick="playRPS('rock')">Rock</button>
+    <button onclick="playRPS('paper')">Paper</button>
+    <button onclick="playRPS('scissors')">Scissors</button>
+    <div id="rpsResult"></div>
+</div>
+
+<script>
+    function playRPS(userChoice) {
+        const choices = ['rock', 'paper', 'scissors'];
+        const computerChoice = choices[Math.floor(Math.random() * 3)];
+        let result;
+
+        if ((userChoice === 'rock' && computerChoice === 'scissors') || 
+            (userChoice === 'paper' && computerChoice === 'rock') || 
+            (userChoice === 'scissors' && computerChoice === 'paper')) {
+            result = "You win! 🙂";
+        } else if (userChoice === computerChoice) {
+            result = "It's a draw! 🤝";
+        } else {
+            result = "You lose! 😢";
+        }
+
+        document.getElementById('rpsResult').innerText = `Computer chose: ${computerChoice}. ${result}`;
+    }
+</script>
