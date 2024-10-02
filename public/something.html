@@ -564,12 +564,155 @@
         }
 
         // Simple Drawing Tool
+       <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun HTML Page with Multiple Features</title>
+    <style>
+        body {
+            background-color: #FFCCCB;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            transition: background-color 0.5s;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #FF69B4;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        input[type="text"], input[type="color"], input[type="file"], input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            width: calc(100% - 22px);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"]:focus, input[type="color"]:focus, input[type="file"]:focus, input[type="number"]:focus {
+            border-color: #FF69B4;
+            outline: none; 
+            box-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+        }
+
+        .quote, .fact, .joke, .quiz-question, .feedback, .sticky-note {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .carousel img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .sticky-notes-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sticky-note {
+            background-color: yellow;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .dice-result {
+            font-size: 24px;
+        }
+
+        #hangmanWord {
+            font-size: 24px;
+            letter-spacing: 15px;
+        }
+
+        #weatherInfo {
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+            background: white;
+            cursor: crosshair;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to My Fun HTML Page!</h1>
+
+    <div class="container">
+        <!-- Other Features Card... -->
+
+        <!-- Simple Drawing Tool -->
+        <div class="card">
+            <h3>Simple Drawing Tool</h3>
+            <canvas id="drawingCanvas" width="300" height="200"></canvas>
+            <br />
+            <button onclick="clearCanvas()">Clear Canvas</button>
+        </div>
+
+        <!-- Other Features Card... -->
+    </div>
+
+    <script>
+        // Drawing Tool JavaScript
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
         let drawing = false;
 
-        canvas.addEventListener('mousedown', () => {
+        canvas.addEventListener('mousedown', (event) => {
             drawing = true;
+            ctx.moveTo(event.offsetX, event.offsetY); // Move to the clicked position
         });
 
         canvas.addEventListener('mouseup', () => {
@@ -585,15 +728,27 @@
             ctx.lineCap = 'round';
             ctx.strokeStyle = 'black';
 
-            ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+            ctx.lineTo(event.offsetX, event.offsetY); // Draw line to the mouse position
             ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+            ctx.beginPath(); // Begin a new path
+            ctx.moveTo(event.offsetX, event.offsetY); // Move to the current mouse position
         }
 
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+
+        // Other existing JavaScript functions...
+        // Dynamic Text
+        function changeText() {
+            const textElement = document.getElementById('dynamicText');
+            textElement.innerHTML = "🎉 You just clicked the button! 🎉";
+        }
+
+        // The rest of the JavaScript code continues here...
+    </script>
+</body>
+</html>
 
         // Currency Converter
         async function convertCurrency() {
