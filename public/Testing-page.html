@@ -3,71 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Array Example</title>
+    <title>Sample HTML Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 300px;
+            background-color: #f9f9f9;
         }
-        button {
-            margin-top: 10px;
+        header, footer {
+            text-align: center;
+            padding: 1em;
+            background-color: #333;
+            color: white;
+        }
+        main {
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
-
-    <h1>List</h1>
-    <ul id="List"></ul>
+    <header>
+        <h1>Welcome to My Sample HTML Page</h1>
+    </header>
     
-    <input type="text" id="newFruit" placeholder="Add">
-    <button onclick="addtolist()">Add To List</button>
-    <button onclick="lemovelastadded()">Remove Last Added</button>
+    <main>
+        <section>
+            <h2>About This Page</h2>
+            <p>This is a sample page created to demonstrate basic HTML elements.</p>
+            
+            <img src="https://via.placeholder.com/300" alt="Sample Image" width="300" height="200">
 
-    <script>
-        // Initial array of fruits
-        let fruits = ['Apple', 'Banana', 'Mango', 'Orange'];
+            <p>Check out my favorite site: <a href="https://www.example.com" target="_blank">Visit Example.com</a></p>
+        </section>
 
-        // Function to display the fruits
-        function displayFruits() {
-            const fruitList = document.getElementById('fruitList');
-            fruitList.innerHTML = ''; // Clear existing list
-            for (let fruit of fruits) {
-                const li = document.createElement('li');
-                li.textContent = fruit;
-                fruitList.appendChild(li);
-            }
-        }
+        <section>
+            <h2>My Favorite Fruits</h2>
+            <ul>
+                <li>Apple</li>
+                <li>Banana</li>
+                <li>Cherry</li>
+            </ul>
 
-        // Function to add a new fruit
-        function addFruit() {
-            const newFruitInput = document.getElementById('newFruit');
-            const newFruit = newFruitInput.value.trim();
-            if (newFruit !== '') {
-                fruits.push(newFruit);
-                newFruitInput.value = ''; // Clear input field
-                displayFruits();
-            } else {
-                alert('Please enter a fruit name.');
-            }
-        }
+            <h3>Top 3 Vegetables</h3>
+            <ol>
+                <li>Carrot</li>
+                <li>Broccoli</li>
+                <li>Spinach</li>
+            </ol>
+        </section>
 
-        // Function to remove the last fruit
-        function removeFruit() {
-            if (fruits.length > 0) {
-                fruits.pop();
-                displayFruits();
-            } else {
-                alert('No fruits to remove.');
-            }
-        }
+        <section>
+            <h2>User Information</h2>
+            <form action="/submit" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name"><br><br>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email"><br><br>
+                
+                <input type="submit" value="Submit">
+            </form>
+        </section>
 
-        // Initial display of fruits
-        displayFruits();
-    </script>
+        <section>
+            <h2>Sample Table</h2>
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                </tr>
+                <tr>
+                    <td>Apple</td>
+                    <td>$1</td>
+                </tr>
+                <tr>
+                    <td>Banana</td>
+                    <td>$0.50</td>
+                </tr>
+                <tr>
+                    <td>Cherry</td>
+                    <td>$2</td>
+                </tr>
+            </table>
+        </section>
 
+        <section>
+            <h2>Blockquote Example</h2>
+            <blockquote cite="https://www.example.com">
+                <p>This is a quote from an external source to illustrate the blockquote element.</p>
+            </blockquote>
+        </section>
+
+        <section>
+            <button type="button" onclick="alert('Button clicked!')">Click Me!</button>
+            <p>This is a <span style="color: red;">red</span> word in a paragraph.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 My Sample HTML Page</p>
+    </footer>
 </body>
 </html>
