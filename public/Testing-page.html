@@ -35,7 +35,21 @@
         a.button:hover {
             background-color: #0056b3;
         }
+        .counter {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
     </style>
+    <script>
+        // Initialize the counter variable
+        let count = 0;
+
+        // Function to update counter and display it
+        function updateCounter() {
+            count++;
+            document.getElementById('counterDisplay').innerText = count;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -49,9 +63,10 @@
         <h2>Visit Example.com</h2>
         <a class="button" href="https://www.example.com" target="_blank">Go to Example.com</a>
         
-        <!-- Button -->
+        <!-- Button and Counter -->
         <h2>Click the Button</h2>
-        <button onclick="alert('Button Clicked!')">Click Me!</button>
+        <button onclick="updateCounter()">Click Me!</button>
+        <div class="counter">Button clicked: <span id="counterDisplay">0</span> times</div>
     </div>
 </body>
 </html>
