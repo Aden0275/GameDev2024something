@@ -609,3 +609,39 @@
         document.getElementById('rpsResult').innerText = `Computer chose: ${computerChoice}. ${result}`;
     }
 </script>
+<!-- Random Activity Generator -->
+<div class="card">
+    <h3>Random Activity Generator</h3>
+    <button onclick="getRandomActivity()">Give Me an Activity!</button>
+    <div id="activityDisplay"></div>
+</div>
+
+<script>
+    const activities = [
+        "Go for a walk",
+        "Read a book",
+        "Watch a movie",
+        "Try a new recipe",
+        "Exercise for 30 minutes",
+        "Call a friend",
+        "Start a new hobby",
+        "Listen to a podcast",
+        "Clean your room",
+        "Meditate for 10 minutes",
+        "Visit a park",
+        "Write in a journal",
+        "Learn a new skill online",
+        "Paint or draw something",
+        "Do a puzzle",
+        "Plan your next vacation",
+        "Try yoga or stretching",
+        "Volunteer in your community",
+        "Have a picnic",
+        "Organize your closet"
+    ];
+
+    function getRandomActivity() {
+        const randomIndex = Math.floor(Math.random() * activities.length);
+        document.getElementById('activityDisplay').innerText = activities[randomIndex];
+    }
+</script>
