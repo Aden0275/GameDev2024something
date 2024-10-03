@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun HTML Page with Multiple Features</title>
     <style>
+        /* Styles for the page ... */
         body {
             background-color: #FFCCCB;
             color: #333;
@@ -59,7 +60,7 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
-        input[type="text"], input[type="color"], input[type="file"], input[type="number"] {
+        input[type="text"], input[type="color"], input[type="file"], input[type="number"], input[type="datetime-local"] {
             padding: 10px;
             font-size: 16px;
             border-radius: 5px;
@@ -69,13 +70,7 @@
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        input[type="text"]:focus, input[type="color"]:focus, input[type="file"]:focus, input[type="number"]:focus {
-            border-color: #FF69B4;
-            outline: none; 
-            box-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
-        }
-
-        .quote, .fact, .joke, .quiz-question, .feedback, .sticky-note {
+        .quote, .fact, .joke, .quiz-question, .feedback, .sticky-note, .dice-result {
             font-size: 18px;
             color: #555;
         }
@@ -98,10 +93,6 @@
             padding: 10px;
             margin: 5px;
             cursor: pointer;
-        }
-
-        .dice-result {
-            font-size: 24px;
         }
 
         #hangmanWord {
@@ -266,7 +257,8 @@
             <h3>Simple Drawing Tool</h3>
             <canvas id="drawingCanvas" width="300" height="200"></canvas>
             <br />
-            <button onclick="clearCanvas()">Clear Canvas</button>
+            <input type="color" id="colorPicker" value="#000000" /> <!-- Color Picker -->
+            <button onclick="clearCanvas()">Clear Canvas</button> <!-- Clear Button -->
         </div>
 
         <!-- Currency Converter -->
@@ -295,10 +287,11 @@
             <button onclick="getRandomActivity()">Give Me an Activity!</button>
             <div id="activityDisplay"></div>
         </div>
-
     </div>
 
     <script>
+        // JavaScript Functions ...
+
         // Dynamic Text
         function changeText() {
             const textElement = document.getElementById('dynamicText');
@@ -468,7 +461,7 @@
             const paletteElement = document.getElementById('colorPalette');
             paletteElement.innerHTML = "";
             for (let i = 0; i < 5; i++) {
-                const color = "#" + Math.floor(Math.random()*16777215).toString(16);
+                const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
                 const colorBox = document.createElement('div');
                 colorBox.style.backgroundColor = color;
                 colorBox.style.width = "50px";
@@ -544,7 +537,7 @@
                 quoteElement.innerHTML = "Failed to fetch a quote.";
             }
         }
-        
+
         // Weather Information Fetcher
         async function fetchWeather() {
             const city = document.getElementById('cityInput').value;
@@ -563,25 +556,6 @@
             }
         }
 
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Drawing Tool</title>
-    <style>
-        #drawingCanvas {
-            border: 1px solid #000;
-        }
-    </style>
-</head>
-<body>
-    <h1>Simple Drawing Tool</h1>
-    <input type="color" id="colorPicker" value="#000000" /> <!-- Color Picker -->
-    <button onclick="clearCanvas()">Clear Canvas</button> <!-- Clear Button -->
-    <canvas id="drawingCanvas" width="800" height="600"></canvas> <!-- Drawing Canvas -->
-
-    <script>
         // Simple Drawing Tool
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
@@ -622,10 +596,6 @@
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
-    </script>
-</body>
-</html>
-
 
         // Currency Converter
         async function convertCurrency() {
@@ -696,75 +666,7 @@
             const randomIndex = Math.floor(Math.random() * activities.length);
             document.getElementById('activityDisplay').innerText = activities[randomIndex];
         }
+
     </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Guessing Game</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        input {
-            margin: 10px;
-            padding: 5px;
-        }
-        button {
-            padding: 5px 10px;
-        }
-        .message {
-            margin: 20px;
-            font-size: 1.2em;
-            color: #555;
-        }
-    </style>
-</head>
-<body>
-
-<h1>Number Guessing Game</h1>
-<p>Guess a number between 1 and 100</p>
-<input type="number" id="guessInput" placeholder="Enter your guess" />
-<button onclick="checkGuess()">Guess</button>
-<div class="message" id="messageDisplay"></div>
-<button onclick="startGame()">Start New Game</button>
-
-<script>
-    let randomNumber;
-    let attempts = 0;
-
-    // Start a new game
-    function startGame() {
-        randomNumber = Math.floor(Math.random() * 100) + 1;
-        attempts = 0;
-        document.getElementById("messageDisplay").innerText = "Guess the number!";
-        document.getElementById("guessInput").value = "";
-    }
-
-    // Check the user's guess
-    function checkGuess() {
-        const guess = Number(document.getElementById("guessInput").value);
-        attempts++;
-
-        if (guess < 1 || guess > 100) {
-            document.getElementById("messageDisplay").innerText = "Please guess a number between 1 and 100!";
-        } else if (guess < randomNumber) {
-            document.getElementById("messageDisplay").innerText = "Too low! Try again.";
-        } else if (guess > randomNumber) {
-            document.getElementById("messageDisplay").innerText = "Too high! Try again.";
-        } else {
-            document.getElementById("messageDisplay").innerText = `Correct! You guessed it in ${attempts} attempts.`;
-        }
-    }
-
-    // Start the game when the page loads
-    window.onload = startGame;
-</script>
-
 </body>
 </html>
