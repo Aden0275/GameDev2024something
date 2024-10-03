@@ -31,12 +31,31 @@
         #button:hover {
             background-color: #0056b3;
         }
+        #explanation {
+            width: 300px;
+            height: 100px;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            background-color: #fafafa;
+        }
     </style>
 </head>
 <body>
 
     <div id="counter">0</div>
     <button id="button" onclick="incrementCounter()">Click Me</button>
+    
+    <textarea id="explanation" readonly>
+        This is a simple counter web application. 
+        Clicking the "Click Me" button increments the counter displayed above. 
+        The value updates in real-time using JavaScript to dynamically change the 
+        inner text of the counter div element.
+    </textarea>
 
     <script>
         let count = 0;
