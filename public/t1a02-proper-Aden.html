@@ -8,12 +8,24 @@
     <script src="script.js" defer></script> <!-- Link to your JavaScript file -->
     <style>
         body {
-            background-color: blue; /* Set background color to blue */
+            background-color: blue; /* Default background color */
             color: white; /* Optional: Change text color for contrast */
         }
     </style>
 </head>
 <body>
     <h1 align="center">t1a02-proper-Aden</h1>
+    <div align="center">
+        <label for="colorPicker">Choose a background color:</label>
+        <input type="color" id="colorPicker" value="#0000ff"> <!-- Default value is blue -->
+    </div>
+
+    <script>
+        // Function to change the background color
+        const colorPicker = document.getElementById('colorPicker');
+        colorPicker.addEventListener('input', function() {
+            document.body.style.backgroundColor = colorPicker.value;
+        });
+    </script>
 </body>
 </html>
