@@ -563,10 +563,35 @@
             }
         }
 
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Drawing Tool</title>
+    <style>
+        #drawingCanvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Drawing Tool</h1>
+    <input type="color" id="colorPicker" value="#000000" /> <!-- Color Picker -->
+    <button onclick="clearCanvas()">Clear Canvas</button> <!-- Clear Button -->
+    <canvas id="drawingCanvas" width="800" height="600"></canvas> <!-- Drawing Canvas -->
+
+    <script>
         // Simple Drawing Tool
         const canvas = document.getElementById('drawingCanvas');
         const ctx = canvas.getContext('2d');
         let drawing = false;
+
+        // Get color picker element
+        const colorPicker = document.getElementById('colorPicker');
+
+        // Set initial stroke color
+        ctx.strokeStyle = colorPicker.value;
 
         canvas.addEventListener('mousedown', (event) => {
             drawing = true;
@@ -584,7 +609,9 @@
             if (!drawing) return;
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
-            ctx.strokeStyle = 'black';
+            
+            // Update stroke color based on the color picker
+            ctx.strokeStyle = colorPicker.value; 
 
             ctx.lineTo(event.offsetX, event.offsetY); // Draw line to the mouse position
             ctx.stroke();
@@ -595,7 +622,9 @@
         function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
-
+    </script>
+</body>
+</html>
         // Currency Converter
         async function convertCurrency() {
             const amount = document.getElementById('amount').value;
