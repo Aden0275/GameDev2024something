@@ -668,3 +668,72 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input {
+            margin: 10px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        .message {
+            margin: 20px;
+            font-size: 1.2em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Number Guessing Game</h1>
+<p>Guess a number between 1 and 100</p>
+<input type="number" id="guessInput" placeholder="Enter your guess" />
+<button onclick="checkGuess()">Guess</button>
+<div class="message" id="messageDisplay"></div>
+<button onclick="startGame()">Start New Game</button>
+
+<script>
+    let randomNumber;
+    let attempts = 0;
+
+    // Start a new game
+    function startGame() {
+        randomNumber = Math.floor(Math.random() * 100) + 1;
+        attempts = 0;
+        document.getElementById("messageDisplay").innerText = "Guess the number!";
+        document.getElementById("guessInput").value = "";
+    }
+
+    // Check the user's guess
+    function checkGuess() {
+        const guess = Number(document.getElementById("guessInput").value);
+        attempts++;
+
+        if (guess < 1 || guess > 100) {
+            document.getElementById("messageDisplay").innerText = "Please guess a number between 1 and 100!";
+        } else if (guess < randomNumber) {
+            document.getElementById("messageDisplay").innerText = "Too low! Try again.";
+        } else if (guess > randomNumber) {
+            document.getElementById("messageDisplay").innerText = "Too high! Try again.";
+        } else {
+            document.getElementById("messageDisplay").innerText = `Correct! You guessed it in ${attempts} attempts.`;
+        }
+    }
+
+    // Start the game when the page loads
+    window.onload = startGame;
+</script>
+
+</body>
+</html>
