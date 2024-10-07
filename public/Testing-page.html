@@ -8,31 +8,94 @@
     <title>JavaScript Example</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
         }
+
         .container {
-            margin: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="button"] {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        #myDiv01 {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        #colorPicker {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <label for="myFirstName">Input:</label>
-        <input type="text" id="myFirstName" value="Aden"><br>
+        <h1>JavaScript Interactive Example</h1>
+
+        <label for="myFirstName">First Name:</label>
+        <input type="text" id="myFirstName" value="Aden">
 
         <input type="button" value="Set Array" onClick="setArray()">
-        <input type="button" value="Show Array" onClick="showArray()"><br>
+        <input type="button" value="Show Array" onClick="showArray()">
+
+        <label for="myText01">Nothing:</label>
+        <input type="text" id="myText01" value="Load">
+
+        <input type="button" value="Show Person Object" onclick="showPerson()">
         
-        Nothing: <input type="text" id="myText01" value="Load"><br>
-        
-        <input type="button" value="Show Person Object" onclick="showPerson()"><br>
+        <div id="myDiv01">...</div>
+
+        <label for="colorPicker">Choose Background Color:</label>
+        <input type="color" id="colorPicker" value="#ffffff" oninput="changeBackgroundColor()">
     </div>
-
-    <div id="myDiv01">...</div>
-    <br>
-
-    <label for="colorPicker">Choose Background Color:</label>
-    <input type="color" id="colorPicker" value="#ffffff" oninput="changeBackgroundColor()">
 
     <script>
         // Global Variables for Array
@@ -63,10 +126,10 @@
 
         function showPerson() {
             document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has properties: <br>';
-            document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>';
-            document.getElementById('myDiv01').innerHTML += 'lastName: ' + myPerson.lastName + '<br>';
-            document.getElementById('myDiv01').innerHTML += 'age: ' + myPerson.age + '<br>';
-            document.getElementById('myDiv01').innerHTML += 'eyeColor: ' + myPerson.eyeColor + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'First Name: ' + myPerson.firstName + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'Last Name: ' + myPerson.lastName + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'Age: ' + myPerson.age + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'Eye Color: ' + myPerson.eyeColor + '<br>';
         }
 
         function changeBackgroundColor() {
