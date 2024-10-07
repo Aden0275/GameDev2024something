@@ -1,39 +1,51 @@
 <h2 align=center>t1a14-objects-arrays-Aden.html</h2> 
 
-<pre>
-let myPerson = {
-    "firstName": "Aden",
-    "lastName": "Byrne",
-    "age": 50,
-    "eyeColor": "blue"
-}
-</pre>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label for="myFirstName">Input:</label>
+        <input type="text" id="myFirstName" value="Aden"><br>
 
-Nothing: <input type="text" id="myText01" value="Load"><br>
+        <input type="button" value="Set Array" onClick="setArray()">
+        <input type="button" value="Show Array" onClick="showArray()"><br>
+        
+        Nothing: <input type="text" id="myText01" value="Load"><br>
+        
+        <input type="button" value="Show Person Object" onclick="showPerson()"><br>
+    </div>
 
-<input type="button" value="Example object set and show" onClick="{
-    let myPerson = {
-        'firstName': 'Aden',
-        'lastName': 'Byrne',
-        'age': 50,
-        'eyeColor': 'blue'
-    }
+    <div id="myDiv01">...</div>
+    <br>
 
-    document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has properties: <br>';
-    document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>';
-    document.getElementById('myDiv01').innerHTML += 'lastName: ' + myPerson.lastName + '<br>';
-    document.getElementById('myDiv01').innerHTML += 'age: ' + myPerson.age + '<br>';
-    document.getElementById('myDiv01').innerHTML += 'eyeColor: ' + myPerson.eyeColor + '<br>';
-}">
-<div id="myDiv01">...</div>
-<br>
-
-
+    <label for="colorPicker">Choose Background Color:</label>
+    <input type="color" id="colorPicker" value="#ffffff" oninput="changeBackgroundColor()">
 
     <script>
         // Global Variables for Array
         let myMax = 6;
         let myArray = new Array(myMax);
+
+        // Person Object
+        let myPerson = {
+            "firstName": "Aden",
+            "lastName": "Byrne",
+            "age": 50,
+            "eyeColor": "blue"
+        };
 
         function setArray() {
             myArray[0] = 'Aden';
@@ -49,21 +61,18 @@ Nothing: <input type="text" id="myText01" value="Load"><br>
             }
         }
 
+        function showPerson() {
+            document.getElementById('myDiv01').innerHTML = '<br>myPerson Object has properties: <br>';
+            document.getElementById('myDiv01').innerHTML += 'firstName: ' + myPerson.firstName + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'lastName: ' + myPerson.lastName + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'age: ' + myPerson.age + '<br>';
+            document.getElementById('myDiv01').innerHTML += 'eyeColor: ' + myPerson.eyeColor + '<br>';
+        }
+
         function changeBackgroundColor() {
             const colorPicker = document.getElementById('colorPicker');
             document.body.style.backgroundColor = colorPicker.value;
         }
     </script>
-    </head>
-<body>
-
-
-    <line class="container">
-        <label for="myFirstName">Input:</label>
-        <input type="text" id="myFirstName" value="Aden"><br>
-
-        <input type="button" value="Set Array" onClick="setArray()">
-        <input type="button" value="Show Array" onClick="showArray()"><br>
-    </line>
-
-    <div id="myDiv01">...</div>
+</body>
+</html>
