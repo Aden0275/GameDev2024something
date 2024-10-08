@@ -1,26 +1,41 @@
-‹h1 align=center>tla13-json-fred.html</h1>
-ascript>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch JSON Example</title>
+</head>
+<body>
+
+<textarea cols="70" rows="5" id="jsonExplanation"></textarea>
+<br><br>
+Enter a JSON returning URL: <input type="text" id="myText1" value="https://randomfox.ca/floof/">
+<input type="button" value="show JSON" onclick="fetchData()"><br><br>
+
+<select size="1" onchange="myShowJSON(this.value)">
+    <option value="https://randomfox.ca/floof/">Randomfox</option>
+    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
+    <!-- Add more JSON returning URLs here -->
+</select><br><br>
+
+<div id="myDiv1">...</div>
+
+<script>
 function myShowJSON(myIn) {
- document. getElementById ('myDiv1'). innerHTML = Sent: ${myIn}
+    document.getElementById('myDiv1').innerHTML = `Sent: ${myIn}`;
 }
-async function fetchData () {
-const response = await fetch( 'https: //dog.ceo/api/breeds/image/random');
-const data = await response. json();
-console. log (data);
-console. log( data. status: ${data.status}')
-const myJson = await JSON. stringify(data, null, 2);
-document. getElementById( 'myDiv1'). innerHTML = myJson
+
+async function fetchData() {
+    const url = document.getElementById('myText1').value;
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    document.getElementById('myDiv1').innerHTML = JSON.stringify(data, null, 2); // Displays the fetched JSON
 }
-</ script>
-Explantion of JSON compared to javascript objects formatted for this textarea. ‹br>
-‹textarea cols=70 ROWS=5›
-‹/ textarea><br><br>
-Enter a json returning URL: ‹input type=text id="myText1" value=
-"https://randomfox.ca/floof/">
-«input type=button value="show JSON" onclick=" {fetchData()}"><br><br>
-«select size=1 onchange="myShowJSON(this. value)" ›
-‹option value= "https://randomfox. ca/floof/"›randomfox
-‹option value="https://dog. ceo/api/breeds/image/random">god. ceo
-</select><br><or>
-You make the slect box JSON show up in the DIV, and include many more URL's in the select box<br><br›
-‹div id="myDiv1">... </div>
+
+// Explanation of JSON compared to JavaScript objects
+document.getElementById('jsonExplanation').value = "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C family of languages, which includes C, C++, C#, Java, JavaScript, Perl, Python, and many others. In contrast, JavaScript objects are dynamic and can contain functions, whereas JSON is purely a data format and cannot contain functions or methods.";
+</script>
+
+</body>
+</html>
