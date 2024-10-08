@@ -1,2 +1,53 @@
-<h2 align=center>t1a14-objects-arrays-Aden.html</h2> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch JSON Example</title>
+</head>
+<body>
 
+<textarea cols="70" rows="5" id="jsonExplanation" readonly></textarea>
+<br><br>
+<label for="myText1">Enter a JSON returning URL:</label>
+<input type="text" id="myText1" value="https://randomfox.ca/floof/">
+<input type="button" value="Show JSON" onclick="fetchData()"><br><br>
+
+<select id="jsonOptions" size="1" onchange="updateUrl(this.value)">
+    <option value="https://randomfox.ca/floof/">Randomfox</option>
+    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
+    <!-- Add more JSON returning URLs here -->
+</select><br><br>
+
+<div id="myDiv1">Fetched JSON will appear here.</div>
+
+<script>
+async function fetchData() {
+    const url = document.getElementById('myText1').value;
+    try {
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        document.getElementById('myDiv1').innerHTML = JSON.stringify(data, null, 2); // Displays the fetched JSON
+    } catch (error) {
+        console.error('Fetch error:', error);
+        document.getElementById('myDiv1').textContent = 'Error fetching data: ' + error.message;
+    }
+}
+
+function updateUrl(selectedUrl) {
+    document.getElementById('myText1').value = selectedUrl;
+    document.getElementById('myDiv1').innerHTML = `Selected URL: ${selectedUrl}`;
+}
+
+// Explanation of JSON compared to JavaScript objects
+document.getElementById('jsonExplanation').value = "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C family of languages, which includes C, C++, C#, Java, JavaScript, Perl, Python, and many others. In contrast, JavaScript objects are dynamic and can contain functions, whereas JSON is purely a data format and cannot contain functions or methods.";
+</script>
+
+</body>
+</html>
