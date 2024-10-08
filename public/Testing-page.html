@@ -17,7 +17,7 @@
     <option value="https://randomfox.ca/floof/">RandomFox</option>
     <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
     <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
-    <option value="https://unsplash.com/images/animals/penguin">Random Penguin</option>
+    <option value="https://unsplash.com/s/photos/penguin" target="_blank">View Penguin Images on Unsplash</option>
 </select><br><br>
 
 <div id="myDiv1">Fetched JSON will appear here.</div>
@@ -48,9 +48,6 @@ async function fetchData() {
         } else if (data[0] && data[0].url) {
             // The Cat API structure
             imageUrl = data[0].url;
-        } else if (data && data.file) {
-            // Penguin API structure
-            imageUrl = data.file;
         }
 
         // Update the image element if an image URL is found
@@ -72,6 +69,13 @@ async function fetchData() {
 function updateUrl(selectedUrl) {
     document.getElementById('myText1').value = selectedUrl;
     document.getElementById('myDiv1').innerHTML = `Selected URL: ${selectedUrl}`;
+
+    // Open the Unsplash link in a new tab if it's selected
+    if (selectedUrl === "https://unsplash.com/s/photos/penguin") {
+        window.open(selectedUrl, "_blank");
+        // Set the value back to default to avoid confusion
+        document.getElementById('myText1').value = "";
+    }
 }
 
 // Explanation of JSON compared to JavaScript objects
