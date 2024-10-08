@@ -17,6 +17,7 @@
     <option value="https://randomfox.ca/floof/">RandomFox</option>
     <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
     <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
+    <option value="https://penguin-api.com/random">Random Penguin</option>
     <!-- Add more JSON returning URLs here -->
 </select><br><br>
 
@@ -48,6 +49,9 @@ async function fetchData() {
         } else if (data[0] && data[0].url) {
             // The Cat API structure
             imageUrl = data[0].url;
+        } else if (data.penguin) {
+            // Penguin API structure
+            imageUrl = data.penguin; // Change this according to the actual structure
         }
 
         // Update the image element if an image URL is found
