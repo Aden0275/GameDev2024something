@@ -36,14 +36,24 @@ async function fetchData() {
         console.log(data);
         document.getElementById('myDiv1').innerHTML = JSON.stringify(data, null, 2); // Displays the fetched JSON
 
-        // Assuming the returned data contains an image URL
-        if (data.image) { // Check if the fetched data contains 'image' property
-            const imageElement = document.getElementById('fetchedImage');
-            imageElement.src = data.image; // Set the source of the image to the fetched image URL
+        // Determine the image source based on the API
+        let imageUrl;
+        if (data.image) {
+            // Random Fox API structure
+            imageUrl = data.image;
+        } else if (data.message) {
+            // Dog CEO API structure
+            imageUrl = data.message;
+        }
+
+        // Update the image element if an image URL is found
+        const imageElement = document.getElementById('fetchedImage');
+        if (imageUrl) {
+            imageElement.src = imageUrl; // Set the source of the image to the fetched image URL
             imageElement.style.display = 'block'; // Show the image element
         } else {
             // Handle cases where there's no image
-            document.getElementById('fetchedImage').style.display = 'none'; // Hide image if no URL is returned
+            imageElement.style.display = 'none'; // Hide image if no URL is returned
         }
     } catch (error) {
         console.error('Fetch error:', error);
