@@ -16,6 +16,7 @@
 <select id="jsonOptions" size="1" onchange="updateUrl(this.value)">
     <option value="https://randomfox.ca/floof/">RandomFox</option>
     <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
+    <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
     <!-- Add more JSON returning URLs here -->
 </select><br><br>
 
@@ -44,6 +45,9 @@ async function fetchData() {
         } else if (data.message) {
             // Dog CEO API structure
             imageUrl = data.message;
+        } else if (data[0] && data[0].url) {
+            // The Cat API structure
+            imageUrl = data[0].url;
         }
 
         // Update the image element if an image URL is found
