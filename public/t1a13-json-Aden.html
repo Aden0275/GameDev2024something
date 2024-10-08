@@ -1,79 +1,26 @@
-{
-    "fairings": null,
-    "links": {
-        "patch": {
-            "small": "https://images2.imgbox.com/eb/d8/D1Yywp0w_o.png",
-            "large": "https://images2.imgbox.com/33/2e/k6VE4iYl_o.png"
-        },
-        "reddit": {
-            "campaign": null,
-            "launch": "https://www.reddit.com/r/spacex/comments/xvm76j/rspacex_crew5_launchcoast_docking_discussion_and/",
-            "media": null,
-            "recovery": null
-        },
-        "flickr": {
-            "small": [],
-            "original": []
-        },
-        "presskit": null,
-        "webcast": "https://youtu.be/5EwW8ZkArL4",
-        "youtube_id": "5EwW8ZkArL4",
-        "article": null,
-        "wikipedia": "https://en.wikipedia.org/wiki/SpaceX_Crew-5"
-    },
-    "static_fire_date_utc": null,
-    "static_fire_date_unix": null,
-    "net": false,
-    "window": null,
-    "rocket": "5e9d0d95eda69973a809d1ec",
-    "success": true,
-    "failures": [],
-    "details": null,
-    "crew": [
-        "62dd7196202306255024d13c",
-        "62dd71c9202306255024d13d",
-        "62dd7210202306255024d13e",
-        "62dd7253202306255024d13f"
-    ],
-    "ships": [],
-    "capsules": [
-        "617c05591bad2c661a6e2909"
-    ],
-    "payloads": [
-        "62dd73ed202306255024d145"
-    ],
-    "launchpad": "5e9e4502f509094188566f88",
-    "flight_number": 187,
-    "name": "Crew-5",
-    "date_utc": "2022-10-05T16:00:00.000Z",
-    "date_unix": 1664985600,
-    "date_local": "2022-10-05T12:00:00-04:00",
-    "date_precision": "hour",
-    "upcoming": false,
-    "cores": [
-        {
-            "core": "633d9da635a71d1d9c66797b",
-            "flight": 1,
-            "gridfins": true,
-            "legs": true,
-            "reused": false,
-            "landing_attempt": true,
-            "landing_success": true,
-            "landing_type": "ASDS",
-            "landpad": "5e9e3033383ecbb9e534e7cc"
-        }
-    ],
-    "auto_update": true,
-    "tbd": false,
-    "launch_library_id": "f33d5ece-e825-4cd8-809f-1d4c72a2e0d3",
-    "id": "62dd70d5202306255024d139"
+‹h1 align=center>tla13-json-fred.html</h1>
+ascript>
+function myShowJSON(myIn) {
+ document. getElementById ('myDiv1'). innerHTML = Sent: ${myIn}
 }
-{
-    "categories": [],
-    "created_at": "2020-01-05 13:42:25.905626",
-    "icon_url": "https://api.chucknorris.io/img/avatar/chuck-norris.png",
-    "id": "zEzKvLkNSSSwxpPw0daBeA",
-    "updated_at": "2020-01-05 13:42:25.905626",
-    "url": "https://api.chucknorris.io/jokes/zEzKvLkNSSSwxpPw0daBeA",
-    "value": "Every baby cries when they are born, because an image of Chuck Norris pops into there minds."
+async function fetchData () {
+const response = await fetch( 'https: //dog.ceo/api/breeds/image/random');
+const data = await response. json();
+console. log (data);
+console. log( data. status: ${data.status}')
+const myJson = await JSON. stringify(data, null, 2);
+document. getElementById( 'myDiv1'). innerHTML = myJson
 }
+</ script>
+Explantion of JSON compared to javascript objects formatted for this textarea. ‹br>
+‹textarea cols=70 ROWS=5›
+‹/ textarea><br><br>
+Enter a json returning URL: ‹input type=text id="myText1" value=
+"https://randomfox.ca/floof/">
+«input type=button value="show JSON" onclick=" {fetchData()}"><br><br>
+«select size=1 onchange="myShowJSON(this. value)" ›
+‹option value= "https://randomfox. ca/floof/"›randomfox
+‹option value="https://dog. ceo/api/breeds/image/random">god. ceo
+</select><br><or>
+You make the slect box JSON show up in the DIV, and include many more URL's in the select box<br><br›
+‹div id="myDiv1">... </div>
