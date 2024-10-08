@@ -17,7 +17,7 @@
     <option value="https://randomfox.ca/floof/">RandomFox</option>
     <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
     <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
-    <option value="https://some-random-api.ml/img/penguin">Random Penguin</option>
+    <option value="https://api.unsplash.com/search/photos?query=penguin&client_id=YOUR_ACCESS_KEY">Random Penguin (Unsplash)</option>
 </select><br><br>
 
 <div id="myDiv1">Fetched JSON will appear here.</div>
@@ -48,9 +48,9 @@ async function fetchData() {
         } else if (data[0] && data[0].url) {
             // The Cat API structure
             imageUrl = data[0].url;
-        } else if (data.link) {
-            // New Random Penguin API structure
-            imageUrl = data.link;
+        } else if (data.results && data.results.length > 0) {
+            // Unsplash API structure
+            imageUrl = data.results[0].urls.regular; // Get the first image from the results
         }
 
         // Update the image element if an image URL is found
