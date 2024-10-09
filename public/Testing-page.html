@@ -122,10 +122,10 @@
 <hr>
 
 <!-- Section for Math Problems -->
-<h2>Random Math Problems</h2>
-<button onclick="generateMathProblem()">Generate Math Problem</button>
-<div id="mathProblem" style="margin-top: 20px; font-size: 1.5em;"></div>
-<div id="mathAnswer" style="margin-top: 20px; font-size: 1.5em;"></div>
+<h2>Calculator</h2>
+<input type="text" id="mathInput" placeholder="Enter math expression (e.g. 3+4*2)">
+<input type="button" value="Calculate" onclick="calculateMath()"><br><br>
+<div id="mathResult" style="font-size: 1.5em;"></div>
 
 <hr>
 
@@ -148,8 +148,8 @@
 </div>
 
 <script>
-    let currentPokemon; // To store the current Pokémon data
-    let isShiny = false; // To track if shiny form is to be displayed
+    let currentPokemon; 
+    let isShiny = false; 
 
     // Functionality for Animal Images
     async function fetchAnimalData() {
@@ -192,32 +192,20 @@
     }
 
     // Functionality for Math Problems
-    function generateMathProblem() {
-        const num1 = Math.floor(Math.random() * 100);
-        const num2 = Math.floor(Math.random() * 100);
-        const operations = ['+', '-', '*', '/'];
-        const operation = operations[Math.floor(Math.random() * operations.length)];
-
-        const problem = `${num1} ${operation} ${num2}`;
-        
-        let answer;
-        switch (operation) {
-            case '+':
-                answer = num1 + num2;
-                break;
-            case '-':
-                answer = num1 - num2;
-                break;
-            case '*':
-                answer = num1 * num2;
-                break;
-            case '/':
-                answer = num2 !== 0 ? (num1 / num2).toFixed(2) : 'undefined (division by zero)';
-                break;
+    function calculateMath() {
+        const input = document.getElementById('mathInput').value;
+        let result;
+        try {
+            // Evaluate the expression safely
+            result = eval(input); 
+            if (result === undefined) {
+                throw new Error("Invalid expression");
+            }
+        } catch (error) {
+            result = "Error: " + error.message;
         }
-
-        document.getElementById('mathProblem').textContent = `Problem: ${problem}`;
-        document.getElementById('mathAnswer').textContent = `Answer: ${answer}`;
+        
+        document.getElementById('mathResult').textContent = `Result: ${result}`;
     }
 
     // Functionality for Pokémon Display
@@ -231,7 +219,7 @@
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            currentPokemon = await response.json(); // Store current Pokémon data
+            currentPokemon = await response.json(); 
             displayPokemon(currentPokemon);
         } catch (error) {
             console.error('Fetch error:', error);
@@ -241,7 +229,6 @@
         }
     }
 
-    // New function to search Pokémon by ID
     async function searchPokemonById() {
         const id = document.getElementById('pokemonIdInput').value;
 
@@ -258,7 +245,7 @@
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            currentPokemon = await response.json(); // Store current Pokémon data
+            currentPokemon = await response.json(); 
             displayPokemon(currentPokemon);
         } catch (error) {
             console.error('Fetch error:', error);
@@ -268,7 +255,6 @@
         }
     }
 
-    // Function to display Pokémon data
     function displayPokemon(data) {
         document.getElementById('pokemonJson').innerHTML = `Fetched Pokémon ID: ${data.id}`;
 
@@ -286,23 +272,22 @@
         if (imageUrl) {
             pokemonImageElement.src = imageUrl; 
             pokemonImageElement.style.display = 'block';
-            document.getElementById('pokemonDataContainer').style.display = 'block'; // Show the Pokémon data container
+            document.getElementById('pokemonDataContainer').style.display = 'block'; 
             
             document.getElementById('pokemonStats').innerHTML = statsHtml;
             document.getElementById('pokemonStats').style.display = 'block';
-            document.getElementById('toggleShinyButton').style.display = 'inline'; // Show the toggle button
+            document.getElementById('toggleShinyButton').style.display = 'inline'; 
         } else {
             pokemonImageElement.style.display = 'none';
             document.getElementById('pokemonStats').style.display = 'none'; 
-            document.getElementById('toggleShinyButton').style.display = 'none'; // Hide the toggle button if no image
+            document.getElementById('toggleShinyButton').style.display = 'none'; 
         }
     }
 
-    // Function to toggle shiny form
     function toggleShinyForm() {
-        isShiny = !isShiny; // Toggle the shiny state
+        isShiny = !isShiny; 
         if (currentPokemon) {
-            displayPokemon(currentPokemon); // Redisplay the current Pokémon with the updated state
+            displayPokemon(currentPokemon); 
         }
     }
 </script>
