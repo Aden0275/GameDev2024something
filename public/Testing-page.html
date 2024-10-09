@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Pokémon Display</title>
+    <title>Animal Images, Math Problems & Pokémon Display</title>
     <style>
         .pokemon-stats { margin-top: 20px; }
         .stat { font-weight: bold; }
@@ -11,69 +11,153 @@
 </head>
 <body>
 
-<textarea cols="70" rows="5" id="jsonExplanation" readonly></textarea>
-<br>
-<label for="myText1">Enter a Pokémon ID:</label>
-<input type="text" id="myText1" value="1">
-<input type="button" value="Show Pokémon" onclick="fetchData()"><br><br>
+<h1>Random Animal Images, Math Problems & Pokémon Display</h1>
 
-<div id="myDiv1">Fetched Pokémon data will appear here.</div>
-<img id="fetchedImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+<!-- Section for Animal Image Fetching -->
+<h2>Random Animal Images</h2>
+<label for="animalUrl">Enter a JSON returning URL:</label>
+<input type="text" id="animalUrl" value="https://randomfox.ca/floof/">
+<input type="button" value="Show Animal" onclick="fetchAnimalData()"><br><br>
+
+<select id="animalOptions" size="1" onchange="updateAnimalUrl(this.value)">
+    <option value="https://randomfox.ca/floof/">RandomFox</option>
+    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
+    <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
+</select><br><br>
+
+<div id="animalJson">Fetched JSON will appear here.</div>
+<img id="animalImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+
+<hr>
+
+<!-- Section for Math Problems -->
+<h2>Random Math Problems</h2>
+<button onclick="generateMathProblem()">Generate Math Problem</button>
+<div id="mathProblem" style="margin-top: 20px; font-size: 1.5em;"></div>
+<div id="mathAnswer" style="margin-top: 20px; font-size: 1.5em;"></div>
+
+<hr>
+
+<!-- Section for Pokémon Display -->
+<h2>Random Pokémon Display</h2>
+<input type="button" value="Show Pokémon" onclick="fetchPokemonData()"><br><br>
+
+<div id="pokemonJson">Fetched Pokémon data will appear here.</div>
+<img id="pokemonImage" src="" alt="Fetched Pokémon" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
 <div id="pokemonStats" class="pokemon-stats" style="display:none;"></div>
 
 <script>
-async function fetchData() {
-    // Generate a random Pokémon ID from 1 to 898
-    const randomId = Math.floor(Math.random() * 898) + 1;
-    const url = `https://pokeapi.co/api/v2/pokemon/${randomId}/`;
-    
-    try {
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    // Functionality for Animal Images
+    async function fetchAnimalData() {
+        const url = document.getElementById('animalUrl').value;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            document.getElementById('animalJson').innerHTML = JSON.stringify(data, null, 2);
+
+            let imageUrl;
+            if (data.image) {
+                imageUrl = data.image;
+            } else if (data.message) {
+                imageUrl = data.message;
+            } else if (data[0] && data[0].url) {
+                imageUrl = data[0].url;
+            }
+
+            const animalImageElement = document.getElementById('animalImage');
+            if (imageUrl) {
+                animalImageElement.src = imageUrl; 
+                animalImageElement.style.display = 'block'; 
+            } else {
+                animalImageElement.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('animalJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('animalImage').style.display = 'none'; 
         }
-
-        const data = await response.json();
-        console.log(data);
-        document.getElementById('myDiv1').innerHTML = `Fetched Pokémon ID: ${data.id}`; // Displays the Pokémon ID
-
-        // Extract information from the Pokémon data
-        const imageUrl = data.sprites.front_default; // Front image of the Pokémon
-        let statsHtml = `<div class="stat">Name: ${data.name.charAt(0).toUpperCase() + data.name.slice(1)}</div>`;
-        statsHtml += `<div class="stat">Height: ${data.height} decimetres</div>`;
-        statsHtml += `<div class="stat">Weight: ${data.weight} hectograms</div>`;
-        statsHtml += `<div class="stat">Base Stats:</div>`;
-        
-        // Loop through base stats
-        data.stats.forEach(stat => {
-            statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
-        });
-
-        // Update the image element
-        const imageElement = document.getElementById('fetchedImage');
-        if (imageUrl) {
-            imageElement.src = imageUrl; // Set the source of the image to the fetched image URL
-            imageElement.style.display = 'block'; // Show the image element
-            
-            // Display Pokémon stats
-            document.getElementById('pokemonStats').innerHTML = statsHtml;
-            document.getElementById('pokemonStats').style.display = 'block';
-        } else {
-            // Hide image if no URL is returned
-            imageElement.style.display = 'none';
-            document.getElementById('pokemonStats').style.display = 'none'; // Hide stats
-        }
-    } catch (error) {
-        console.error('Fetch error:', error);
-        document.getElementById('myDiv1').textContent = 'Error fetching data: ' + error.message;
-        document.getElementById('fetchedImage').style.display = 'none'; // Hide image on error
-        document.getElementById('pokemonStats').style.display = 'none'; // Hide stats on error
     }
-}
 
-// Explanation of JSON compared to JavaScript objects
-document.getElementById('jsonExplanation').value = "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C family of languages. In contrast, JavaScript objects are dynamic and can contain functions, whereas JSON is purely a data format and cannot contain functions or methods.";
+    function updateAnimalUrl(selectedUrl) {
+        document.getElementById('animalUrl').value = selectedUrl;
+        document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
+    }
+
+    // Functionality for Math Problems
+    function generateMathProblem() {
+        const num1 = Math.floor(Math.random() * 100);
+        const num2 = Math.floor(Math.random() * 100);
+        const operations = ['+', '-', '*', '/'];
+        const operation = operations[Math.floor(Math.random() * operations.length)];
+
+        const problem = `${num1} ${operation} ${num2}`;
+        
+        let answer;
+        switch (operation) {
+            case '+':
+                answer = num1 + num2;
+                break;
+            case '-':
+                answer = num1 - num2;
+                break;
+            case '*':
+                answer = num1 * num2;
+                break;
+            case '/':
+                answer = num2 !== 0 ? (num1 / num2).toFixed(2) : 'undefined (division by zero)';
+                break;
+        }
+
+        document.getElementById('mathProblem').textContent = `Problem: ${problem}`;
+        document.getElementById('mathAnswer').textContent = `Answer: ${answer}`;
+    }
+
+    // Functionality for Pokémon Display
+    async function fetchPokemonData() {
+        const randomId = Math.floor(Math.random() * 1025) + 1; // Random ID from 1 to 1025
+        const url = `https://pokeapi.co/api/v2/pokemon/${randomId}/`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            document.getElementById('pokemonJson').innerHTML = `Fetched Pokémon ID: ${data.id}`;
+
+            const imageUrl = data.sprites.front_default; 
+            let statsHtml = `<div class="stat">Name: ${data.name.charAt(0).toUpperCase() + data.name.slice(1)}</div>`;
+            statsHtml += `<div class="stat">Height: ${data.height} decimetres</div>`;
+            statsHtml += `<div class="stat">Weight: ${data.weight} hectograms</div>`;
+            statsHtml += `<div class="stat">Base Stats:</div>`;
+            
+            data.stats.forEach(stat => {
+                statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
+            });
+
+            const pokemonImageElement = document.getElementById('pokemonImage');
+            if (imageUrl) {
+                pokemonImageElement.src = imageUrl; 
+                pokemonImageElement.style.display = 'block'; 
+                
+                document.getElementById('pokemonStats').innerHTML = statsHtml;
+                document.getElementById('pokemonStats').style.display = 'block';
+            } else {
+                pokemonImageElement.style.display = 'none';
+                document.getElementById('pokemonStats').style.display = 'none'; 
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('pokemonImage').style.display = 'none'; 
+            document.getElementById('pokemonStats').style.display = 'none'; 
+        }
+    }
 </script>
 
 </body>
