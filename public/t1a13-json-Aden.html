@@ -53,6 +53,37 @@
             transform: scale(1.05);
         }
 
+        .calculator-container, .keyboard {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .keyboard {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .keyboard-row {
+            display: flex;
+        }
+
+        .keyboard-button {
+            padding: 10px;
+            margin: 5px;
+            background-color: #52057b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .keyboard-button:hover {
+            background-color: #8e44ad;
+        }
+
         .pokemon-container {
             background-color: white;
             border-radius: 15px;
@@ -72,7 +103,7 @@
         }
 
         .pokemon-container img {
-            max-width: 100%; 
+            max-width: 100%;
             border-radius: 10px;
             transition: transform 0.3s;
             border: 4px solid #8e44ad;
@@ -85,7 +116,7 @@
         .pokemon-stats {
             margin-top: 15px;
             text-align: left;
-            width: 100%; 
+            width: 100%;
             font-size: 14px;
         }
 
@@ -121,11 +152,46 @@
 
 <hr>
 
-<!-- Section for Math Problems -->
-<h2>Random Math Problems</h2>
-<button onclick="generateMathProblem()">Generate Math Problem</button>
-<div id="mathProblem" style="margin-top: 20px; font-size: 1.5em;"></div>
-<div id="mathAnswer" style="margin-top: 20px; font-size: 1.5em;"></div>
+<!-- Section for Calculator -->
+<h2>Calculator</h2>
+<div class="calculator-container">
+    <input type="text" id="mathInput" placeholder="Enter math expression" readonly>
+    <input type="button" value="Show Keyboard" onclick="toggleKeyboard()">
+    <input type="button" value="Calculate" onclick="calculateMath()"><br>
+    <div id="mathResult" style="font-size: 1.5em;"></div>
+</div>
+
+<!-- Keyboard Section -->
+<div class="keyboard" id="keyboard">
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('7')">7</button>
+        <button class="keyboard-button" onclick="addToInput('8')">8</button>
+        <button class="keyboard-button" onclick="addToInput('9')">9</button>
+        <button class="keyboard-button" onclick="addToInput('/')">/</button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('4')">4</button>
+        <button class="keyboard-button" onclick="addToInput('5')">5</button>
+        <button class="keyboard-button" onclick="addToInput('6')">6</button>
+        <button class="keyboard-button" onclick="addToInput('*')">*</button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('1')">1</button>
+        <button class="keyboard-button" onclick="addToInput('2')">2</button>
+        <button class="keyboard-button" onclick="addToInput('3')">3</button>
+        <button class="keyboard-button" onclick="addToInput('-')">-</button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('0')">0</button>
+        <button class="keyboard-button" onclick="addToInput('.')">.</button>
+        <button class="keyboard-button" onclick="addToInput('(')"> ( </button>
+        <button class="keyboard-button" onclick="addToInput(')')"> ) </button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('+')">+</button>
+        <button class="keyboard-button" onclick="clearInput()">C</button>
+    </div>
+</div>
 
 <hr>
 
@@ -148,8 +214,8 @@
 </div>
 
 <script>
-    let currentPokemon; // To store the current Pokémon data
-    let isShiny = false; // To track if shiny form is to be displayed
+    let currentPokemon; 
+    let isShiny = false; 
 
     // Functionality for Animal Images
     async function fetchAnimalData() {
@@ -191,33 +257,35 @@
         document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
     }
 
-    // Functionality for Math Problems
-    function generateMathProblem() {
-        const num1 = Math.floor(Math.random() * 100);
-        const num2 = Math.floor(Math.random() * 100);
-        const operations = ['+', '-', '*', '/'];
-        const operation = operations[Math.floor(Math.random() * operations.length)];
+    // Functionality for Calculator
+    function addToInput(value) {
+        document.getElementById('mathInput').value += value; // Append value to input
+    }
 
-        const problem = `${num1} ${operation} ${num2}`;
-        
-        let answer;
-        switch (operation) {
-            case '+':
-                answer = num1 + num2;
-                break;
-            case '-':
-                answer = num1 - num2;
-                break;
-            case '*':
-                answer = num1 * num2;
-                break;
-            case '/':
-                answer = num2 !== 0 ? (num1 / num2).toFixed(2) : 'undefined (division by zero)';
-                break;
+    function clearInput() {
+        document.getElementById('mathInput').value = ''; // Clear the input
+        document.getElementById('mathResult').textContent = ''; // Clear the result display
+    }
+
+    function calculateMath() {
+        const input = document.getElementById('mathInput').value;
+        let result;
+        try {
+            // Evaluate the expression safely
+            result = eval(input); 
+            if (result === undefined) {
+                throw new Error("Invalid expression");
+            }
+        } catch (error) {
+            result = "Error: " + error.message;
         }
+        
+        document.getElementById('mathResult').textContent = `Result: ${result}`;
+    }
 
-        document.getElementById('mathProblem').textContent = `Problem: ${problem}`;
-        document.getElementById('mathAnswer').textContent = `Answer: ${answer}`;
+    function toggleKeyboard() {
+        const keyboard = document.getElementById('keyboard');
+        keyboard.style.display = (keyboard.style.display === "none" || keyboard.style.display === "") ? "flex" : "none";
     }
 
     // Functionality for Pokémon Display
@@ -231,7 +299,7 @@
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            currentPokemon = await response.json(); // Store current Pokémon data
+            currentPokemon = await response.json(); 
             displayPokemon(currentPokemon);
         } catch (error) {
             console.error('Fetch error:', error);
@@ -241,7 +309,6 @@
         }
     }
 
-    // New function to search Pokémon by ID
     async function searchPokemonById() {
         const id = document.getElementById('pokemonIdInput').value;
 
@@ -258,7 +325,7 @@
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            currentPokemon = await response.json(); // Store current Pokémon data
+            currentPokemon = await response.json(); 
             displayPokemon(currentPokemon);
         } catch (error) {
             console.error('Fetch error:', error);
@@ -268,7 +335,6 @@
         }
     }
 
-    // Function to display Pokémon data
     function displayPokemon(data) {
         document.getElementById('pokemonJson').innerHTML = `Fetched Pokémon ID: ${data.id}`;
 
@@ -286,23 +352,22 @@
         if (imageUrl) {
             pokemonImageElement.src = imageUrl; 
             pokemonImageElement.style.display = 'block';
-            document.getElementById('pokemonDataContainer').style.display = 'block'; // Show the Pokémon data container
+            document.getElementById('pokemonDataContainer').style.display = 'block'; 
             
             document.getElementById('pokemonStats').innerHTML = statsHtml;
             document.getElementById('pokemonStats').style.display = 'block';
-            document.getElementById('toggleShinyButton').style.display = 'inline'; // Show the toggle button
+            document.getElementById('toggleShinyButton').style.display = 'inline'; 
         } else {
             pokemonImageElement.style.display = 'none';
             document.getElementById('pokemonStats').style.display = 'none'; 
-            document.getElementById('toggleShinyButton').style.display = 'none'; // Hide the toggle button if no image
+            document.getElementById('toggleShinyButton').style.display = 'none'; 
         }
     }
 
-    // Function to toggle shiny form
     function toggleShinyForm() {
-        isShiny = !isShiny; // Toggle the shiny state
+        isShiny = !isShiny; 
         if (currentPokemon) {
-            displayPokemon(currentPokemon); // Redisplay the current Pokémon with the updated state
+            displayPokemon(currentPokemon); 
         }
     }
 </script>
