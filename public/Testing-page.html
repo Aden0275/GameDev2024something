@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fetch JSON Example</title>
+    <title>Random Pokémon Display</title>
     <style>
-        .pokemon-stats {
-            margin-top: 20px;
-        }
-        .stat {
-            font-weight: bold;
-        }
+        .pokemon-stats { margin-top: 20px; }
+        .stat { font-weight: bold; }
     </style>
 </head>
 <body>
@@ -22,10 +18,11 @@
 <input type="button" value="Show JSON" onclick="fetchData()"><br><br>
 
 <select id="jsonOptions" size="1" onchange="updateUrl(this.value)">
-    <option value="https://randomfox.ca/floof/">RandomFox</option>
+    <option value="https://randomfox.ca/floof/">Random Fox</option>
     <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
     <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
     <option value="https://pokeapi.co/api/v2/pokemon/" data-pokemon="true">Random Pokémon</option>
+    <option value="https://randompokemon.com/api/334">Random Pokémon Card</option> <!-- New option -->
 </select><br><br>
 
 <div id="myDiv1">Fetched JSON will appear here.</div>
@@ -59,17 +56,12 @@ async function fetchData() {
         } else if (data[0] && data[0].url) {
             // The Cat API structure
             imageUrl = data[0].url;
-        } else if (data.sprites && data.sprites.front_default) {
-            // PokéAPI structure
-            imageUrl = data.sprites.front_default;
-
-            // Add Pokémon stats
-            statsHtml += `<div class="stat">Name: ${data.name}</div>`;
-            statsHtml += `<div class="stat">Height: ${data.height}</div>`;
-            statsHtml += `<div class="stat">Weight: ${data.weight}</div>`;
-            data.stats.forEach(stat => {
-                statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
-            });
+        } else if (data.card) {
+            // Pokémon TCG API structure
+            imageUrl = data.card.images.small; // Using small image of Pokémon card
+            statsHtml += `<div class="stat">Name: ${data.card.name}</div>`;
+            statsHtml += `<div class="stat">Type: ${data.card.types.join(', ')}</div>`;
+            statsHtml += `<div class="stat">HP: ${data.card.hpt}</div>`;
         } else {
             // Handle case where there's no image
             imageUrl = null;
@@ -81,9 +73,9 @@ async function fetchData() {
             imageElement.src = imageUrl; // Set the source of the image to the fetched image URL
             imageElement.style.display = 'block'; // Show the image element
             
-            // Display Pokémon stats if it's a Pokémon
+            // Display Pokémon stats if it's a Pokémon card
             document.getElementById('pokemonStats').innerHTML = statsHtml;
-            document.getElementById('pokemonStats').style.display = (data.sprites) ? 'block' : 'none';
+            document.getElementById('pokemonStats').style.display = (data.card) ? 'block' : 'none';
         } else {
             // Hide image if no URL is returned
             imageElement.style.display = 'none';
