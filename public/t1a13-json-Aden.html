@@ -4,24 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch JSON Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4A90E2;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            resize: none;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="button"] {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        input[type="button"]:hover {
+            background-color: #357ABD;
+        }
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        #myDiv1 {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            white-space: pre-wrap; /* To preserve whitespace in JSON */
+        }
+        img {
+            display: block;
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 <body>
 
-<textarea cols="70" rows="5" id="jsonExplanation" readonly></textarea>
-<br>
-<label for="myText1">Enter a JSON returning URL:</label>
-<input type="text" id="myText1" value="https://randomfox.ca/floof/">
-<input type="button" value="Show JSON" onclick="fetchData()"><br><br>
+<div class="container">
+    <h1>Fetch JSON Example</h1>
+    <textarea id="jsonExplanation" readonly></textarea>
+    <label for="myText1">Enter a JSON returning URL:</label>
+    <input type="text" id="myText1" value="https://randomfox.ca/floof/">
+    <input type="button" value="Show JSON" onclick="fetchData()">
+    
+    <label for="jsonOptions">Select an API:</label>
+    <select id="jsonOptions" size="1" onchange="updateUrl(this.value)">
+        <option value="https://randomfox.ca/floof/">RandomFox</option>
+        <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
+        <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
+        <!-- Add more JSON returning URLs here -->
+    </select>
 
-<select id="jsonOptions" size="1" onchange="updateUrl(this.value)">
-    <option value="https://randomfox.ca/floof/">RandomFox</option>
-    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
-    <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
-    <!-- Add more JSON returning URLs here -->
-</select><br><br>
-
-<div id="myDiv1">Fetched JSON will appear here.</div>
-<img id="fetchedImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+    <div id="myDiv1">Fetched JSON will appear here.</div>
+    <img id="fetchedImage" src="" alt="Fetched Image" style="display:none;"/>
+</div>
 
 <script>
 async function fetchData() {
@@ -35,43 +115,36 @@ async function fetchData() {
 
         const data = await response.json();
         console.log(data);
-        document.getElementById('myDiv1').innerHTML = JSON.stringify(data, null, 2); // Displays the fetched JSON
+        document.getElementById('myDiv1').textContent = JSON.stringify(data, null, 2);
 
-        // Determine the image source based on the API
         let imageUrl;
         if (data.image) {
-            // Random Fox API structure
             imageUrl = data.image;
         } else if (data.message) {
-            // Dog CEO API structure
             imageUrl = data.message;
         } else if (data[0] && data[0].url) {
-            // The Cat API structure
             imageUrl = data[0].url;
         }
 
-        // Update the image element if an image URL is found
         const imageElement = document.getElementById('fetchedImage');
         if (imageUrl) {
-            imageElement.src = imageUrl; // Set the source of the image to the fetched image URL
-            imageElement.style.display = 'block'; // Show the image element
+            imageElement.src = imageUrl;
+            imageElement.style.display = 'block';
         } else {
-            // Handle cases where there's no image
-            imageElement.style.display = 'none'; // Hide image if no URL is returned
+            imageElement.style.display = 'none';
         }
     } catch (error) {
         console.error('Fetch error:', error);
         document.getElementById('myDiv1').textContent = 'Error fetching data: ' + error.message;
-        document.getElementById('fetchedImage').style.display = 'none'; // Hide image on error
+        document.getElementById('fetchedImage').style.display = 'none';
     }
 }
 
 function updateUrl(selectedUrl) {
     document.getElementById('myText1').value = selectedUrl;
-    document.getElementById('myDiv1').innerHTML = `Selected URL: ${selectedUrl}`;
+    document.getElementById('myDiv1').textContent = `Selected URL: ${selectedUrl}`;
 }
 
-// Explanation of JSON compared to JavaScript objects
 document.getElementById('jsonExplanation').value = "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C family of languages. In contrast, JavaScript objects are dynamic and can contain functions, whereas JSON is purely a data format and cannot contain functions or methods.";
 </script>
 
