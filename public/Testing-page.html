@@ -13,25 +13,20 @@
 
 <textarea cols="70" rows="5" id="jsonExplanation" readonly></textarea>
 <br>
-<label for="myText1">Enter a JSON returning URL:</label>
-<input type="text" id="myText1" value="https://randomfox.ca/floof/">
-<input type="button" value="Show JSON" onclick="fetchData()"><br><br>
+<label for="myText1">Enter a Pokémon ID:</label>
+<input type="text" id="myText1" value="1">
+<input type="button" value="Show Pokémon" onclick="fetchData()"><br><br>
 
-<select id="jsonOptions" size="1" onchange="updateUrl(this.value)">
-    <option value="https://randomfox.ca/floof/">Random Fox</option>
-    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
-    <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
-    <option value="https://pokeapi.co/api/v2/pokemon/" data-pokemon="true">Random Pokémon</option>
-    <option value="https://randompokemon.com/api/334">Random Pokémon Card</option> <!-- New option -->
-</select><br><br>
-
-<div id="myDiv1">Fetched JSON will appear here.</div>
+<div id="myDiv1">Fetched Pokémon data will appear here.</div>
 <img id="fetchedImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
 <div id="pokemonStats" class="pokemon-stats" style="display:none;"></div>
 
 <script>
 async function fetchData() {
-    const url = document.getElementById('myText1').value;
+    // Generate a random Pokémon ID from 1 to 898
+    const randomId = Math.floor(Math.random() * 898) + 1;
+    const url = `https://pokeapi.co/api/v2/pokemon/${randomId}/`;
+    
     try {
         const response = await fetch(url);
         
@@ -41,41 +36,29 @@ async function fetchData() {
 
         const data = await response.json();
         console.log(data);
-        document.getElementById('myDiv1').innerHTML = JSON.stringify(data, null, 2); // Displays the fetched JSON
+        document.getElementById('myDiv1').innerHTML = `Fetched Pokémon ID: ${data.id}`; // Displays the Pokémon ID
 
-        // Determine the image source based on the API
-        let imageUrl;
-        let statsHtml = '';
+        // Extract information from the Pokémon data
+        const imageUrl = data.sprites.front_default; // Front image of the Pokémon
+        let statsHtml = `<div class="stat">Name: ${data.name.charAt(0).toUpperCase() + data.name.slice(1)}</div>`;
+        statsHtml += `<div class="stat">Height: ${data.height} decimetres</div>`;
+        statsHtml += `<div class="stat">Weight: ${data.weight} hectograms</div>`;
+        statsHtml += `<div class="stat">Base Stats:</div>`;
         
-        if (data.image) {
-            // Random Fox API structure
-            imageUrl = data.image;
-        } else if (data.message) {
-            // Dog CEO API structure
-            imageUrl = data.message;
-        } else if (data[0] && data[0].url) {
-            // The Cat API structure
-            imageUrl = data[0].url;
-        } else if (data.card) {
-            // Pokémon TCG API structure
-            imageUrl = data.card.images.small; // Using small image of Pokémon card
-            statsHtml += `<div class="stat">Name: ${data.card.name}</div>`;
-            statsHtml += `<div class="stat">Type: ${data.card.types.join(', ')}</div>`;
-            statsHtml += `<div class="stat">HP: ${data.card.hpt}</div>`;
-        } else {
-            // Handle case where there's no image
-            imageUrl = null;
-        }
+        // Loop through base stats
+        data.stats.forEach(stat => {
+            statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
+        });
 
-        // Update the image element if an image URL is found
+        // Update the image element
         const imageElement = document.getElementById('fetchedImage');
         if (imageUrl) {
             imageElement.src = imageUrl; // Set the source of the image to the fetched image URL
             imageElement.style.display = 'block'; // Show the image element
             
-            // Display Pokémon stats if it's a Pokémon card
+            // Display Pokémon stats
             document.getElementById('pokemonStats').innerHTML = statsHtml;
-            document.getElementById('pokemonStats').style.display = (data.card) ? 'block' : 'none';
+            document.getElementById('pokemonStats').style.display = 'block';
         } else {
             // Hide image if no URL is returned
             imageElement.style.display = 'none';
@@ -87,19 +70,6 @@ async function fetchData() {
         document.getElementById('fetchedImage').style.display = 'none'; // Hide image on error
         document.getElementById('pokemonStats').style.display = 'none'; // Hide stats on error
     }
-}
-
-function updateUrl(selectedUrl) {
-    const pokemonApiUrl = "https://pokeapi.co/api/v2/pokemon/";
-    document.getElementById('myText1').value = selectedUrl;
-
-    // If the selected option is Pokémon, append a random id for fetching random Pokémon
-    if (selectedUrl === pokemonApiUrl) {
-        const randomPokemonId = Math.floor(Math.random() * 898) + 1; // Pokémon IDs range from 1 to 898
-        document.getElementById('myText1').value = `${pokemonApiUrl}${randomPokemonId}`;
-    }
-
-    document.getElementById('myDiv1').innerHTML = `Selected URL: ${document.getElementById('myText1').value}`;
 }
 
 // Explanation of JSON compared to JavaScript objects
