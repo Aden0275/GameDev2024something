@@ -6,65 +6,76 @@
     <title>Animal Images, Math Problems & Pokémon Display</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8e0d3, #f4c6ff);
             color: #333;
             margin: 0;
             padding: 20px;
-            display: flex; /* Apply flexbox */
-            flex-direction: column; /* Stack elements vertically */
-            align-items: center; /* Center elements horizontally */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
-            color: #4CAF50;
+            color: #52057b;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         input[type="text"], input[type="number"], input[type="button"], select {
-            padding: 10px;
-            margin: 10px;
-            border: 2px solid #4CAF50;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 8px;
+            border: 2px solid #52057b;
+            border-radius: 8px;
             font-size: 16px;
             width: auto;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-weight: bold;
         }
 
         input[type="text"]:focus, input[type="number"]:focus, select:focus {
-            border-color: #45a049;
+            border-color: #8e44ad;
             outline: none;
+            background-color: #f9f9f9;
         }
 
         input[type="button"] {
-            background-color: #4CAF50;
-            color: white;
+            background-color: #52057b;
+            color: #fff;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
+            font-size: 18px;
+            border: none;
         }
 
         input[type="button"]:hover {
-            background-color: #45a049;
+            background-color: #8e44ad;
             transform: scale(1.05);
         }
 
         .pokemon-container {
             background-color: white;
-            border-radius: 10px;
+            border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             margin: 20px 0;
-            display: flex; /* Use flexbox for alignment */
-            flex-direction: column; /* Stack image and stats vertically */
-            align-items: center; /* Center items horizontally */
-            width: 300px; /* Fixed width */
-            text-align: center; /* Center align text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .pokemon-container:hover {
+            transform: translateY(-5px);
         }
 
         .pokemon-container img {
             max-width: 100%; 
             border-radius: 10px;
             transition: transform 0.3s;
+            border: 4px solid #8e44ad;
         }
 
         .pokemon-container img:hover {
@@ -72,9 +83,10 @@
         }
 
         .pokemon-stats {
-            margin-top: 10px;
-            text-align: left; /* Left-align stats */
-            width: 100%; /* Full width for stats */
+            margin-top: 15px;
+            text-align: left;
+            width: 100%; 
+            font-size: 14px;
         }
 
         .stat {
@@ -83,7 +95,7 @@
 
         @media (max-width: 600px) {
             .pokemon-container {
-                width: 90%; /* Full width on small screens */
+                width: 90%;
             }
         }
     </style>
@@ -221,7 +233,6 @@
 
             currentPokemon = await response.json(); // Store current Pokémon data
             displayPokemon(currentPokemon);
-
         } catch (error) {
             console.error('Fetch error:', error);
             document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
@@ -249,7 +260,6 @@
 
             currentPokemon = await response.json(); // Store current Pokémon data
             displayPokemon(currentPokemon);
-
         } catch (error) {
             console.error('Fetch error:', error);
             document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
