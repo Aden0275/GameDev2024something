@@ -5,8 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animal Images, Math Problems & Pokémon Display</title>
     <style>
-        .pokemon-stats { margin-top: 20px; }
-        .stat { font-weight: bold; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        input[type="text"], input[type="number"], input[type="button"], select {
+            padding: 10px;
+            margin: 10px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            font-size: 16px;
+            width: auto;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: #45a049;
+            outline: none;
+        }
+
+        input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .pokemon-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            display: inline-block;
+            width: 300px;
+            text-align: left;
+        }
+
+        .pokemon-container img {
+            max-width: 100%; 
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .pokemon-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .pokemon-stats {
+            margin-top: 10px;
+        }
+
+        .stat {
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .pokemon-container {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -39,7 +111,7 @@
 <hr>
 
 <!-- Section for Pokémon Display -->
-<h2>Random Pokémon Display</h2>
+<h2>Pokémon Display</h2>
 <input type="button" value="Show Random Pokémon" onclick="fetchPokemonData()"><br><br>
 
 <!-- New section for Pokémon ID search -->
@@ -51,8 +123,10 @@
 <input type="button" value="Toggle Shiny Form" onclick="toggleShinyForm()" style="display:none;" id="toggleShinyButton"><br><br>
 
 <div id="pokemonJson">Fetched Pokémon data will appear here.</div>
-<img id="pokemonImage" src="" alt="Fetched Pokémon" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
-<div id="pokemonStats" class="pokemon-stats" style="display:none;"></div>
+<div class="pokemon-container" style="display:none;" id="pokemonDataContainer">
+    <img id="pokemonImage" src="" alt="Fetched Pokémon"/>
+    <div id="pokemonStats" class="pokemon-stats"></div>
+</div>
 
 <script>
     let currentPokemon; // To store the current Pokémon data
@@ -194,7 +268,8 @@
         const pokemonImageElement = document.getElementById('pokemonImage');
         if (imageUrl) {
             pokemonImageElement.src = imageUrl; 
-            pokemonImageElement.style.display = 'block'; 
+            pokemonImageElement.style.display = 'block';
+            document.getElementById('pokemonDataContainer').style.display = 'block'; // Show the Pokémon data container
             
             document.getElementById('pokemonStats').innerHTML = statsHtml;
             document.getElementById('pokemonStats').style.display = 'block';
