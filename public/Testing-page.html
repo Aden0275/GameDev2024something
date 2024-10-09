@@ -40,7 +40,12 @@
 
 <!-- Section for Pokémon Display -->
 <h2>Random Pokémon Display</h2>
-<input type="button" value="Show Pokémon" onclick="fetchPokemonData()"><br><br>
+<input type="button" value="Show Random Pokémon" onclick="fetchPokemonData()"><br><br>
+
+<!-- New section for Pokémon ID search -->
+<h3>Search Pokémon by ID</h3>
+<input type="number" id="pokemonIdInput" placeholder="Enter Pokémon ID (1-1025)">
+<input type="button" value="Search Pokémon" onclick="searchPokemonById()"><br><br>
 
 <div id="pokemonJson">Fetched Pokémon data will appear here.</div>
 <img id="pokemonImage" src="" alt="Fetched Pokémon" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
@@ -118,8 +123,57 @@
 
     // Functionality for Pokémon Display
     async function fetchPokemonData() {
-        const randomId = Math.floor(Math.random() * 1025) + 1; // Random ID from 1 to 1025
+        const randomId = Math.floor(Math.random() * 1025) + 1;
         const url = `https://pokeapi.co/api/v2/pokemon/${randomId}/`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            document.getElementById('pokemonJson').innerHTML = `Fetched Pokémon ID: ${data.id}`;
+
+            const imageUrl = data.sprites.front_default; 
+            let statsHtml = `<div class="stat">Name: ${data.name.charAt(0).toUpperCase() + data.name.slice(1)}</div>`;
+            statsHtml += `<div class="stat">Height: ${data.height} decimetres</div>`;
+            statsHtml += `<div class="stat">Weight: ${data.weight} hectograms</div>`;
+            statsHtml += `<div class="stat">Base Stats:</div>`;
+            
+            data.stats.forEach(stat => {
+                statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
+            });
+
+            const pokemonImageElement = document.getElementById('pokemonImage');
+            if (imageUrl) {
+                pokemonImageElement.src = imageUrl; 
+                pokemonImageElement.style.display = 'block'; 
+                
+                document.getElementById('pokemonStats').innerHTML = statsHtml;
+                document.getElementById('pokemonStats').style.display = 'block';
+            } else {
+                pokemonImageElement.style.display = 'none';
+                document.getElementById('pokemonStats').style.display = 'none'; 
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('pokemonImage').style.display = 'none'; 
+            document.getElementById('pokemonStats').style.display = 'none'; 
+        }
+    }
+    
+    // New function to search Pokémon by ID
+    async function searchPokemonById() {
+        const id = document.getElementById('pokemonIdInput').value;
+
+        if (id < 1 || id > 1025) {
+            alert('Please enter a Pokémon ID between 1 and 1025.');
+            return;
+        }
+
+        const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
 
         try {
             const response = await fetch(url);
