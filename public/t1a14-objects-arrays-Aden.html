@@ -9,9 +9,8 @@
 </head>
 <body>
 
-
-<label for="research">Show your research about objects and arrays in the textarea here:</label><br><br>
-<textarea id="research" rows="4" cols="70">
+    <label for="research">Show your research about objects and arrays in the textarea here:</label><br><br>
+    <textarea id="research" rows="4" cols="70" readonly>
 let myArray = [5, 2, 8, 2, 1];
 let myObject = { name: 'John', age: 30, profession: 'Developer' };
 let anotherObject = {
@@ -23,31 +22,33 @@ let anotherArray = [
     { name: 'Bob', age: 28 },
     { name: 'Charlie', age: 32 }
 ]; // Object inside array
-</textarea><br><br>
+    </textarea><br><br>
 
-<button id="btnArrayWithObject">Array with Object in it</button>
-<button id="btnObjectWithArray">Object with Array in it</button><br><br>
+    <div>
+        <button id="btnArrayWithObject" aria-label="Show array containing objects">Array with Object in it</button>
+        <button id="btnObjectWithArray" aria-label="Show object containing array">Object with Array in it</button>
+    </div><br><br>
 
-<div id="output"></div>
+    <div id="output"></div>
 
-<script>
-    document.getElementById('btnArrayWithObject').addEventListener('click', function() {
-        const data = [
-            { name: 'Bob', age: 28 },
-            { name: 'Charlie', age: 32 }
-        ];
-        document.getElementById('output').innerText = JSON.stringify(data, null, 2);
-    });
+    <script>
+        document.getElementById('btnArrayWithObject').addEventListener('click', function() {
+            const data = [
+                { name: 'Bob', age: 28 },
+                { name: 'Charlie', age: 32 }
+            ];
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        });
 
-    document.getElementById('btnObjectWithArray').addEventListener('click', function() {
-        const data = {
-            name: 'Alice',
-            hobbies: ['reading', 'coding', 'hiking'],
-            age: 25
-        };
-        document.getElementById('output').innerText = JSON.stringify(data, null, 2);
-    });
-</script>
+        document.getElementById('btnObjectWithArray').addEventListener('click', function() {
+            const data = {
+                name: 'Alice',
+                hobbies: ['reading', 'coding', 'hiking'],
+                age: 25
+            };
+            document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+        });
+    </script>
 
 </body>
 </html>
