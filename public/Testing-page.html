@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Animal Images & Math Problems</title>
+    <title>Fetch JSON Example</title>
 </head>
 <body>
 
-<h1>Random Animal Images & Math Problems</h1>
-
-<!-- Section for Animal Image Fetching -->
+<textarea cols="70" rows="5" id="jsonExplanation" readonly></textarea>
+<br>
 <label for="myText1">Enter a JSON returning URL:</label>
 <input type="text" id="myText1" value="https://randomfox.ca/floof/">
 <input type="button" value="Show JSON" onclick="fetchData()"><br><br>
@@ -18,20 +17,12 @@
     <option value="https://randomfox.ca/floof/">RandomFox</option>
     <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
     <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
+    <option value="https://pokeapi.co/api/v2/pokemon/" data-pokemon="true">Random Pokémon</option>
+    <!-- Add more JSON returning URLs here -->
 </select><br><br>
 
 <div id="myDiv1">Fetched JSON will appear here.</div>
 <img id="fetchedImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
-
-<hr>
-
-<!-- Section for Math Problems -->
-<h2>Random Math Problems</h2>
-<button onclick="generateMathProblem()">Generate Math Problem</button>
-<div id="mathProblem" style="margin-top: 20px; font-size: 1.5em;"></div>
-<div id="answer" style="margin-top: 20px; font-size: 1.5em;"></div>
-
-<textarea cols="70" rows="5" id="jsonExplanation" readonly></textarea>
 
 <script>
 async function fetchData() {
@@ -58,6 +49,12 @@ async function fetchData() {
         } else if (data[0] && data[0].url) {
             // The Cat API structure
             imageUrl = data[0].url;
+        } else if (data.sprites && data.sprites.front_default) {
+            // PokéAPI structure
+            imageUrl = data.sprites.front_default;
+        } else {
+            // Handle case where there's no image
+            imageUrl = null;
         }
 
         // Update the image element if an image URL is found
@@ -66,8 +63,8 @@ async function fetchData() {
             imageElement.src = imageUrl; // Set the source of the image to the fetched image URL
             imageElement.style.display = 'block'; // Show the image element
         } else {
-            // Handle cases where there's no image
-            imageElement.style.display = 'none'; // Hide image if no URL is returned
+            // Hide image if no URL is returned
+            imageElement.style.display = 'none';
         }
     } catch (error) {
         console.error('Fetch error:', error);
@@ -77,46 +74,20 @@ async function fetchData() {
 }
 
 function updateUrl(selectedUrl) {
+    const pokemonApiUrl = "https://pokeapi.co/api/v2/pokemon/";
     document.getElementById('myText1').value = selectedUrl;
-    document.getElementById('myDiv1').innerHTML = `Selected URL: ${selectedUrl}`;
+
+    // If the selected option is Pokémon, append a random id for fetching random Pokémon
+    if (selectedUrl === pokemonApiUrl) {
+        const randomPokemonId = Math.floor(Math.random() * 898) + 1; // Pokémon IDs range from 1 to 898
+        document.getElementById('myText1').value = `${pokemonApiUrl}${randomPokemonId}`;
+    }
+
+    document.getElementById('myDiv1').innerHTML = `Selected URL: ${document.getElementById('myText1').value}`;
 }
 
 // Explanation of JSON compared to JavaScript objects
 document.getElementById('jsonExplanation').value = "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C family of languages. In contrast, JavaScript objects are dynamic and can contain functions, whereas JSON is purely a data format and cannot contain functions or methods.";
-
-// Math Problem Generation
-function generateMathProblem() {
-    // Generate random numbers and choose an operation
-    const num1 = Math.floor(Math.random() * 100); // Random number between 0 and 99
-    const num2 = Math.floor(Math.random() * 100); // Random number between 0 and 99
-    const operations = ['+', '-', '*', '/'];
-    const operation = operations[Math.floor(Math.random() * operations.length)];
-
-    // Create the math problem
-    const problem = `${num1} ${operation} ${num2}`;
-    
-    // Calculate the answer
-    let answer;
-    switch (operation) {
-        case '+':
-            answer = num1 + num2;
-            break;
-        case '-':
-            answer = num1 - num2;
-            break;
-        case '*':
-            answer = num1 * num2;
-            break;
-        case '/':
-            // Avoid division by zero
-            answer = num2 !== 0 ? (num1 / num2).toFixed(2) : 'undefined (division by zero)';
-            break;
-    }
-
-    // Display the problem and answer
-    document.getElementById('mathProblem').textContent = `Problem: ${problem}`;
-    document.getElementById('answer').textContent = `Answer: ${answer}`;
-}
 </script>
 
 </body>
