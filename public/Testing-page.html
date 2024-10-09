@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch JSON Example</title>
+    <style>
+        .pokemon-stats {
+            margin-top: 20px;
+        }
+        .stat {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,11 +26,11 @@
     <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
     <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
     <option value="https://pokeapi.co/api/v2/pokemon/" data-pokemon="true">Random Pokémon</option>
-    <!-- Add more JSON returning URLs here -->
 </select><br><br>
 
 <div id="myDiv1">Fetched JSON will appear here.</div>
 <img id="fetchedImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+<div id="pokemonStats" class="pokemon-stats" style="display:none;"></div>
 
 <script>
 async function fetchData() {
@@ -40,6 +48,8 @@ async function fetchData() {
 
         // Determine the image source based on the API
         let imageUrl;
+        let statsHtml = '';
+        
         if (data.image) {
             // Random Fox API structure
             imageUrl = data.image;
@@ -52,6 +62,14 @@ async function fetchData() {
         } else if (data.sprites && data.sprites.front_default) {
             // PokéAPI structure
             imageUrl = data.sprites.front_default;
+
+            // Add Pokémon stats
+            statsHtml += `<div class="stat">Name: ${data.name}</div>`;
+            statsHtml += `<div class="stat">Height: ${data.height}</div>`;
+            statsHtml += `<div class="stat">Weight: ${data.weight}</div>`;
+            data.stats.forEach(stat => {
+                statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
+            });
         } else {
             // Handle case where there's no image
             imageUrl = null;
@@ -62,14 +80,20 @@ async function fetchData() {
         if (imageUrl) {
             imageElement.src = imageUrl; // Set the source of the image to the fetched image URL
             imageElement.style.display = 'block'; // Show the image element
+            
+            // Display Pokémon stats if it's a Pokémon
+            document.getElementById('pokemonStats').innerHTML = statsHtml;
+            document.getElementById('pokemonStats').style.display = (data.sprites) ? 'block' : 'none';
         } else {
             // Hide image if no URL is returned
             imageElement.style.display = 'none';
+            document.getElementById('pokemonStats').style.display = 'none'; // Hide stats
         }
     } catch (error) {
         console.error('Fetch error:', error);
         document.getElementById('myDiv1').textContent = 'Error fetching data: ' + error.message;
         document.getElementById('fetchedImage').style.display = 'none'; // Hide image on error
+        document.getElementById('pokemonStats').style.display = 'none'; // Hide stats on error
     }
 }
 
