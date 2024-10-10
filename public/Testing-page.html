@@ -1,42 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Button Click Event Example</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        button {
-            padding: 15px 30px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-        #message {
-            font-size: 18px;
-            color: #333;
-        }
-    </style>
-</head>
-<body>
-    <button id="myButton">Click Me!</button>
-    <div id="message"></div>
+<b onTouchEvent="{alert('onTouchEvents01')}">Input:</b>
 
-    <script>
-        // Function to handle button click event
-        document.getElementById("myButton").onclick = function() {
-            // Update the message displayed on the page
-            document.getElementById("message").innerText = "You clicked the button!";
-        };
-    </script>
-</body>
-</html>
+
+<input type=text id="myFirstName" value="Aden"
+onBlur="{'alert('onBlur01')}"><br><br>
+
+<input type=button value="show on page" onclick="{
+     document.getElementById('myDiv01').innerHTML = 'Hey'
+    }"><br><br>
+    <div id="myDiv01" onMouseOver="{alert('onMouseOver)}">...</div><br><br>
