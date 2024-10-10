@@ -8,3 +8,14 @@ onBlur="{'alert('onBlur01')}"><br><br>
      document.getElementById('myDiv01').innerHTML = 'Hey'
     }"><br><br>
     <div id="myDiv01" onMouseOver="{alert('onMouseOver)}">...</div><br><br>
+
+
+ <body onMouseMove="{
+        document.getElementById('myDiv01').innerHTML =
+      x:$(event.clientX), y:$(event.clientY}'
+
+}" onKeyDown="{
+        document.getElementById('myDiv01').innerHTML =
+      'key:${event.key}"
+      }">
+      
