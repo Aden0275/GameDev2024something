@@ -1,1 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Images, Math Problems & Pokémon Display</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8e0d3, #f4c6ff);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
+        h1 {
+            color: #52057b;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="text"], input[type="number"], input[type="button"], select {
+            padding: 12px;
+            margin: 8px;
+            border: 2px solid #52057b;
+            border-radius: 8px;
+            font-size: 16px;
+            width: auto;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-weight: bold;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: #8e44ad;
+            outline: none;
+            background-color: #f9f9f9;
+        }
+
+        input[type="button"] {
+            background-color: #52057b;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 18px;
+            border: none;
+        }
+
+        input[type="button"]:hover {
+            background-color: #8e44ad;
+            transform: scale(1.05);
+        }
+
+        .calculator-container, .keyboard {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .keyboard {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .keyboard-row {
+            display: flex;
+        }
+
+        .keyboard-button {
+            padding: 10px;
+            margin: 5px;
+            background-color: #52057b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .keyboard-button:hover {
+            background-color: #8e44ad;
+        }
+
+        .pokemon-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .pokemon-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .pokemon-container img {
+            max-width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            border: 4px solid #8e44ad;
+        }
+
+        .pokemon-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .pokemon-stats {
+            margin-top: 15px;
+            text-align: left;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .stat {
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .pokemon-container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Random Animal Images, Math Problems & Pokémon Display</h1>
+
+<!-- Section for Animal Image Fetching -->
+<h2>Random Animal Images</h2>
+<label for="animalUrl">Enter a JSON returning URL:</label>
+<input type="text" id="animalUrl" value="https://randomfox.ca/floof/">
+<input type="button" value="Show Animal" onclick="fetchAnimalData()"><br><br>
+
+<select id="animalOptions" size="1" onchange="updateAnimalUrl(this.value)">
+    <option value="https://randomfox.ca/floof/">RandomFox</option>
+    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
+    <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
+</select><br><br>
+
+<div id="animalJson">Fetched JSON will appear here.</div>
+<img id="animalImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+
+<hr>
+
+<!-- Section for Calculator -->
+<h2>Calculator</h2>
+<div class="calculator-container">
+    <input type="text" id="mathInput" placeholder="Enter math expression" readonly>
+    <input type="button" value="Show Keyboard" onclick="toggleKeyboard()">
+    <input type="button" value="Calculate" onclick="calculateMath()"><br>
+    <div id="mathResult" style="font-size: 1.5em;"></div>
+</div>
+
+<!-- Keyboard Section -->
+<div class="keyboard" id="keyboard">
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('7')">7</button>
+        <button class="keyboard-button" onclick="addToInput('8')">8</button>
+        <button class="keyboard-button" onclick="addToInput('9')">9</button>
+        <button class="keyboard-button" onclick="addToInput('/')">/</button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('4')">4</button>
+        <button class="keyboard-button" onclick="addToInput('5')">5</button>
+        <button class="keyboard-button" onclick="addToInput('6')">6</button>
+        <button class="keyboard-button" onclick="addToInput('*')">*</button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('1')">1</button>
+        <button class="keyboard-button" onclick="addToInput('2')">2</button>
+        <button class="keyboard-button" onclick="addToInput('3')">3</button>
+        <button class="keyboard-button" onclick="addToInput('-')">-</button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('0')">0</button>
+        <button class="keyboard-button" onclick="addToInput('.')">.</button>
+        <button class="keyboard-button" onclick="addToInput('(')"> ( </button>
+        <button class="keyboard-button" onclick="addToInput(')')"> ) </button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('+')">+</button>
+        <button class="keyboard-button" onclick="clearInput()">C</button>
+    </div>
+</div>
+
+<hr>
+
+<!-- Section for Pokémon Display -->
+<h2>Pokémon Display</h2>
+<input type="button" value="Show Random Pokémon" onclick="fetchPokemonData()"><br><br>
+
+<!-- New section for Pokémon ID search -->
+<h3>Search Pokémon by ID</h3>
+<input type="number" id="pokemonIdInput" placeholder="Enter Pokémon ID (1-1025)">
+<input type="button" value="Search Pokémon" onclick="searchPokemonById()"><br><br>
+
+<!-- Button to toggle shiny form -->
+<input type="button" value="Toggle Shiny Form" onclick="toggleShinyForm()" style="display:none;" id="toggleShinyButton"><br><br>
+
+<div id="pokemonJson">Fetched Pokémon data will appear here.</div>
+<div class="pokemon-container" style="display:none;" id="pokemonDataContainer">
+    <img id="pokemonImage" src="" alt="Fetched Pokémon"/>
+    <div id="pokemonStats" class="pokemon-stats"></div>
+</div>
+
+<!-- Example JSON Data -->
+<!--
+{
+    "animals": [
+        {
+            "name": "Lion",
+            "type": "Mammal",
+            "image": "https://example.com/lion.jpg"
+        },
+        {
+            "name": "Eagle",
+            "type": "Bird",
+            "image": "https://example.com/eagle.jpg"
+        },
+        {
+            "name": "Shark",
+            "type": "Fish",
+            "image": "https://example.com/shark.jpg"
+        }
+    ]
+}
+-->
+
+<script>
+    let currentPokemon; 
+    let isShiny = false; 
+
+    // Functionality for Animal Images
+    async function fetchAnimalData() {
+        const url = document.getElementById('animalUrl').value;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            document.getElementById('animalJson').innerHTML = JSON.stringify(data, null, 2);
+
+            let imageUrl;
+            if (data.image) {
+                imageUrl = data.image;
+            } else if (data.message) {
+                imageUrl = data.message;
+            } else if (data[0] && data[0].url) {
+                imageUrl = data[0].url;
+            }
+
+            const animalImageElement = document.getElementById('animalImage');
+            if (imageUrl) {
+                animalImageElement.src = imageUrl; 
+                animalImageElement.style.display = 'block'; 
+            } else {
+                animalImageElement.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('animalJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('animalImage').style.display = 'none'; 
+        }
+    }
+
+    function updateAnimalUrl(selectedUrl) {
+        document.getElementById('animalUrl').value = selectedUrl;
+        document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
+    }
+
+    // Functionality for Calculator
+    function addToInput(value) {
+        document.getElementById('mathInput').value += value; // Append value to input
+    }
+
+    function clearInput() {
+        document.getElementById('mathInput').value = ''; // Clear the input
+        document.getElementById('mathResult').textContent = ''; // Clear the result display
+    }
+
+    function calculateMath() {
+        const input = document.getElementById('mathInput').value;
+        let result;
+        try {
+            // Evaluate the expression safely
+            result = eval(input); 
+            if (result === undefined) {
+                throw new Error("Invalid expression");
+            }
+        } catch (error) {
+            result = "Error: " + error.message;
+        }
+        
+        document.getElementById('mathResult').textContent = `Result: ${result}`;
+    }
+
+    function toggleKeyboard() {
+        const keyboard = document.getElementById('keyboard');
+        keyboard.style.display = (keyboard.style.display === "none" || keyboard.style.display === "") ? "flex" : "none";
+    }
+
+    // Functionality for Pokémon Display
+    async function fetchPokemonData() {
+        const randomId = Math.floor(Math.random() * 1025) + 1;
+        const url = `https://pokeapi.co/api/v2/pokemon/${randomId}/`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            currentPokemon = await response.json(); 
+            displayPokemon(currentPokemon);
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('pokemonImage').style.display = 'none'; 
+            document.getElementById('pokemonStats').style.display = 'none'; 
+        }
+    }
+
+    async function searchPokemonById() {
+        const id = document.getElementById('pokemonIdInput').value;
+
+        if (id < 1 || id > 1025) {
+            alert('Please enter a Pokémon ID between 1 and 1025.');
+            return;
+        }
+
+        const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            currentPokemon = await response.json(); 
+            displayPokemon(currentPokemon);
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('pokemonImage').style.display = 'none'; 
+            document.getElementById('pokemonStats').style.display = 'none'; 
+        }
+    }
+
+    function displayPokemon(data) {
+        document.getElementById('pokemonJson').innerHTML = `Fetched Pokémon ID: ${data.id}`;
+
+        const imageUrl = isShiny ? data.sprites.front_shiny : data.sprites.front_default; 
+        let statsHtml = `<div class="stat">Name: ${data.name.charAt(0).toUpperCase() + data.name.slice(1)}</div>`;
+        statsHtml += `<div class="stat">Height: ${data.height} decimetres</div>`;
+        statsHtml += `<div class="stat">Weight: ${data.weight} hectograms</div>`;
+        statsHtml += `<div class="stat">Base Stats:</div>`;
+        
+        data.stats.forEach(stat => {
+            statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
+        });
+
+        const pokemonImageElement = document.getElementById('pokemonImage');
+        if (imageUrl) {
+            pokemonImageElement.src = imageUrl; 
+            pokemonImageElement.style.display = 'block';
+            document.getElementById('pokemonDataContainer').style.display = 'block'; 
+            
+            document.getElementById('pokemonStats').innerHTML = statsHtml;
+            document.getElementById('pokemonStats').style.display = 'block';
+            document.getElementById('toggleShinyButton').style.display = 'inline'; 
+        } else {
+            pokemonImageElement.style.display = 'none';
+            document.getElementById('pokemonStats').style.display = 'none'; 
+            document.getElementById('toggleShinyButton').style.display = 'none'; 
+        }
+    }
+
+    function toggleShinyForm() {
+        isShiny = !isShiny; 
+        if (currentPokemon) {
+            displayPokemon(currentPokemon); 
+        }
+    }
+</script>
+
+</body>
+</html>
