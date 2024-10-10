@@ -233,7 +233,7 @@
             }
 
             currentPokemon = await response.json(); // Store current Pokémon data
-            const description = getPokemonDescription(currentPokemon.id); // Get description based on the ID
+            const description = await fetchPokemonDescription(currentPokemon.id); // Fetch description based on the ID
             displayPokemon(currentPokemon, description);
 
         } catch (error) {
@@ -263,7 +263,7 @@
             }
 
             currentPokemon = await response.json(); // Store current Pokémon data
-            const description = getPokemonDescription(currentPokemon.id); // Get description based on the ID
+            const description = await fetchPokemonDescription(currentPokemon.id); // Fetch description based on the ID
             displayPokemon(currentPokemon, description);
 
         } catch (error) {
@@ -272,6 +272,23 @@
             document.getElementById('pokemonImage').style.display = 'none'; 
             document.getElementById('pokemonStats').style.display = 'none'; 
             document.getElementById('pokemonDescription').style.display = 'none'; 
+        }
+    }
+
+    // Function to fetch the Pokémon description
+    async function fetchPokemonDescription(pokemonId) {
+        try {
+            const url = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            const description = data.flavor_text_entries.find(entry => entry.language.name === 'en');
+            return description ? description.flavor_text.replace(/\n/g, ' ') : "No description available.";
+        } catch (error) {
+            console.error('Error fetching description:', error);
+            return "No description available.";
         }
     }
 
@@ -308,24 +325,12 @@
         }
     }
 
-    // Sample descriptions based on Pokémon ID (you can extend this)
-    function getPokemonDescription(pokemonId) {
-        const descriptions = {
-            1: "A small, quadruped Pokémon with a green skin and a fire on its back.",
-            2: "A bipedal lizard-like Pokémon with an orange body.",
-            3: "A large, tree-type Pokémon with a corresponding flower on its back.",
-            4: "A small, bipedal bird Pokémon known for its electric abilities.",
-            // Add more Pokémon descriptions as needed...
-        };
-        return descriptions[pokemonId] || "No description available."; // Fallback description
-    }
-
     // Function to toggle shiny form
     function toggleShinyForm() {
         isShiny = !isShiny; // Toggle the shiny state
         if (currentPokemon) {
-            const description = getPokemonDescription(currentPokemon.id); // Get the description again
-            displayPokemon(currentPokemon, description); // Redisplay the current Pokémon with the updated state
+            fetchPokemonDescription(currentPokemon.id) // Fetch the description again
+                .then(description => displayPokemon(currentPokemon, description)); // Redisplay the Pokémon
         }
     }
 </script>
