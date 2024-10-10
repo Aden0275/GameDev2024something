@@ -3,36 +3,332 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Handling Example</title>
+    <title>Animal Images, Math Problems & Pokémon Display</title>
     <style>
         body {
-            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8e0d3, #f4c6ff);
+            color: #333;
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            background-color: #f0f0f0;
         }
-        #coordinates, #message {
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid #333;
-            width: 200px;
+
+        h1 {
+            color: #52057b;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="text"], input[type="number"], input[type="button"], select {
+            padding: 12px;
+            margin: 8px;
+            border: 2px solid #52057b;
+            border-radius: 8px;
+            font-size: 16px;
+            width: auto;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-weight: bold;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: #8e44ad;
+            outline: none;
+            background-color: #f9f9f9;
+        }
+
+        input[type="button"] {
+            background-color: #52057b;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 18px;
+            border: none;
+        }
+
+        input[type="button"]:hover {
+            background-color: #8e44ad;
+            transform: scale(1.05);
+        }
+
+        .pokemon-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
             text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .pokemon-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .pokemon-container img {
+            max-width: 100%; 
+            border-radius: 10px;
+            transition: transform 0.3s;
+            border: 4px solid #8e44ad;
+        }
+
+        .pokemon-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .pokemon-stats, .pokemon-description {
+            margin-top: 15px;
+            text-align: left;
+            width: 100%; 
+            font-size: 14px;
+        }
+
+        .stat {
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .pokemon-container {
+                width: 90%;
+            }
         }
     </style>
 </head>
-<body onmousemove="document.getElementById('coordinates').innerHTML = 'x: ' + event.clientX + ', y: ' + event.clientY" 
-      onkeydown="document.getElementById('coordinates').innerHTML = 'key: ' + event.key">
-    
-    <b onTouchEnd="document.getElementById('coordinates').innerHTML = 'onTouchEnd'">Input:</b>
+<body>
 
-    <input type="text" id="myFirstName" value="Aden" onblur="document.getElementById('coordinates').innerHTML = 'onBlur'"><br><br>
+<h1>Random Animal Images, Math Problems & Pokémon Display</h1>
 
-    <input type="button" value="Show on Page" onclick="document.getElementById('message').innerHTML = 'Hey!'"><br><br>
+<!-- Section for Animal Image Fetching -->
+<h2>Random Animal Images</h2>
+<label for="animalUrl">Enter a JSON returning URL:</label>
+<input type="text" id="animalUrl" value="https://randomfox.ca/floof/">
+<input type="button" value="Show Animal" onclick="fetchAnimalData()"><br><br>
 
-    <div id="coordinates">...</div>
-    <div id="message">...</div>
+<select id="animalOptions" size="1" onchange="updateAnimalUrl(this.value)">
+    <option value="https://randomfox.ca/floof/">RandomFox</option>
+    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
+    <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
+</select><br><br>
+
+<div id="animalJson">Fetched JSON will appear here.</div>
+<img id="animalImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+
+<hr>
+
+<!-- Section for Math Problems -->
+<h2>Random Math Problems</h2>
+<button onclick="generateMathProblem()">Generate Math Problem</button>
+<div id="mathProblem" style="margin-top: 20px; font-size: 1.5em;"></div>
+<div id="mathAnswer" style="margin-top: 20px; font-size: 1.5em;"></div>
+
+<hr>
+
+<!-- Section for Pokémon Display -->
+<h2>Pokémon Display</h2>
+<input type="button" value="Show Random Pokémon" onclick="fetchPokemonData()"><br><br>
+
+<!-- New section for Pokémon ID search -->
+<h3>Search Pokémon by ID</h3>
+<input type="number" id="pokemonIdInput" placeholder="Enter Pokémon ID (1-1025)">
+<input type="button" value="Search Pokémon" onclick="searchPokemonById()"><br><br>
+
+<!-- Button to toggle shiny form -->
+<input type="button" value="Toggle Shiny Form" onclick="toggleShinyForm()" style="display:none;" id="toggleShinyButton"><br><br>
+
+<div id="pokemonJson">Fetched Pokémon data will appear here.</div>
+<div class="pokemon-container" style="display:none;" id="pokemonDataContainer">
+    <img id="pokemonImage" src="" alt="Fetched Pokémon"/>
+    <div id="pokemonStats" class="pokemon-stats"></div>
+    <div id="pokemonDescription" class="pokemon-description"></div> <!-- Added description div -->
+</div>
+
+<script>
+    let currentPokemon; // To store the current Pokémon data
+    let isShiny = false; // To track if shiny form is to be displayed
+
+    // Functionality for Animal Images
+    async function fetchAnimalData() {
+        const url = document.getElementById('animalUrl').value;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            document.getElementById('animalJson').innerHTML = JSON.stringify(data, null, 2);
+
+            let imageUrl;
+            if (data.image) {
+                imageUrl = data.image;
+            } else if (data.message) {
+                imageUrl = data.message;
+            } else if (data[0] && data[0].url) {
+                imageUrl = data[0].url;
+            }
+
+            const animalImageElement = document.getElementById('animalImage');
+            if (imageUrl) {
+                animalImageElement.src = imageUrl; 
+                animalImageElement.style.display = 'block'; 
+            } else {
+                animalImageElement.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('animalJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('animalImage').style.display = 'none'; 
+        }
+    }
+
+    function updateAnimalUrl(selectedUrl) {
+        document.getElementById('animalUrl').value = selectedUrl;
+        document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
+    }
+
+    // Functionality for Math Problems
+    function generateMathProblem() {
+        const num1 = Math.floor(Math.random() * 100);
+        const num2 = Math.floor(Math.random() * 100);
+        const operations = ['+', '-', '*', '/'];
+        const operation = operations[Math.floor(Math.random() * operations.length)];
+
+        const problem = `${num1} ${operation} ${num2}`;
+        
+        let answer;
+        switch (operation) {
+            case '+':
+                answer = num1 + num2;
+                break;
+            case '-':
+                answer = num1 - num2;
+                break;
+            case '*':
+                answer = num1 * num2;
+                break;
+            case '/':
+                answer = num2 !== 0 ? (num1 / num2).toFixed(2) : 'undefined (division by zero)';
+                break;
+        }
+
+        document.getElementById('mathProblem').textContent = `Problem: ${problem}`;
+        document.getElementById('mathAnswer').textContent = `Answer: ${answer}`;
+    }
+
+    // Functionality for Pokémon Display
+    async function fetchPokemonData() {
+        const randomId = Math.floor(Math.random() * 1025) + 1;
+        const url = `https://pokeapi.co/api/v2/pokemon/${randomId}/`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            currentPokemon = await response.json(); // Store current Pokémon data
+            const description = getPokemonDescription(currentPokemon.id); // Get description based on the ID
+            displayPokemon(currentPokemon, description);
+
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('pokemonImage').style.display = 'none'; 
+            document.getElementById('pokemonStats').style.display = 'none'; 
+            document.getElementById('pokemonDescription').style.display = 'none'; 
+        }
+    }
+
+    // New function to search Pokémon by ID
+    async function searchPokemonById() {
+        const id = document.getElementById('pokemonIdInput').value;
+
+        if (id < 1 || id > 1025) {
+            alert('Please enter a Pokémon ID between 1 and 1025.');
+            return;
+        }
+
+        const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            currentPokemon = await response.json(); // Store current Pokémon data
+            const description = getPokemonDescription(currentPokemon.id); // Get description based on the ID
+            displayPokemon(currentPokemon, description);
+
+        } catch (error) {
+            console.error('Fetch error:', error);
+            document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
+            document.getElementById('pokemonImage').style.display = 'none'; 
+            document.getElementById('pokemonStats').style.display = 'none'; 
+            document.getElementById('pokemonDescription').style.display = 'none'; 
+        }
+    }
+
+    // Function to display Pokémon data
+    function displayPokemon(data, description) {
+        document.getElementById('pokemonJson').innerHTML = `Fetched Pokémon ID: ${data.id}`;
+
+        const imageUrl = isShiny ? data.sprites.front_shiny : data.sprites.front_default; 
+        let statsHtml = `<div class="stat">Name: ${data.name.charAt(0).toUpperCase() + data.name.slice(1)}</div>`;
+        statsHtml += `<div class="stat">Height: ${data.height} decimetres</div>`;
+        statsHtml += `<div class="stat">Weight: ${data.weight} hectograms</div>`;
+        statsHtml += `<div class="stat">Base Stats:</div>`;
+        
+        data.stats.forEach(stat => {
+            statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
+        });
+
+        const pokemonImageElement = document.getElementById('pokemonImage');
+        if (imageUrl) {
+            pokemonImageElement.src = imageUrl; 
+            pokemonImageElement.style.display = 'block';
+            document.getElementById('pokemonDataContainer').style.display = 'block'; // Show the Pokémon data container
+            
+            document.getElementById('pokemonStats').innerHTML = statsHtml;
+            document.getElementById('pokemonStats').style.display = 'block';
+            document.getElementById('pokemonDescription').innerHTML = `<div class="stat">Description: ${description}</div>`; // Set and display Pokémon description
+            document.getElementById('pokemonDescription').style.display = 'block'; // Show description
+            document.getElementById('toggleShinyButton').style.display = 'inline'; // Show the toggle button
+        } else {
+            pokemonImageElement.style.display = 'none';
+            document.getElementById('pokemonStats').style.display = 'none'; 
+            document.getElementById('pokemonDescription').style.display = 'none'; 
+            document.getElementById('toggleShinyButton').style.display = 'none'; // Hide the toggle button if no image
+        }
+    }
+
+    // Sample descriptions based on Pokémon ID (you can extend this)
+    function getPokemonDescription(pokemonId) {
+        const descriptions = {
+            1: "A small, quadruped Pokémon with a green skin and a fire on its back.",
+            2: "A bipedal lizard-like Pokémon with an orange body.",
+            3: "A large, tree-type Pokémon with a corresponding flower on its back.",
+            4: "A small, bipedal bird Pokémon known for its electric abilities.",
+            // Add more Pokémon descriptions as needed...
+        };
+        return descriptions[pokemonId] || "No description available."; // Fallback description
+    }
+
+    // Function to toggle shiny form
+    function toggleShinyForm() {
+        isShiny = !isShiny; // Toggle the shiny state
+        if (currentPokemon) {
+            const description = getPokemonDescription(currentPokemon.id); // Get the description again
+            displayPokemon(currentPokemon, description); // Redisplay the current Pokémon with the updated state
+        }
+    }
+</script>
 
 </body>
 </html>
