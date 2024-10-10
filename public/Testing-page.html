@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Handling Example</title>
     <style>
-        /* Optional: Just for better visibility of the full page */
         body {
             height: 100vh;
             display: flex;
@@ -14,18 +13,26 @@
             justify-content: center;
             background-color: #f0f0f0;
         }
+        #coordinates, #message {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #333;
+            width: 200px;
+            text-align: center;
+        }
     </style>
 </head>
-<body onmousemove="document.getElementById('myDiv01').innerHTML = 'x: ' + event.clientX + ', y: ' + event.clientY" 
-      onkeydown="document.getElementById('myDiv01').innerHTML = 'key: ' + event.key">
+<body onmousemove="document.getElementById('coordinates').innerHTML = 'x: ' + event.clientX + ', y: ' + event.clientY" 
+      onkeydown="document.getElementById('coordinates').innerHTML = 'key: ' + event.key">
     
-    <b onTouchEnd="document.getElementById('myDiv01').innerHTML = 'onTouchEnd'">Input:</b>
+    <b onTouchEnd="document.getElementById('coordinates').innerHTML = 'onTouchEnd'">Input:</b>
 
-    <input type="text" id="myFirstName" value="Aden" onblur="document.getElementById('myDiv01').innerHTML = 'onBlur'"><br><br>
+    <input type="text" id="myFirstName" value="Aden" onblur="document.getElementById('coordinates').innerHTML = 'onBlur'"><br><br>
 
-    <input type="button" value="show on page" onclick="document.getElementById('myDiv01').innerHTML = 'Hey'"><br><br>
+    <input type="button" value="Show on Page" onclick="document.getElementById('message').innerHTML = 'Hey!'"><br><br>
 
-    <div id="myDiv01" onmouseover="document.getElementById('myDiv01').innerHTML = 'onMouseOver'">...</div><br><br>
+    <div id="coordinates">...</div>
+    <div id="message">...</div>
 
 </body>
 </html>
