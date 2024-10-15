@@ -6,27 +6,40 @@
     <title>Multi-Dimensional Arrays Example</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
             margin: 0;
             padding: 20px;
+            color: #333;
         }
         h1 {
-            color: #34495e;
-            text-shadow: 1px 1px 5px #ecf0f1;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         input[type="button"], input[type="text"] {
-            background-color: #3498db;
+            background-color: #2980b9;
             color: white;
             border: none;
             padding: 10px 15px;
             margin: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
             border-radius: 5px;
+            width: calc(100% - 42px); /* Adjusting for margins */
+            max-width: 250px;
         }
         input[type="button"]:hover {
-            background-color: #2980b9;
+            background-color: #3498db;
+            transform: scale(1.05);
+        }
+        input[type="text"] {
+            width: calc(100% - 42px);
+            max-width: 250px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+            font-size: 16px;
         }
         #myDiv01 {
             background-color: #ffffff;
@@ -36,12 +49,17 @@
             margin-top: 20px;
             max-height: 300px;
             overflow-y: auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            text-align: center;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
 
-<h1 align="center">t1a16-multi-d-arrays-Aden.html</h1>
+<h1>Multi-Dimensional Arrays Example</h1>
 
 <script>
     // Set a few Global Variables
@@ -50,8 +68,8 @@
     let myArrayAuto = new Array(myMax);
 </script>
 
-<div style="text-align: center;">
-    <label for="myFirstName">Input:</label>
+<div class="container">
+    <label for="myFirstName">Input Name:</label>
     <input type="text" id="myFirstName" value="fred"><br><br>
 
     <input type="button" value="Set Manual Array" onclick="setManualArray()">
@@ -60,7 +78,7 @@
     <input type="button" value="Show Auto Array" onclick="showAutoArray()">
 </div>
 
-<div style="text-align: center;">
+<div class="container">
     <label for="countTo">Count Up To:</label>
     <input type="text" id="countTo" placeholder="Enter a number"><br><br>
     <input type="button" value="Count Up" onclick="countUp()">
