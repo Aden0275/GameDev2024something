@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Fetcher</title>
+    <title>Animal Image Fetcher</title>
     <style>
         #animalImage {
             display: none; 
@@ -45,33 +45,26 @@
                 document.getElementById('animalJson').innerHTML = JSON.stringify(data, null, 2);
 
                 let imageUrl;
-                if (data.image) {
-                    imageUrl = data.image;
-                } else if (data.message) {
+                if (data.message) {  // For Dog API
                     imageUrl = data.message;
-                } else if (data.file) {
-                    imageUrl = data.file; // For the cat API
-                } else if (data.link) {
-                    imageUrl = data.link; // For some-random-api
+                } else if (data.file) {  // For Cat API
+                    imageUrl = data.file;
+                } else if (data.link) {  // For Bird API
+                    imageUrl = data.link;
+                } else {
+                    throw new Error("No image URL found in the response.");
                 }
 
-                const animalImageElement = document.getElementById('animalImage');
-                if (imageUrl) {
-                    currentImageSrc = imageUrl; // Store the current image source
-                    animalImageElement.src = currentImageSrc; 
-                } else {
-                    animalImageElement.style.display = 'none'; // Hide if no image is found
-                }
+                currentImageSrc = imageUrl; // Store the current image source
             } catch (error) {
                 console.error('Fetch error:', error);
                 document.getElementById('animalJson').textContent = 'Error fetching data: ' + error.message;
-                document.getElementById('animalImage').style.display = 'none'; 
+                currentImageSrc = ""; // Clear current image source on error
             }
         }
 
         function updateAnimalUrl(selectedUrl) {
             document.getElementById('animalUrl').value = selectedUrl;
-            document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
             fetchAnimalData(); // Call to fetch data when the selection is updated
         }
 
