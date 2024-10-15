@@ -15,7 +15,7 @@
             color: #34495e;
             text-shadow: 1px 1px 5px #ecf0f1;
         }
-        input[type="button"] {
+        input[type="button"], input[type="text"] {
             background-color: #3498db;
             color: white;
             border: none;
@@ -45,7 +45,7 @@
 
 <script>
     // Set a few Global Variables
-    let myMax = 3; // corrected from myMa to myMax
+    let myMax = 3;
     let myArrayManual = new Array(myMax);
     let myArrayAuto = new Array(myMax);
 </script>
@@ -58,6 +58,12 @@
     <input type="button" value="Show Manual Array" onclick="showManualArray()">
     <input type="button" value="Set Auto Array" onclick="setAutoArray()">
     <input type="button" value="Show Auto Array" onclick="showAutoArray()">
+</div>
+
+<div style="text-align: center;">
+    <label for="countTo">Count Up To:</label>
+    <input type="text" id="countTo" placeholder="Enter a number"><br><br>
+    <input type="button" value="Count Up" onclick="countUp()">
 </div>
 
 <div id="myDiv01">...</div>
@@ -97,6 +103,19 @@
                 document.getElementById('myDiv01').innerHTML +=
                     `myArrayAuto[${i}][${j}] = ${myArrayAuto[i][j]} <br>`;
             }
+        }
+    }
+
+    function countUp() {
+        const countToValue = parseInt(document.getElementById('countTo').value);
+        if (isNaN(countToValue) || countToValue < 1) {
+            alert("Please enter a valid positive number!");
+            return;
+        }
+
+        document.getElementById('myDiv01').innerHTML += `<br><strong>Counting Up to ${countToValue}:</strong><br>`;
+        for (let i = 1; i <= countToValue; i++) {
+            document.getElementById('myDiv01').innerHTML += `${i}<br>`;
         }
     }
 </script>
