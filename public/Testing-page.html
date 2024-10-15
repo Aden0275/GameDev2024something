@@ -1,12 +1,21 @@
-<h1 align="center">t1a16-multi-d-arrays-Aden.html</h1>
-<script>
-    // set a few Global Variables
-    let myMax = 3; // corrected from myMa to myMax
-    let myArrayManual = new Array(myMax);
-    let myArrayAuto = new Array(myMax);
-</script> 
 
-Input:<input type="text" id="myFirstName" value="fred"><br>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Dimensional Arrays</title>
+    <script>
+        // Set a few Global Variables
+        let myMax = 3; // corrected from myMa to myMax
+        let myArrayManual = new Array(myMax);
+        let myArrayAuto = new Array(myMax);
+    </script>
+</head>
+<body>
+
+<h1 align="center">t1a16-multi-d-arrays-Aden.html</h1>
+
+Input: <input type="text" id="myFirstName" value="fred"><br>
 
 <input type="button" value="Set Manual Array" onclick="{
     myArrayManual = [ [3, 4, 2], [1, 2, 3], [5, 6, 7] ];
@@ -27,7 +36,7 @@ Input:<input type="text" id="myFirstName" value="fred"><br>
 
 <input type="button" value="Set Auto Array" onclick="{
     for (let i = 0; i < myMax; i++) {
-        myArrayAuto[i] = new Array(myMax); // initialize each sub-array
+        myArrayAuto[i] = new Array(myMax); // Initialize each sub-array
         for (let j = 0; j < myMax; j++) {
             myArrayAuto[i][j] = Math.floor(Math.random() * 100);
         }
@@ -46,3 +55,6 @@ Input:<input type="text" id="myFirstName" value="fred"><br>
 }"><br>
 
 <div id="myDiv01">...</div>
+
+</body>
+</html>
