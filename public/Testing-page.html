@@ -16,7 +16,11 @@
 
     <input type="hidden" id="animalUrl" value="https://dog.ceo/api/breeds/image/random"/>
 
+    <button id="showImageButton" onclick="displayAnimalImage()" style="margin-top: 20px;">Show Image</button>
+
     <script>
+        let currentImageSrc = ""; // Variable to store the current image source
+
         // Functionality for Animal Images
         async function fetchAnimalData() {
             const url = document.getElementById('animalUrl').value;
@@ -40,8 +44,8 @@
 
                 const animalImageElement = document.getElementById('animalImage');
                 if (imageUrl) {
-                    animalImageElement.src = imageUrl; 
-                    animalImageElement.style.display = 'block'; 
+                    currentImageSrc = imageUrl; // Store the current image src
+                    animalImageElement.src = currentImageSrc; 
                 } else {
                     animalImageElement.style.display = 'none';
                 }
@@ -56,6 +60,16 @@
             document.getElementById('animalUrl').value = selectedUrl;
             document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
             fetchAnimalData(); // Call to fetch data when the selection is updated
+        }
+
+        function displayAnimalImage() {
+            const animalImageElement = document.getElementById('animalImage');
+            if (currentImageSrc) {
+                animalImageElement.src = currentImageSrc; // Set the image source to the fetched image src
+                animalImageElement.style.display = 'block'; // Show the image
+            } else {
+                animalImageElement.style.display = 'none'; // Hide the image if no src is available
+            }
         }
     </script>
 </body>
