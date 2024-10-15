@@ -4,15 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animal Fetcher</title>
+    <style>
+        #animalImage {
+            display: none; 
+            margin-top: 20px; 
+            max-width: 100%; 
+            height: auto;
+        }
+    </style>
 </head>
 <body>
+    <h1>Animal Image Fetcher</h1>
+    
     <select id="animalOptions" size="1" onchange="updateAnimalUrl(this.value)">
-        <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
-        <!-- You can add more options here -->
+        <option value="https://dog.ceo/api/breeds/image/random">Dog</option>
+        <option value="https://aws.random.cat/meow">Cat</option>
+        <option value="https://some-random-api.ml/img/birb">Bird</option>
     </select><br><br>
 
     <div id="animalJson">Fetched JSON will appear here.</div>
-    <img id="animalImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+    <img id="animalImage" src="" alt="Fetched Image" />
 
     <input type="hidden" id="animalUrl" value="https://dog.ceo/api/breeds/image/random"/>
 
@@ -38,16 +49,18 @@
                     imageUrl = data.image;
                 } else if (data.message) {
                     imageUrl = data.message;
-                } else if (data[0] && data[0].url) {
-                    imageUrl = data[0].url;
+                } else if (data.file) {
+                    imageUrl = data.file; // For the cat API
+                } else if (data.link) {
+                    imageUrl = data.link; // For some-random-api
                 }
 
                 const animalImageElement = document.getElementById('animalImage');
                 if (imageUrl) {
-                    currentImageSrc = imageUrl; // Store the current image src
+                    currentImageSrc = imageUrl; // Store the current image source
                     animalImageElement.src = currentImageSrc; 
                 } else {
-                    animalImageElement.style.display = 'none';
+                    animalImageElement.style.display = 'none'; // Hide if no image is found
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
