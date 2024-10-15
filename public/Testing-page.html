@@ -1,51 +1,62 @@
-<select id="animalOptions" size="1" onchange="updateAnimalUrl(this.value)">
-    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
-</select><br><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Fetcher</title>
+</head>
+<body>
+    <select id="animalOptions" size="1" onchange="updateAnimalUrl(this.value)">
+        <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
+        <!-- You can add more options here -->
+    </select><br><br>
 
-<div id="animalJson">Fetched JSON will appear here.</div>
-<img id="animalImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+    <div id="animalJson">Fetched JSON will appear here.</div>
+    <img id="animalImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
 
-<hr>
-<div id="animalJson">Fetched JSON will appear here.</div>
-<img id="animalImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
+    <input type="hidden" id="animalUrl" value="https://dog.ceo/api/breeds/image/random"/>
 
-<hr>
- // Functionality for Animal Images
-    async function fetchAnimalData() {
-        const url = document.getElementById('animalUrl').value;
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    <script>
+        // Functionality for Animal Images
+        async function fetchAnimalData() {
+            const url = document.getElementById('animalUrl').value;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                document.getElementById('animalJson').innerHTML = JSON.stringify(data, null, 2);
+
+                let imageUrl;
+                if (data.image) {
+                    imageUrl = data.image;
+                } else if (data.message) {
+                    imageUrl = data.message;
+                } else if (data[0] && data[0].url) {
+                    imageUrl = data[0].url;
+                }
+
+                const animalImageElement = document.getElementById('animalImage');
+                if (imageUrl) {
+                    animalImageElement.src = imageUrl; 
+                    animalImageElement.style.display = 'block'; 
+                } else {
+                    animalImageElement.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                document.getElementById('animalJson').textContent = 'Error fetching data: ' + error.message;
+                document.getElementById('animalImage').style.display = 'none'; 
             }
-
-            const data = await response.json();
-            document.getElementById('animalJson').innerHTML = JSON.stringify(data, null, 2);
-
-            let imageUrl;
-            if (data.image) {
-                imageUrl = data.image;
-            } else if (data.message) {
-                imageUrl = data.message;
-            } else if (data[0] && data[0].url) {
-                imageUrl = data[0].url;
-            }
-
-            const animalImageElement = document.getElementById('animalImage');
-            if (imageUrl) {
-                animalImageElement.src = imageUrl; 
-                animalImageElement.style.display = 'block'; 
-            } else {
-                animalImageElement.style.display = 'none';
-            }
-        } catch (error) {
-            console.error('Fetch error:', error);
-            document.getElementById('animalJson').textContent = 'Error fetching data: ' + error.message;
-            document.getElementById('animalImage').style.display = 'none'; 
         }
-    }
 
-    function updateAnimalUrl(selectedUrl) {
-        document.getElementById('animalUrl').value = selectedUrl;
-        document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
-    }
+        function updateAnimalUrl(selectedUrl) {
+            document.getElementById('animalUrl').value = selectedUrl;
+            document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
+            fetchAnimalData(); // Call to fetch data when the selection is updated
+        }
+    </script>
+</body>
+</html>
