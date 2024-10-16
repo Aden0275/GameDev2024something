@@ -6,14 +6,14 @@
     <title>Minesweeper Game</title>
     <style>
         body {
-            height: auto;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background-color: #f0f0f0;
         }
-        #coordinates, #message, #buttonLocation {
+        #coordinates, #buttonLocation {
             margin: 10px;
             padding: 10px;
             border: 1px solid #333;
@@ -30,7 +30,7 @@
         }
         #minefield {
             display: grid;
-            grid-template-columns: repeat(4, 40px);
+            grid-template-columns: repeat(8, 40px);
             grid-gap: 2px;
             margin-top: 20px;
         }
@@ -49,16 +49,15 @@
         .revealed {
             background-color: #fff;
         }
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
     </style>
 </head>
 <body onmousemove="document.getElementById('coordinates').innerHTML = 'x: ' + event.clientX + ', y: ' + event.clientY" 
       onkeydown="document.getElementById('coordinates').innerHTML = 'key: ' + event.key">
-    
-    <b onTouchEnd="document.getElementById('coordinates').innerHTML = 'onTouchEnd'">Input:</b>
-
-    <input type="text" id="myFirstName" value="Aden" onblur="document.getElementById('coordinates').innerHTML = 'onBlur'"><br><br>
-
-    <input type="button" value="Show on Page" onclick="document.getElementById('message').innerHTML = 'Hey!'"><br><br>
 
     <div id="coordinates">...</div>
     <div id="buttonLocation">Button Coordinates: <span id="buttonCoords">x: 0, y: 0</span></div>
@@ -66,28 +65,31 @@
     <button id="moveableButton" onclick="moveButton()">Move Me!</button>
 
     <div id="minefield"></div>
-    <div id="gameStatus" style="margin-top: 20px;"></div>
+    <div id="message">Click on a cell!</div>
 
     <script>
-        const rows = 4;
-        const cols = 4;
-        const mineCount = 2; // Fewer mines for a smaller grid
+        const rows = 8;
+        const cols = 8;
+        const mineCount = 10;
         let minefield = [];
         let revealedCells = 0;
 
         function createMinefield() {
+            // Create a grid with empty cells
             minefield = Array.from({ length: rows }, () => Array(cols).fill(0));
 
+            // Place mines
             let minesPlaced = 0;
             while (minesPlaced < mineCount) {
                 const r = Math.floor(Math.random() * rows);
                 const c = Math.floor(Math.random() * cols);
-                if (minefield[r][c] === 0) {
+                if (minefield[r][c] === 0) { // If no mine is already placed
                     minefield[r][c] = 'X';
                     minesPlaced++;
                 }
             }
 
+            // Calculate numbers for cells around mines
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     if (minefield[r][c] === 'X') {
@@ -124,7 +126,8 @@
             const col = event.target.dataset.col;
 
             if (minefield[row][col] === 'X') {
-                gameOver();
+                displayMessage("Game Over! You hit a mine!");
+                revealAllCells();
                 return;
             }
 
@@ -133,11 +136,11 @@
             revealedCells++;
 
             if (revealedCells === (rows * cols - mineCount)) {
-                document.getElementById('gameStatus').innerText = "Congratulations! You've cleared the minefield!";
+                displayMessage("Congratulations! You've cleared the minefield!");
             }
         }
 
-        function gameOver() {
+        function revealAllCells() {
             const cells = document.querySelectorAll('.cell');
             cells.forEach(cell => {
                 const row = cell.dataset.row;
@@ -150,7 +153,6 @@
                 }
                 cell.classList.add('revealed');
             });
-            document.getElementById('gameStatus').innerText = "Game Over! You hit a mine!";
         }
 
         function moveButton() {
@@ -163,6 +165,11 @@
 
             // Update button coordinates
             document.getElementById('buttonCoords').innerHTML = 'x: ' + Math.round(x) + ', y: ' + Math.round(y);
+        }
+
+        function displayMessage(msg) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerText = msg;
         }
 
         // Initialize the minefield
