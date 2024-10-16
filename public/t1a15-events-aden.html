@@ -13,12 +13,15 @@
             justify-content: center;
             background-color: #f0f0f0;
         }
-        #coordinates, #message {
+        #coordinates, #message, #buttonLocation {
             margin: 10px;
             padding: 10px;
             border: 1px solid #333;
             width: 200px;
             text-align: center;
+        }
+        #moveableButton {
+            position: absolute;
         }
     </style>
 </head>
@@ -33,6 +36,26 @@
 
     <div id="coordinates">...</div>
     <div id="message">...</div>
+    <div id="buttonLocation">Button Coordinates: <span id="buttonCoords">x: 0, y: 0</span></div>
+    
+    <button id="moveableButton" onclick="moveButton()">Move Me!</button>
+
+    <script>
+        function moveButton() {
+            const button = document.getElementById('moveableButton');
+            const x = Math.random() * (window.innerWidth - 100); // 100 is the button width to keep it in view
+            const y = Math.random() * (window.innerHeight - 50); // 50 is the button height to keep it in view
+
+            button.style.left = x + 'px';
+            button.style.top = y + 'px';
+
+            // Update button coordinates
+            document.getElementById('buttonCoords').innerHTML = 'x: ' + Math.round(x) + ', y: ' + Math.round(y);
+        }
+
+        // Initial position of the button
+        moveButton();
+    </script>
 
 </body>
 </html>
