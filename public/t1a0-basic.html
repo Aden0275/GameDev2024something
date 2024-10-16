@@ -10,6 +10,10 @@
             background-color: #f0f8ff;
             text-align: center;
             padding: 20px;
+            height: 100vh; /* Full height of the viewport */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center vertically */
         }
 
         a {
@@ -26,6 +30,11 @@
         a:hover {
             background-color: #007bff;
             color: #ffffff;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center; /* Center images horizontally */
         }
 
         img {
@@ -50,6 +59,7 @@
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 20px; /* Space above the button */
         }
 
         button:hover {
@@ -60,7 +70,7 @@
 <body>
     <a href="https://www.google.ca" target="_blank">Visit Google</a>
 
-    <div>
+    <div class="image-container">
         <img id="image1" src="https://www.rd.com/wp-content/uploads/2018/02/09_Adorable-Puppy-Pictures-that-Will-Make-You-Melt_344136443_unbrokenworld.jpg" alt="Adorable Puppy">
         <img id="image2" src="https://i.ibb.co/w7j0ctz/image.jpg" alt="Another Image">
         <img id="image3" src="https://2.bp.blogspot.com/-PIWqtE6GA34/UpYSJwcGdqI/AAAAAAAADFQ/--8tRwUVaVg/s1600/beautiful-puppies-dogs-2014.jpg" alt="Cute Puppy">
@@ -79,5 +89,3 @@
     </script>
 </body>
 </html>
-
-
