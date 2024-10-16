@@ -22,6 +22,11 @@
         }
         #moveableButton {
             position: absolute;
+            opacity: 0; /* Make the button initially invisible */
+            transition: opacity 0.3s; /* Smooth transition */
+        }
+        #moveableButton:hover {
+            opacity: 1; /* Show the button on hover */
         }
     </style>
 </head>
