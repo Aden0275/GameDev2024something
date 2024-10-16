@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,21 +14,38 @@
             justify-content: center;
             background-color: #f0f0f0;
         }
-        #coordinates, #message, #buttonLocation {
+
+        #coordinates,
+        #message,
+        #buttonLocation {
             margin: 10px;
             padding: 10px;
             border: 1px solid #333;
             width: 200px;
             text-align: center;
         }
+
         #moveableButton {
             position: absolute;
+            display: none; /* Initially hidden */
+        }
+
+        #hoverArea {
+            width: 200px;
+            height: 200px;
+            background-color: lightblue;
+            margin: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* Position for the button */
         }
     </style>
 </head>
-<body onmousemove="document.getElementById('coordinates').innerHTML = 'x: ' + event.clientX + ', y: ' + event.clientY" 
-      onkeydown="document.getElementById('coordinates').innerHTML = 'key: ' + event.key">
-    
+
+<body onmousemove="document.getElementById('coordinates').innerHTML = 'x: ' + event.clientX + ', y: ' + event.clientY"
+    onkeydown="document.getElementById('coordinates').innerHTML = 'key: ' + event.key">
+
     <b onTouchEnd="document.getElementById('coordinates').innerHTML = 'onTouchEnd'">Input:</b>
 
     <input type="text" id="myFirstName" value="Aden" onblur="document.getElementById('coordinates').innerHTML = 'onBlur'"><br><br>
@@ -37,15 +55,27 @@
     <div id="coordinates">...</div>
     <div id="message">...</div>
     <div id="buttonLocation">Button Coordinates: <span id="buttonCoords">x: 0, y: 0</span></div>
-    
-    <button id="moveableButton" onclick="moveButton()">Move Me!</button>
+
+    <div id="hoverArea" onmouseenter="showButton()" onmouseleave="hideButton()">
+        Hover Here to Show Button
+        <button id="moveableButton" onclick="moveButton()">Move Me!</button>
+    </div>
 
     <script>
+        function showButton() {
+            document.getElementById('moveableButton').style.display = 'block'; // Show button
+            moveButton(); // Move to a random position when revealed
+        }
+
+        function hideButton() {
+            document.getElementById('moveableButton').style.display = 'none'; // Hide button
+        }
+
         function moveButton() {
             const button = document.getElementById('moveableButton');
-            const x = Math.random() * (window.innerWidth - 100); // 100 is the button width to keep it in view
-            const y = Math.random() * (window.innerHeight - 50); // 50 is the button height to keep it in view
-
+            const x = Math.random() * (document.getElementById('hoverArea').clientWidth - 100); // Width of button
+            const y = Math.random() * (document.getElementById('hoverArea').clientHeight - 50); // Height of button
+        
             button.style.left = x + 'px';
             button.style.top = y + 'px';
 
@@ -58,4 +88,5 @@
     </script>
 
 </body>
+
 </html>
