@@ -28,6 +28,27 @@
         #moveableButton:hover {
             opacity: 1; /* Show the button on hover */
         }
+        #minefield {
+            display: grid;
+            grid-template-columns: repeat(8, 40px);
+            grid-gap: 2px;
+            margin-top: 20px;
+        }
+        .cell {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+        .mine {
+            background-color: red;
+        }
+        .revealed {
+            background-color: #fff;
+        }
     </style>
 </head>
 <body onmousemove="document.getElementById('coordinates').innerHTML = 'x: ' + event.clientX + ', y: ' + event.clientY" 
@@ -45,11 +66,100 @@
     
     <button id="moveableButton" onclick="moveButton()">Move Me!</button>
 
+    <div id="minefield"></div>
+
     <script>
+        const rows = 8;
+        const cols = 8;
+        const mineCount = 10;
+        let minefield = [];
+        let revealedCells = 0;
+
+        function createMinefield() {
+            // Create a grid with empty cells
+            minefield = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+            // Place mines
+            let minesPlaced = 0;
+            while (minesPlaced < mineCount) {
+                const r = Math.floor(Math.random() * rows);
+                const c = Math.floor(Math.random() * cols);
+                if (minefield[r][c] === 0) { // If no mine is already placed
+                    minefield[r][c] = 'X';
+                    minesPlaced++;
+                }
+            }
+
+            // Calculate numbers for cells around mines
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (minefield[r][c] === 'X') {
+                        for (let i = r - 1; i <= r + 1; i++) {
+                            for (let j = c - 1; j <= c + 1; j++) {
+                                if (i >= 0 && i < rows && j >= 0 && j < cols && minefield[i][j] !== 'X') {
+                                    minefield[i][j]++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            renderMinefield();
+        }
+
+        function renderMinefield() {
+            const minefieldElement = document.getElementById('minefield');
+            minefieldElement.innerHTML = ''; // Clear previous minefield
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    cell.addEventListener('click', revealCell);
+                    minefieldElement.appendChild(cell);
+                }
+            }
+        }
+
+        function revealCell(event) {
+            const row = event.target.dataset.row;
+            const col = event.target.dataset.col;
+
+            if (minefield[row][col] === 'X') {
+                alert("Game Over! You hit a mine!");
+                revealAllCells();
+                return;
+            }
+
+            event.target.innerText = minefield[row][col] || '';
+            event.target.classList.add('revealed');
+            revealedCells++;
+
+            if (revealedCells === (rows * cols - mineCount)) {
+                alert("Congratulations! You've cleared the minefield!");
+            }
+        }
+
+        function revealAllCells() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const row = cell.dataset.row;
+                const col = cell.dataset.col;
+                if (minefield[row][col] === 'X') {
+                    cell.innerText = 'X';
+                    cell.classList.add('mine');
+                } else {
+                    cell.innerText = minefield[row][col] || '';
+                }
+                cell.classList.add('revealed');
+            });
+        }
+
         function moveButton() {
             const button = document.getElementById('moveableButton');
             const x = Math.random() * (window.innerWidth - 100); // 100 is the button width to keep it in view
-            const y = Math.random() * (window.innerHeight - 50); // 50 is the button height to keep it in view
+            const y = Math.random() * (window.innerHeight - 150); // 150 is the button height to keep it in view
 
             button.style.left = x + 'px';
             button.style.top = y + 'px';
@@ -57,6 +167,9 @@
             // Update button coordinates
             document.getElementById('buttonCoords').innerHTML = 'x: ' + Math.round(x) + ', y: ' + Math.round(y);
         }
+
+        // Initialize the minefield
+        createMinefield();
 
         // Initial position of the button
         moveButton();
