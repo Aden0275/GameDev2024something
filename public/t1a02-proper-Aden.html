@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>t1a02-proper-Aden.html</title>
+    <title>Color Selector and Number Guessing Game</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
     <script src="script.js" defer></script> <!-- Link to your JavaScript file -->
     <style>
@@ -79,7 +79,7 @@
     </style>
 </head>
 <body>
-    <h1>t1a02-proper-Aden.html</h1>
+    <h1>Color Selector and Number Guessing Game</h1>
     <div>
         <label for="colorPicker">Choose a background color:</label>
         <input type="color" id="colorPicker" value="#0000ff"> <!-- Default value is blue -->
@@ -96,7 +96,7 @@
         // Function to change the background color
         const colorPicker = document.getElementById('colorPicker');
         colorPicker.addEventListener('input', function() {
-            document.body.style.backgroundColor = colorPicker.value;
+            document.body.style.background = colorPicker.value; // Change to a solid color
         });
 
         // Guess the Number Game Logic
