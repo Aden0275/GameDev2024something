@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,10 @@
             background-color: blue; /* Default background color */
             color: white; /* Optional: Change text color for contrast */
         }
+        .game-container {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -20,11 +25,43 @@
         <input type="color" id="colorPicker" value="#0000ff"> <!-- Default value is blue -->
     </div>
 
+    <div class="game-container">
+        <h2>Guess the Number Game!</h2>
+        <p>I'm thinking of a number between 1 and 1000.</p>
+        <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="1000">
+        <button id="guessButton">Submit Guess</button>
+        <p id="resultMessage"></p>
+    </div>
+
     <script>
         // Function to change the background color
         const colorPicker = document.getElementById('colorPicker');
         colorPicker.addEventListener('input', function() {
             document.body.style.backgroundColor = colorPicker.value;
+        });
+
+        // Guess the Number Game Logic
+        let randomNumber = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+        let attempts = 0;
+
+        document.getElementById('guessButton').addEventListener('click', function() {
+            const guessInput = document.getElementById('guessInput');
+            const userGuess = parseInt(guessInput.value);
+            attempts++;
+
+            if (userGuess < 1 || userGuess > 1000) {
+                document.getElementById('resultMessage').textContent = "Please guess a number between 1 and 1000.";
+            } else if (userGuess < randomNumber) {
+                document.getElementById('resultMessage').textContent = "Too low! Try again.";
+            } else if (userGuess > randomNumber) {
+                document.getElementById('resultMessage').textContent = "Too high! Try again.";
+            } else {
+                document.getElementById('resultMessage').textContent = `Congratulations! You've guessed the number ${randomNumber} in ${attempts} attempts!`;
+                // Reset the game
+                randomNumber = Math.floor(Math.random() * 1000) + 1; // Generate a new random number
+                attempts = 0; // Reset attempts
+                guessInput.value = ''; // Clear the input field
+            }
         });
     </script>
 </body>
