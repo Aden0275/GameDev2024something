@@ -54,6 +54,11 @@
             font-weight: bold;
             color: green;
         }
+        #resetButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            display: none; /* Initially hidden */
+        }
     </style>
 </head>
 <body onmousemove="document.getElementById('coordinates').innerHTML = 'x: ' + event.clientX + ', y: ' + event.clientY" 
@@ -66,17 +71,21 @@
 
     <div id="minefield"></div>
     <div id="message">Click on a cell!</div>
+    <button id="resetButton" onclick="resetGame()">Reset Game</button>
 
     <script>
-        const rows = 8;
-        const cols = 8;
-        const mineCount = 10;
+        let rows = 8;
+        let cols = 8;
+        let mineCount = 10;
         let minefield = [];
         let revealedCells = 0;
+        let gameOver = false;
 
         function createMinefield() {
             // Create a grid with empty cells
             minefield = Array.from({ length: rows }, () => Array(cols).fill(0));
+            revealedCells = 0;
+            gameOver = false;
 
             // Place mines
             let minesPlaced = 0;
@@ -122,12 +131,16 @@
         }
 
         function revealCell(event) {
+            if (gameOver) return; // Prevent further clicks after game over
+
             const row = event.target.dataset.row;
             const col = event.target.dataset.col;
 
             if (minefield[row][col] === 'X') {
                 displayMessage("Game Over! You hit a mine!");
                 revealAllCells();
+                showResetButton();
+                gameOver = true;
                 return;
             }
 
@@ -137,6 +150,8 @@
 
             if (revealedCells === (rows * cols - mineCount)) {
                 displayMessage("Congratulations! You've cleared the minefield!");
+                showResetButton();
+                gameOver = true;
             }
         }
 
@@ -172,12 +187,22 @@
             messageDiv.innerText = msg;
         }
 
-        // Initialize the minefield
+        function showResetButton() {
+            document.getElementById('resetButton').style.display = 'block'; // Show the reset button
+        }
+
+        function resetGame() {
+            // Hide the reset button, reset message and create a new minefield
+            document.getElementById('resetButton').style.display = 'none';
+            displayMessage("Click on a cell!");
+            createMinefield();
+        }
+
+        // Initialize the minefield on page load
         createMinefield();
 
         // Initial position of the button
         moveButton();
     </script>
-
 </body>
 </html>
