@@ -20,20 +20,13 @@
             width: 200px;
             text-align: center;
         }
-        #buttonArea {
-            position: relative;
-            width: 200px;
-            height: 100px;
-            background-color: #e0e0e0;
-            border: 1px dashed #666;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
         #moveableButton {
             position: absolute;
-            display: none; /* Initially hidden */
+            opacity: 0; /* Make the button initially invisible */
+            transition: opacity 0.3s; /* Smooth transition */
+        }
+        #moveableButton:hover {
+            opacity: 1; /* Show the button on hover */
         }
     </style>
 </head>
@@ -50,10 +43,7 @@
     <div id="message">...</div>
     <div id="buttonLocation">Button Coordinates: <span id="buttonCoords">x: 0, y: 0</span></div>
     
-    <div id="buttonArea" onmouseover="showButton()" onmouseout="hideButton()">
-        Hover here to show the button
-        <button id="moveableButton" onclick="moveButton()">Move Me!</button>
-    </div>
+    <button id="moveableButton" onclick="moveButton()">Move Me!</button>
 
     <script>
         function moveButton() {
@@ -66,14 +56,6 @@
 
             // Update button coordinates
             document.getElementById('buttonCoords').innerHTML = 'x: ' + Math.round(x) + ', y: ' + Math.round(y);
-        }
-
-        function showButton() {
-            document.getElementById('moveableButton').style.display = 'block'; // Show the button on hover
-        }
-
-        function hideButton() {
-            document.getElementById('moveableButton').style.display = 'none'; // Hide the button when not hovering
         }
 
         // Initial position of the button
