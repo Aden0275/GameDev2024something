@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -63,6 +63,7 @@
     <div>
         <img id="image1" src="https://www.rd.com/wp-content/uploads/2018/02/09_Adorable-Puppy-Pictures-that-Will-Make-You-Melt_344136443_unbrokenworld.jpg" alt="Adorable Puppy">
         <img id="image2" src="https://i.ibb.co/w7j0ctz/image.jpg" alt="Another Image">
+        <img id="image3" src="https://2.bp.blogspot.com/-PIWqtE6GA34/UpYSJwcGdqI/AAAAAAAADFQ/--8tRwUVaVg/s1600/beautiful-puppies-dogs-2014.jpg" alt="Cute Puppy">
     </div>
 
     <button id="toggleButton">Switch Image</button>
@@ -71,20 +72,12 @@
         let currentImage = 1;
 
         document.getElementById('toggleButton').onclick = function() {
-            if (currentImage === 1) {
-                document.getElementById('image1').style.display = 'none';
-                document.getElementById('image2').style.display = 'block';
-                currentImage = 2;
-            } else {
-                document.getElementById('image1').style.display = 'block';
-                document.getElementById('image2').style.display = 'none';
-                currentImage = 1;
-            }
+            document.getElementById('image' + currentImage).style.display = 'none';
+            currentImage = currentImage === 3 ? 1 : currentImage + 1; // Loop back to the first image after the last
+            document.getElementById('image' + currentImage).style.display = 'block';
         };
     </script>
 </body>
-</html> 
-
-
+</html>
 
 
