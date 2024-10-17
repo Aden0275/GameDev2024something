@@ -32,6 +32,18 @@ function autoMove(direction) {
             case 'down':
                 moveImage(0, moveAmount);
                 break;
+            case 'up-left':
+                moveImage(-moveAmount, -moveAmount);
+                break;
+            case 'up-right':
+                moveImage(moveAmount, -moveAmount);
+                break;
+            case 'down-left':
+                moveImage(-moveAmount, moveAmount);
+                break;
+            case 'down-right':
+                moveImage(moveAmount, moveAmount);
+                break;
         }
     }, 30);  // Activate click every 30 ms
 }
@@ -43,11 +55,23 @@ function autoMove(direction) {
 <input type="button" id="myButtonUp" value="Image Up" onclick="moveImage(0, -10)">
 <input type="button" id="myButtonDown" value="Image Down" onclick="moveImage(0, 10)"><br><br>
 
+<!-- Diagonal Move Buttons -->
+<input type="button" value="Image Up-Left" onclick="moveImage(-10, -10)">
+<input type="button" value="Image Up-Right" onclick="moveImage(10, -10)">
+<input type="button" value="Image Down-Left" onclick="moveImage(-10, 10)">
+<input type="button" value="Image Down-Right" onclick="moveImage(10, 10)"><br><br>
+
 <!-- Auto Move buttons -->
 <input type="button" value="Auto Move Left" onclick="autoMove('left')">
 <input type="button" value="Auto Move Right" onclick="autoMove('right')">
 <input type="button" value="Auto Move Up" onclick="autoMove('up')">
 <input type="button" value="Auto Move Down" onclick="autoMove('down')"><br><br>
+
+<!-- Diagonal Auto Move Buttons -->
+<input type="button" value="Auto Move Up-Left" onclick="autoMove('up-left')">
+<input type="button" value="Auto Move Up-Right" onclick="autoMove('up-right')">
+<input type="button" value="Auto Move Down-Left" onclick="autoMove('down-left')">
+<input type="button" value="Auto Move Down-Right" onclick="autoMove('down-right')"><br><br>
 
 <!-- Stop Auto Move button -->
 <input type="button" value="Stop Auto Move" onclick="stopAutoMove()"><br><br>
