@@ -1,47 +1,33 @@
 <h1 align=center>t1a17-move-Aden</h1>
 
-
 <script>
-
-//global variables
-let myClock02
-
+// Global variable for automatic movement
+let myClock02;
 </script>
 
+<!-- Buttons for moving the image in different directions -->
+<input type="button" id="myButtonLeft" value="Image Left" onclick="moveImage(-10, 0)">
+<input type="button" id="myButtonRight" value="Image Right" onclick="moveImage(10, 0)">
+<input type="button" id="myButtonUp" value="Image Up" onclick="moveImage(0, -10)">
+<input type="button" id="myButtonDown" value="Image Down" onclick="moveImage(0, 10)"><br><br> 
 
-<input type =button id="myButton02" value="Image Right" onclick="{
- document.getElementById('myImage01').style.left = 
- parseInt(document.getElementById('myImage01').style.left) + 10 + 'px'
- }"><br><br> 
-
- <input type=button value="Auto Move Right" onclick="{
-   document.getElementById('myImage01').style.left = 0
-   clearInterval(myClock02)
+<!-- Auto Move Right button -->
+<input type="button" value="Auto Move Right" onclick="{
+   document.getElementById('myImage01').style.left = 0;
+   clearInterval(myClock02);
    myClock02 = setInterval(function(){
-    document.getElementById('myButton02').click()
-   }, 30)  // activate click every 30 ms (milliseconds)
-   }"><br><br> 
+    document.getElementById('myButtonRight').click();
+   }, 30);  // Activate click every 30 ms (milliseconds)
+}"><br><br> 
 
-<input type =button id="myButton02" value="Image Left" onclick="{
- document.getElementById('myImage01').style.Left = 
- parseInt(document.getElementById('myImage01').style.Left) + 50 + 'px'
- }"><br><br> 
+<!-- Image to move -->
+<img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.cartoonpics.net/data/media/14/batman_cartoon_style.jpg">
 
- <input type=button value="Auto Move Left" onclick="{
-   document.getElementById('myImage01').style.Left = -5
-   clearInterval(myClock02)
-   myClock02 = setInterval(function(){
-    document.getElementById('myButton02').click()
-   }, 30)  // activate click every 30 ms (milliseconds)
-   }"><br><br> 
-
-
-
-
-
-
-
-
-
-   <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px;
-     left:0px;" src="https://www.cartoonpics.net/data/media/14/batman_cartoon_style.jpg">
+<script>
+// Function to move the image
+function moveImage(x, y) {
+    var img = document.getElementById('myImage01');
+    img.style.left = (parseInt(img.style.left) + x) + 'px';
+    img.style.top = (parseInt(img.style.top) + y) + 'px';
+}
+</script>
