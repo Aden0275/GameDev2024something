@@ -23,12 +23,12 @@ let myClock02
    }"><br><br> 
 
 <input type =button id="myButton02" value="Image Left" onclick="{
- document.getElementById('myImage01').style.Right = 
- parseInt(document.getElementById('myImage01').style.Right) + 10 + 'px'
+ document.getElementById('myImage01').style.Left = 
+ parseInt(document.getElementById('myImage01').style.Left) + 50 + 'px'
  }"><br><br> 
 
  <input type=button value="Auto Move Left" onclick="{
-   document.getElementById('myImage01').style.Right = 0
+   document.getElementById('myImage01').style.Left = -5
    clearInterval(myClock02)
    myClock02 = setInterval(function(){
     document.getElementById('myButton02').click()
