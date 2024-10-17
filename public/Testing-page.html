@@ -3,31 +3,54 @@
 <script>
 // Global variable for automatic movement
 let myClock02;
-</script>
 
-<!-- Buttons for moving the image in different directions -->
-<input type="button" id="myButtonLeft" value="Image Left" onclick="moveImage(-10, 0)">
-<input type="button" id="myButtonRight" value="Image Right" onclick="moveImage(10, 0)">
-<input type="button" id="myButtonUp" value="Image Up" onclick="moveImage(0, -10)">
-<input type="button" id="myButtonDown" value="Image Down" onclick="moveImage(0, 10)"><br><br> 
-
-<!-- Auto Move Right button -->
-<input type="button" value="Auto Move Right" onclick="{
-   document.getElementById('myImage01').style.left = 0;
-   clearInterval(myClock02);
-   myClock02 = setInterval(function(){
-    document.getElementById('myButtonRight').click();
-   }, 30);  // Activate click every 30 ms (milliseconds)
-}"><br><br> 
-
-<!-- Image to move -->
-<img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.cartoonpics.net/data/media/14/batman_cartoon_style.jpg">
-
-<script>
 // Function to move the image
 function moveImage(x, y) {
     var img = document.getElementById('myImage01');
     img.style.left = (parseInt(img.style.left) + x) + 'px';
     img.style.top = (parseInt(img.style.top) + y) + 'px';
 }
+
+function stopAutoMove() {
+    clearInterval(myClock02);
+}
+
+function autoMove(direction) {
+    stopAutoMove();  // Clear any previous intervals
+    const moveAmount = 10;  // Pixels to move each interval
+    myClock02 = setInterval(function() {
+        switch(direction) {
+            case 'right':
+                moveImage(moveAmount, 0);
+                break;
+            case 'left':
+                moveImage(-moveAmount, 0);
+                break;
+            case 'up':
+                moveImage(0, -moveAmount);
+                break;
+            case 'down':
+                moveImage(0, moveAmount);
+                break;
+        }
+    }, 30);  // Activate click every 30 ms
+}
 </script>
+
+<!-- Buttons for moving the image in different directions -->
+<input type="button" id="myButtonLeft" value="Image Left" onclick="moveImage(-10, 0)">
+<input type="button" id="myButtonRight" value="Image Right" onclick="moveImage(10, 0)">
+<input type="button" id="myButtonUp" value="Image Up" onclick="moveImage(0, -10)">
+<input type="button" id="myButtonDown" value="Image Down" onclick="moveImage(0, 10)"><br><br>
+
+<!-- Auto Move buttons -->
+<input type="button" value="Auto Move Left" onclick="autoMove('left')">
+<input type="button" value="Auto Move Right" onclick="autoMove('right')">
+<input type="button" value="Auto Move Up" onclick="autoMove('up')">
+<input type="button" value="Auto Move Down" onclick="autoMove('down')"><br><br>
+
+<!-- Stop Auto Move button -->
+<input type="button" value="Stop Auto Move" onclick="stopAutoMove()"><br><br>
+
+<!-- Image to move -->
+<img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.cartoonpics.net/data/media/14/batman_cartoon_style.jpg">
