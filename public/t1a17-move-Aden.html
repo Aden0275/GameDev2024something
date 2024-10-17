@@ -1,4 +1,63 @@
-<h1 align=center>t1a17-move-Aden</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>t1a17-move-Aden</title>
+    <style>
+        body {
+            background-color: #282c34;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #61dafb;
+        }
+        input[type="button"] {
+            background-color: #61dafb;
+            border: none;
+            border-radius: 5px;
+            color: black;
+            padding: 15px 25px;
+            margin: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="button"]:hover {
+            background-color: #21a1f1;
+        }
+        img {
+            margin-top: 20px;
+            border: 2px solid #61dafb;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.05);
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<h1 align="center">t1a17-move-Aden</h1>
 
 <script>
 // Global variable for automatic movement
@@ -17,7 +76,7 @@ function stopAutoMove() {
 
 function autoMove(direction) {
     stopAutoMove();  // Clear any previous intervals
-    const moveAmount = 10;  // Pixels to move each interval
+    const moveAmount = 10; // Pixels to move each interval
     myClock02 = setInterval(function() {
         switch(direction) {
             case 'right':
@@ -49,32 +108,50 @@ function autoMove(direction) {
 }
 </script>
 
-<!-- Buttons for moving the image in different directions -->
-<input type="button" id="myButtonLeft" value="Image Left" onclick="moveImage(-10, 0)">
-<input type="button" id="myButtonRight" value="Image Right" onclick="moveImage(10, 0)">
-<input type="button" id="myButtonUp" value="Image Up" onclick="moveImage(0, -10)">
-<input type="button" id="myButtonDown" value="Image Down" onclick="moveImage(0, 10)"><br><br>
+<div class="button-container">
 
-<!-- Diagonal Move Buttons -->
-<input type="button" value="Image Up-Left" onclick="moveImage(-10, -10)">
-<input type="button" value="Image Up-Right" onclick="moveImage(10, -10)">
-<input type="button" value="Image Down-Left" onclick="moveImage(-10, 10)">
-<input type="button" value="Image Down-Right" onclick="moveImage(10, 10)"><br><br>
+    <div class="button-row">
+        <input type="button" id="myButtonLeft" value="Left" onclick="moveImage(-10, 0)">
+        <input type="button" id="myButtonRight" value="Right" onclick="moveImage(10, 0)">
+    </div>
+    <div class="button-row">
+        <input type="button" id="myButtonUp" value="Up" onclick="moveImage(0, -10)">
+        <input type="button" id="myButtonDown" value="Down" onclick="moveImage(0, 10)">
+    </div>
 
-<!-- Auto Move buttons -->
-<input type="button" value="Auto Move Left" onclick="autoMove('left')">
-<input type="button" value="Auto Move Right" onclick="autoMove('right')">
-<input type="button" value="Auto Move Up" onclick="autoMove('up')">
-<input type="button" value="Auto Move Down" onclick="autoMove('down')"><br><br>
+    <div class="button-row">
+        <input type="button" value="Up-Left" onclick="moveImage(-10, -10)">
+        <input type="button" value="Up-Right" onclick="moveImage(10, -10)">
+    </div>
+    <div class="button-row">
+        <input type="button" value="Down-Left" onclick="moveImage(-10, 10)">
+        <input type="button" value="Down-Right" onclick="moveImage(10, 10)">
+    </div>
 
-<!-- Diagonal Auto Move Buttons -->
-<input type="button" value="Auto Move Up-Left" onclick="autoMove('up-left')">
-<input type="button" value="Auto Move Up-Right" onclick="autoMove('up-right')">
-<input type="button" value="Auto Move Down-Left" onclick="autoMove('down-left')">
-<input type="button" value="Auto Move Down-Right" onclick="autoMove('down-right')"><br><br>
+    <div class="button-row">
+        <input type="button" value="Auto Left" onclick="autoMove('left')">
+        <input type="button" value="Auto Right" onclick="autoMove('right')">
+    </div>
+    <div class="button-row">
+        <input type="button" value="Auto Up" onclick="autoMove('up')">
+        <input type="button" value="Auto Down" onclick="autoMove('down')">
+    </div>
 
-<!-- Stop Auto Move button -->
-<input type="button" value="Stop Auto Move" onclick="stopAutoMove()"><br><br>
+    <div class="button-row">
+        <input type="button" value="Auto Up-Left" onclick="autoMove('up-left')">
+        <input type="button" value="Auto Up-Right" onclick="autoMove('up-right')">
+    </div>
+    <div class="button-row">
+        <input type="button" value="Auto Down-Left" onclick="autoMove('down-left')">
+        <input type="button" value="Auto Down-Right" onclick="autoMove('down-right')">
+    </div>
+
+    <input type="button" value="Stop Auto Move" onclick="stopAutoMove()"><br><br>
+
+</div>
 
 <!-- Image to move -->
 <img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.cartoonpics.net/data/media/14/batman_cartoon_style.jpg">
+
+</body>
+</html>
