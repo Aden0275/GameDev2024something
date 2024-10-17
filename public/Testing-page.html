@@ -21,18 +21,19 @@
             margin-bottom: 20px;
             color: #61dafb;
         }
-        input[type="button"] {
+        .button {
             background-color: #61dafb;
             border: none;
             border-radius: 5px;
             color: black;
             padding: 15px 25px;
             margin: 5px;
-            font-size: 1.5em;
+            font-size: 1em;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            position: relative;
         }
-        input[type="button"]:hover {
+        .button:hover {
             background-color: #21a1f1;
         }
         img {
@@ -44,6 +45,14 @@
         img:hover {
             transform: scale(1.05);
         }
+        .arrow {
+            font-size: 2em;
+            color: #61dafb;
+            transition: transform 0.3s ease;
+        }
+        .arrow:hover {
+            transform: scale(1.2);
+        }
         .button-container {
             display: flex;
             flex-direction: column;
@@ -52,12 +61,24 @@
         .button-row {
             display: flex;
             justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .arrows-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
         }
     </style>
 </head>
 <body>
 
-<h1 align="center">t1a17-move-Aden</h1>
+<h1 align="center">Movement Game</h1>
 
 <script>
 // Global variable for automatic movement
@@ -66,21 +87,8 @@ let myClock02;
 // Function to move the image
 function moveImage(x, y) {
     var img = document.getElementById('myImage01');
-    var imgRect = img.getBoundingClientRect();
-    var newLeft = parseInt(img.style.left) + x;
-    var newTop = parseInt(img.style.top) + y;
-
-    // Get the viewport dimensions
-    var viewportWidth = window.innerWidth;
-    var viewportHeight = window.innerHeight;
-
-    // Prevent moving off-screen
-    if (newLeft >= 0 && newLeft + imgRect.width <= viewportWidth) {
-        img.style.left = newLeft + 'px';
-    }
-    if (newTop >= 0 && newTop + imgRect.height <= viewportHeight) {
-        img.style.top = newTop + 'px';
-    }
+    img.style.left = (parseInt(img.style.left) + x) + 'px';
+    img.style.top = (parseInt(img.style.top) + y) + 'px';
 }
 
 function stopAutoMove() {
@@ -117,49 +125,69 @@ function autoMove(direction) {
                 moveImage(moveAmount, moveAmount);
                 break;
         }
-    }, 30);  // Activate click every 30 ms
+    }, 30);  // Activate every 30 ms
 }
 </script>
 
 <div class="button-container">
 
     <div class="button-row">
-        <input type="button" id="myButtonLeft" value="&#8592;" onclick="moveImage(-10, 0)"> <!-- Left Arrow -->
-        <input type="button" id="myButtonRight" value="&#8594;" onclick="moveImage(10, 0)"> <!-- Right Arrow -->
+        <input type="button" class="button" id="myButtonLeft" value="Left" onclick="moveImage(-10, 0)">
+        <span class="arrow">⬅️</span>
+        <input type="button" class="button" id="myButtonRight" value="Right" onclick="moveImage(10, 0)">
+        <span class="arrow">➡️</span>
     </div>
+    
     <div class="button-row">
-        <input type="button" id="myButtonUp" value="&#8593;" onclick="moveImage(0, -10)"> <!-- Up Arrow -->
-        <input type="button" id="myButtonDown" value="&#8595;" onclick="moveImage(0, 10)"> <!-- Down Arrow -->
+        <input type="button" class="button" id="myButtonUp" value="Up" onclick="moveImage(0, -10)">
+        <span class="arrow">⬆️</span>
+        <input type="button" class="button" id="myButtonDown" value="Down" onclick="moveImage(0, 10)">
+        <span class="arrow">⬇️</span>
     </div>
 
     <div class="button-row">
-        <input type="button" value="&#8598;" onclick="moveImage(-10, -10)"> <!-- Up-Left Arrow -->
-        <input type="button" value="&#8599;" onclick="moveImage(10, -10)"> <!-- Up-Right Arrow -->
+        <input type="button" class="button" value="Up-Left" onclick="moveImage(-10, -10)">
+        <span class="arrow">↖️</span>
+        <input type="button" class="button" value="Up-Right" onclick="moveImage(10, -10)">
+        <span class="arrow">↗️</span>
     </div>
+    
     <div class="button-row">
-        <input type="button" value="&#8600;" onclick="moveImage(-10, 10)"> <!-- Down-Left Arrow -->
-        <input type="button" value="&#8601;" onclick="moveImage(10, 10)"> <!-- Down-Right Arrow -->
+        <input type="button" class="button" value="Down-Left" onclick="moveImage(-10, 10)">
+        <span class="arrow">↙️</span>
+        <input type="button" class="button" value="Down-Right" onclick="moveImage(10, 10)">
+        <span class="arrow">↘️</span>
     </div>
 
     <div class="button-row">
-        <input type="button" value="Auto &#8592;" onclick="autoMove('left')"> <!-- Auto Left -->
-        <input type="button" value="Auto &#8594;" onclick="autoMove('right')"> <!-- Auto Right -->
-    </div>
-    <div class="button-row">
-        <input type="button" value="Auto &#8593;" onclick="autoMove('up')"> <!-- Auto Up -->
-        <input type="button" value="Auto &#8595;" onclick="autoMove('down')"> <!-- Auto Down -->
+        <input type="button" class="button" value="Auto Left" onclick="autoMove('left')">
+        <span class="arrow">⬅️</span>
+        <input type="button" class="button" value="Auto Right" onclick="autoMove('right')">
+        <span class="arrow">➡️</span>
     </div>
 
     <div class="button-row">
-        <input type="button" value="Auto &#8598;" onclick="autoMove('up-left')"> <!-- Auto Up-Left -->
-        <input type="button" value="Auto &#8599;" onclick="autoMove('up-right')"> <!-- Auto Up-Right -->
-    </div>
-    <div class="button-row">
-        <input type="button" value="Auto &#8600;" onclick="autoMove('down-left')"> <!-- Auto Down-Left -->
-        <input type="button" value="Auto &#8601;" onclick="autoMove('down-right')"> <!-- Auto Down-Right -->
+        <input type="button" class="button" value="Auto Up" onclick="autoMove('up')">
+        <span class="arrow">⬆️</span>
+        <input type="button" class="button" value="Auto Down" onclick="autoMove('down')">
+        <span class="arrow">⬇️</span>
     </div>
 
-    <input type="button" value="Stop Auto Move" onclick="stopAutoMove()"><br><br>
+    <div class="button-row">
+        <input type="button" class="button" value="Auto Up-Left" onclick="autoMove('up-left')">
+        <span class="arrow">↖️</span>
+        <input type="button" class="button" value="Auto Up-Right" onclick="autoMove('up-right')">
+        <span class="arrow">↗️</span>
+    </div>
+    
+    <div class="button-row">
+        <input type="button" class="button" value="Auto Down-Left" onclick="autoMove('down-left')">
+        <span class="arrow">↙️</span>
+        <input type="button" class="button" value="Auto Down-Right" onclick="autoMove('down-right')">
+        <span class="arrow">↘️</span>
+    </div>
+
+    <input type="button" class="button" value="Stop Auto Move" onclick="stopAutoMove()"><br><br>
 
 </div>
 
