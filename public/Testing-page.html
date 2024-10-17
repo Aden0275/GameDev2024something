@@ -66,8 +66,21 @@ let myClock02;
 // Function to move the image
 function moveImage(x, y) {
     var img = document.getElementById('myImage01');
-    img.style.left = (parseInt(img.style.left) + x) + 'px';
-    img.style.top = (parseInt(img.style.top) + y) + 'px';
+    var imgRect = img.getBoundingClientRect();
+    var newLeft = parseInt(img.style.left) + x;
+    var newTop = parseInt(img.style.top) + y;
+
+    // Get the viewport dimensions
+    var viewportWidth = window.innerWidth;
+    var viewportHeight = window.innerHeight;
+
+    // Prevent moving off-screen
+    if (newLeft >= 0 && newLeft + imgRect.width <= viewportWidth) {
+        img.style.left = newLeft + 'px';
+    }
+    if (newTop >= 0 && newTop + imgRect.height <= viewportHeight) {
+        img.style.top = newTop + 'px';
+    }
 }
 
 function stopAutoMove() {
