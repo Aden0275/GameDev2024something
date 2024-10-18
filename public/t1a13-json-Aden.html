@@ -199,6 +199,10 @@
             const responses = await Promise.all(promises);
             for (const response of responses) {
                 const data = await response.json();
+                const speciesResponse = await fetch(data.species.url);
+                const speciesData = await speciesResponse.json();
+                const description = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
+
                 pokemons.push({
                     id: data.id,
                     name: data.name,
@@ -206,7 +210,7 @@
                     hp: data.stats[0].base_stat,
                     attack: data.stats[1].base_stat,
                     defense: data.stats[2].base_stat,
-                    description: `Pokémon ID: ${data.id}`
+                    description: description.replace(/\n/g, ' ') // Clean up new lines
                 });
             }
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
@@ -229,7 +233,7 @@
                     <p><strong>HP:</strong> ${pokemon.hp}</p>
                     <p><strong>Attack:</strong> ${pokemon.attack}</p>
                     <p><strong>Defense:</strong> ${pokemon.defense}</p>
-                    <p>${pokemon.description}</p>
+                    <p><strong>Description:</strong> ${pokemon.description}</p>
                 </div>`;
         };
 
@@ -246,7 +250,7 @@
                         <p><strong>HP:</strong> ${foundPokemon.hp}</p>
                         <p><strong>Attack:</strong> ${foundPokemon.attack}</p>
                         <p><strong>Defense:</strong> ${foundPokemon.defense}</p>
-                        <p>${foundPokemon.description}</p>
+                        <p><strong>Description:</strong> ${foundPokemon.description}</p>
                     </div>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
