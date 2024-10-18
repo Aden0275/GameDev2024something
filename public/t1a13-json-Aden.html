@@ -3,374 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Images, Math Problems & Pokémon Display</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <title>Animal and Pokémon Demo</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #a8e0d3, #f4c6ff);
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
             color: #333;
-            margin: 0;
             padding: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: space-around;
+            flex-wrap: wrap;
         }
-
-        h1 {
-            color: #52057b;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        h2 {
+            text-align: center;
+            color: #4CAF50;
         }
-
-        input[type="text"], input[type="number"], input[type="button"], select {
-            padding: 12px;
-            margin: 8px;
-            border: 2px solid #52057b;
+        #container, #pokemonSection {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
             border-radius: 8px;
-            font-size: 16px;
-            width: auto;
-            transition: border-color 0.3s, background-color 0.3s;
-            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
         }
-
-        input[type="text"]:focus, input[type="number"]:focus, select:focus {
-            border-color: #8e44ad;
-            outline: none;
-            background-color: #f9f9f9;
-        }
-
-        input[type="button"] {
-            background-color: #52057b;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            font-size: 18px;
-            border: none;
-        }
-
-        input[type="button"]:hover {
-            background-color: #8e44ad;
-            transform: scale(1.05);
-        }
-
-        .calculator-container, .keyboard {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .keyboard {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .keyboard-row {
-            display: flex;
-        }
-
-        .keyboard-button {
+        input[type="text"], input[type="number"], input[type="button"] {
+            width: calc(100% - 20px);
             padding: 10px;
-            margin: 5px;
-            background-color: #52057b;
+            margin: 10px 0;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="button"] {
+            background-color: #4CAF50;
             color: white;
+            cursor: pointer;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
         }
-
-        .keyboard-button:hover {
-            background-color: #8e44ad;
+        .animal-entry, .pokemon-entry {
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 5px;
         }
-
-        .pokemon-container {
-            background-color: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            margin: 20px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 300px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .pokemon-container:hover {
-            transform: translateY(-5px);
-        }
-
-        .pokemon-container img {
-            max-width: 100%;
-            border-radius: 10px;
-            transition: transform 0.3s;
-            border: 4px solid #8e44ad;
-        }
-
-        .pokemon-container img:hover {
-            transform: scale(1.1);
-        }
-
-        .pokemon-stats {
-            margin-top: 15px;
-            text-align: left;
-            width: 100%;
-            font-size: 14px;
-        }
-
-        .stat {
-            font-weight: bold;
-        }
-
-        @media (max-width: 600px) {
-            .pokemon-container {
-                width: 90%;
-            }
+        .pokemon-entry {
+            background: #dcedc8;
         }
     </style>
 </head>
 <body>
+    <div id="container">
+        <h2>Animal Class Complex Demonstration</h2>
+        <script>
+            // Base class representing an Animal
+            class MyAnimal {
+                constructor(name, age, habitat) {
+                    this.myName = name;
+                    this.myAge = age;
+                    this.habitat = habitat;
+                }
 
-<h1>Random Animal Images, Math Problems & Pokémon Display</h1>
+                makeSound() {
+                    return 'Some generic animal sound';
+                }
 
-<!-- Section for Animal Image Fetching -->
-<h2>Random Animal Images</h2>
-<label for="animalUrl">Enter a JSON returning URL:</label>
-<input type="text" id="animalUrl" value="https://randomfox.ca/floof/">
-<input type="button" value="Show Animal" onclick="fetchAnimalData()"><br><br>
+                eat() {
+                    return `${this.myName} is eating.`;
+                }
 
-<select id="animalOptions" size="1" onchange="updateAnimalUrl(this.value)">
-    <option value="https://randomfox.ca/floof/">RandomFox</option>
-    <option value="https://dog.ceo/api/breeds/image/random">Dog CEO</option>
-    <option value="https://api.thecatapi.com/v1/images/search">Random Cat</option>
-</select><br><br>
+                toString() {
+                    return `${this.myName} is a ${this.myAge} year old animal living in the ${this.habitat}.`;
+                }
 
-<div id="animalJson">Fetched JSON will appear here.</div>
-<img id="animalImage" src="" alt="Fetched Image" style="display:none; margin-top: 20px; max-width: 100%; height: auto;"/>
-
-<hr>
-
-<!-- Section for Calculator -->
-<h2>Calculator</h2>
-<div class="calculator-container">
-    <input type="text" id="mathInput" placeholder="Enter math expression" readonly>
-    <input type="button" value="Show Keyboard" onclick="toggleKeyboard()">
-    <input type="button" value="Calculate" onclick="calculateMath()"><br>
-    <div id="mathResult" style="font-size: 1.5em;"></div>
-</div>
-
-<!-- Keyboard Section -->
-<div class="keyboard" id="keyboard">
-    <div class="keyboard-row">
-        <button class="keyboard-button" onclick="addToInput('7')">7</button>
-        <button class="keyboard-button" onclick="addToInput('8')">8</button>
-        <button class="keyboard-button" onclick="addToInput('9')">9</button>
-        <button class="keyboard-button" onclick="addToInput('/')">/</button>
-    </div>
-    <div class="keyboard-row">
-        <button class="keyboard-button" onclick="addToInput('4')">4</button>
-        <button class="keyboard-button" onclick="addToInput('5')">5</button>
-        <button class="keyboard-button" onclick="addToInput('6')">6</button>
-        <button class="keyboard-button" onclick="addToInput('*')">*</button>
-    </div>
-    <div class="keyboard-row">
-        <button class="keyboard-button" onclick="addToInput('1')">1</button>
-        <button class="keyboard-button" onclick="addToInput('2')">2</button>
-        <button class="keyboard-button" onclick="addToInput('3')">3</button>
-        <button class="keyboard-button" onclick="addToInput('-')">-</button>
-    </div>
-    <div class="keyboard-row">
-        <button class="keyboard-button" onclick="addToInput('0')">0</button>
-        <button class="keyboard-button" onclick="addToInput('.')">.</button>
-        <button class="keyboard-button" onclick="addToInput('(')"> ( </button>
-        <button class="keyboard-button" onclick="addToInput(')')"> ) </button>
-    </div>
-    <div class="keyboard-row">
-        <button class="keyboard-button" onclick="addToInput('+')">+</button>
-        <button class="keyboard-button" onclick="clearInput()">C</button>
-    </div>
-</div>
-
-<hr>
-
-<!-- Section for Pokémon Display -->
-<h2>Pokémon Display</h2>
-<input type="button" value="Show Random Pokémon" onclick="fetchPokemonData()"><br><br>
-
-<!-- New section for Pokémon ID search -->
-<h3>Search Pokémon by ID</h3>
-<input type="number" id="pokemonIdInput" placeholder="Enter Pokémon ID (1-1025)">
-<input type="button" value="Search Pokémon" onclick="searchPokemonById()"><br><br>
-
-<!-- Button to toggle shiny form -->
-<input type="button" value="Toggle Shiny Form" onclick="toggleShinyForm()" style="display:none;" id="toggleShinyButton"><br><br>
-
-<div id="pokemonJson">Fetched Pokémon data will appear here.</div>
-<div class="pokemon-container" style="display:none;" id="pokemonDataContainer">
-    <img id="pokemonImage" src="" alt="Fetched Pokémon"/>
-    <div id="pokemonStats" class="pokemon-stats"></div>
-</div>
-
-<script>
-    let currentPokemon; 
-    let isShiny = false; 
-
-    // Functionality for Animal Images
-    async function fetchAnimalData() {
-        const url = document.getElementById('animalUrl').value;
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                myShow() {
+                    document.getElementById('myDiv01').innerHTML += `
+                        <div class="animal-entry">
+                            <p>${this.toString()}</p>
+                            <p>${this.myName} says: ${this.makeSound()}</p>
+                        </div>`;
+                }
             }
 
-            const data = await response.json();
-            document.getElementById('animalJson').innerHTML = JSON.stringify(data, null, 2);
-
-            let imageUrl;
-            if (data.image) {
-                imageUrl = data.image;
-            } else if (data.message) {
-                imageUrl = data.message;
-            } else if (data[0] && data[0].url) {
-                imageUrl = data[0].url;
+            class MyCat extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "house");
+                }
+                makeSound() {
+                    return 'Meow!';
+                }
             }
 
-            const animalImageElement = document.getElementById('animalImage');
-            if (imageUrl) {
-                animalImageElement.src = imageUrl; 
-                animalImageElement.style.display = 'block'; 
+            class MyDog extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "house");
+                }
+                makeSound() {
+                    return 'Woof!';
+                }
+            }
+
+            class MyBird extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "sky");
+                }
+                makeSound() {
+                    return 'Chirp!';
+                }
+            }
+
+            class MyFish extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "water");
+                }
+                makeSound() {
+                    return 'Glub!';
+                }
+            }
+
+            class MyRabbit extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "meadow");
+                }
+                makeSound() {
+                    return 'Squeak!';
+                }
+            }
+
+            const validAnimals = ['Cat', 'Dog', 'Bird', 'Fish', 'Rabbit'];
+
+            const createAnimal = (type, name, age) => {
+                switch (type) {
+                    case 'Cat': return new MyCat(name, age);
+                    case 'Dog': return new MyDog(name, age);
+                    case 'Bird': return new MyBird(name, age);
+                    case 'Fish': return new MyFish(name, age);
+                    case 'Rabbit': return new MyRabbit(name, age);
+                    default: return null;
+                }
+            }
+
+            const resetErrorMessage = () => {
+                document.getElementById('errorMessage').innerHTML = '';
+            }
+
+            const showErrorMessage = () => {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.innerHTML = "Animal is not valid. Please enter one of the following: " + validAnimals.join(', ');
+            }
+        </script>
+
+        <input type="text" id="animalType" placeholder="Enter animal type">
+        <input type="text" id="animalName" placeholder="Enter animal name">
+        <input type="number" id="animalAge" placeholder="Enter animal age" min="1">
+        <input type="button" value="Create Animal" onClick="{
+            const type = document.getElementById('animalType').value;
+            const name = document.getElementById('animalName').value;
+            const age = document.getElementById('animalAge').value;
+
+            resetErrorMessage(); 
+
+            if (type && name && age > 0) {
+                let animal = createAnimal(type, name, parseInt(age));
+                if (animal) {
+                    animal.myShow();
+                } else {
+                    showErrorMessage(); 
+                }
             } else {
-                animalImageElement.style.display = 'none';
+                showErrorMessage();
             }
-        } catch (error) {
-            console.error('Fetch error:', error);
-            document.getElementById('animalJson').textContent = 'Error fetching data: ' + error.message;
-            document.getElementById('animalImage').style.display = 'none'; 
-        }
-    }
+        }"><br>
 
-    function updateAnimalUrl(selectedUrl) {
-        document.getElementById('animalUrl').value = selectedUrl;
-        document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
-    }
+        <div id="errorMessage"></div>
+        <div id="myDiv01">...</div>
+    </div>
 
-    // Functionality for Calculator
-    function addToInput(value) {
-        document.getElementById('mathInput').value += value; // Append value to input
-    }
+    <div id="pokemonSection">
+        <h2>Pokémon Generator</h2>
+        <input type="text" id="pokemonSearch" placeholder="Search Pokémon by name or ID">
+        <input type="button" value="Search" onClick="searchPokemon()"><br>
+        <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
+        <div id="pokemonDisplay">Choose a Pokémon!</div>
+    </div>
 
-    function clearInput() {
-        document.getElementById('mathInput').value = ''; // Clear the input
-        document.getElementById('mathResult').textContent = ''; // Clear the result display
-    }
+    <script>
+        let pokemons = [];
 
-    function calculateMath() {
-        const input = document.getElementById('mathInput').value;
-        let result;
-        try {
-            // Evaluate the expression safely
-            result = eval(input); 
-            if (result === undefined) {
-                throw new Error("Invalid expression");
+        const fetchPokemons = async (limit = 1025) => {
+            const promises = [];
+            for (let i = 1; i <= limit; i++) {
+                promises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`));
             }
-        } catch (error) {
-            result = "Error: " + error.message;
-        }
-        
-        document.getElementById('mathResult').textContent = `Result: ${result}`;
-    }
-
-    function toggleKeyboard() {
-        const keyboard = document.getElementById('keyboard');
-        keyboard.style.display = (keyboard.style.display === "none" || keyboard.style.display === "") ? "flex" : "none";
-    }
-
-    // Functionality for Pokémon Display
-    async function fetchPokemonData() {
-        const randomId = Math.floor(Math.random() * 1025) + 1;
-        const url = `https://pokeapi.co/api/v2/pokemon/${randomId}/`;
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            const responses = await Promise.all(promises);
+            for (const response of responses) {
+                const data = await response.json();
+                pokemons.push({
+                    id: data.id,
+                    name: data.name,
+                    type: data.types.map(type => type.type.name).join(', '),
+                    hp: data.stats[0].base_stat,
+                    attack: data.stats[1].base_stat,
+                    defense: data.stats[2].base_stat,
+                    description: `Pokémon ID: ${data.id}`
+                });
             }
+            document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
+        };
 
-            currentPokemon = await response.json(); 
-            displayPokemon(currentPokemon);
-        } catch (error) {
-            console.error('Fetch error:', error);
-            document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
-            document.getElementById('pokemonImage').style.display = 'none'; 
-            document.getElementById('pokemonStats').style.display = 'none'; 
-        }
-    }
+        const getRandomPokemon = () => {
+            const randomIndex = Math.floor(Math.random() * pokemons.length);
+            return pokemons[randomIndex];
+        };
 
-    async function searchPokemonById() {
-        const id = document.getElementById('pokemonIdInput').value;
-
-        if (id < 1 || id > 1025) {
-            alert('Please enter a Pokémon ID between 1 and 1025.');
-            return;
-        }
-
-        const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+        const showPokemon = () => {
+            if (pokemons.length === 0) {
+                document.getElementById('pokemonDisplay').innerHTML = `<p>Loading Pokémon data...</p>`;
+                return;
             }
+            const pokemon = getRandomPokemon();
+            document.getElementById('pokemonDisplay').innerHTML = `
+                <div class="pokemon-entry">
+                    <h3>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} (${pokemon.type})</h3>
+                    <p><strong>HP:</strong> ${pokemon.hp}</p>
+                    <p><strong>Attack:</strong> ${pokemon.attack}</p>
+                    <p><strong>Defense:</strong> ${pokemon.defense}</p>
+                    <p>${pokemon.description}</p>
+                </div>`;
+        };
 
-            currentPokemon = await response.json(); 
-            displayPokemon(currentPokemon);
-        } catch (error) {
-            console.error('Fetch error:', error);
-            document.getElementById('pokemonJson').textContent = 'Error fetching data: ' + error.message;
-            document.getElementById('pokemonImage').style.display = 'none'; 
-            document.getElementById('pokemonStats').style.display = 'none'; 
-        }
-    }
+        const searchPokemon = () => {
+            const searchTerm = document.getElementById('pokemonSearch').value.toLowerCase();
+            const foundPokemon = pokemons.find(pokemon => 
+                pokemon.name.toLowerCase() === searchTerm || pokemon.id === parseInt(searchTerm)
+            );
 
-    function displayPokemon(data) {
-        document.getElementById('pokemonJson').innerHTML = `Fetched Pokémon ID: ${data.id}`;
+            if (foundPokemon) {
+                document.getElementById('pokemonDisplay').innerHTML = `
+                    <div class="pokemon-entry">
+                        <h3>${foundPokemon.name.charAt(0).toUpperCase() + foundPokemon.name.slice(1)} (${foundPokemon.type})</h3>
+                        <p><strong>HP:</strong> ${foundPokemon.hp}</p>
+                        <p><strong>Attack:</strong> ${foundPokemon.attack}</p>
+                        <p><strong>Defense:</strong> ${foundPokemon.defense}</p>
+                        <p>${foundPokemon.description}</p>
+                    </div>`;
+            } else {
+                document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
+            }
+        };
 
-        const imageUrl = isShiny ? data.sprites.front_shiny : data.sprites.front_default; 
-        let statsHtml = `<div class="stat">Name: ${data.name.charAt(0).toUpperCase() + data.name.slice(1)}</div>`;
-        statsHtml += `<div class="stat">Height: ${data.height} decimetres</div>`;
-        statsHtml += `<div class="stat">Weight: ${data.weight} hectograms</div>`;
-        statsHtml += `<div class="stat">Base Stats:</div>`;
-        
-        data.stats.forEach(stat => {
-            statsHtml += `<div class="stat">${stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1)}: ${stat.base_stat}</div>`;
-        });
-
-        const pokemonImageElement = document.getElementById('pokemonImage');
-        if (imageUrl) {
-            pokemonImageElement.src = imageUrl; 
-            pokemonImageElement.style.display = 'block';
-            document.getElementById('pokemonDataContainer').style.display = 'block'; 
-            
-            document.getElementById('pokemonStats').innerHTML = statsHtml;
-            document.getElementById('pokemonStats').style.display = 'block';
-            document.getElementById('toggleShinyButton').style.display = 'inline'; 
-        } else {
-            pokemonImageElement.style.display = 'none';
-            document.getElementById('pokemonStats').style.display = 'none'; 
-            document.getElementById('toggleShinyButton').style.display = 'none'; 
-        }
-    }
-
-    function toggleShinyForm() {
-        isShiny = !isShiny; 
-        if (currentPokemon) {
-            displayPokemon(currentPokemon); 
-        }
-    }
-</script>
-
+        // Initially fetch Pokémon data (up to 1025 Pokémon)
+        fetchPokemons(1025); 
+    </script>
 </body>
 </html>
