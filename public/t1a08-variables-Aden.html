@@ -61,10 +61,10 @@
     <p>W3Schools link to variables: <a href="https://www.w3schools.com/ja/ja_variables.asp" target="_blank">Click here</a></p>
     
     <label for="myIn01">Input 1:</label>
-    <input type="text" id="myIn01" value="5"><br>
+    <input type="number" id="myIn01" value="5" step="any" placeholder="Enter a number"><br>
     
     <label for="myIn02">Input 2:</label>
-    <input type="text" id="myIn02" value="7"><br>
+    <input type="number" id="myIn02" value="7" step="any" placeholder="Enter a number"><br>
     
     <input type="button" value="Add" onclick="performOperation('+')">
     <input type="button" value="Subtract" onclick="performOperation('-')">
@@ -75,13 +75,13 @@
     
     <div class="type-section">
         <h2>Variable Types Example</h2>
-        <p><strong>Boolean:</strong> <input type="text" id="booleanInput" placeholder="true / false"></p>
-        <p><strong>int8 or byte:</strong> <input type="number" id="int8Input" min="0" max="255" placeholder="0 to 255"></p>
-        <p><strong>int:</strong> <input type="number" id="intInput" placeholder="Integer value"></p>
-        <p><strong>double:</strong> <input type="number" id="doubleInput" step="any" placeholder="Floating-point value"></p>
-        <p><strong>float:</strong> <input type="number" id="floatInput" step="any" placeholder="Floating-point value"></p>
-        <p><strong>char:</strong> <input type="text" id="charInput" maxlength="1" placeholder="Single character"></p>
-        <p><strong>string:</strong> <input type="text" id="stringInput" placeholder="Any string"></p>
+        <p><strong>Boolean:</strong> <input type="text" id="booleanInput" placeholder="true / false" value="true"></p>
+        <p><strong>int8 or byte:</strong> <input type="number" id="int8Input" min="0" max="255" value="0" placeholder="0 to 255"></p>
+        <p><strong>int:</strong> <input type="number" id="intInput" value="0" placeholder="Integer value"></p>
+        <p><strong>double:</strong> <input type="number" id="doubleInput" step="any" value="0.0" placeholder="Floating-point value"></p>
+        <p><strong>float:</strong> <input type="number" id="floatInput" step="any" value="0.0" placeholder="Floating-point value"></p>
+        <p><strong>char:</strong> <input type="text" id="charInput" maxlength="1" value="A" placeholder="Single character"></p>
+        <p><strong>string:</strong> <input type="text" id="stringInput" value="Hello" placeholder="Any string"></p>
         
         <input type="button" value="Show Variable Types" onclick="showVariableTypes()">
         
