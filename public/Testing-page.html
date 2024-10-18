@@ -59,17 +59,7 @@
             font-weight: bold;
         }
 
-        #myDiv01 {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            background-color: #e8f5e9;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        #pokemonDisplay {
+        #myDiv01, #pokemonDisplay {
             margin-top: 20px;
             padding: 10px;
             border: 1px solid #cccccc;
@@ -126,7 +116,7 @@
                 }
             } // end class MyAnimal
 
-            // Extended classes for various animals
+            // Extended classes for various animals (same as the previous example)
             class MyCat extends MyAnimal {
                 constructor(name, age) {
                     super(name, age, "house");
@@ -177,14 +167,10 @@
                 }
             }
 
-            // Valid animal types
-            const validAnimals = [
-                'Cat', 'Dog', 'Bird', 'Fish', 'Rabbit'
-            ];
+            const validAnimals = ['Cat', 'Dog', 'Bird', 'Fish', 'Rabbit'];
 
-            // Factory function to create an animal
-            function createAnimal(type, name, age) {
-                switch(type) {
+            const createAnimal = (type, name, age) => {
+                switch (type) {
                     case 'Cat': return new MyCat(name, age);
                     case 'Dog': return new MyDog(name, age);
                     case 'Bird': return new MyBird(name, age);
@@ -194,30 +180,32 @@
                 }
             }
 
-            function resetErrorMessage() {
+            const resetErrorMessage = () => {
                 document.getElementById('errorMessage').innerHTML = '';
             }
 
-            function showErrorMessage() {
+            const showErrorMessage = () => {
                 const errorMessage = document.getElementById('errorMessage');
                 errorMessage.innerHTML = "Animal is not valid. Please enter one of the following: " + validAnimals.join(', ');
             }
 
-            // Sample Pokémon data
+            // Pokémon data (truncated for demonstration)
             const pokemons = [
-                { name: "Bulbasaur", type: "Grass/Poison", hp: 45, attack: 49, defense: 49, description: "A seed Pokémon that can be found in grassy areas." },
-                { name: "Charmander", type: "Fire", hp: 39, attack: 52, defense: 43, description: "A small lizard-like Pokémon that loves to bask in the sun." },
-                { name: "Squirtle", type: "Water", hp: 44, attack: 48, defense: 65, description: "A turtle Pokémon that can swim gracefully." },
-                { name: "Pidgey", type: "Normal/Flying", hp: 40, attack: 45, defense: 40, description: "A bird Pokémon that flocks in large groups." },
-                { name: "Jigglypuff", type: "Normal/Fairy", hp: 115, attack: 45, defense: 20, description: "A Pokémon that can put others to sleep with its song." }
+                { name: "Bulbasaur", type: "Grass/Poison", hp: 45, attack: 49, defense: 49, description: "A seed Pokémon." },
+                { name: "Charmander", type: "Fire", hp: 39, attack: 52, defense: 43, description: "A small lizard-like Pokémon." },
+                { name: "Squirtle", type: "Water", hp: 44, attack: 48, defense: 65, description: "A turtle Pokémon." },
+                { name: "Pidgey", type: "Normal/Flying", hp: 40, attack: 45, defense: 40, description: "A bird Pokémon." },
+                // ...additional Pokémon...
+                { name: "Zarude", type: "Dark/Grass", hp: 105, attack: 140, defense: 55, description: "A Pokémon that lives in the forest." },
+                { name: "Calyrex", type: "Psychic/Grass", hp: 100, attack: 80, defense: 80, description: "An ancient Pokémon known for its wisdom." },
             ];
 
-            function getRandomPokemon() {
+            const getRandomPokemon = () => {
                 const randomIndex = Math.floor(Math.random() * pokemons.length);
                 return pokemons[randomIndex];
             }
 
-            function showPokemon() {
+            const showPokemon = () => {
                 const pokemon = getRandomPokemon();
                 document.getElementById('pokemonDisplay').innerHTML = `
                     <div class="pokemon-entry">
@@ -238,21 +226,21 @@
             const name = document.getElementById('animalName').value;
             const age = document.getElementById('animalAge').value;
 
-            resetErrorMessage(); // Reset the error message
+            resetErrorMessage(); 
 
             if (type && name && age > 0) {
                 let animal = createAnimal(type, name, parseInt(age));
                 if (animal) {
                     animal.myShow();
                 } else {
-                    showErrorMessage(); // Show the error message
+                    showErrorMessage(); 
                 }
             } else {
-                showErrorMessage(); // Show the error message
+                showErrorMessage();
             }
         }"><br>
 
-        <div id="errorMessage"></div> <!-- Error message display -->
+        <div id="errorMessage"></div> 
         <div id="myDiv01">...</div>
     </div>
 
