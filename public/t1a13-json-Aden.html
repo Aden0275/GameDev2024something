@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +51,10 @@
         }
         .pokemon-entry {
             background: #dcedc8;
+        }
+        .pokemon-image {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -202,6 +207,7 @@
                 const speciesResponse = await fetch(data.species.url);
                 const speciesData = await speciesResponse.json();
                 const description = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
+                const imageUrl = data.sprites.front_default; // Get the default sprite URL
 
                 pokemons.push({
                     id: data.id,
@@ -210,7 +216,8 @@
                     hp: data.stats[0].base_stat,
                     attack: data.stats[1].base_stat,
                     defense: data.stats[2].base_stat,
-                    description: description.replace(/\n/g, ' ') // Clean up new lines
+                    description: description.replace(/\n/g, ' '), // Clean up new lines
+                    imageUrl: imageUrl // Add image URL
                 });
             }
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
@@ -230,6 +237,7 @@
             document.getElementById('pokemonDisplay').innerHTML = `
                 <div class="pokemon-entry">
                     <h3>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} (${pokemon.type})</h3>
+                    <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image">
                     <p><strong>HP:</strong> ${pokemon.hp}</p>
                     <p><strong>Attack:</strong> ${pokemon.attack}</p>
                     <p><strong>Defense:</strong> ${pokemon.defense}</p>
@@ -247,6 +255,7 @@
                 document.getElementById('pokemonDisplay').innerHTML = `
                     <div class="pokemon-entry">
                         <h3>${foundPokemon.name.charAt(0).toUpperCase() + foundPokemon.name.slice(1)} (${foundPokemon.type})</h3>
+                        <img src="${foundPokemon.imageUrl}" alt="${foundPokemon.name}" class="pokemon-image">
                         <p><strong>HP:</strong> ${foundPokemon.hp}</p>
                         <p><strong>Attack:</strong> ${foundPokemon.attack}</p>
                         <p><strong>Defense:</strong> ${foundPokemon.defense}</p>
