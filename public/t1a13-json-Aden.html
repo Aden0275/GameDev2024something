@@ -1,309 +1,234 @@
+   transform: scale(1.05);
+        }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <title>Animal and Pokémon Demo</title>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 20px;
+        .calculator-container, .keyboard {
+            margin-top: 20px;
             display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
         }
-        h2 {
-            text-align: center;
-            color: #4CAF50;
+        .keyboard {
+            display: none;
+            margin-top: 10px;
         }
-        #container, #pokemonSection {
-            max-width: 600px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px;
+        .keyboard-row {
+            display: flex;
         }
-        input[type="text"], input[type="number"], input[type="button"] {
-            width: calc(100% - 20px);
+        .keyboard-button {
             padding: 10px;
-            margin: 10px 0;
-            border: 2px solid #4CAF50;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        input[type="button"] {
-            background-color: #4CAF50;
+            margin: 5px;
+            background-color: #52057b;
             color: white;
-            cursor: pointer;
             border: none;
             border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .animal-entry, .pokemon-entry {
-            padding: 5px;
-            margin-bottom: 5px;
-            border-radius: 5px;
+        .keyboard-button:hover {
+            background-color: #8e44ad;
         }
-        .pokemon-entry {
-            background: #dcedc8;
+        .pokemon-container {
+            background-color: white;
+            border-radius: 15px;
+@@ -72,7 +103,7 @@
         }
-        .pokemon-image {
+
+        .pokemon-container img {
+            max-width: 100%; 
             max-width: 100%;
-            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            border: 4px solid #8e44ad;
+@@ -85,7 +116,7 @@
+        .pokemon-stats {
+            margin-top: 15px;
+            text-align: left;
+            width: 100%; 
+            width: 100%;
+            font-size: 14px;
         }
-    </style>
-</head>
-<body>
-    <div id="container">
-        <h2>Animal Class Complex Demonstration</h2>
-        <script>
-            // Base class representing an Animal
-            class MyAnimal {
-                constructor(name, age, habitat) {
-                    this.myName = name;
-                    this.myAge = age;
-                    this.habitat = habitat;
-                }
 
-                makeSound() {
-                    return 'Some generic animal sound';
-                }
+@@ -121,11 +152,46 @@ <h2>Random Animal Images</h2>
 
-                eat() {
-                    return `${this.myName} is eating.`;
-                }
+<hr>
 
-                toString() {
-                    return `${this.myName} is a ${this.myAge} year old animal living in the ${this.habitat}.`;
-                }
-
-                myShow() {
-                    document.getElementById('myDiv01').innerHTML += `
-                        <div class="animal-entry">
-                            <p>${this.toString()}</p>
-                            <p>${this.myName} says: ${this.makeSound()}</p>
-                        </div>`;
-                }
-            }
-
-            class MyCat extends MyAnimal {
-                constructor(name, age) {
-                    super(name, age, "house");
-                }
-                makeSound() {
-                    return 'Meow!';
-                }
-            }
-
-            class MyDog extends MyAnimal {
-                constructor(name, age) {
-                    super(name, age, "house");
-                }
-                makeSound() {
-                    return 'Woof!';
-                }
-            }
-
-            class MyBird extends MyAnimal {
-                constructor(name, age) {
-                    super(name, age, "sky");
-                }
-                makeSound() {
-                    return 'Chirp!';
-                }
-            }
-
-            class MyFish extends MyAnimal {
-                constructor(name, age) {
-                    super(name, age, "water");
-                }
-                makeSound() {
-                    return 'Glub!';
-                }
-            }
-
-            class MyRabbit extends MyAnimal {
-                constructor(name, age) {
-                    super(name, age, "meadow");
-                }
-                makeSound() {
-                    return 'Squeak!';
-                }
-            }
-
-            const validAnimals = ['Cat', 'Dog', 'Bird', 'Fish', 'Rabbit'];
-
-            const createAnimal = (type, name, age) => {
-                switch (type) {
-                    case 'Cat': return new MyCat(name, age);
-                    case 'Dog': return new MyDog(name, age);
-                    case 'Bird': return new MyBird(name, age);
-                    case 'Fish': return new MyFish(name, age);
-                    case 'Rabbit': return new MyRabbit(name, age);
-                    default: return null;
-                }
-            }
-
-            const resetErrorMessage = () => {
-                document.getElementById('errorMessage').innerHTML = '';
-            }
-
-            const showErrorMessage = () => {
-                const errorMessage = document.getElementById('errorMessage');
-                errorMessage.innerHTML = "Animal is not valid. Please enter one of the following: " + validAnimals.join(', ');
-            }
-        </script>
-
-        <input type="text" id="animalType" placeholder="Enter animal type">
-        <input type="text" id="animalName" placeholder="Enter animal name">
-        <input type="number" id="animalAge" placeholder="Enter animal age" min="1">
-        <input type="button" value="Create Animal" onClick="{
-            const type = document.getElementById('animalType').value;
-            const name = document.getElementById('animalName').value;
-            const age = document.getElementById('animalAge').value;
-
-            resetErrorMessage(); 
-
-            if (type && name && age > 0) {
-                let animal = createAnimal(type, name, parseInt(age));
-                if (animal) {
-                    animal.myShow();
-                } else {
-                    showErrorMessage(); 
-                }
-            } else {
-                showErrorMessage();
-            }
-        }"><br>
-
-        <div id="errorMessage"></div>
-        <div id="myDiv01">...</div>
+<!-- Section for Math Problems -->
+<h2>Random Math Problems</h2>
+<button onclick="generateMathProblem()">Generate Math Problem</button>
+<div id="mathProblem" style="margin-top: 20px; font-size: 1.5em;"></div>
+<div id="mathAnswer" style="margin-top: 20px; font-size: 1.5em;"></div>
+<!-- Section for Calculator -->
+<h2>Calculator</h2>
+<div class="calculator-container">
+    <input type="text" id="mathInput" placeholder="Enter math expression" readonly>
+    <input type="button" value="Show Keyboard" onclick="toggleKeyboard()">
+    <input type="button" value="Calculate" onclick="calculateMath()"><br>
+    <div id="mathResult" style="font-size: 1.5em;"></div>
+</div>
+<!-- Keyboard Section -->
+<div class="keyboard" id="keyboard">
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('7')">7</button>
+        <button class="keyboard-button" onclick="addToInput('8')">8</button>
+        <button class="keyboard-button" onclick="addToInput('9')">9</button>
+        <button class="keyboard-button" onclick="addToInput('/')">/</button>
     </div>
-
-    <div id="pokemonSection">
-        <h2>Pokémon Generator</h2>
-        <input type="text" id="pokemonSearch" placeholder="Search Pokémon by name or ID">
-        <input type="button" value="Search" onClick="searchPokemon()"><br>
-        <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
-        <div id="pokemonDisplay">Choose a Pokémon!</div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('4')">4</button>
+        <button class="keyboard-button" onclick="addToInput('5')">5</button>
+        <button class="keyboard-button" onclick="addToInput('6')">6</button>
+        <button class="keyboard-button" onclick="addToInput('*')">*</button>
     </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('1')">1</button>
+        <button class="keyboard-button" onclick="addToInput('2')">2</button>
+        <button class="keyboard-button" onclick="addToInput('3')">3</button>
+        <button class="keyboard-button" onclick="addToInput('-')">-</button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('0')">0</button>
+        <button class="keyboard-button" onclick="addToInput('.')">.</button>
+        <button class="keyboard-button" onclick="addToInput('(')"> ( </button>
+        <button class="keyboard-button" onclick="addToInput(')')"> ) </button>
+    </div>
+    <div class="keyboard-row">
+        <button class="keyboard-button" onclick="addToInput('+')">+</button>
+        <button class="keyboard-button" onclick="clearInput()">C</button>
+    </div>
+</div>
 
-    <script>
-        let pokemons = [];
-        let currentPokemon = null; // Store current Pokémon for toggling shiny
+<hr>
 
-        const fetchPokemons = async (limit = 1025) => {
-            const promises = [];
-            for (let i = 1; i <= limit; i++) {
-                promises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`));
+@@ -148,8 +214,8 @@ <h3>Search Pokémon by ID</h3>
+</div>
+
+<script>
+    let currentPokemon; // To store the current Pokémon data
+    let isShiny = false; // To track if shiny form is to be displayed
+    let currentPokemon; 
+    let isShiny = false; 
+
+    // Functionality for Animal Images
+    async function fetchAnimalData() {
+@@ -191,33 +257,35 @@ <h3>Search Pokémon by ID</h3>
+        document.getElementById('animalJson').innerHTML = `Selected URL: ${selectedUrl}`;
+    }
+
+    // Functionality for Math Problems
+    function generateMathProblem() {
+        const num1 = Math.floor(Math.random() * 100);
+        const num2 = Math.floor(Math.random() * 100);
+        const operations = ['+', '-', '*', '/'];
+        const operation = operations[Math.floor(Math.random() * operations.length)];
+    // Functionality for Calculator
+    function addToInput(value) {
+        document.getElementById('mathInput').value += value; // Append value to input
+    }
+
+        const problem = `${num1} ${operation} ${num2}`;
+        
+        let answer;
+        switch (operation) {
+            case '+':
+                answer = num1 + num2;
+                break;
+            case '-':
+                answer = num1 - num2;
+                break;
+            case '*':
+                answer = num1 * num2;
+                break;
+            case '/':
+                answer = num2 !== 0 ? (num1 / num2).toFixed(2) : 'undefined (division by zero)';
+                break;
+    function clearInput() {
+        document.getElementById('mathInput').value = ''; // Clear the input
+        document.getElementById('mathResult').textContent = ''; // Clear the result display
+    }
+    function calculateMath() {
+        const input = document.getElementById('mathInput').value;
+        let result;
+        try {
+            // Evaluate the expression safely
+            result = eval(input); 
+            if (result === undefined) {
+                throw new Error("Invalid expression");
             }
-            const responses = await Promise.all(promises);
-            for (const response of responses) {
-                const data = await response.json();
-                const speciesResponse = await fetch(data.species.url);
-                const speciesData = await speciesResponse.json();
-                const description = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
-                const imageUrl = data.sprites.front_default; // Regular sprite
-                const shinyImageUrl = data.sprites.front_shiny; // Shiny sprite
+        } catch (error) {
+            result = "Error: " + error.message;
+        }
+        
+        document.getElementById('mathResult').textContent = `Result: ${result}`;
+    }
 
-                pokemons.push({
-                    id: data.id,
-                    name: data.name,
-                    type: data.types.map(type => type.type.name).join(', '),
-                    hp: data.stats[0].base_stat,
-                    attack: data.stats[1].base_stat,
-                    defense: data.stats[2].base_stat,
-                    description: description.replace(/\n/g, ' '), // Clean up new lines
-                    imageUrl: imageUrl, // Regular image URL
-                    shinyImageUrl: shinyImageUrl // Shiny image URL
-                });
+        document.getElementById('mathProblem').textContent = `Problem: ${problem}`;
+        document.getElementById('mathAnswer').textContent = `Answer: ${answer}`;
+    function toggleKeyboard() {
+        const keyboard = document.getElementById('keyboard');
+        keyboard.style.display = (keyboard.style.display === "none" || keyboard.style.display === "") ? "flex" : "none";
+    }
+
+    // Functionality for Pokémon Display
+@@ -231,7 +299,7 @@ <h3>Search Pokémon by ID</h3>
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
-        };
 
-        const getRandomPokemon = () => {
-            const randomIndex = Math.floor(Math.random() * pokemons.length);
-            return pokemons[randomIndex];
-        };
+            currentPokemon = await response.json(); // Store current Pokémon data
+            currentPokemon = await response.json(); 
+            displayPokemon(currentPokemon);
+        } catch (error) {
+            console.error('Fetch error:', error);
+@@ -241,7 +309,6 @@ <h3>Search Pokémon by ID</h3>
+        }
+    }
 
-        const showPokemon = () => {
-            if (pokemons.length === 0) {
-                document.getElementById('pokemonDisplay').innerHTML = `<p>Loading Pokémon data...</p>`;
-                return;
+    // New function to search Pokémon by ID
+    async function searchPokemonById() {
+        const id = document.getElementById('pokemonIdInput').value;
+
+@@ -258,7 +325,7 @@ <h3>Search Pokémon by ID</h3>
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            currentPokemon = getRandomPokemon(); // Store the current Pokémon
-            displayPokemon(currentPokemon); // Display the current Pokémon
-        };
 
-        const displayPokemon = (pokemon) => {
-            document.getElementById('pokemonDisplay').innerHTML = `
-                <div class="pokemon-entry">
-                    <h3>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} (${pokemon.type})</h3>
-                    <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image" id="pokemonImage">
-                    <p><strong>HP:</strong> ${pokemon.hp}</p>
-                    <p><strong>Attack:</strong> ${pokemon.attack}</p>
-                    <p><strong>Defense:</strong> ${pokemon.defense}</p>
-                    <p><strong>Description:</strong> ${pokemon.description}</p>
-                    <input type="button" value="Toggle Shiny" onClick="toggleShiny()">
-                    <br>
-                    <input type="text" id="newPokemonName" placeholder="Change Pokémon name" 
-                        oninput="updatePokemonName(event)">
-                    <input type="number" id="newPokemonAge" placeholder="Set Pokémon age" min="0"
-                        oninput="updatePokemonAge(event)">
-                </div>`;
-        };
+            currentPokemon = await response.json(); // Store current Pokémon data
+            currentPokemon = await response.json(); 
+            displayPokemon(currentPokemon);
+        } catch (error) {
+            console.error('Fetch error:', error);
+@@ -268,7 +335,6 @@ <h3>Search Pokémon by ID</h3>
+        }
+    }
 
-        const toggleShiny = () => {
-            const imageElement = document.getElementById('pokemonImage');
-            if (imageElement.src === currentPokemon.imageUrl) {
-                imageElement.src = currentPokemon.shinyImageUrl; // Change to shiny
-            } else {
-                imageElement.src = currentPokemon.imageUrl; // Change back to regular
-            }
-        };
+    // Function to display Pokémon data
+    function displayPokemon(data) {
+        document.getElementById('pokemonJson').innerHTML = `Fetched Pokémon ID: ${data.id}`;
 
-        const updatePokemonName = (event) => {
-            const newName = event.target.value;
-            const nameHeader = document.querySelector('.pokemon-entry h3');
-            if (nameHeader && currentPokemon) {
-                nameHeader.textContent = `${newName.charAt(0).toUpperCase() + newName.slice(1)} (${currentPokemon.type})`;
-                currentPokemon.name = newName; // Optional: Update the name in currentPokemon object
-            }
-        };
+@@ -286,23 +352,22 @@ <h3>Search Pokémon by ID</h3>
+        if (imageUrl) {
+            pokemonImageElement.src = imageUrl; 
+            pokemonImageElement.style.display = 'block';
+            document.getElementById('pokemonDataContainer').style.display = 'block'; // Show the Pokémon data container
+            document.getElementById('pokemonDataContainer').style.display = 'block'; 
 
-        const updatePokemonAge = (event) => {
-            const newAge = event.target.value;
-            const ageText = document.querySelector('.pokemon-entry p.age');
-            if (ageText) {
-                if (newAge) {
-                    ageText.textContent = `Age: ${newAge}`;
-                } else {
-                    ageText.textContent = ''; // Clear age if no value is entered
-                }
-            }
-        };
+            document.getElementById('pokemonStats').innerHTML = statsHtml;
+            document.getElementById('pokemonStats').style.display = 'block';
+            document.getElementById('toggleShinyButton').style.display = 'inline'; // Show the toggle button
+            document.getElementById('toggleShinyButton').style.display = 'inline'; 
+        } else {
+            pokemonImageElement.style.display = 'none';
+            document.getElementById('pokemonStats').style.display = 'none'; 
+            document.getElementById('toggleShinyButton').style.display = 'none'; // Hide the toggle button if no image
+            document.getElementById('toggleShinyButton').style.display = 'none'; 
+        }
+    }
 
-        const searchPokemon = () => {
-            const searchTerm = document.getElementById('pokemonSearch').value.toLowerCase();
-            const foundPokemon = pokemons.find(pokemon => 
-                pokemon.name.toLowerCase() === searchTerm || pokemon.id === parseInt(searchTerm)
-            );
-
-            if (foundPokemon) {
-                currentPokemon = foundPokemon; // Store the found Pokémon
-                displayPokemon(foundPokemon); // Display found Pokémon
-            } else {
-                document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
-            }
-        };
-
-        // Initially fetch Pokémon data (up to 1025 Pokémon)
-        fetchPokemons(1025); 
-    </script>
-</body>
-</html>
+    // Function to toggle shiny form
+    function toggleShinyForm() {
+        isShiny = !isShiny; // Toggle the shiny state
+        isShiny = !isShiny; 
+        if (currentPokemon) {
+            displayPokemon(currentPokemon); // Redisplay the current Pokémon with the updated state
+            displayPokemon(currentPokemon); 
+        }
+    }
+</script>
