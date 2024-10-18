@@ -182,7 +182,9 @@
 
     <div id="pokemonSection">
         <h2>Pokémon Generator</h2>
-        <input type="button" value="Generate Pokémon" onClick="showPokemon()"><br>
+        <input type="text" id="pokemonSearch" placeholder="Search Pokémon by name or ID">
+        <input type="button" value="Search" onClick="searchPokemon()"><br>
+        <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
         <div id="pokemonDisplay">Choose a Pokémon!</div>
     </div>
 
@@ -198,6 +200,7 @@
             for (const response of responses) {
                 const data = await response.json();
                 pokemons.push({
+                    id: data.id,
                     name: data.name,
                     type: data.types.map(type => type.type.name).join(', '),
                     hp: data.stats[0].base_stat,
@@ -206,7 +209,7 @@
                     description: `Pokémon ID: ${data.id}`
                 });
             }
-            document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. Click 'Generate Pokémon' to see a random one.";
+            document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
         };
 
         const getRandomPokemon = () => {
@@ -228,6 +231,26 @@
                     <p><strong>Defense:</strong> ${pokemon.defense}</p>
                     <p>${pokemon.description}</p>
                 </div>`;
+        };
+
+        const searchPokemon = () => {
+            const searchTerm = document.getElementById('pokemonSearch').value.toLowerCase();
+            const foundPokemon = pokemons.find(pokemon => 
+                pokemon.name.toLowerCase() === searchTerm || pokemon.id === parseInt(searchTerm)
+            );
+
+            if (foundPokemon) {
+                document.getElementById('pokemonDisplay').innerHTML = `
+                    <div class="pokemon-entry">
+                        <h3>${foundPokemon.name.charAt(0).toUpperCase() + foundPokemon.name.slice(1)} (${foundPokemon.type})</h3>
+                        <p><strong>HP:</strong> ${foundPokemon.hp}</p>
+                        <p><strong>Attack:</strong> ${foundPokemon.attack}</p>
+                        <p><strong>Defense:</strong> ${foundPokemon.defense}</p>
+                        <p>${foundPokemon.description}</p>
+                    </div>`;
+            } else {
+                document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
+            }
         };
 
         // Initially fetch Pokémon data (up to 1025 Pokémon)
