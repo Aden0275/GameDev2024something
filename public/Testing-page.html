@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <h2 align="center">Animal Class Hierarchy Demo</h2>
+    <h2 align="center">t1a18 Extend Class Demo</h2>
 
     <script>
         // Base class representing an Animal
@@ -14,63 +14,57 @@
                 this.myAge = passAge;
             }
             myShow() {
-                document.getElementById('myDiv01').innerHTML += 'Name: ' + this.myName + ', Age: ' + this.myAge + ' years.<br>';
+                document.getElementById('myDiv01').innerHTML += 'Hello ' + this.myName + '<br>';
             }
         } // end class MyAnimal
 
         // Extended class for a Cat
         class MyCat extends MyAnimal {
             myShow() {
-                super.myShow();
-                document.getElementById('myDiv01').innerHTML += this.myName + ' is a great cat! <br>';
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a great cat <br>';
             }
         } // end extended class MyCat
 
         // Extended class for a Dog
         class MyDog extends MyAnimal {
             myShow() {
-                super.myShow();
-                document.getElementById('myDiv01').innerHTML += this.myName + ' is a loyal dog! <br>';
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a loyal dog <br>';
             }
         } // end extended class MyDog
 
-        // Extended class for a Bird
-        class MyBird extends MyAnimal {
-            constructor(passName, passAge, passSpecies) {
-                super(passName, passAge);
-                this.mySpecies = passSpecies;
+        // New class representing a Car
+        class MyCar {
+            constructor(passMake, passModel, passYear) {
+                this.make = passMake;
+                this.model = passModel;
+                this.year = passYear;
             }
-            myShow() {
-                super.myShow();
-                document.getElementById('myDiv01').innerHTML += this.myName + ' is a beautiful ' + this.mySpecies + '! <br>';
+            showDetails() {
+                document.getElementById('myDiv01').innerHTML += 'Car: ' + this.year + ' ' + this.make + ' ' + this.model + '<br>';
             }
-            sing() {
-                return this.myName + ' the ' + this.mySpecies + ' sings a sweet song! <br>';
-            }
-        } // end extended class MyBird
+        } // end class MyCar
     </script>
 
-    <input type="button" value="Show Animal - Snickers" onClick="{
+    <input type="button" value="Example Class Set and Show Class Animal" onClick="{
         myDog = new MyAnimal('Snickers', 5);
         myDog.myShow();
     }"><br><br>
 
     <input type="text" id="myText01" value="may be useful later"><br>
 
-    <input type="button" value="Show Cat - Fluffy" onClick="{
+    <input type="button" value="Example Extend Class Animal as Cat" onClick="{
         myPet = new MyCat('Fluffy', 14);
         myPet.myShow();
     }"><br><br>
 
-    <input type="button" value="Show Dog - Buddy" onClick="{
+    <input type="button" value="Example Extend Class Animal as Dog" onClick="{
         myDog = new MyDog('Buddy', 3);
         myDog.myShow();
     }"><br><br>
 
-    <input type="button" value="Show Bird - Tweety" onClick="{
-        myBird = new MyBird('Tweety', 2, 'Canary');
-        myBird.myShow();
-        document.getElementById('myDiv01').innerHTML += myBird.sing();
+    <input type="button" value="Example Create a Car" onClick="{
+        myCar = new MyCar('Toyota', 'Corolla', 2020);
+        myCar.showDetails();
     }"><br><br>
 
     <div id="myDiv01">...</div>
