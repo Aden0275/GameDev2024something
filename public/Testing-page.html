@@ -194,6 +194,7 @@
 
     <script>
         let pokemons = [];
+        let currentPokemon = null; // Store current Pokémon for toggling shiny
 
         const fetchPokemons = async (limit = 1025) => {
             const promises = [];
@@ -206,7 +207,8 @@
                 const speciesResponse = await fetch(data.species.url);
                 const speciesData = await speciesResponse.json();
                 const description = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
-                const imageUrl = data.sprites.front_default; // Get the default sprite URL
+                const imageUrl = data.sprites.front_default; // Regular sprite
+                const shinyImageUrl = data.sprites.front_shiny; // Shiny sprite
 
                 pokemons.push({
                     id: data.id,
@@ -216,7 +218,8 @@
                     attack: data.stats[1].base_stat,
                     defense: data.stats[2].base_stat,
                     description: description.replace(/\n/g, ' '), // Clean up new lines
-                    imageUrl: imageUrl // Add image URL
+                    imageUrl: imageUrl, // Regular image URL
+                    shinyImageUrl: shinyImageUrl // Shiny image URL
                 });
             }
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
@@ -232,16 +235,30 @@
                 document.getElementById('pokemonDisplay').innerHTML = `<p>Loading Pokémon data...</p>`;
                 return;
             }
-            const pokemon = getRandomPokemon();
+            currentPokemon = getRandomPokemon(); // Store the current Pokémon
+            displayPokemon(currentPokemon); // Display the current Pokémon
+        };
+
+        const displayPokemon = (pokemon) => {
             document.getElementById('pokemonDisplay').innerHTML = `
                 <div class="pokemon-entry">
                     <h3>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} (${pokemon.type})</h3>
-                    <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image">
+                    <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image" id="pokemonImage">
                     <p><strong>HP:</strong> ${pokemon.hp}</p>
                     <p><strong>Attack:</strong> ${pokemon.attack}</p>
                     <p><strong>Defense:</strong> ${pokemon.defense}</p>
                     <p><strong>Description:</strong> ${pokemon.description}</p>
+                    <input type="button" value="Toggle Shiny" onClick="toggleShiny()">
                 </div>`;
+        };
+
+        const toggleShiny = () => {
+            const imageElement = document.getElementById('pokemonImage');
+            if (imageElement.src === currentPokemon.imageUrl) {
+                imageElement.src = currentPokemon.shinyImageUrl; // Change to shiny
+            } else {
+                imageElement.src = currentPokemon.imageUrl; // Change back to regular
+            }
         };
 
         const searchPokemon = () => {
@@ -251,15 +268,8 @@
             );
 
             if (foundPokemon) {
-                document.getElementById('pokemonDisplay').innerHTML = `
-                    <div class="pokemon-entry">
-                        <h3>${foundPokemon.name.charAt(0).toUpperCase() + foundPokemon.name.slice(1)} (${foundPokemon.type})</h3>
-                        <img src="${foundPokemon.imageUrl}" alt="${foundPokemon.name}" class="pokemon-image">
-                        <p><strong>HP:</strong> ${foundPokemon.hp}</p>
-                        <p><strong>Attack:</strong> ${foundPokemon.attack}</p>
-                        <p><strong>Defense:</strong> ${foundPokemon.defense}</p>
-                        <p><strong>Description:</strong> ${foundPokemon.description}</p>
-                    </div>`;
+                currentPokemon = foundPokemon; // Store the found Pokémon
+                displayPokemon(foundPokemon); // Display found Pokémon
             } else {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
             }
