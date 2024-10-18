@@ -13,6 +13,7 @@
             padding: 20px;
             display: flex;
             justify-content: space-around;
+            flex-wrap: wrap;
         }
         h2 {
             text-align: center;
@@ -83,8 +84,8 @@
                             <p>${this.myName} says: ${this.makeSound()}</p>
                         </div>`;
                 }
-            } // end class MyAnimal
-            
+            }
+
             class MyCat extends MyAnimal {
                 constructor(name, age) {
                     super(name, age, "house");
@@ -175,7 +176,7 @@
             }
         }"><br>
 
-        <div id="errorMessage"></div> 
+        <div id="errorMessage"></div>
         <div id="myDiv01">...</div>
     </div>
 
@@ -186,12 +187,15 @@
     </div>
 
     <script>
-        // Pokémon data fetching from the PokéAPI
         let pokemons = [];
 
-        const fetchPokemons = async () => {
-            for (let i = 1; i <= 1025; i++) {
-                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`);
+        const fetchPokemons = async (limit = 1025) => {
+            const promises = [];
+            for (let i = 1; i <= limit; i++) {
+                promises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${i}`));
+            }
+            const responses = await Promise.all(promises);
+            for (const response of responses) {
                 const data = await response.json();
                 pokemons.push({
                     name: data.name,
@@ -202,6 +206,7 @@
                     description: `Pokémon ID: ${data.id}`
                 });
             }
+            document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. Click 'Generate Pokémon' to see a random one.";
         };
 
         const getRandomPokemon = () => {
@@ -225,8 +230,8 @@
                 </div>`;
         };
 
-        // Initially fetch Pokémon data
-        fetchPokemons();
+        // Initially fetch Pokémon data (up to 1025 Pokémon)
+        fetchPokemons(1025); 
     </script>
 </body>
 </html>
