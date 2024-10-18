@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
@@ -7,6 +8,8 @@
             background-color: #f4f4f4;
             color: #333;
             padding: 20px;
+            display: flex;
+            justify-content: space-around;
         }
 
         h2 {
@@ -14,13 +17,13 @@
             color: #4CAF50;
         }
 
-        #container {
+        #container, #pokemonSection {
             max-width: 600px;
-            margin: auto;
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
         }
 
         input[type="text"], input[type="number"], input[type="button"] {
@@ -66,25 +69,25 @@
             overflow-y: auto;
         }
 
-        .animal-entry {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        #pokemonDisplay {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            background-color: #e8f5e9;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .animal-entry, .pokemon-entry {
             padding: 5px;
             margin-bottom: 5px;
             background: #dcedc8;
             border-radius: 5px;
         }
 
-        .animal-entry p {
-            margin: 0;
-        }
-
-        .animal-image {
-            max-width: 100px;
-            height: auto;
-            margin-left: 20px;
-            border-radius: 5px;
+        .pokemon-entry {
+            color: #023e8a;
         }
     </style>
 </head>
@@ -96,11 +99,10 @@
         <script>
             // Base class representing an Animal
             class MyAnimal {
-                constructor(name, age, habitat, imageURL) {
+                constructor(name, age, habitat) {
                     this.myName = name;
                     this.myAge = age;
                     this.habitat = habitat;
-                    this.imageURL = imageURL; // New property for image URL
                 }
 
                 makeSound() {
@@ -120,42 +122,14 @@
                         <div class="animal-entry">
                             <p>${this.toString()}</p>
                             <p>${this.myName} says: ${this.makeSound()}</p>
-                            <img src="${this.imageURL}" alt="${this.myName}" class="animal-image" />
                         </div>`;
                 }
             } // end class MyAnimal
 
-            // Image URLs for each animal
-            const animalImages = {
-                'Cat': 'https://example.com/cat.jpg', // replace with actual image URLs
-                'Dog': 'https://example.com/dog.jpg',
-                'Bird': 'https://example.com/bird.jpg',
-                'Fish': 'https://example.com/fish.jpg',
-                'Rabbit': 'https://example.com/rabbit.jpg',
-                'Horse': 'https://example.com/horse.jpg',
-                'Elephant': 'https://example.com/elephant.jpg',
-                'Lion': 'https://example.com/lion.jpg',
-                'Tiger': 'https://example.com/tiger.jpg',
-                'Giraffe': 'https://example.com/giraffe.jpg',
-                'Zebra': 'https://example.com/zebra.jpg',
-                'Penguin': 'https://example.com/penguin.jpg',
-                'Frog': 'https://example.com/frog.jpg',
-                'Snake': 'https://example.com/snake.jpg',
-                'Tortoise': 'https://example.com/tortoise.jpg',
-                'Panda': 'https://example.com/panda.jpg',
-                'Kangaroo': 'https://example.com/kangaroo.jpg',
-                'Koala': 'https://example.com/koala.jpg',
-                'Ostrich': 'https://example.com/ostrich.jpg',
-                'Eagle': 'https://example.com/eagle.jpg',
-                'Dolphin': 'https://example.com/dolphin.jpg',
-                'Shark': 'https://example.com/shark.jpg',
-                'Octopus': 'https://example.com/octopus.jpg'
-            };
-
-            // Create extended classes for animals
+            // Extended classes for various animals
             class MyCat extends MyAnimal {
                 constructor(name, age) {
-                    super(name, age, "house", animalImages['Cat']);
+                    super(name, age, "house");
                 }
 
                 makeSound() {
@@ -165,7 +139,7 @@
 
             class MyDog extends MyAnimal {
                 constructor(name, age) {
-                    super(name, age, "house", animalImages['Dog']);
+                    super(name, age, "house");
                 }
 
                 makeSound() {
@@ -175,7 +149,7 @@
 
             class MyBird extends MyAnimal {
                 constructor(name, age) {
-                    super(name, age, "sky", animalImages['Bird']);
+                    super(name, age, "sky");
                 }
 
                 makeSound() {
@@ -185,7 +159,7 @@
 
             class MyFish extends MyAnimal {
                 constructor(name, age) {
-                    super(name, age, "water", animalImages['Fish']);
+                    super(name, age, "water");
                 }
 
                 makeSound() {
@@ -195,7 +169,7 @@
 
             class MyRabbit extends MyAnimal {
                 constructor(name, age) {
-                    super(name, age, "meadow", animalImages['Rabbit']);
+                    super(name, age, "meadow");
                 }
 
                 makeSound() {
@@ -203,18 +177,12 @@
                 }
             }
 
-            // Additional animal classes follow similar pattern...
-
             // Valid animal types
             const validAnimals = [
-                'Cat', 'Dog', 'Bird', 'Fish', 'Rabbit',
-                'Horse', 'Elephant', 'Lion', 'Tiger',
-                'Giraffe', 'Zebra', 'Penguin', 'Frog',
-                'Snake', 'Tortoise', 'Panda', 'Kangaroo',
-                'Koala', 'Ostrich', 'Eagle', 'Dolphin',
-                'Shark', 'Octopus'
+                'Cat', 'Dog', 'Bird', 'Fish', 'Rabbit'
             ];
 
+            // Factory function to create an animal
             function createAnimal(type, name, age) {
                 switch(type) {
                     case 'Cat': return new MyCat(name, age);
@@ -222,7 +190,6 @@
                     case 'Bird': return new MyBird(name, age);
                     case 'Fish': return new MyFish(name, age);
                     case 'Rabbit': return new MyRabbit(name, age);
-                    // Add the rest of the animals here...
                     default: return null;
                 }
             }
@@ -234,6 +201,32 @@
             function showErrorMessage() {
                 const errorMessage = document.getElementById('errorMessage');
                 errorMessage.innerHTML = "Animal is not valid. Please enter one of the following: " + validAnimals.join(', ');
+            }
+
+            // Sample Pokémon data
+            const pokemons = [
+                { name: "Bulbasaur", type: "Grass/Poison", hp: 45, attack: 49, defense: 49, description: "A seed Pokémon that can be found in grassy areas." },
+                { name: "Charmander", type: "Fire", hp: 39, attack: 52, defense: 43, description: "A small lizard-like Pokémon that loves to bask in the sun." },
+                { name: "Squirtle", type: "Water", hp: 44, attack: 48, defense: 65, description: "A turtle Pokémon that can swim gracefully." },
+                { name: "Pidgey", type: "Normal/Flying", hp: 40, attack: 45, defense: 40, description: "A bird Pokémon that flocks in large groups." },
+                { name: "Jigglypuff", type: "Normal/Fairy", hp: 115, attack: 45, defense: 20, description: "A Pokémon that can put others to sleep with its song." }
+            ];
+
+            function getRandomPokemon() {
+                const randomIndex = Math.floor(Math.random() * pokemons.length);
+                return pokemons[randomIndex];
+            }
+
+            function showPokemon() {
+                const pokemon = getRandomPokemon();
+                document.getElementById('pokemonDisplay').innerHTML = `
+                    <div class="pokemon-entry">
+                        <h3>${pokemon.name} (${pokemon.type})</h3>
+                        <p><strong>HP:</strong> ${pokemon.hp}</p>
+                        <p><strong>Attack:</strong> ${pokemon.attack}</p>
+                        <p><strong>Defense:</strong> ${pokemon.defense}</p>
+                        <p>${pokemon.description}</p>
+                    </div>`;
             }
         </script>
 
@@ -261,6 +254,12 @@
 
         <div id="errorMessage"></div> <!-- Error message display -->
         <div id="myDiv01">...</div>
+    </div>
+
+    <div id="pokemonSection">
+        <h2>Pokémon Generator</h2>
+        <input type="button" value="Generate Pokémon" onClick="showPokemon()"><br>
+        <div id="pokemonDisplay">Choose a Pokémon!</div>
     </div>
 </body>
 </html>
