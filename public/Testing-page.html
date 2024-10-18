@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <h2 align="center">t1a18 Extend Class Demo</h2>
+    <h2 align="center">Animal Class Hierarchy Demo</h2>
 
     <script>
         // Base class representing an Animal
@@ -14,40 +14,63 @@
                 this.myAge = passAge;
             }
             myShow() {
-                document.getElementById('myDiv01').innerHTML += 'Hello ' + this.myName + '<br>';
+                document.getElementById('myDiv01').innerHTML += 'Name: ' + this.myName + ', Age: ' + this.myAge + ' years.<br>';
             }
         } // end class MyAnimal
 
         // Extended class for a Cat
         class MyCat extends MyAnimal {
             myShow() {
-                document.getElementById('myDiv01').innerHTML += this.myName + ' is a great cat <br>';
+                super.myShow();
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a great cat! <br>';
             }
         } // end extended class MyCat
 
         // Extended class for a Dog
         class MyDog extends MyAnimal {
             myShow() {
-                document.getElementById('myDiv01').innerHTML += this.myName + ' is a loyal dog <br>';
+                super.myShow();
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a loyal dog! <br>';
             }
         } // end extended class MyDog
+
+        // Extended class for a Bird
+        class MyBird extends MyAnimal {
+            constructor(passName, passAge, passSpecies) {
+                super(passName, passAge);
+                this.mySpecies = passSpecies;
+            }
+            myShow() {
+                super.myShow();
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a beautiful ' + this.mySpecies + '! <br>';
+            }
+            sing() {
+                return this.myName + ' the ' + this.mySpecies + ' sings a sweet song! <br>';
+            }
+        } // end extended class MyBird
     </script>
 
-    <input type="button" value="Example Class Set and Show Class Animal" onClick="{
+    <input type="button" value="Show Animal - Snickers" onClick="{
         myDog = new MyAnimal('Snickers', 5);
         myDog.myShow();
     }"><br><br>
 
     <input type="text" id="myText01" value="may be useful later"><br>
 
-    <input type="button" value="Example Extend Class Animal as Cat" onClick="{
+    <input type="button" value="Show Cat - Fluffy" onClick="{
         myPet = new MyCat('Fluffy', 14);
         myPet.myShow();
     }"><br><br>
 
-    <input type="button" value="Example Extend Class Animal as Dog" onClick="{
+    <input type="button" value="Show Dog - Buddy" onClick="{
         myDog = new MyDog('Buddy', 3);
         myDog.myShow();
+    }"><br><br>
+
+    <input type="button" value="Show Bird - Tweety" onClick="{
+        myBird = new MyBird('Tweety', 2, 'Canary');
+        myBird.myShow();
+        document.getElementById('myDiv01').innerHTML += myBird.sing();
     }"><br><br>
 
     <div id="myDiv01">...</div>
