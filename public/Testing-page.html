@@ -4,62 +4,56 @@
 </head>
 
 <body>
-    <h2 align="center">t1a18 extend class Aden.html</h2>
+    <h2 align="center">t1a18 Extend Class Demo</h2>
 
     <script>
-        // Base Class for Animals
+        // Base class representing an Animal
         class MyAnimal {
             constructor(passName, passAge) {
                 this.myName = passName;
                 this.myAge = passAge;
             }
             myShow() {
-                document.getElementById('myDiv01').innerHTML = 'Hello ' + this.myName + '<br>';
+                document.getElementById('myDiv01').innerHTML += 'Hello ' + this.myName + '<br>';
             }
         } // end class MyAnimal
 
-        // Extended Class for Cats
+        // Extended class for a Cat
         class MyCat extends MyAnimal {
             myShow() {
-                document.getElementById('myDiv01').innerHTML = this.myName + ' is a great cat <br>';
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a great cat <br>';
             }
         } // end extended class MyCat
 
-        // New Class for Cars
-        class MyCar {
-            constructor(brand, model) {
-                this.brand = brand;
-                this.model = model;
-            }
+        // Extended class for a Dog
+        class MyDog extends MyAnimal {
             myShow() {
-                document.getElementById('myDiv02').innerHTML = 'Car: ' + this.brand + ' ' + this.model + '<br>';
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a loyal dog <br>';
             }
-        } // end class MyCar
+        } // end extended class MyDog
 
-        // New Class for Books
-        class MyBook {
-            constructor(title, author) {
-                this.title = title;
-                this.author = author;
-            }
+        // Extended class for a Bird
+        class MyBird extends MyAnimal {
             myShow() {
-                document.getElementById('myDiv03').innerHTML = 'Book: "' + this.title + '" by ' + this.author + '<br>';
+                document.getElementById('myDiv01').innerHTML += this.myName + ' can sing beautifully <br>';
             }
-        } // end class MyBook
+        } // end extended class MyBird
 
-        // New Class for Persons
-        class MyPerson {
-            constructor(name, age) {
-                this.name = name;
-                this.age = age;
-            }
+        // Extended class for a Fish
+        class MyFish extends MyAnimal {
             myShow() {
-                document.getElementById('myDiv04').innerHTML = 'Person: ' + this.name + ', Age: ' + this.age + '<br>';
+                document.getElementById('myDiv01').innerHTML += this.myName + ' swims gracefully <br>';
             }
-        } // end class MyPerson
+        } // end extended class MyFish
+
+        // Extended class for a Rabbit
+        class MyRabbit extends MyAnimal {
+            myShow() {
+                document.getElementById('myDiv01').innerHTML += this.myName + ' hops around happily <br>';
+            }
+        } // end extended class MyRabbit
     </script>
 
-    <!-- Button to show Animal -->
     <input type="button" value="Example Class Set and Show Class Animal" onClick="{
         myDog = new MyAnimal('Snickers', 5);
         myDog.myShow();
@@ -67,33 +61,31 @@
 
     <input type="text" id="myText01" value="may be useful later"><br>
 
-    <!-- Button to show Cat -->
     <input type="button" value="Example Extend Class Animal as Cat" onClick="{
         myPet = new MyCat('Fluffy', 14);
         myPet.myShow();
     }"><br><br>
 
-    <!-- Button to show Car -->
-    <input type="button" value="Show Car Info" onClick="{
-        myCar = new MyCar('Tesla', 'Model S');
-        myCar.myShow();
+    <input type="button" value="Example Extend Class Animal as Dog" onClick="{
+        myDog = new MyDog('Buddy', 3);
+        myDog.myShow();
     }"><br><br>
 
-    <!-- Button to show Book -->
-    <input type="button" value="Show Book Info" onClick="{
-        myBook = new MyBook('The Great Gatsby', 'F. Scott Fitzgerald');
-        myBook.myShow();
+    <input type="button" value="Example Extend Class Animal as Bird" onClick="{
+        myBird = new MyBird('Tweety', 2);
+        myBird.myShow();
     }"><br><br>
 
-    <!-- Button to show Person -->
-    <input type="button" value="Show Person Info" onClick="{
-        myPerson = new MyPerson('John Doe', 30);
-        myPerson.myShow();
+    <input type="button" value="Example Extend Class Animal as Fish" onClick="{
+        myFish = new MyFish('Goldie', 1);
+        myFish.myShow();
+    }"><br><br>
+
+    <input type="button" value="Example Extend Class Animal as Rabbit" onClick="{
+        myRabbit = new MyRabbit('Snowball', 4);
+        myRabbit.myShow();
     }"><br><br>
 
     <div id="myDiv01">...</div>
-    <div id="myDiv02">...</div>
-    <div id="myDiv03">...</div>
-    <div id="myDiv04">...</div>
 </body>
 </html>
