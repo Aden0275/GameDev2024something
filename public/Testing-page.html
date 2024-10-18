@@ -1,198 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Movement with Arrows</title>
-    <style>
-        body {
-            background-color: #282c34;
-            color: white;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            color: #61dafb;
-        }
-        .button {
-            background-color: #61dafb;
-            border: none;
-            border-radius: 5px;
-            color: black;
-            padding: 15px 25px;
-            margin: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            position: relative;
-        }
-        .button:hover {
-            background-color: #21a1f1;
-        }
-        img {
-            margin-top: 20px;
-            border: 2px solid #61dafb;
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-        img:hover {
-            transform: scale(1.05);
-        }
-        .arrow {
-            font-size: 2em;
-            color: #61dafb;
-            transition: transform 0.3s ease;
-        }
-        .arrow:hover {
-            transform: scale(1.2);
-        }
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .button-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .arrows-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css-ardan.css">
 </head>
+
 <body>
+    <h2 align="center">t1a18 Extend Class Demo</h2>
 
-<h1 align="center">Movement Game</h1>
+    <script>
+        // Base class representing an Animal
+        class MyAnimal {
+            constructor(passName, passAge) {
+                this.myName = passName;
+                this.myAge = passAge;
+            }
+            myShow() {
+                document.getElementById('myDiv01').innerHTML += 'Hello ' + this.myName + '<br>';
+            }
+        } // end class MyAnimal
 
-<script>
-// Global variable for automatic movement
-let myClock02;
+        // Extended class for a Cat
+        class MyCat extends MyAnimal {
+            myShow() {
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a great cat <br>';
+            }
+        } // end extended class MyCat
 
-// Function to move the image
-function moveImage(x, y) {
-    var img = document.getElementById('myImage01');
-    img.style.left = (parseInt(img.style.left) + x) + 'px';
-    img.style.top = (parseInt(img.style.top) + y) + 'px';
-}
+        // Extended class for a Dog
+        class MyDog extends MyAnimal {
+            myShow() {
+                document.getElementById('myDiv01').innerHTML += this.myName + ' is a loyal dog <br>';
+            }
+        } // end extended class MyDog
+    </script>
 
-function stopAutoMove() {
-    clearInterval(myClock02);
-}
+    <input type="button" value="Example Class Set and Show Class Animal" onClick="{
+        myDog = new MyAnimal('Snickers', 5);
+        myDog.myShow();
+    }"><br><br>
 
-function autoMove(direction) {
-    stopAutoMove();  // Clear any previous intervals
-    const moveAmount = 10; // Pixels to move each interval
-    myClock02 = setInterval(function() {
-        switch(direction) {
-            case 'right':
-                moveImage(moveAmount, 0);
-                break;
-            case 'left':
-                moveImage(-moveAmount, 0);
-                break;
-            case 'up':
-                moveImage(0, -moveAmount);
-                break;
-            case 'down':
-                moveImage(0, moveAmount);
-                break;
-            case 'up-left':
-                moveImage(-moveAmount, -moveAmount);
-                break;
-            case 'up-right':
-                moveImage(moveAmount, -moveAmount);
-                break;
-            case 'down-left':
-                moveImage(-moveAmount, moveAmount);
-                break;
-            case 'down-right':
-                moveImage(moveAmount, moveAmount);
-                break;
-        }
-    }, 30);  // Activate every 30 ms
-}
-</script>
+    <input type="text" id="myText01" value="may be useful later"><br>
 
-<div class="button-container">
+    <input type="button" value="Example Extend Class Animal as Cat" onClick="{
+        myPet = new MyCat('Fluffy', 14);
+        myPet.myShow();
+    }"><br><br>
 
-    <div class="button-row">
-        <input type="button" class="button" id="myButtonLeft" value="Left" onclick="moveImage(-10, 0)">
-        <span class="arrow">⬅️</span>
-        <input type="button" class="button" id="myButtonRight" value="Right" onclick="moveImage(10, 0)">
-        <span class="arrow">➡️</span>
-    </div>
-    
-    <div class="button-row">
-        <input type="button" class="button" id="myButtonUp" value="Up" onclick="moveImage(0, -10)">
-        <span class="arrow">⬆️</span>
-        <input type="button" class="button" id="myButtonDown" value="Down" onclick="moveImage(0, 10)">
-        <span class="arrow">⬇️</span>
-    </div>
+    <input type="button" value="Example Extend Class Animal as Dog" onClick="{
+        myDog = new MyDog('Buddy', 3);
+        myDog.myShow();
+    }"><br><br>
 
-    <div class="button-row">
-        <input type="button" class="button" value="Up-Left" onclick="moveImage(-10, -10)">
-        <span class="arrow">↖️</span>
-        <input type="button" class="button" value="Up-Right" onclick="moveImage(10, -10)">
-        <span class="arrow">↗️</span>
-    </div>
-    
-    <div class="button-row">
-        <input type="button" class="button" value="Down-Left" onclick="moveImage(-10, 10)">
-        <span class="arrow">↙️</span>
-        <input type="button" class="button" value="Down-Right" onclick="moveImage(10, 10)">
-        <span class="arrow">↘️</span>
-    </div>
-
-    <div class="button-row">
-        <input type="button" class="button" value="Auto Left" onclick="autoMove('left')">
-        <span class="arrow">⬅️</span>
-        <input type="button" class="button" value="Auto Right" onclick="autoMove('right')">
-        <span class="arrow">➡️</span>
-    </div>
-
-    <div class="button-row">
-        <input type="button" class="button" value="Auto Up" onclick="autoMove('up')">
-        <span class="arrow">⬆️</span>
-        <input type="button" class="button" value="Auto Down" onclick="autoMove('down')">
-        <span class="arrow">⬇️</span>
-    </div>
-
-    <div class="button-row">
-        <input type="button" class="button" value="Auto Up-Left" onclick="autoMove('up-left')">
-        <span class="arrow">↖️</span>
-        <input type="button" class="button" value="Auto Up-Right" onclick="autoMove('up-right')">
-        <span class="arrow">↗️</span>
-    </div>
-    
-    <div class="button-row">
-        <input type="button" class="button" value="Auto Down-Left" onclick="autoMove('down-left')">
-        <span class="arrow">↙️</span>
-        <input type="button" class="button" value="Auto Down-Right" onclick="autoMove('down-right')">
-        <span class="arrow">↘️</span>
-    </div>
-
-    <input type="button" class="button" value="Stop Auto Move" onclick="stopAutoMove()"><br><br>
-
-</div>
-
-<!-- Image to move -->
-<img id="myImage01" style="position:relative; width:100px; height:80px; top:0px; left:0px;" src="https://www.cartoonpics.net/data/media/14/batman_cartoon_style.jpg">
-
+    <div id="myDiv01">...</div>
 </body>
 </html>
