@@ -12,6 +12,10 @@
             padding: 10px;
             max-width: 400px;
         }
+        #errorMessage {
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -301,62 +305,57 @@
             }
         }
 
+        // Valid animal types
+        const validAnimals = [
+            'Cat', 'Dog', 'Bird', 'Fish', 'Rabbit',
+            'Horse', 'Elephant', 'Lion', 'Tiger',
+            'Giraffe', 'Zebra', 'Penguin', 'Frog',
+            'Snake', 'Tortoise', 'Panda', 'Kangaroo',
+            'Koala', 'Ostrich', 'Eagle', 'Dolphin',
+            'Shark', 'Octopus'
+        ];
+
         // Factory function to create an animal
         function createAnimal(type, name, age) {
             switch(type) {
-                case 'Cat':
-                    return new MyCat(name, age);
-                case 'Dog':
-                    return new MyDog(name, age);
-                case 'Bird':
-                    return new MyBird(name, age);
-                case 'Fish':
-                    return new MyFish(name, age);
-                case 'Rabbit':
-                    return new MyRabbit(name, age);
-                case 'Horse':
-                    return new MyHorse(name, age);
-                case 'Elephant':
-                    return new MyElephant(name, age);
-                case 'Lion':
-                    return new MyLion(name, age);
-                case 'Tiger':
-                    return new MyTiger(name, age);
-                case 'Giraffe':
-                    return new MyGiraffe(name, age);
-                case 'Zebra':
-                    return new MyZebra(name, age);
-                case 'Penguin':
-                    return new MyPenguin(name, age);
-                case 'Frog':
-                    return new MyFrog(name, age);
-                case 'Snake':
-                    return new MySnake(name, age);
-                case 'Tortoise':
-                    return new MyTortoise(name, age);
-                case 'Panda':
-                    return new MyPanda(name, age);
-                case 'Kangaroo':
-                    return new MyKangaroo(name, age);
-                case 'Koala':
-                    return new MyKoala(name, age);
-                case 'Ostrich':
-                    return new MyOstrich(name, age);
-                case 'Eagle':
-                    return new MyEagle(name, age);
-                case 'Dolphin':
-                    return new MyDolphin(name, age);
-                case 'Shark':
-                    return new MyShark(name, age);
-                case 'Octopus':
-                    return new MyOctopus(name, age);
-                default:
-                    return null;
+                case 'Cat': return new MyCat(name, age);
+                case 'Dog': return new MyDog(name, age);
+                case 'Bird': return new MyBird(name, age);
+                case 'Fish': return new MyFish(name, age);
+                case 'Rabbit': return new MyRabbit(name, age);
+                case 'Horse': return new MyHorse(name, age);
+                case 'Elephant': return new MyElephant(name, age);
+                case 'Lion': return new MyLion(name, age);
+                case 'Tiger': return new MyTiger(name, age);
+                case 'Giraffe': return new MyGiraffe(name, age);
+                case 'Zebra': return new MyZebra(name, age);
+                case 'Penguin': return new MyPenguin(name, age);
+                case 'Frog': return new MyFrog(name, age);
+                case 'Snake': return new MySnake(name, age);
+                case 'Tortoise': return new MyTortoise(name, age);
+                case 'Panda': return new MyPanda(name, age);
+                case 'Kangaroo': return new MyKangaroo(name, age);
+                case 'Koala': return new MyKoala(name, age);
+                case 'Ostrich': return new MyOstrich(name, age);
+                case 'Eagle': return new MyEagle(name, age);
+                case 'Dolphin': return new MyDolphin(name, age);
+                case 'Shark': return new MyShark(name, age);
+                case 'Octopus': return new MyOctopus(name, age);
+                default: return null;
             }
+        }
+
+        function resetErrorMessage() {
+            document.getElementById('errorMessage').innerHTML = '';
+        }
+
+        function showErrorMessage() {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.innerHTML = "Animal is not valid. Please enter one of the following: " + validAnimals.join(', ');
         }
     </script>
 
-    <input type="text" id="animalType" placeholder="Enter animal type (Cat, Dog, Bird, Fish, Rabbit, Horse, Elephant, Lion, Tiger, Giraffe, Zebra, Penguin, Frog, Snake, Tortoise, Panda, Kangaroo, Koala, Ostrich, Eagle, Dolphin, Shark, Octopus)">
+    <input type="text" id="animalType" placeholder="Enter animal type">
     <input type="text" id="animalName" placeholder="Enter animal name">
     <input type="number" id="animalAge" placeholder="Enter animal age" min="1">
     <input type="button" value="Create Animal" onClick="{
@@ -364,18 +363,21 @@
         const name = document.getElementById('animalName').value;
         const age = document.getElementById('animalAge').value;
 
+        resetErrorMessage(); // Reset the error message
+
         if (type && name && age > 0) {
             let animal = createAnimal(type, name, parseInt(age));
             if (animal) {
                 animal.myShow();
             } else {
-                alert('Invalid animal type. Please enter a valid type.');
+                showErrorMessage(); // Show the error message
             }
         } else {
-            alert('Please fill in all fields correctly.');
+            showErrorMessage(); // Show the error message
         }
     }"><br><br>
 
+    <div id="errorMessage"></div> <!-- Error message display -->
     <div id="myDiv01">...</div>
 </body>
 </html>
