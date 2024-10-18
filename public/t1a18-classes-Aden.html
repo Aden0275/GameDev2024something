@@ -1,383 +1,427 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="css-ardan.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
         }
-        #myDiv01 {
-            margin-top: 20px;
-            border: 1px solid #ccc;
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        #container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"], input[type="number"], input[type="button"] {
+            width: calc(100% - 20px);
             padding: 10px;
-            max-width: 400px;
+            margin: 10px 0;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
         }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: #45a049;
+            outline: none;
+        }
+
+        input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+
         #errorMessage {
             color: red;
             margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #myDiv01 {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            background-color: #e8f5e9;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .animal-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            margin-bottom: 5px;
+            background: #dcedc8;
+            border-radius: 5px;
+        }
+
+        .animal-entry p {
+            margin: 0;
         }
     </style>
 </head>
 
 <body>
-    <h2 align="center">Animal Class Complex Demonstration</h2>
+    <div id="container">
+        <h2>Animal Class Complex Demonstration</h2>
 
-    <script>
-        // Base class representing an Animal
-        class MyAnimal {
-            constructor(name, age, habitat) {
-                this.myName = name;
-                this.myAge = age;
-                this.habitat = habitat;
+        <script>
+            // Base class representing an Animal
+            class MyAnimal {
+                constructor(name, age, habitat) {
+                    this.myName = name;
+                    this.myAge = age;
+                    this.habitat = habitat;
+                }
+
+                makeSound() {
+                    return 'Some generic animal sound';
+                }
+
+                eat() {
+                    return `${this.myName} is eating.`;
+                }
+
+                toString() {
+                    return `${this.myName} is a ${this.myAge} year old animal living in the ${this.habitat}.`;
+                }
+
+                myShow() {
+                    document.getElementById('myDiv01').innerHTML += `
+                        <div class="animal-entry">
+                            <p>${this.toString()}</p>
+                            <p>${this.myName} says: ${this.makeSound()}</p>
+                        </div>`;
+                }
+            } // end class MyAnimal
+
+            // Extended classes for various animals
+            class MyCat extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "house");
+                }
+
+                makeSound() {
+                    return 'Meow!';
+                }
             }
 
-            makeSound() {
-                return 'Some generic animal sound';
+            class MyDog extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "house");
+                }
+
+                makeSound() {
+                    return 'Woof!';
+                }
             }
 
-            eat() {
-                return `${this.myName} is eating.`;
+            class MyBird extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "sky");
+                }
+
+                makeSound() {
+                    return 'Chirp!';
+                }
             }
 
-            toString() {
-                return `${this.myName} is a ${this.myAge} year old animal living in the ${this.habitat}.`;
+            class MyFish extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "water");
+                }
+
+                makeSound() {
+                    return 'Glub!';
+                }
             }
 
-            myShow() {
-                document.getElementById('myDiv01').innerHTML += this.toString() + '<br>';
-            }
-        } // end class MyAnimal
+            class MyRabbit extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "meadow");
+                }
 
-        // Extended classes for various animals
-        class MyCat extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "house");
-            }
-
-            makeSound() {
-                return 'Meow!';
+                makeSound() {
+                    return 'Squeak!';
+                }
             }
 
-            myShow() {
-                super.myShow();
-                document.getElementById('myDiv01').innerHTML += this.myName + ' says: ' + this.makeSound() + '<br>';
-            }
-        }
+            // Additional animals
+            class MyHorse extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "farm");
+                }
 
-        class MyDog extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "house");
-            }
-
-            makeSound() {
-                return 'Woof!';
+                makeSound() {
+                    return 'Neigh!';
+                }
             }
 
-            myShow() {
-                super.myShow();
-                document.getElementById('myDiv01').innerHTML += this.myName + ' says: ' + this.makeSound() + '<br>';
-            }
-        }
+            class MyElephant extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "savannah");
+                }
 
-        class MyBird extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "sky");
-            }
-
-            makeSound() {
-                return 'Chirp!';
+                makeSound() {
+                    return 'Trumpet!';
+                }
             }
 
-            myShow() {
-                super.myShow();
-                document.getElementById('myDiv01').innerHTML += this.myName + ' says: ' + this.makeSound() + '<br>';
-            }
-        }
+            class MyLion extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "savannah");
+                }
 
-        class MyFish extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "water");
-            }
-
-            makeSound() {
-                return 'Glub!';
+                makeSound() {
+                    return 'Roar!';
+                }
             }
 
-            myShow() {
-                super.myShow();
-                document.getElementById('myDiv01').innerHTML += this.myName + ' says: ' + this.makeSound() + '<br>';
-            }
-        }
+            class MyTiger extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "jungle");
+                }
 
-        class MyRabbit extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "meadow");
-            }
-
-            makeSound() {
-                return 'Squeak!';
+                makeSound() {
+                    return 'Growl!';
+                }
             }
 
-            myShow() {
-                super.myShow();
-                document.getElementById('myDiv01').innerHTML += this.myName + ' says: ' + this.makeSound() + '<br>';
-            }
-        }
+            class MyGiraffe extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "savannah");
+                }
 
-        // Additional animals
-        class MyHorse extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "farm");
+                makeSound() {
+                    return 'Hum!';
+                }
             }
 
-            makeSound() {
-                return 'Neigh!';
-            }
-        }
+            class MyZebra extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "savannah");
+                }
 
-        class MyElephant extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "savannah");
-            }
-
-            makeSound() {
-                return 'Trumpet!';
-            }
-        }
-
-        class MyLion extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "savannah");
+                makeSound() {
+                    return 'Whinny!';
+                }
             }
 
-            makeSound() {
-                return 'Roar!';
-            }
-        }
+            class MyPenguin extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "ice");
+                }
 
-        class MyTiger extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "jungle");
-            }
-
-            makeSound() {
-                return 'Growl!';
-            }
-        }
-
-        class MyGiraffe extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "savannah");
+                makeSound() {
+                    return 'Honk!';
+                }
             }
 
-            makeSound() {
-                return 'Hum!';
-            }
-        }
+            class MyFrog extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "pond");
+                }
 
-        class MyZebra extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "savannah");
-            }
-
-            makeSound() {
-                return 'Whinny!';
-            }
-        }
-
-        class MyPenguin extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "ice");
+                makeSound() {
+                    return 'Ribbit!';
+                }
             }
 
-            makeSound() {
-                return 'Honk!';
-            }
-        }
+            class MySnake extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "forest");
+                }
 
-        class MyFrog extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "pond");
-            }
-
-            makeSound() {
-                return 'Ribbit!';
-            }
-        }
-
-        class MySnake extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "forest");
+                makeSound() {
+                    return 'Hiss!';
+                }
             }
 
-            makeSound() {
-                return 'Hiss!';
-            }
-        }
+            class MyTortoise extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "land");
+                }
 
-        class MyTortoise extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "land");
-            }
-
-            makeSound() {
-                return '...';
-            }
-        }
-
-        class MyPanda extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "bamboo forest");
+                makeSound() {
+                    return '...';
+                }
             }
 
-            makeSound() {
-                return 'Grr!';
-            }
-        }
+            class MyPanda extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "bamboo forest");
+                }
 
-        class MyKangaroo extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "australian outback");
-            }
-
-            makeSound() {
-                return 'Chuff!';
-            }
-        }
-
-        class MyKoala extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "eucalyptus trees");
+                makeSound() {
+                    return 'Grr!';
+                }
             }
 
-            makeSound() {
-                return 'Snore!';
-            }
-        }
+            class MyKangaroo extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "australian outback");
+                }
 
-        class MyOstrich extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "savannah");
-            }
-
-            makeSound() {
-                return 'Boom!';
-            }
-        }
-
-        class MyEagle extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "mountains");
+                makeSound() {
+                    return 'Chuff!';
+                }
             }
 
-            makeSound() {
-                return 'Screech!';
-            }
-        }
+            class MyKoala extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "eucalyptus trees");
+                }
 
-        class MyDolphin extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "ocean");
-            }
-
-            makeSound() {
-                return 'Click!';
-            }
-        }
-
-        class MyShark extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "ocean");
+                makeSound() {
+                    return 'Snore!';
+                }
             }
 
-            makeSound() {
-                return '...';
+            class MyOstrich extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "savannah");
+                }
+
+                makeSound() {
+                    return 'Boom!';
+                }
             }
-        }
 
-        class MyOctopus extends MyAnimal {
-            constructor(name, age) {
-                super(name, age, "ocean");
+            class MyEagle extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "mountains");
+                }
+
+                makeSound() {
+                    return 'Screech!';
+                }
             }
 
-            makeSound() {
-                return '...';
+            class MyDolphin extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "ocean");
+                }
+
+                makeSound() {
+                    return 'Click!';
+                }
             }
-        }
 
-        // Valid animal types
-        const validAnimals = [
-            'Cat', 'Dog', 'Bird', 'Fish', 'Rabbit',
-            'Horse', 'Elephant', 'Lion', 'Tiger',
-            'Giraffe', 'Zebra', 'Penguin', 'Frog',
-            'Snake', 'Tortoise', 'Panda', 'Kangaroo',
-            'Koala', 'Ostrich', 'Eagle', 'Dolphin',
-            'Shark', 'Octopus'
-        ];
+            class MyShark extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "ocean");
+                }
 
-        // Factory function to create an animal
-        function createAnimal(type, name, age) {
-            switch(type) {
-                case 'Cat': return new MyCat(name, age);
-                case 'Dog': return new MyDog(name, age);
-                case 'Bird': return new MyBird(name, age);
-                case 'Fish': return new MyFish(name, age);
-                case 'Rabbit': return new MyRabbit(name, age);
-                case 'Horse': return new MyHorse(name, age);
-                case 'Elephant': return new MyElephant(name, age);
-                case 'Lion': return new MyLion(name, age);
-                case 'Tiger': return new MyTiger(name, age);
-                case 'Giraffe': return new MyGiraffe(name, age);
-                case 'Zebra': return new MyZebra(name, age);
-                case 'Penguin': return new MyPenguin(name, age);
-                case 'Frog': return new MyFrog(name, age);
-                case 'Snake': return new MySnake(name, age);
-                case 'Tortoise': return new MyTortoise(name, age);
-                case 'Panda': return new MyPanda(name, age);
-                case 'Kangaroo': return new MyKangaroo(name, age);
-                case 'Koala': return new MyKoala(name, age);
-                case 'Ostrich': return new MyOstrich(name, age);
-                case 'Eagle': return new MyEagle(name, age);
-                case 'Dolphin': return new MyDolphin(name, age);
-                case 'Shark': return new MyShark(name, age);
-                case 'Octopus': return new MyOctopus(name, age);
-                default: return null;
+                makeSound() {
+                    return '...';
+                }
             }
-        }
 
-        function resetErrorMessage() {
-            document.getElementById('errorMessage').innerHTML = '';
-        }
+            class MyOctopus extends MyAnimal {
+                constructor(name, age) {
+                    super(name, age, "ocean");
+                }
 
-        function showErrorMessage() {
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.innerHTML = "Animal is not valid. Please enter one of the following: " + validAnimals.join(', ');
-        }
-    </script>
+                makeSound() {
+                    return '...';
+                }
+            }
 
-    <input type="text" id="animalType" placeholder="Enter animal type">
-    <input type="text" id="animalName" placeholder="Enter animal name">
-    <input type="number" id="animalAge" placeholder="Enter animal age" min="1">
-    <input type="button" value="Create Animal" onClick="{
-        const type = document.getElementById('animalType').value;
-        const name = document.getElementById('animalName').value;
-        const age = document.getElementById('animalAge').value;
+            // Valid animal types
+            const validAnimals = [
+                'Cat', 'Dog', 'Bird', 'Fish', 'Rabbit',
+                'Horse', 'Elephant', 'Lion', 'Tiger',
+                'Giraffe', 'Zebra', 'Penguin', 'Frog',
+                'Snake', 'Tortoise', 'Panda', 'Kangaroo',
+                'Koala', 'Ostrich', 'Eagle', 'Dolphin',
+                'Shark', 'Octopus'
+            ];
 
-        resetErrorMessage(); // Reset the error message
+            // Factory function to create an animal
+            function createAnimal(type, name, age) {
+                switch(type) {
+                    case 'Cat': return new MyCat(name, age);
+                    case 'Dog': return new MyDog(name, age);
+                    case 'Bird': return new MyBird(name, age);
+                    case 'Fish': return new MyFish(name, age);
+                    case 'Rabbit': return new MyRabbit(name, age);
+                    case 'Horse': return new MyHorse(name, age);
+                    case 'Elephant': return new MyElephant(name, age);
+                    case 'Lion': return new MyLion(name, age);
+                    case 'Tiger': return new MyTiger(name, age);
+                    case 'Giraffe': return new MyGiraffe(name, age);
+                    case 'Zebra': return new MyZebra(name, age);
+                    case 'Penguin': return new MyPenguin(name, age);
+                    case 'Frog': return new MyFrog(name, age);
+                    case 'Snake': return new MySnake(name, age);
+                    case 'Tortoise': return new MyTortoise(name, age);
+                    case 'Panda': return new MyPanda(name, age);
+                    case 'Kangaroo': return new MyKangaroo(name, age);
+                    case 'Koala': return new MyKoala(name, age);
+                    case 'Ostrich': return new MyOstrich(name, age);
+                    case 'Eagle': return new MyEagle(name, age);
+                    case 'Dolphin': return new MyDolphin(name, age);
+                    case 'Shark': return new MyShark(name, age);
+                    case 'Octopus': return new MyOctopus(name, age);
+                    default: return null;
+                }
+            }
 
-        if (type && name && age > 0) {
-            let animal = createAnimal(type, name, parseInt(age));
-            if (animal) {
-                animal.myShow();
+            function resetErrorMessage() {
+                document.getElementById('errorMessage').innerHTML = '';
+            }
+
+            function showErrorMessage() {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.innerHTML = "Animal is not valid. Please enter one of the following: " + validAnimals.join(', ');
+            }
+        </script>
+
+        <input type="text" id="animalType" placeholder="Enter animal type">
+        <input type="text" id="animalName" placeholder="Enter animal name">
+        <input type="number" id="animalAge" placeholder="Enter animal age" min="1">
+        <input type="button" value="Create Animal" onClick="{
+            const type = document.getElementById('animalType').value;
+            const name = document.getElementById('animalName').value;
+            const age = document.getElementById('animalAge').value;
+
+            resetErrorMessage(); // Reset the error message
+
+            if (type && name && age > 0) {
+                let animal = createAnimal(type, name, parseInt(age));
+                if (animal) {
+                    animal.myShow();
+                } else {
+                    showErrorMessage(); // Show the error message
+                }
             } else {
                 showErrorMessage(); // Show the error message
             }
-        } else {
-            showErrorMessage(); // Show the error message
-        }
-    }"><br><br>
+        }"><br>
 
-    <div id="errorMessage"></div> <!-- Error message display -->
-    <div id="myDiv01">...</div>
+        <div id="errorMessage"></div> <!-- Error message display -->
+        <div id="myDiv01">...</div>
+    </div>
 </body>
 </html>
