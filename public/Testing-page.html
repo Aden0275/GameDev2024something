@@ -1,143 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Variable Operations</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
-            margin: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #4c6ef5;
-        }
-        input[type="text"], input[type="number"] {
-            margin: 5px 0;
-            padding: 10px;
-            border: 1px solid #007bff;
-            border-radius: 5px;
-            width: calc(100% - 22px);
-        }
-        input[type="button"] {
-            margin-top: 10px;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-        input[type="button"]:hover {
-            background-color: #0056b3;
-        }
-        #myDiv {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #007bff;
-            border-radius: 5px;
-            background-color: #e9ecef;
-        }
-        pre {
-            background-color: #f8f9fa;
-            border: 1px solid #ced4da;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .type-section {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css-ardan.css">
 </head>
-<body>
 
-    <h1>Variable Operations</h1>
-    <p>W3Schools link to variables: <a href="https://www.w3schools.com/ja/ja_variables.asp" target="_blank">Click here</a></p>
-    
-    <label for="myIn01">Input 1:</label>
-    <input type="number" id="myIn01" value="5" step="any" placeholder="Enter a number"><br>
-    
-    <label for="myIn02">Input 2:</label>
-    <input type="number" id="myIn02" value="7" step="any" placeholder="Enter a number"><br>
-    
-    <input type="button" value="Add" onclick="performOperation('+')">
-    <input type="button" value="Subtract" onclick="performOperation('-')">
-    <input type="button" value="Multiply" onclick="performOperation('*')">
-    <input type="button" value="Divide" onclick="performOperation('/')">
-    
-    <div id="myDiv">Your answer will appear here...</div>
-    
-    <div class="type-section">
-        <h2>Variable Types Example</h2>
-        <p><strong>Boolean:</strong> <input type="text" id="booleanInput" placeholder="true / false" value="true"></p>
-        <p><strong>int8 or byte:</strong> <input type="number" id="int8Input" min="0" max="255" value="0" placeholder="0 to 255"></p>
-        <p><strong>int:</strong> <input type="number" id="intInput" value="0" placeholder="Integer value"></p>
-        <p><strong>double:</strong> <input type="number" id="doubleInput" step="any" value="0.0" placeholder="Floating-point value"></p>
-        <p><strong>float:</strong> <input type="number" id="floatInput" step="any" value="0.0" placeholder="Floating-point value"></p>
-        <p><strong>char:</strong> <input type="text" id="charInput" maxlength="1" value="A" placeholder="Single character"></p>
-        <p><strong>string:</strong> <input type="text" id="stringInput" value="Hello" placeholder="Any string"></p>
-        
-        <input type="button" value="Show Variable Types" onclick="showVariableTypes()">
-        
-        <div id="typeDiv">Variable Types Output will appear here...</div>
-    </div>
+<body>
+    <h2 align="center">t1a18 extend class Aden.html</h2>
 
     <script>
-        function performOperation(operation) {
-            let myX = parseFloat(document.getElementById('myIn01').value);
-            let myY = parseFloat(document.getElementById('myIn02').value);
-            let myTotal;
-
-            switch (operation) {
-                case '+':
-                    myTotal = myX + myY;
-                    break;
-                case '-':
-                    myTotal = myX - myY;
-                    break;
-                case '*':
-                    myTotal = myX * myY;
-                    break;
-                case '/':
-                    if (myY !== 0) {
-                        myTotal = myX / myY;
-                    } else {
-                        myTotal = 'Error: Division by zero';
-                    }
-                    break;
-                default:
-                    myTotal = 'Invalid operation';
+        class MyAnimal {
+            constructor(passName, passAge) {
+                this.myName = passName;
+                this.myAge = passAge;
             }
+            myShow() {
+                document.getElementById('myDiv01').innerHTML = 'Hello ' + this.myName + '<br>';
+            }
+        } // end class MyAnimal
 
-            document.getElementById('myDiv').innerHTML = 'Your answer is ' + myTotal;
-        }
-
-        function showVariableTypes() {
-            const booleanValue = document.getElementById('booleanInput').value.toLowerCase() === 'true';
-            const int8Value = parseInt(document.getElementById('int8Input').value) || 0;
-            const intValue = parseInt(document.getElementById('intInput').value) || 0;
-            const doubleValue = parseFloat(document.getElementById('doubleInput').value) || 0;
-            const floatValue = parseFloat(document.getElementById('floatInput').value) || 0;
-            const charValue = document.getElementById('charInput').value;
-            const stringValue = document.getElementById('stringInput').value;
-
-            document.getElementById('typeDiv').innerHTML = `
-                <strong>Boolean:</strong> ${booleanValue}<br>
-                <strong>int8/byte:</strong> ${int8Value}<br>
-                <strong>int:</strong> ${intValue}<br>
-                <strong>double:</strong> ${doubleValue}<br>
-                <strong>float:</strong> ${floatValue}<br>
-                <strong>char:</strong> '${charValue}'<br>
-                <strong>string:</strong> "${stringValue}"
-            `;
-        }
+        class MyCat extends MyAnimal {
+            myShow() {
+                document.getElementById('myDiv01').innerHTML = this.myName + ' is a great cat <br>';
+            }
+        } // end extended class MyCat
     </script>
 
+    <input type="button" value="Example Class Set and Show Class Animal" onClick="{
+        myDog = new MyAnimal('Snickers', 5);
+        myDog.myShow();
+    }"><br><br>
+
+    <input type="text" id="myText01" value="may be useful later"><br>
+
+    <input type="button" value="Example Extend Class Animal as Cat" onClick="{
+        myPet = new MyCat('Fluffy', 14);
+        myPet.myShow();
+    }"><br><br>
+
+    <div id="myDiv01">...</div>
 </body>
 </html>
