@@ -249,6 +249,11 @@
                     <p><strong>Defense:</strong> ${pokemon.defense}</p>
                     <p><strong>Description:</strong> ${pokemon.description}</p>
                     <input type="button" value="Toggle Shiny" onClick="toggleShiny()">
+                    <br>
+                    <input type="text" id="newPokemonName" placeholder="Change Pokémon name" 
+                        oninput="updatePokemonName(event)">
+                    <input type="number" id="newPokemonAge" placeholder="Set Pokémon age" min="0"
+                        oninput="updatePokemonAge(event)">
                 </div>`;
         };
 
@@ -258,6 +263,27 @@
                 imageElement.src = currentPokemon.shinyImageUrl; // Change to shiny
             } else {
                 imageElement.src = currentPokemon.imageUrl; // Change back to regular
+            }
+        };
+
+        const updatePokemonName = (event) => {
+            const newName = event.target.value;
+            const nameHeader = document.querySelector('.pokemon-entry h3');
+            if (nameHeader && currentPokemon) {
+                nameHeader.textContent = `${newName.charAt(0).toUpperCase() + newName.slice(1)} (${currentPokemon.type})`;
+                currentPokemon.name = newName; // Optional: Update the name in currentPokemon object
+            }
+        };
+
+        const updatePokemonAge = (event) => {
+            const newAge = event.target.value;
+            const ageText = document.querySelector('.pokemon-entry p.age');
+            if (ageText) {
+                if (newAge) {
+                    ageText.textContent = `Age: ${newAge}`;
+                } else {
+                    ageText.textContent = ''; // Clear age if no value is entered
+                }
             }
         };
 
