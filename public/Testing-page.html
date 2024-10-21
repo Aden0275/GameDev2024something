@@ -158,9 +158,10 @@
             }
         </script>
 
-        <input type="text" id="animalType" placeholder="Enter animal type">
-        <input type="text" id="animalName" placeholder="Enter animal name">
-        <input type="number" id="animalAge" placeholder="Enter animal age" min="1">
+        <!-- Default inputs for animals -->
+        <input type="text" id="animalType" placeholder="Enter animal type" value="Cat">
+        <input type="text" id="animalName" placeholder="Enter animal name" value="Whiskers">
+        <input type="number" id="animalAge" placeholder="Enter animal age" min="1" value="3">
         <input type="button" value="Create Animal" onClick="{
             const type = document.getElementById('animalType').value;
             const name = document.getElementById('animalName').value;
@@ -186,7 +187,7 @@
 
     <div id="pokemonSection">
         <h2>Pokémon Generator</h2>
-        <input type="text" id="pokemonSearch" placeholder="Search Pokémon by name or ID">
+        <input type="text" id="pokemonSearch" placeholder="Search Pokémon by name or ID" value="pikachu">
         <input type="button" value="Search" onClick="searchPokemon()"><br>
         <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
         <div id="pokemonDisplay">Choose a Pokémon!</div>
