@@ -8,12 +8,13 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #a8c8ff 0%, #e8d9f5 100%); /* Cool background gradient */
             color: #333;
             padding: 20px;
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
+            min-height: 100vh; /* Ensure it covers the viewport height */
         }
         h2 {
             text-align: center;
@@ -26,6 +27,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: 10px;
+            opacity: 0.9; /* Slightly transparent to show background through */
         }
         input[type="text"], input[type="number"], input[type="button"] {
             width: calc(100% - 20px);
