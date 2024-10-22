@@ -58,6 +58,7 @@
         .pokemon-image {
             max-width: 100%;
             height: auto;
+            cursor: pointer; /* Change cursor to pointer to indicate clickability */
         }
     </style>
 </head>
@@ -195,7 +196,6 @@
         <input type="button" value="Search" onClick="searchPokemon()"><br>
         <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
         <div id="pokemonDisplay">Choose a Pokémon!</div>
-        <input type="button" id="formButton" value="Change Form" style="display: none;" onClick="changePokemonForm()">
     </div>
 
     <script>
@@ -259,16 +259,13 @@
             document.getElementById('pokemonDisplay').innerHTML = `
                 <div class="pokemon-entry">
                     <h3>${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)} (${pokemon.type})</h3>
-                    <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image" id="pokemonImage">
+                    <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image" id="pokemonImage" onclick="changePokemonForm()">
                     <p><strong>HP:</strong> ${pokemon.hp}</p>
                     <p><strong>Attack:</strong> ${pokemon.attack}</p>
                     <p><strong>Defense:</strong> ${pokemon.defense}</p>
                     <p><strong>Description:</strong> ${pokemon.description}</p>
                     <input type="button" value="Toggle Shiny" onClick="toggleShiny()">
                 </div>`;
-            
-            // Show form button if there are forms available
-            document.getElementById('formButton').style.display = pokemon.forms ? 'inline-block' : 'none';
         };
 
         const toggleShiny = () => {
