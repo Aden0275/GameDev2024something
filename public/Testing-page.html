@@ -236,16 +236,9 @@
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
         };
 
-        const getPokemonForm = async (name, formType) => {
-            const formResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}/`);
-            const formData = await formResponse.json();
-
-            if (formType === 'mega' && formData.forms.some(form => form.name.includes('mega'))) {
-                return formData.sprites; // Use the specific Mega sprite
-            } else if (formType === 'gigantimax' && formData.forms.some(form => form.name.includes('gigantamax'))) {
-                return formData.sprites; // Use the specific Gigantimax sprite
-            }
-            return null;
+        const getPokemonForms = async (name) => {
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon-form/${name}`);
+            return await response.json();
         };
 
         const getRandomPokemon = () => {
@@ -289,9 +282,14 @@
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon selected. Please generate or search for a Pokémon first.</p>`;
                 return;
             }
-            const formData = await getPokemonForm(currentPokemon.name, 'mega');
-            if (formData) {
-                document.getElementById('pokemonImage').src = formData.front_default; // Show Mega Evolution
+
+            const forms = await getPokemonForms(currentPokemon.id);
+            const megaForm = forms.forms.find(form => form.name.includes('mega'));
+
+            if (megaForm) {
+                const megaResponse = await fetch(megaForm.url);
+                const megaData = await megaResponse.json();
+                document.getElementById('pokemonImage').src = megaData.sprites.front_default; // Show Mega Evolution
                 document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Evolution)</p>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have a Mega Evolution available.</p>`;
@@ -303,9 +301,14 @@
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon selected. Please generate or search for a Pokémon first.</p>`;
                 return;
             }
-            const formData = await getPokemonForm(currentPokemon.name, 'gigantimax');
-            if (formData) {
-                document.getElementById('pokemonImage').src = formData.front_shiny; // Show Gigantimax
+
+            const forms = await getPokemonForms(currentPokemon.id);
+            const gigantaForm = forms.forms.find(form => form.name.includes('gigantamax'));
+
+            if (gigantaForm) {
+                const gigantaResponse = await fetch(gigantaForm.url);
+                const gigantaData = await gigantaResponse.json();
+                document.getElementById('pokemonImage').src = gigantaData.sprites.front_default; // Show Gigantimax
                 document.getElementById('pokemonDisplay').innerHTML += `<p>(Gigantimax)</p>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have Gigantimax available.</p>`;
