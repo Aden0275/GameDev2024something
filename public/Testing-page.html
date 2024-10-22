@@ -204,6 +204,7 @@
 
     <script>
         let pokemons = [];
+        let megaData = {};
         let currentPokemon = null; // Store current Pokémon for toggling shiny
 
         const fetchPokemons = async (limit = 1025) => {
@@ -216,16 +217,16 @@
                 const data = await response.json();
                 const speciesResponse = await fetch(data.species.url);
                 const speciesData = await speciesResponse.json();
+                
+                // Fetch the evolution chain
+                const evolutionChainResponse = await fetch(speciesData.evolution_chain.url);
+                const evolutionChainData = await evolutionChainResponse.json();
+                
                 const description = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
                 const imageUrl = data.sprites.front_default; // Regular sprite
                 const shinyImageUrl = data.sprites.front_shiny; // Shiny sprite
 
-                // Checking for Mega Evolutions
-                const megaUrl = data.name === 'gengar' ? 'https://pokeapi.co/api/v2/pokemon-form/1/' : null; // Hardcoding for one Pokémon for demo purposes
-
-                // Checking for Gigantimax
-                const gigantaUrl = data.name === 'charizard' ? 'https://pokeapi.co/api/v2/pokemon-form/6/' : null; // Hardcoding for one Pokémon for demo purposes
-
+                // Add regular Pokémon info
                 pokemons.push({
                     id: data.id,
                     name: data.name,
@@ -235,11 +236,31 @@
                     defense: data.stats[2].base_stat,
                     description: description.replace(/\n/g, ' '), // Clean up new lines
                     imageUrl: imageUrl, // Regular image URL
-                    shinyImageUrl: shinyImageUrl, // Shiny image URL
-                    megaUrl: megaUrl, // Mega evolution URL
-                    gigantaUrl: gigantaUrl // Gigantimax URL
+                    shinyImageUrl: shinyImageUrl // Shiny image URL
                 });
+
+                // Check for Mega Evolution in the evolution chain
+                if (evolutionChainData.chain) {
+                    let evo = evolutionChainData.chain;
+                    while (evo) {
+                        if (evo.species.name === data.name) {
+                            // Fetch Mega Evolution (if available)
+                            if (evo.evolves_to.length > 0) {
+                                let megaName = evo.evolves_to[0].species.name; // Assume the first evolution is the Mega
+                                let megaResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${megaName}`);
+                                let megaData = await megaResponse.json();
+                                
+                                // Assign back to Pokémon object
+                                const megaImageUrl = megaData.sprites.front_default;
+                                currentPokemon.megaImageUrl = megaImageUrl;
+                            }
+                            break;
+                        }
+                        evo = evo.evolves_to[0];
+                    }
+                }
             }
+
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
         };
 
@@ -267,6 +288,7 @@
                     <p><strong>Defense:</strong> ${pokemon.defense}</p>
                     <p><strong>Description:</strong> ${pokemon.description}</p>
                     <input type="button" value="Toggle Shiny" onClick="toggleShiny()">
+                    <input type="button" value="Show Mega Evolution" onClick="showMegaEvolution()">
                 </div>`;
         };
 
@@ -284,8 +306,8 @@
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon selected. Please generate or search for a Pokémon first.</p>`;
                 return;
             }
-            if (currentPokemon.megaUrl) {
-                document.getElementById('pokemonImage').src = currentPokemon.megaUrl; // Show Mega Evolution
+            if (currentPokemon.megaImageUrl) {
+                document.getElementById('pokemonImage').src = currentPokemon.megaImageUrl; // Show Mega Evolution
                 document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Evolution)</p>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have a Mega Evolution available.</p>`;
@@ -297,12 +319,10 @@
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon selected. Please generate or search for a Pokémon first.</p>`;
                 return;
             }
-            if (currentPokemon.gigantaUrl) {
-                document.getElementById('pokemonImage').src = currentPokemon.gigantaUrl; // Show Gigantimax
-                document.getElementById('pokemonDisplay').innerHTML += `<p>(Gigantimax)</p>`;
-            } else {
-                document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have Gigantimax available.</p>`;
-            }
+            // Note: Gigantimax data would follow a similar pattern to Mega Evolution,
+            // but since not all Pokémon have them and would need another API call,
+            // this example won't fetch Gigantimax forms.
+            document.getElementById('pokemonDisplay').innerHTML += `<p>This functionality is not implemented for Gigantimax yet.</p>`;
         };
 
         const searchPokemon = () => {
