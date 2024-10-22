@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,59 +9,71 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to bottom right, #ffcc00, #ff3300); /* Red and yellow gradient */
+            background: linear-gradient(to bottom right, #ffcc00, #ff3300);
             color: #333;
             padding: 20px;
             display: flex;
-            justify-content: center; /* Center both sections */
-            align-items: flex-start; /* Align to top */
+            justify-content: center;
+            align-items: flex-start;
             flex-wrap: wrap;
-            min-height: 100vh; /* Ensure it covers the viewport height */
-            box-sizing: border-box; /* Include padding in height/width */
+            min-height: 100vh;
+            box-sizing: border-box;
         }
+
         h2 {
             text-align: center;
             color: #4CAF50;
         }
-        #container, #pokemonSection {
+
+        #container,
+        #pokemonSection {
             max-width: 600px;
-            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: 10px;
-            opacity: 0.95; /* Ensure content is readable */
+            opacity: 0.95;
         }
-        input[type="text"], input[type="number"], input[type="button"] {
+
+        input[type="text"],
+        input[type="number"],
+        input[type="button"] {
             width: calc(100% - 20px);
             padding: 10px;
             margin: 10px 0;
-            border: 2px solid #ff3300; /* Red border for input fields */
+            border: 2px solid #ff3300;
             border-radius: 5px;
             font-size: 16px;
             transition: border-color 0.3s;
         }
+
         input[type="button"] {
-            background-color: #ff3300; /* Red button */
+            background-color: #ff3300;
             color: white;
             cursor: pointer;
             border: none;
             border-radius: 5px;
         }
-        .animal-entry, .pokemon-entry {
+
+        .animal-entry,
+        .pokemon-entry {
             padding: 5px;
             margin-bottom: 5px;
             border-radius: 5px;
         }
+
         .pokemon-entry {
-            background: #ffe066; /* Light yellow for Pokémon entry */
+            background: #ffe066;
         }
+
         .pokemon-image {
             max-width: 100%;
             height: auto;
         }
     </style>
 </head>
+
 <body>
     <div id="container">
         <h2>Animal Class Complex Demonstration</h2>
@@ -102,7 +115,7 @@
                     return 'Meow!';
                 }
             }
-            
+
             class MyDog extends MyAnimal {
                 constructor(name, age) {
                     super(name, age, "house");
@@ -194,11 +207,11 @@
         <input type="text" id="pokemonSearch" placeholder="Search Pokémon by name or ID" value="pikachu">
         <input type="button" value="Search" onClick="searchPokemon()"><br>
         <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
-        
+
         <!-- New Buttons for Mega Evolve and Gigantimax -->
         <input type="button" value="Show Mega Evolution" onClick="showMegaEvolution()">
         <input type="button" value="Show Gigantimax" onClick="showGigantimax()"><br>
-        
+
         <div id="pokemonDisplay">Choose a Pokémon!</div>
     </div>
 
@@ -212,6 +225,7 @@
             "gengar": "https://img.pokemondb.net/sprites/diamond-pearl/mega/gengar-mega.png",
             "blastoise": "https://img.pokemondb.net/sprites/diamond-pearl/mega/blastoise-mega.png",
             "mewtwo": "https://img.pokemondb.net/sprites/diamond-pearl/mega/mewtwo-mega-x.png"
+            // Add more Mega sprites as needed
         };
 
         const gigantamaxSprites = {
@@ -220,6 +234,7 @@
             "gengar": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/gengar.png",
             "butterfree": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/butterfree.png",
             "centiskorch": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/centiskorch.png"
+            // Add more Gigantamax sprites as needed
         };
 
         const fetchPokemons = async (limit = 1025) => {
@@ -246,7 +261,7 @@
                     defense: data.stats[2].base_stat,
                     description: description.replace(/\n/g, ' '), // Clean up new lines
                     imageUrl: imageUrl, // Regular image URL
-                    shinyImageUrl: shinyImageUrl, // Shiny image URL
+                    shinyImageUrl: shinyImageUrl // Shiny image URL
                 });
             }
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
@@ -324,7 +339,7 @@
 
         const searchPokemon = () => {
             const searchTerm = document.getElementById('pokemonSearch').value.toLowerCase();
-            const foundPokemon = pokemons.find(pokemon => 
+            const foundPokemon = pokemons.find(pokemon =>
                 pokemon.name.toLowerCase() === searchTerm || pokemon.id === parseInt(searchTerm)
             );
 
@@ -337,7 +352,8 @@
         };
 
         // Initially fetch Pokémon data (up to 1025 Pokémon)
-        fetchPokemons(1025); 
+        fetchPokemons(1025);
     </script>
 </body>
+
 </html>
