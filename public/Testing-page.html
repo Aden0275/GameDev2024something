@@ -184,14 +184,14 @@
             const name = document.getElementById('animalName').value;
             const age = document.getElementById('animalAge').value;
 
-            resetErrorMessage(); 
+            resetErrorMessage();
 
             if (type && name && age > 0) {
                 let animal = createAnimal(type, name, parseInt(age));
                 if (animal) {
                     animal.myShow();
                 } else {
-                    showErrorMessage(); 
+                    showErrorMessage();
                 }
             } else {
                 showErrorMessage();
@@ -220,21 +220,15 @@
         let currentPokemon = null; // Store current Pokémon for toggling shiny
 
         const megaSprites = {
-            "charizard": "https://img.pokemondb.net/sprites/diamond-pearl/mega/charizard-mega-x.png",
-            "pidgeot": "https://img.pokemondb.net/sprites/diamond-pearl/mega/pidgeot-mega.png",
-            "gengar": "https://img.pokemondb.net/sprites/diamond-pearl/mega/gengar-mega.png",
-            "blastoise": "https://img.pokemondb.net/sprites/diamond-pearl/mega/blastoise-mega.png",
-            "mewtwo": "https://img.pokemondb.net/sprites/diamond-pearl/mega/mewtwo-mega-x.png"
-            // Add more Mega sprites as needed
+            "charizard": "mega-sprites-x/charizard.png",
+            "pidgeot": "mega-sprites-x/pidgeot.png",
+            "gengar": "mega-sprites-y/gengar.png",
+            "blastoise": "mega-sprites-y/blastoise.png",
+            "mewtwo": "mega-sprites-x/mewtwo.png" // Add more sprites as necessary
         };
 
         const gigantamaxSprites = {
-            "pikachu": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/pikachu.png",
-            "charizard": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/charizard.png",
-            "gengar": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/gengar.png",
-            "butterfree": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/butterfree.png",
-            "centiskorch": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/centiskorch.png"
-            // Add more Gigantamax sprites as needed
+            // Update with paths to Gigantamax sprites if available
         };
 
         const fetchPokemons = async (limit = 1025) => {
