@@ -8,13 +8,15 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #a8c8ff 0%, #e8d9f5 100%); /* Cool background gradient */
+            background: linear-gradient(to bottom right, #a8c8ff, #e8d9f5); /* Cool background gradient */
             color: #333;
             padding: 20px;
             display: flex;
-            justify-content: space-around;
+            justify-content: center; /* Center both sections */
+            align-items: flex-start; /* Align to top */
             flex-wrap: wrap;
             min-height: 100vh; /* Ensure it covers the viewport height */
+            box-sizing: border-box; /* Include padding in height/width */
         }
         h2 {
             text-align: center;
@@ -22,12 +24,12 @@
         }
         #container, #pokemonSection {
             max-width: 600px;
-            background: white;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: 10px;
-            opacity: 0.9; /* Slightly transparent to show background through */
+            opacity: 0.95; /* Ensure content is readable */
         }
         input[type="text"], input[type="number"], input[type="button"] {
             width: calc(100% - 20px);
