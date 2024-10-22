@@ -206,6 +206,22 @@
         let pokemons = [];
         let currentPokemon = null; // Store current Pokémon for toggling shiny
 
+        const megaSprites = {
+            "charizard": "https://img.pokemondb.net/sprites/diamond-pearl/mega/charizard-mega-x.png",
+            "pidgeot": "https://img.pokemondb.net/sprites/diamond-pearl/mega/pidgeot-mega.png",
+            "gengar": "https://img.pokemondb.net/sprites/diamond-pearl/mega/gengar-mega.png",
+            "blastoise": "https://img.pokemondb.net/sprites/diamond-pearl/mega/blastoise-mega.png",
+            "mewtwo": "https://img.pokemondb.net/sprites/diamond-pearl/mega/mewtwo-mega-x.png"
+        };
+
+        const gigantamaxSprites = {
+            "pikachu": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/pikachu.png",
+            "charizard": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/charizard.png",
+            "gengar": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/gengar.png",
+            "butterfree": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/butterfree.png",
+            "centiskorch": "https://img.pokemondb.net/sprites/sword-shield/gigantamax/centiskorch.png"
+        };
+
         const fetchPokemons = async (limit = 1025) => {
             const promises = [];
             for (let i = 1; i <= limit; i++) {
@@ -234,11 +250,6 @@
                 });
             }
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
-        };
-
-        const getPokemonForms = async (name) => {
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon-form/${name}`);
-            return await response.json();
         };
 
         const getRandomPokemon = () => {
@@ -277,38 +288,34 @@
             }
         };
 
-        const showMegaEvolution = async () => {
+        const showMegaEvolution = () => {
             if (!currentPokemon) {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon selected. Please generate or search for a Pokémon first.</p>`;
                 return;
             }
 
-            const forms = await getPokemonForms(currentPokemon.id);
-            const megaForm = forms.forms.find(form => form.name.includes('mega'));
+            // Check if current Pokémon has a Mega sprite
+            const megaSpriteURL = megaSprites[currentPokemon.name.toLowerCase()];
 
-            if (megaForm) {
-                const megaResponse = await fetch(megaForm.url);
-                const megaData = await megaResponse.json();
-                document.getElementById('pokemonImage').src = megaData.sprites.front_default; // Show Mega Evolution
+            if (megaSpriteURL) {
+                document.getElementById('pokemonImage').src = megaSpriteURL; // Change to Mega Evolution image
                 document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Evolution)</p>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have a Mega Evolution available.</p>`;
             }
         };
 
-        const showGigantimax = async () => {
+        const showGigantimax = () => {
             if (!currentPokemon) {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon selected. Please generate or search for a Pokémon first.</p>`;
                 return;
             }
 
-            const forms = await getPokemonForms(currentPokemon.id);
-            const gigantaForm = forms.forms.find(form => form.name.includes('gigantamax'));
+            // Check if current Pokémon has a Gigantimax sprite
+            const gigantamaxSpriteURL = gigantamaxSprites[currentPokemon.name.toLowerCase()];
 
-            if (gigantaForm) {
-                const gigantaResponse = await fetch(gigantaForm.url);
-                const gigantaData = await gigantaResponse.json();
-                document.getElementById('pokemonImage').src = gigantaData.sprites.front_default; // Show Gigantimax
+            if (gigantamaxSpriteURL) {
+                document.getElementById('pokemonImage').src = gigantamaxSpriteURL; // Change to Gigantimax image
                 document.getElementById('pokemonDisplay').innerHTML += `<p>(Gigantimax)</p>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have Gigantimax available.</p>`;
