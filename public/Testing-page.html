@@ -195,7 +195,7 @@
         <input type="button" value="Search" onClick="searchPokemon()"><br>
         <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
         <div id="pokemonDisplay">Choose a Pokémon!</div>
-        <input type="button" id="formButton" value="Change Form" style="display:none;" onClick="changePokemonForm()">
+        <input type="button" id="formButton" value="Change Form" style="display: none;" onClick="changePokemonForm()">
     </div>
 
     <script>
@@ -280,25 +280,22 @@
             }
         };
 
-        const changePokemonForm = () => {
+        const changePokemonForm = async () => {
             if (currentPokemon.forms) {
                 currentFormIndex = (currentFormIndex + 1) % currentPokemon.forms.length; // Cycle through forms
-                displayForm(currentPokemon.forms[currentFormIndex]);
+
+                const formName = currentPokemon.forms[currentFormIndex]; // Get the form name
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${formName}`);
+                const data = await response.json();
+
+                // Update currentPokemon to the new form
+                currentPokemon.imageUrl = data.sprites.front_default; // Update to the new form's image URL
+                currentPokemon.shinyImageUrl = data.sprites.front_shiny; // Update to the new form's shiny URL
+                currentPokemon.type = data.types.map(type => type.type.name).join(', '); // Update type
+
+                // Redisplay the Pokémon with the new form
+                displayPokemon(currentPokemon);
             }
-        };
-
-        const displayForm = async (formName) => {
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${formName}`);
-            const data = await response.json();
-            const imageUrl = data.sprites.front_default;
-            const shinyImageUrl = data.sprites.front_shiny;
-
-            // Update the currentPokemon object with the new form data
-            currentPokemon.imageUrl = imageUrl; // Update to the new form's image URL
-            currentPokemon.shinyImageUrl = shinyImageUrl; // Update to the new form's shiny URL
-
-            // Redisplay the Pokémon with the new form
-            displayPokemon(currentPokemon);
         };
 
         const searchPokemon = () => {
