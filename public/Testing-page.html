@@ -184,14 +184,14 @@
             const name = document.getElementById('animalName').value;
             const age = document.getElementById('animalAge').value;
 
-            resetErrorMessage();
+            resetErrorMessage(); 
 
             if (type && name && age > 0) {
                 let animal = createAnimal(type, name, parseInt(age));
                 if (animal) {
                     animal.myShow();
                 } else {
-                    showErrorMessage();
+                    showErrorMessage(); 
                 }
             } else {
                 showErrorMessage();
@@ -228,7 +228,8 @@
         };
 
         const gigantamaxSprites = {
-            // Update with paths to Gigantamax sprites if available
+            "pikachu": "path/to/gigantamax/pikachu.png",
+            // Fill out this object similarly for all Gigantamax forms as needed
         };
 
         const fetchPokemons = async (limit = 1025) => {
@@ -307,7 +308,9 @@
             const megaSpriteURL = megaSprites[currentPokemon.name.toLowerCase()];
 
             if (megaSpriteURL) {
-                document.getElementById('pokemonImage').src = megaSpriteURL; // Change to Mega Evolution image
+                const imageElement = document.getElementById('pokemonImage');
+                imageElement.src = megaSpriteURL; // Change to Mega Evolution image
+                imageElement.alt = `Mega ${currentPokemon.name.charAt(0).toUpperCase() + currentPokemon.name.slice(1)}`;
                 document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Evolution)</p>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have a Mega Evolution available.</p>`;
@@ -324,7 +327,9 @@
             const gigantamaxSpriteURL = gigantamaxSprites[currentPokemon.name.toLowerCase()];
 
             if (gigantamaxSpriteURL) {
-                document.getElementById('pokemonImage').src = gigantamaxSpriteURL; // Change to Gigantimax image
+                const imageElement = document.getElementById('pokemonImage');
+                imageElement.src = gigantamaxSpriteURL; // Change to Gigantimax image
+                imageElement.alt = `Gigantimax ${currentPokemon.name.charAt(0).toUpperCase() + currentPokemon.name.slice(1)}`;
                 document.getElementById('pokemonDisplay').innerHTML += `<p>(Gigantimax)</p>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have Gigantimax available.</p>`;
