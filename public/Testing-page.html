@@ -78,7 +78,6 @@
     <div id="container">
         <h2>Animal Class Complex Demonstration</h2>
         <script>
-            // Base class representing an Animal
             class MyAnimal {
                 constructor(name, age, habitat) {
                     this.myName = name;
@@ -175,7 +174,6 @@
             }
         </script>
 
-        <!-- Default inputs for animals -->
         <input type="text" id="animalType" placeholder="Enter animal type" value="Cat">
         <input type="text" id="animalName" placeholder="Enter animal name" value="Whiskers">
         <input type="number" id="animalAge" placeholder="Enter animal age" min="1" value="3">
@@ -208,42 +206,36 @@
         <input type="button" value="Search" onClick="searchPokemon()"><br>
         <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
 
-        <!-- New Buttons for Mega Evolve and Gigantimax -->
-        <input type="button" value="Show Mega Evolution" onClick="showMegaEvolution()">
-        <input type="button" value="Show Gigantimax" onClick="showGigantimax()"><br>
-
+        <input type="button" value="Show Mega Evolution" onClick="showMegaEvolution()"><br>
         <div id="pokemonDisplay">Choose a Pokémon!</div>
     </div>
 
     <script>
         let pokemons = [];
-        let currentPokemon = null; // Store current Pokémon for toggling shiny
-const megaSprites = {
-    "Gardevoir": "https://i.ibb.co/VJJDCHV/362-front-s.gif",
-    "Banette": "https://i.ibb.co/tCg2pzd/373-front-n.gif",
-    "Metagross": "https://i.ibb.co/mThQmqL/376-front-n.gif", // Changed "Metagross" to "metagross"
-    "Salamence": "https://i.ibb.co/4FsfVg7/384-front-n.gif",
-    "Lopunny": "https://i.ibb.co/0tFL3br/428-front-n.gif",
-    "Sharpedo": "https://i.ibb.co/9q1yyvP/445-front-n.gif",
-    "Lucario": "https://i.ibb.co/F0MRVbg/448-front-n.gif",
-    "Pidgeot": "https://i.ibb.co/RhzFpt1/460-front-n.gif",
-    "Absol": "https://i.ibb.co/wBhc3Kr/531-front-n.gif",
-    "Mewtwo": "https://i.ibb.co/s55wF1W/150-front-n.gif",
-    "Ampharos": "https://i.ibb.co/fHy2KTZ/181-front-n.gif", // Changed "Ampharos" to "ampharos"
-    "Steelix": "https://i.ibb.co/pfmTZS3/208-front-n.gif", // Changed "Steelix" to "steelix"
-    "Scizor": "https://i.ibb.co/XybN09n/212-front-n.gif",
-    "Sableye": "https://i.ibb.co/31Z8X91/214-front-n.gif",
-    "Dusknoir": "https://i.ibb.co/dQdgBty/229-front-n.gif",
-    "Charizard_x": "https://i.ibb.co/xgJ2FH6/006-front-n.gif",
-    "Charizard_y": "https://i.ibb.co/006-front-n.gif",
-    "Blastoise": "https://i.ibb.co/jbkwVYC/009-front-n.gif",
-    "Sceptile": "https://i.ibb.co/g4nRBc4/310-front-n.gif",
-    "Heracross": "https://i.ibb.co/2tbWVP1/065-front-n.gif",
-    "Manectric": "https://i.ibb.co/NtjkSKD/080-front-n.gif",
-};
+        let currentPokemon = null; 
 
-        const gigantamaxSprites = {
-            "pikachu": "path/to/gigantamax/pikachu.png", // Update the actual path as needed
+        const megaSprites = {
+            "gardevoir": "https://i.ibb.co/VJJDCHV/362-front-s.gif",
+            "banette": "https://i.ibb.co/tCg2pzd/373-front-n.gif",
+            "gengar": "https://i.ibb.co/mThQmqL/376-front-n.gif",
+            "salamence": "https://i.ibb.co/4FsfVg7/384-front-n.gif",
+            "lopunny": "https://i.ibb.co/0tFL3br/428-front-n.gif",
+            "sharpedo": "https://i.ibb.co/9q1yyvP/445-front-n.gif",
+            "mewtwo": "https://i.ibb.co/F0MRVbg/448-front-n.gif",
+            "pidgeot": "https://i.ibb.co/RhzFpt1/460-front-n.gif",
+            "absol": "https://i.ibb.co/wBhc3Kr/531-front-n.gif",
+            "mew": "https://i.ibb.co/s55wF1W/150-front-n.gif",
+            "latios": "https://i.ibb.co/fHy2KTZ/181-front-n.gif",
+            "latias": "https://i.ibb.co/pfmTZS3/208-front-n.gif",
+            "scizor": "https://i.ibb.co/XybN09n/212-front-n.gif",
+            "sableye": "https://i.ibb.co/31Z8X91/214-front-n.gif",
+            "dusknoir": "https://i.ibb.co/dQdgBty/229-front-n.gif",
+            "charizard_x": "https://i.ibb.co/xgJ2FH6/006-front-n.gif",
+            "charizard_y": "https://i.ibb.co/006-front-n.gif",
+            "blastoise": "https://i.ibb.co/jbkwVYC/009-front-n.gif",
+            "sceptile": "https://i.ibb.co/g4nRBc4/310-front-n.gif",
+            "heracross": "https://i.ibb.co/2tbWVP1/065-front-n.gif",
+            "manectric": "https://i.ibb.co/NtjkSKD/080-front-n.gif",
         };
 
         const fetchPokemons = async (limit = 1025) => {
@@ -257,10 +249,9 @@ const megaSprites = {
                 const speciesResponse = await fetch(data.species.url);
                 const speciesData = await speciesResponse.json();
                 const description = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
-                const imageUrl = data.sprites.front_default; // Regular sprite
-                const shinyImageUrl = data.sprites.front_shiny; // Shiny sprite
+                const imageUrl = data.sprites.front_default; 
+                const shinyImageUrl = data.sprites.front_shiny; 
 
-                // Store Pokémon data
                 pokemons.push({
                     id: data.id,
                     name: data.name,
@@ -268,9 +259,9 @@ const megaSprites = {
                     hp: data.stats[0].base_stat,
                     attack: data.stats[1].base_stat,
                     defense: data.stats[2].base_stat,
-                    description: description.replace(/\n/g, ' '), // Clean up new lines
-                    imageUrl: imageUrl, // Regular image URL
-                    shinyImageUrl: shinyImageUrl // Shiny image URL
+                    description: description.replace(/\n/g, ' '), 
+                    imageUrl: imageUrl, 
+                    shinyImageUrl: shinyImageUrl 
                 });
             }
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
@@ -286,8 +277,8 @@ const megaSprites = {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>Loading Pokémon data...</p>`;
                 return;
             }
-            currentPokemon = getRandomPokemon(); // Store the current Pokémon
-            displayPokemon(currentPokemon); // Display the current Pokémon
+            currentPokemon = getRandomPokemon(); 
+            displayPokemon(currentPokemon); 
         };
 
         const displayPokemon = (pokemon) => {
@@ -306,9 +297,9 @@ const megaSprites = {
         const toggleShiny = () => {
             const imageElement = document.getElementById('pokemonImage');
             if (imageElement.src === currentPokemon.imageUrl) {
-                imageElement.src = currentPokemon.shinyImageUrl; // Change to shiny
+                imageElement.src = currentPokemon.shinyImageUrl; 
             } else {
-                imageElement.src = currentPokemon.imageUrl; // Change back to regular
+                imageElement.src = currentPokemon.imageUrl; 
             }
         };
 
@@ -318,35 +309,15 @@ const megaSprites = {
                 return;
             }
 
-            // Check if current Pokémon has a Mega sprite
             const megaSpriteURL = megaSprites[currentPokemon.name.toLowerCase()];
 
             if (megaSpriteURL) {
                 const imageElement = document.getElementById('pokemonImage');
-                imageElement.src = megaSpriteURL; // Change to Mega Evolution image
+                imageElement.src = megaSpriteURL; 
                 imageElement.alt = `Mega ${currentPokemon.name.charAt(0).toUpperCase() + currentPokemon.name.slice(1)}`;
                 document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Evolution)</p>`;
             } else {
                 document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have a Mega Evolution available.</p>`;
-            }
-        };
-
-        const showGigantimax = () => {
-            if (!currentPokemon) {
-                document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon selected. Please generate or search for a Pokémon first.</p>`;
-                return;
-            }
-
-            // Check if current Pokémon has a Gigantimax sprite
-            const gigantamaxSpriteURL = gigantamaxSprites[currentPokemon.name.toLowerCase()];
-
-            if (gigantamaxSpriteURL) {
-                const imageElement = document.getElementById('pokemonImage');
-                imageElement.src = gigantamaxSpriteURL; // Change to Gigantimax image
-                imageElement.alt = `Gigantimax ${currentPokemon.name.charAt(0).toUpperCase() + currentPokemon.name.slice(1)}`;
-                document.getElementById('pokemonDisplay').innerHTML += `<p>(Gigantimax)</p>`;
-            } else {
-                document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have Gigantimax available.</p>`;
             }
         };
 
@@ -357,14 +328,13 @@ const megaSprites = {
             );
 
             if (foundPokemon) {
-                currentPokemon = foundPokemon; // Store the found Pokémon
-                displayPokemon(foundPokemon); // Display found Pokémon
+                currentPokemon = foundPokemon; 
+                displayPokemon(foundPokemon); 
             } else {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
             }
         };
 
-        // Initially fetch Pokémon data (up to 1025 Pokémon)
         fetchPokemons(1025);
     </script>
 </body>
