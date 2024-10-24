@@ -207,6 +207,10 @@
         <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
 
         <input type="button" id="megaButton" value="Show Mega Evolution" onClick="showMegaEvolution()" style="display:none;"><br>
+        <!-- Added buttons for Charizard and Mewtwo Mega forms -->
+        <input type="button" id="charizardFormsButton" value="Show Charizard Forms" onClick="showCharizardForms()" style="display:none;">
+        <input type="button" id="mewtwoFormsButton" value="Show Mewtwo Forms" onClick="showMewtwoForms()" style="display:none;"><br>
+        
         <div id="pokemonDisplay">Choose a Pokémon!</div>
     </div>
 
@@ -251,15 +255,10 @@
             "banette": "https://i.ibb.co/PCYqMd2/354-front-n.gif",     // Mega Banette
             "absol": "https://i.ibb.co/kSyKzJs/359-front-n.gif",       // Mega Absol
             "venusaur": "https://i.ibb.co/cFDk4SX/003-front-n.gif",   // Mega Blastoise
-            "charizard": "https://i.ibb.co/St7SYwY/006-front-n.gif",   // Mega Charizard X
-            "beedrill": "https://i.ibb.co/r7TjFDW/015-front-n.gif",    // Mega Beedrill
-            "pidgeot": "https://i.ibb.co/bNcnK3h/018-front-n.gif",      // Mega Pidgeot
-            "gengar": "https://i.ibb.co/b2t21LQ/094-front-n.gif",       // Mega Gengar
-            "kangaskhan": "https://i.ibb.co/g4Tc4v6/115-front-n.gif",  // Mega Kangaskhan
-            "pinsir": "https://i.ibb.co/nC6412N/127-front-n.gif",      // Mega Snorlax
-            "gyarados": "https://i.ibb.co/XX4VMtY/130-front-n.gif",     // Mega Gyarados
-            "aerodactyl": "https://i.ibb.co/dKKPmbJ/142-front-n.gif",   // Mega Aerodactyl
-            "mewtwo": "https://i.ibb.co/xLD05dQ/150-front-n.gif"       // Mega Mewtwo Y
+            "charizard_x": "https://i.ibb.co/St7SYwY/006-front-n.gif",   // Mega Charizard X
+            "charizard_y": "https://i.ibb.co/xgJ2FH6/006-front-n.gif",   // Mega Charizard Y
+            "mewtwo_x": "https://i.ibb.co/s55wF1W/150-front-n.gif",       // Mega Mewtwo X
+            "mewtwo_y": "https://i.ibb.co/xLD05dQ/150-front-n.gif"       // Mega Mewtwo Y
         };
 
         const fetchPokemons = async (limit = 1025) => {
@@ -324,9 +323,25 @@
             // Show or hide the Mega Evolution button based on whether the Pokémon has a Mega form
             const megaButton = document.getElementById('megaButton');
             if (hasMegaEvolution(pokemon)) {
-                megaButton.style.display = "inline"; // Show the button
+                megaButton.style.display = "inline"; // Show Mega button
             } else {
-                megaButton.style.display = "none";    // Hide the button
+                megaButton.style.display = "none";    // Hide Mega button
+            }
+
+            // Show or hide the Charizard/Mewtwo form buttons based on the Pokémon being shown
+            const charizardFormsButton = document.getElementById('charizardFormsButton');
+            const mewtwoFormsButton = document.getElementById('mewtwoFormsButton');
+
+            if (pokemon.name.toLowerCase() === 'charizard') {
+                charizardFormsButton.style.display = "inline"; // Show Charizard forms button
+            } else {
+                charizardFormsButton.style.display = "none"; // Hide Charizard forms button
+            }
+
+            if (pokemon.name.toLowerCase() === 'mewtwo') {
+                mewtwoFormsButton.style.display = "inline"; // Show Mewtwo forms button
+            } else {
+                mewtwoFormsButton.style.display = "none"; // Hide Mewtwo forms button
             }
         };
 
@@ -357,6 +372,42 @@
             }
         };
 
+        const showCharizardForms = () => {
+            const charizardForms = {
+                "x": megaSprites["charizard_x"],
+                "y": megaSprites["charizard_y"]
+            };
+
+            const buttonUsed = prompt("Which Charizard Form would you like to see? (x/y)").toLowerCase();
+
+            if (charizardForms[buttonUsed]) {
+                const imageElement = document.getElementById('pokemonImage');
+                imageElement.src = charizardForms[buttonUsed]; 
+                imageElement.alt = `Charizard Mega ${buttonUsed.toUpperCase()}`;
+                document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Charizard ${buttonUsed.toUpperCase()})</p>`;
+            } else {
+                alert("Invalid option! Please enter either 'x' or 'y'.");
+            }
+        };
+
+        const showMewtwoForms = () => {
+            const mewtwoForms = {
+                "x": megaSprites["mewtwo_x"],
+                "y": megaSprites["mewtwo_y"]
+            };
+
+            const buttonUsed = prompt("Which Mewtwo Form would you like to see? (x/y)").toLowerCase();
+
+            if (mewtwoForms[buttonUsed]) {
+                const imageElement = document.getElementById('pokemonImage');
+                imageElement.src = mewtwoForms[buttonUsed]; 
+                imageElement.alt = `Mewtwo Mega ${buttonUsed.toUpperCase()}`;
+                document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Mewtwo ${buttonUsed.toUpperCase()})</p>`;
+            } else {
+                alert("Invalid option! Please enter either 'x' or 'y'.");
+            }
+        };
+
         const searchPokemon = () => {
             const searchTerm = document.getElementById('pokemonSearch').value.toLowerCase();
             const foundPokemon = pokemons.find(pokemon =>
@@ -368,7 +419,9 @@
                 displayPokemon(foundPokemon); 
             } else {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
-                document.getElementById('megaButton').style.display = "none"; // Hide the button if no Pokémon is found
+                document.getElementById('megaButton').style.display = "none"; // Hide the Mega button if no Pokémon is found
+                document.getElementById('charizardFormsButton').style.display = "none"; // Hide Charizard forms button
+                document.getElementById('mewtwoFormsButton').style.display = "none"; // Hide Mewtwo forms button
             }
         };
 
