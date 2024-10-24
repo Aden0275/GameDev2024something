@@ -228,13 +228,11 @@
             "lucario": "https://i.ibb.co/F0MRVbg/448-front-n.gif",
             "abomasnow": "https://i.ibb.co/RhzFpt1/460-front-n.gif",
             "audino": "https://i.ibb.co/wBhc3Kr/531-front-n.gif",
-            "mewtwo": "https://i.ibb.co/s55wF1W/150-front-n.gif",
             "ampharos": "https://i.ibb.co/fHy2KTZ/181-front-n.gif",
             "steelix": "https://i.ibb.co/pfmTZS3/208-front-n.gif",
             "scizor": "https://i.ibb.co/XybN09n/212-front-n.gif",
             "heracross": "https://i.ibb.co/31Z8X91/214-front-n.gif",
             "houndoom": "https://i.ibb.co/dQdgBty/229-front-n.gif",
-            "charizard": "https://i.ibb.co/xgJ2FH6/006-front-n.gif",
             "blastoise": "https://i.ibb.co/jbkwVYC/009-front-n.gif",
             "manectric": "https://i.ibb.co/g4nRBc4/310-front-n.gif",
             "alakazam": "https://i.ibb.co/2tbWVP1/065-front-n.gif",
@@ -373,39 +371,73 @@
         };
 
         const showCharizardForms = () => {
-            const charizardForms = {
-                "x": megaSprites["charizard_x"],
-                "y": megaSprites["charizard_y"]
+            // Create input and button elements dynamically
+            const userInput = document.createElement("input");
+            const submitButton = document.createElement("input");
+            
+            userInput.type = "text";
+            userInput.placeholder = "Enter 'x' or 'y' for Charizard";
+            submitButton.type = "button";
+            submitButton.value = "Submit";
+            
+            const display = document.getElementById('pokemonDisplay');
+            display.appendChild(userInput);
+            display.appendChild(submitButton);
+            
+            submitButton.onclick = () => {
+                const buttonUsed = userInput.value.toLowerCase();
+                const charizardForms = {
+                    "x": megaSprites["charizard_x"],
+                    "y": megaSprites["charizard_y"]
+                };
+
+                if (charizardForms[buttonUsed]) {
+                    const imageElement = document.getElementById('pokemonImage');
+                    imageElement.src = charizardForms[buttonUsed]; 
+                    imageElement.alt = `Charizard Mega ${buttonUsed.toUpperCase()}`;
+                    display.innerHTML += `<p>(Mega Charizard ${buttonUsed.toUpperCase()})</p>`;
+                } else {
+                    display.innerHTML += `<p>Invalid option! Please enter either 'x' or 'y'.</p>`;
+                }
+                // Remove the input and button after submission
+                userInput.remove();
+                submitButton.remove();
             };
-
-            const buttonUsed = prompt("Which Charizard Form would you like to see? (x/y)").toLowerCase();
-
-            if (charizardForms[buttonUsed]) {
-                const imageElement = document.getElementById('pokemonImage');
-                imageElement.src = charizardForms[buttonUsed]; 
-                imageElement.alt = `Charizard Mega ${buttonUsed.toUpperCase()}`;
-                document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Charizard ${buttonUsed.toUpperCase()})</p>`;
-            } else {
-                alert("Invalid option! Please enter either 'x' or 'y'.");
-            }
         };
 
         const showMewtwoForms = () => {
-            const mewtwoForms = {
-                "x": megaSprites["mewtwo_x"],
-                "y": megaSprites["mewtwo_y"]
+            // Create input and button elements dynamically
+            const userInput = document.createElement("input");
+            const submitButton = document.createElement("input");
+            
+            userInput.type = "text";
+            userInput.placeholder = "Enter 'x' or 'y' for Mewtwo";
+            submitButton.type = "button";
+            submitButton.value = "Submit";
+            
+            const display = document.getElementById('pokemonDisplay');
+            display.appendChild(userInput);
+            display.appendChild(submitButton);
+            
+            submitButton.onclick = () => {
+                const buttonUsed = userInput.value.toLowerCase();
+                const mewtwoForms = {
+                    "x": megaSprites["mewtwo_x"],
+                    "y": megaSprites["mewtwo_y"]
+                };
+
+                if (mewtwoForms[buttonUsed]) {
+                    const imageElement = document.getElementById('pokemonImage');
+                    imageElement.src = mewtwoForms[buttonUsed]; 
+                    imageElement.alt = `Mewtwo Mega ${buttonUsed.toUpperCase()}`;
+                    display.innerHTML += `<p>(Mega Mewtwo ${buttonUsed.toUpperCase()})</p>`;
+                } else {
+                    display.innerHTML += `<p>Invalid option! Please enter either 'x' or 'y'.</p>`;
+                }
+                // Remove the input and button after submission
+                userInput.remove();
+                submitButton.remove();
             };
-
-            const buttonUsed = prompt("Which Mewtwo Form would you like to see? (x/y)").toLowerCase();
-
-            if (mewtwoForms[buttonUsed]) {
-                const imageElement = document.getElementById('pokemonImage');
-                imageElement.src = mewtwoForms[buttonUsed]; 
-                imageElement.alt = `Mewtwo Mega ${buttonUsed.toUpperCase()}`;
-                document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Mewtwo ${buttonUsed.toUpperCase()})</p>`;
-            } else {
-                alert("Invalid option! Please enter either 'x' or 'y'.");
-            }
         };
 
         const searchPokemon = () => {
@@ -428,5 +460,4 @@
         fetchPokemons(1025);
     </script>
 </body>
-
 </html>
