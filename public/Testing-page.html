@@ -206,7 +206,7 @@
         <input type="button" value="Search" onClick="searchPokemon()"><br>
         <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
 
-        <input type="button" value="Show Mega Evolution" onClick="showMegaEvolution()"><br>
+        <input type="button" id="megaButton" value="Show Mega Evolution" onClick="showMegaEvolution()" style="display:none;"><br>
         <div id="pokemonDisplay">Choose a Pokémon!</div>
     </div>
 
@@ -235,31 +235,31 @@
             "manectric": "https://i.ibb.co/g4nRBc4/310-front-n.gif",
             "alakazam": "https://i.ibb.co/2tbWVP1/065-front-n.gif",
             "slowbro": "https://i.ibb.co/NtjkSKD/080-front-n.gif",
-             "gallade": "https://i.ibb.co/LN2Vg51/475-front-n.gif",   // Mega Gallade
-    "tyranitar": "https://i.ibb.co/XJq4XqS/248-front-n.gif", // Mega Tyranitar
-    "sceptile": "https://i.ibb.co/rZDrK5G/254-back-n.gif",    // Mega Sceptile
-    "blaziken": "https://i.ibb.co/4ShDqJB/257-front-n.gif",    // Mega Blaziken
-    "swampert": "https://i.ibb.co/zGkM4LM/260-front-n.gif",    // Mega Swampert
-    "gardevoir": "https://i.ibb.co/9pPth7X/282-front-n.gif",   // Mega Gardevoir
-    "sableye": "https://i.ibb.co/wz6HHdb/302-front-n.gif",     // Mega Sableye
-    "mawile": "https://i.ibb.co/5TFTLpW/303-front-n.gif",      // Mega Mawile
-    "aggron": "https://i.ibb.co/HxjgJVw/306-front-n.gif",      // Mega Aggron
-    "medicham": "https://i.ibb.co/2F50j4r/308-front-n.gif",    // Mega Medicham
-    "sharpedo": "https://i.ibb.co/V3Kqy0m/319-front-n.gif",    // Mega Sharpedo
-    "camerupt": "https://i.ibb.co/0BXb4Zj/323-front-n.gif",    // Mega Rayquaza
-    "altaria": "https://i.ibb.co/26KnxX0/334-front-n.gif",      // Mega Scizor
-    "banette": "https://i.ibb.co/PCYqMd2/354-front-n.gif",     // Mega Banette
-    "absol": "https://i.ibb.co/kSyKzJs/359-front-n.gif",       // Mega Absol
-    "venusaur": "https://i.ibb.co/cFDk4SX/003-front-n.gif",   // Mega Blastoise
-    "charizard": "https://i.ibb.co/St7SYwY/006-front-n.gif",   // Mega Charizard X
-    "beedrill": "https://i.ibb.co/r7TjFDW/015-front-n.gif",    // Mega Beedrill
-    "pidgeot": "https://i.ibb.co/bNcnK3h/018-front-n.gif",      // Mega Pidgeot
-    "gengar": "https://i.ibb.co/b2t21LQ/094-front-n.gif",       // Mega Gengar
-    "kangaskhan": "https://i.ibb.co/g4Tc4v6/115-front-n.gif",  // Mega Kangaskhan
-    "pinsir": "https://i.ibb.co/nC6412N/127-front-n.gif",      // Mega Snorlax
-    "gyarados": "https://i.ibb.co/XX4VMtY/130-front-n.gif",     // Mega Gyarados
-    "aerodactyl": "https://i.ibb.co/dKKPmbJ/142-front-n.gif",   // Mega Aerodactyl
-    "mewtwo": "https://i.ibb.co/xLD05dQ/150-front-n.gif"       // Mega Mewtwo Y
+            "gallade": "https://i.ibb.co/LN2Vg51/475-front-n.gif",   // Mega Gallade
+            "tyranitar": "https://i.ibb.co/XJq4XqS/248-front-n.gif", // Mega Tyranitar
+            "sceptile": "https://i.ibb.co/rZDrK5G/254-back-n.gif",    // Mega Sceptile
+            "blaziken": "https://i.ibb.co/4ShDqJB/257-front-n.gif",    // Mega Blaziken
+            "swampert": "https://i.ibb.co/zGkM4LM/260-front-n.gif",    // Mega Swampert
+            "gardevoir": "https://i.ibb.co/9pPth7X/282-front-n.gif",   // Mega Gardevoir
+            "sableye": "https://i.ibb.co/wz6HHdb/302-front-n.gif",     // Mega Sableye
+            "mawile": "https://i.ibb.co/5TFTLpW/303-front-n.gif",      // Mega Mawile
+            "aggron": "https://i.ibb.co/HxjgJVw/306-front-n.gif",      // Mega Aggron
+            "medicham": "https://i.ibb.co/2F50j4r/308-front-n.gif",    // Mega Medicham
+            "sharpedo": "https://i.ibb.co/V3Kqy0m/319-front-n.gif",    // Mega Sharpedo
+            "camerupt": "https://i.ibb.co/0BXb4Zj/323-front-n.gif",    // Mega Rayquaza
+            "altaria": "https://i.ibb.co/26KnxX0/334-front-n.gif",      // Mega Scizor
+            "banette": "https://i.ibb.co/PCYqMd2/354-front-n.gif",     // Mega Banette
+            "absol": "https://i.ibb.co/kSyKzJs/359-front-n.gif",       // Mega Absol
+            "venusaur": "https://i.ibb.co/cFDk4SX/003-front-n.gif",   // Mega Blastoise
+            "charizard": "https://i.ibb.co/St7SYwY/006-front-n.gif",   // Mega Charizard X
+            "beedrill": "https://i.ibb.co/r7TjFDW/015-front-n.gif",    // Mega Beedrill
+            "pidgeot": "https://i.ibb.co/bNcnK3h/018-front-n.gif",      // Mega Pidgeot
+            "gengar": "https://i.ibb.co/b2t21LQ/094-front-n.gif",       // Mega Gengar
+            "kangaskhan": "https://i.ibb.co/g4Tc4v6/115-front-n.gif",  // Mega Kangaskhan
+            "pinsir": "https://i.ibb.co/nC6412N/127-front-n.gif",      // Mega Snorlax
+            "gyarados": "https://i.ibb.co/XX4VMtY/130-front-n.gif",     // Mega Gyarados
+            "aerodactyl": "https://i.ibb.co/dKKPmbJ/142-front-n.gif",   // Mega Aerodactyl
+            "mewtwo": "https://i.ibb.co/xLD05dQ/150-front-n.gif"       // Mega Mewtwo Y
         };
 
         const fetchPokemons = async (limit = 1025) => {
@@ -305,6 +305,10 @@
             displayPokemon(currentPokemon); 
         };
 
+        const hasMegaEvolution = (pokemon) => {
+            return Object.keys(megaSprites).includes(pokemon.name.toLowerCase());
+        };
+
         const displayPokemon = (pokemon) => {
             document.getElementById('pokemonDisplay').innerHTML = `
                 <div class="pokemon-entry">
@@ -316,6 +320,14 @@
                     <p><strong>Description:</strong> ${pokemon.description}</p>
                     <input type="button" value="Toggle Shiny" onClick="toggleShiny()">
                 </div>`;
+
+            // Show or hide the Mega Evolution button based on whether the Pokémon has a Mega form
+            const megaButton = document.getElementById('megaButton');
+            if (hasMegaEvolution(pokemon)) {
+                megaButton.style.display = "inline"; // Show the button
+            } else {
+                megaButton.style.display = "none";    // Hide the button
+            }
         };
 
         const toggleShiny = () => {
@@ -356,6 +368,7 @@
                 displayPokemon(foundPokemon); 
             } else {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
+                document.getElementById('megaButton').style.display = "none"; // Hide the button if no Pokémon is found
             }
         };
 
