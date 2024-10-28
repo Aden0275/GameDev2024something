@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,60 +10,75 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(to bottom right, #ffcc00, #ff3300);
             color: #333;
             padding: 20px;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            align-items: flex-start;
             flex-wrap: wrap;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
+
         h2 {
             text-align: center;
             color: #4CAF50;
         }
-        #container, #pokemonSection {
+
+        #container,
+        #pokemonSection {
             max-width: 600px;
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: 10px;
+            opacity: 0.95;
         }
-        input[type="text"], input[type="number"], input[type="button"] {
+
+        input[type="text"],
+        input[type="number"],
+        input[type="button"] {
             width: calc(100% - 20px);
             padding: 10px;
             margin: 10px 0;
-            border: 2px solid #4CAF50;
+            border: 2px solid #ff3300;
             border-radius: 5px;
             font-size: 16px;
             transition: border-color 0.3s;
         }
+
         input[type="button"] {
-            background-color: #4CAF50;
+            background-color: #ff3300;
             color: white;
             cursor: pointer;
             border: none;
             border-radius: 5px;
         }
-        .animal-entry, .pokemon-entry {
+
+        .animal-entry,
+        .pokemon-entry {
             padding: 5px;
             margin-bottom: 5px;
             border-radius: 5px;
         }
+
         .pokemon-entry {
-            background: #dcedc8;
+            background: #ffe066;
         }
+
         .pokemon-image {
             max-width: 100%;
             height: auto;
         }
     </style>
 </head>
+
 <body>
     <div id="container">
         <h2>Animal Class Complex Demonstration</h2>
         <script>
-            // Base class representing an Animal
             class MyAnimal {
                 constructor(name, age, habitat) {
                     this.myName = name;
@@ -159,9 +175,9 @@
             }
         </script>
 
-        <input type="text" id="animalType" placeholder="Enter animal type">
-        <input type="text" id="animalName" placeholder="Enter animal name">
-        <input type="number" id="animalAge" placeholder="Enter animal age" min="1">
+        <input type="text" id="animalType" placeholder="Enter animal type" value="Cat">
+        <input type="text" id="animalName" placeholder="Enter animal name" value="Whiskers">
+        <input type="number" id="animalAge" placeholder="Enter animal age" min="1" value="3">
         <input type="button" value="Create Animal" onClick="{
             const type = document.getElementById('animalType').value;
             const name = document.getElementById('animalName').value;
@@ -187,15 +203,62 @@
 
     <div id="pokemonSection">
         <h2>Pokémon Generator</h2>
-        <input type="text" id="pokemonSearch" placeholder="Search Pokémon by name or ID">
+        <input type="text" id="pokemonSearch" placeholder="Search Pokémon by name or ID" value="pikachu">
         <input type="button" value="Search" onClick="searchPokemon()"><br>
         <input type="button" value="Generate Random Pokémon" onClick="showPokemon()"><br>
+
+        <input type="button" id="megaButton" value="Show Mega Evolution" onClick="showMegaEvolution()" style="display:none;"><br>
+        <!-- Added buttons for Charizard and Mewtwo Mega forms -->
+        <input type="button" id="charizardFormsButton" value="Show Charizard Forms" onClick="showCharizardForms()" style="display:none;">
+        <input type="button" id="mewtwoFormsButton" value="Show Mewtwo Forms" onClick="showMewtwoForms()" style="display:none;"><br>
+        
         <div id="pokemonDisplay">Choose a Pokémon!</div>
     </div>
 
     <script>
         let pokemons = [];
-        let currentPokemon = null; // Store current Pokémon for toggling shiny
+        let currentPokemon = null; 
+
+        const megaSprites = {
+            "glalie": "https://i.ibb.co/VJJDCHV/362-front-s.gif",
+            "salamence": "https://i.ibb.co/tCg2pzd/373-front-n.gif",
+            "metagross": "https://i.ibb.co/mThQmqL/376-front-n.gif",
+            "rayquaza": "https://i.ibb.co/4FsfVg7/384-front-n.gif",
+            "lopunny": "https://i.ibb.co/0tFL3br/428-front-n.gif",
+            "garchomp": "https://i.ibb.co/9q1yyvP/445-front-n.gif",
+            "lucario": "https://i.ibb.co/F0MRVbg/448-front-n.gif",
+            "abomasnow": "https://i.ibb.co/RhzFpt1/460-front-n.gif",
+            "audino": "https://i.ibb.co/wBhc3Kr/531-front-n.gif",
+            "ampharos": "https://i.ibb.co/fHy2KTZ/181-front-n.gif",
+            "steelix": "https://i.ibb.co/pfmTZS3/208-front-n.gif",
+            "scizor": "https://i.ibb.co/XybN09n/212-front-n.gif",
+            "heracross": "https://i.ibb.co/31Z8X91/214-front-n.gif",
+            "houndoom": "https://i.ibb.co/dQdgBty/229-front-n.gif",
+            "blastoise": "https://i.ibb.co/jbkwVYC/009-front-n.gif",
+            "manectric": "https://i.ibb.co/g4nRBc4/310-front-n.gif",
+            "alakazam": "https://i.ibb.co/2tbWVP1/065-front-n.gif",
+            "slowbro": "https://i.ibb.co/NtjkSKD/080-front-n.gif",
+            "gallade": "https://i.ibb.co/LN2Vg51/475-front-n.gif",   // Mega Gallade
+            "tyranitar": "https://i.ibb.co/XJq4XqS/248-front-n.gif", // Mega Tyranitar
+            "sceptile": "https://i.ibb.co/rZDrK5G/254-back-n.gif",    // Mega Sceptile
+            "blaziken": "https://i.ibb.co/4ShDqJB/257-front-n.gif",    // Mega Blaziken
+            "swampert": "https://i.ibb.co/zGkM4LM/260-front-n.gif",    // Mega Swampert
+            "gardevoir": "https://i.ibb.co/9pPth7X/282-front-n.gif",   // Mega Gardevoir
+            "sableye": "https://i.ibb.co/wz6HHdb/302-front-n.gif",     // Mega Sableye
+            "mawile": "https://i.ibb.co/5TFTLpW/303-front-n.gif",      // Mega Mawile
+            "aggron": "https://i.ibb.co/HxjgJVw/306-front-n.gif",      // Mega Aggron
+            "medicham": "https://i.ibb.co/2F50j4r/308-front-n.gif",    // Mega Medicham
+            "sharpedo": "https://i.ibb.co/V3Kqy0m/319-front-n.gif",    // Mega Sharpedo
+            "camerupt": "https://i.ibb.co/0BXb4Zj/323-front-n.gif",    // Mega Rayquaza
+            "altaria": "https://i.ibb.co/26KnxX0/334-front-n.gif",      // Mega Scizor
+            "banette": "https://i.ibb.co/PCYqMd2/354-front-n.gif",     // Mega Banette
+            "absol": "https://i.ibb.co/kSyKzJs/359-front-n.gif",       // Mega Absol
+            "venusaur": "https://i.ibb.co/cFDk4SX/003-front-n.gif",   // Mega Blastoise
+            "charizard_x": "https://i.ibb.co/St7SYwY/006-front-n.gif",   // Mega Charizard X
+            "charizard_y": "https://i.ibb.co/xgJ2FH6/006-front-n.gif",   // Mega Charizard Y
+            "mewtwo_x": "https://i.ibb.co/s55wF1W/150-front-n.gif",       // Mega Mewtwo X
+            "mewtwo_y": "https://i.ibb.co/xLD05dQ/150-front-n.gif"       // Mega Mewtwo Y
+        };
 
         const fetchPokemons = async (limit = 1025) => {
             const promises = [];
@@ -208,8 +271,8 @@
                 const speciesResponse = await fetch(data.species.url);
                 const speciesData = await speciesResponse.json();
                 const description = speciesData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
-                const imageUrl = data.sprites.front_default; // Regular sprite
-                const shinyImageUrl = data.sprites.front_shiny; // Shiny sprite
+                const imageUrl = data.sprites.front_default; 
+                const shinyImageUrl = data.sprites.front_shiny; 
 
                 pokemons.push({
                     id: data.id,
@@ -218,9 +281,9 @@
                     hp: data.stats[0].base_stat,
                     attack: data.stats[1].base_stat,
                     defense: data.stats[2].base_stat,
-                    description: description.replace(/\n/g, ' '), // Clean up new lines
-                    imageUrl: imageUrl, // Regular image URL
-                    shinyImageUrl: shinyImageUrl // Shiny image URL
+                    description: description.replace(/\n/g, ' '), 
+                    imageUrl: imageUrl, 
+                    shinyImageUrl: shinyImageUrl 
                 });
             }
             document.getElementById('pokemonDisplay').innerHTML = "Pokémon data loaded. You can now search or generate a Pokémon.";
@@ -236,8 +299,12 @@
                 document.getElementById('pokemonDisplay').innerHTML = `<p>Loading Pokémon data...</p>`;
                 return;
             }
-            currentPokemon = getRandomPokemon(); // Store the current Pokémon
-            displayPokemon(currentPokemon); // Display the current Pokémon
+            currentPokemon = getRandomPokemon(); 
+            displayPokemon(currentPokemon); 
+        };
+
+        const hasMegaEvolution = (pokemon) => {
+            return Object.keys(megaSprites).includes(pokemon.name.toLowerCase());
         };
 
         const displayPokemon = (pokemon) => {
@@ -251,33 +318,147 @@
                     <p><strong>Description:</strong> ${pokemon.description}</p>
                     <input type="button" value="Toggle Shiny" onClick="toggleShiny()">
                 </div>`;
+
+            // Show or hide the Mega Evolution button based on whether the Pokémon has a Mega form
+            const megaButton = document.getElementById('megaButton');
+            if (hasMegaEvolution(pokemon)) {
+                megaButton.style.display = "inline"; // Show Mega button
+            } else {
+                megaButton.style.display = "none";    // Hide Mega button
+            }
+
+            // Show or hide the Charizard/Mewtwo form buttons based on the Pokémon being shown
+            const charizardFormsButton = document.getElementById('charizardFormsButton');
+            const mewtwoFormsButton = document.getElementById('mewtwoFormsButton');
+
+            if (pokemon.name.toLowerCase() === 'charizard') {
+                charizardFormsButton.style.display = "inline"; // Show Charizard forms button
+            } else {
+                charizardFormsButton.style.display = "none"; // Hide Charizard forms button
+            }
+
+            if (pokemon.name.toLowerCase() === 'mewtwo') {
+                mewtwoFormsButton.style.display = "inline"; // Show Mewtwo forms button
+            } else {
+                mewtwoFormsButton.style.display = "none"; // Hide Mewtwo forms button
+            }
         };
 
         const toggleShiny = () => {
             const imageElement = document.getElementById('pokemonImage');
             if (imageElement.src === currentPokemon.imageUrl) {
-                imageElement.src = currentPokemon.shinyImageUrl; // Change to shiny
+                imageElement.src = currentPokemon.shinyImageUrl; 
             } else {
-                imageElement.src = currentPokemon.imageUrl; // Change back to regular
+                imageElement.src = currentPokemon.imageUrl; 
             }
+        };
+
+        const showMegaEvolution = () => {
+            if (!currentPokemon) {
+                document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon selected. Please generate or search for a Pokémon first.</p>`;
+                return;
+            }
+
+            const megaSpriteURL = megaSprites[currentPokemon.name.toLowerCase()];
+
+            if (megaSpriteURL) {
+                const imageElement = document.getElementById('pokemonImage');
+                imageElement.src = megaSpriteURL; 
+                imageElement.alt = `Mega ${currentPokemon.name.charAt(0).toUpperCase() + currentPokemon.name.slice(1)}`;
+                document.getElementById('pokemonDisplay').innerHTML += `<p>(Mega Evolution)</p>`;
+            } else {
+                document.getElementById('pokemonDisplay').innerHTML += `<p>This Pokémon does not have a Mega Evolution available.</p>`;
+            }
+        };
+
+        const showCharizardForms = () => {
+            // Create input and button elements dynamically
+            const userInput = document.createElement("input");
+            const submitButton = document.createElement("input");
+            
+            userInput.type = "text";
+            userInput.placeholder = "Enter 'x' or 'y' for Charizard";
+            submitButton.type = "button";
+            submitButton.value = "Submit";
+            
+            const display = document.getElementById('pokemonDisplay');
+            display.appendChild(userInput);
+            display.appendChild(submitButton);
+            
+            submitButton.onclick = () => {
+                const buttonUsed = userInput.value.toLowerCase();
+                const charizardForms = {
+                    "x": megaSprites["charizard_x"],
+                    "y": megaSprites["charizard_y"]
+                };
+
+                if (charizardForms[buttonUsed]) {
+                    const imageElement = document.getElementById('pokemonImage');
+                    imageElement.src = charizardForms[buttonUsed]; 
+                    imageElement.alt = `Charizard Mega ${buttonUsed.toUpperCase()}`;
+                    display.innerHTML += `<p>(Mega Charizard ${buttonUsed.toUpperCase()})</p>`;
+                } else {
+                    display.innerHTML += `<p>Invalid option! Please enter either 'x' or 'y'.</p>`;
+                }
+                // Remove the input and button after submission
+                userInput.remove();
+                submitButton.remove();
+            };
+        };
+
+        const showMewtwoForms = () => {
+            // Create input and button elements dynamically
+            const userInput = document.createElement("input");
+            const submitButton = document.createElement("input");
+            
+            userInput.type = "text";
+            userInput.placeholder = "Enter 'x' or 'y' for Mewtwo";
+            submitButton.type = "button";
+            submitButton.value = "Submit";
+            
+            const display = document.getElementById('pokemonDisplay');
+            display.appendChild(userInput);
+            display.appendChild(submitButton);
+            
+            submitButton.onclick = () => {
+                const buttonUsed = userInput.value.toLowerCase();
+                const mewtwoForms = {
+                    "x": megaSprites["mewtwo_x"],
+                    "y": megaSprites["mewtwo_y"]
+                };
+
+                if (mewtwoForms[buttonUsed]) {
+                    const imageElement = document.getElementById('pokemonImage');
+                    imageElement.src = mewtwoForms[buttonUsed]; 
+                    imageElement.alt = `Mewtwo Mega ${buttonUsed.toUpperCase()}`;
+                    display.innerHTML += `<p>(Mega Mewtwo ${buttonUsed.toUpperCase()})</p>`;
+                } else {
+                    display.innerHTML += `<p>Invalid option! Please enter either 'x' or 'y'.</p>`;
+                }
+                // Remove the input and button after submission
+                userInput.remove();
+                submitButton.remove();
+            };
         };
 
         const searchPokemon = () => {
             const searchTerm = document.getElementById('pokemonSearch').value.toLowerCase();
-            const foundPokemon = pokemons.find(pokemon => 
+            const foundPokemon = pokemons.find(pokemon =>
                 pokemon.name.toLowerCase() === searchTerm || pokemon.id === parseInt(searchTerm)
             );
 
             if (foundPokemon) {
-                currentPokemon = foundPokemon; // Store the found Pokémon
-                displayPokemon(foundPokemon); // Display found Pokémon
+                currentPokemon = foundPokemon; 
+                displayPokemon(foundPokemon); 
             } else {
                 document.getElementById('pokemonDisplay').innerHTML = `<p>No Pokémon found with that name or ID.</p>`;
+                document.getElementById('megaButton').style.display = "none"; // Hide the Mega button if no Pokémon is found
+                document.getElementById('charizardFormsButton').style.display = "none"; // Hide Charizard forms button
+                document.getElementById('mewtwoFormsButton').style.display = "none"; // Hide Mewtwo forms button
             }
         };
 
-        // Initially fetch Pokémon data (up to 1025 Pokémon)
-        fetchPokemons(1025); 
+        fetchPokemons(1025);
     </script>
 </body>
 </html>
