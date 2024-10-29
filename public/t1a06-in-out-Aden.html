@@ -16,7 +16,7 @@
             text-align: center;
             color: #333;
         }
-        input[type="text"], input[type="number"], input[type="date"] {
+        input[type="text"], input[type="number"], input[type="date"], input[type="color"] {
             padding: 10px;
             margin: 10px 0;
             font-size: 16px;
@@ -47,6 +47,8 @@
     <input type="text" id="myFirstName" value="Aden" placeholder="Enter your name"> 
     <input type="number" id="myAge" placeholder="Enter your age"> 
     <input type="date" id="myBirthdate"> 
+    <input type="text" id="myFavoriteAnimal" placeholder="Enter your favorite animal"> 
+    <input type="color" id="myFavoriteColor"> 
     <input type="button" value="Show on page" onclick="showInfo()">
 
     <div id="myDiv01">...</div>
@@ -56,12 +58,17 @@
             const name = document.getElementById('myFirstName').value;
             const age = document.getElementById('myAge').value;
             const birthdate = document.getElementById('myBirthdate').valueAsDate;
+            const favoriteAnimal = document.getElementById('myFavoriteAnimal').value;
+            const favoriteColor = document.getElementById('myFavoriteColor').value;
+
             const birthdateString = birthdate ? birthdate.toLocaleDateString() : 'Not provided';
 
             document.getElementById('myDiv01').innerHTML = 
                 'Your name is: ' + name + '<br>' +
                 'Your age is: ' + (age ? age : 'Not provided') + '<br>' +
-                'Your birthdate is: ' + birthdateString;
+                'Your birthdate is: ' + birthdateString + '<br>' +
+                'Your favorite animal is: ' + (favoriteAnimal ? favoriteAnimal : 'Not provided') + '<br>' +
+                'Your favorite color is: <span style="color:' + favoriteColor + ';">' + favoriteColor + '</span>';
         }
     </script>
 
