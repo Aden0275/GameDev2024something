@@ -16,7 +16,7 @@
             text-align: center;
             color: #333;
         }
-        input[type="text"], input[type="number"], input[type="date"], input[type="color"] {
+        input[type="text"], input[type="number"], input[type="date"] {
             padding: 10px;
             margin: 10px 0;
             font-size: 16px;
@@ -48,7 +48,7 @@
     <input type="number" id="myAge" placeholder="Enter your age"> 
     <input type="date" id="myBirthdate"> 
     <input type="text" id="myFavoriteAnimal" placeholder="Enter your favorite animal"> 
-    <input type="color" id="myFavoriteColor"> 
+    <input type="text" id="myFavoriteColor" placeholder="Enter your favorite color (e.g., Red, Blue)"> 
     <input type="button" value="Show on page" onclick="showInfo()">
 
     <div id="myDiv01">...</div>
@@ -68,7 +68,7 @@
                 'Your age is: ' + (age ? age : 'Not provided') + '<br>' +
                 'Your birthdate is: ' + birthdateString + '<br>' +
                 'Your favorite animal is: ' + (favoriteAnimal ? favoriteAnimal : 'Not provided') + '<br>' +
-                'Your favorite color is: <span style="color:' + favoriteColor + ';">' + favoriteColor + '</span>';
+                'Your favorite color is: ' + (favoriteColor ? favoriteColor : 'Not provided');
         }
     </script>
 
