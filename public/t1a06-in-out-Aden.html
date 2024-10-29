@@ -16,7 +16,7 @@
             text-align: center;
             color: #333;
         }
-        input[type="text"] {
+        input[type="text"], input[type="number"], input[type="date"] {
             padding: 10px;
             margin: 10px 0;
             font-size: 16px;
@@ -45,30 +45,23 @@
     <h1>t1a06-in-out-Aden.html</h1>
     
     <input type="text" id="myFirstName" value="Aden" placeholder="Enter your name"> 
-    <input type="button" value="Show on page" onclick="showName()">
+    <input type="number" id="myAge" placeholder="Enter your age"> 
+    <input type="date" id="myBirthdate"> 
+    <input type="button" value="Show on page" onclick="showInfo()">
 
     <div id="myDiv01">...</div>
 
     <script>
-        function showName() {
+        function showInfo() {
             const name = document.getElementById('myFirstName').value;
-            document.getElementById('myDiv01').innerHTML = 'Your name is: ' + name;
-        }
-    </script>
+            const age = document.getElementById('myAge').value;
+            const birthdate = document.getElementById('myBirthdate').valueAsDate;
+            const birthdateString = birthdate ? birthdate.toLocaleDateString() : 'Not provided';
 
-</body>
-</html>
-
-
-   <input type="text" id="myAge" value="16" placeholder="Enter your Age"> 
-    <input type="button" value="Show on page" onclick="showAge()">
-
-    <div id="myDiv01">...</div>
-
-    <script>
-        function showAge() {
-            const age = document.getElementById('myage').value;
-            document.getElementById('myDiv01').innerHTML = 'Your are : ' + Age;
+            document.getElementById('myDiv01').innerHTML = 
+                'Your name is: ' + name + '<br>' +
+                'Your age is: ' + (age ? age : 'Not provided') + '<br>' +
+                'Your birthdate is: ' + birthdateString;
         }
     </script>
 
