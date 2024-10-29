@@ -38,6 +38,9 @@
             font-size: 18px;
             color: #555;
         }
+        .gender-group {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -47,6 +50,12 @@
     <input type="text" id="myFirstName" value="Aden" placeholder="Enter your name"> 
     <input type="number" id="myAge" value="25" placeholder="Enter your age"> 
     <input type="date" id="myBirthdate" value="1998-01-01"> 
+    <div class="gender-group">
+        <label>Gender:</label>
+        <label><input type="radio" name="gender" value="Male" checked> Male</label>
+        <label><input type="radio" name="gender" value="Female"> Female</label>
+        <label><input type="radio" name="gender" value="Other"> Other</label>
+    </div>
     <input type="text" id="myFavoriteAnimal" value="Dog" placeholder="Enter your favorite animal"> 
     <input type="text" id="myFavoriteColor" value="Blue" placeholder="Enter your favorite color (e.g., Red, Blue)"> 
     <input type="button" value="Show on page" onclick="showInfo()">
@@ -61,12 +70,16 @@
             const favoriteAnimal = document.getElementById('myFavoriteAnimal').value;
             const favoriteColor = document.getElementById('myFavoriteColor').value;
 
+            // Get selected gender
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+
             const birthdateString = birthdate ? birthdate.toLocaleDateString() : 'Not provided';
 
             document.getElementById('myDiv01').innerHTML = 
                 'Your name is: ' + name + '<br>' +
                 'Your age is: ' + (age ? age : 'Not provided') + '<br>' +
                 'Your birthdate is: ' + birthdateString + '<br>' +
+                'Your gender is: ' + gender + '<br>' +
                 'Your favorite animal is: ' + (favoriteAnimal ? favoriteAnimal : 'Not provided') + '<br>' +
                 'Your favorite color is: ' + (favoriteColor ? favoriteColor : 'Not provided');
         }
