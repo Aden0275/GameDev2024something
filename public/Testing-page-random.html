@@ -47,62 +47,261 @@
 
         const story = {
             start: {
-                text: "You wake up in a dark forest. You can see two paths ahead: one leading to the left and one to the right. Which path do you choose?",
+                text: "You wake up in a dark forest, unsure how you got there. You see three paths ahead: one leading left toward a cave, one right toward the mountains, and one straight ahead into deeper woods. Which path do you choose?",
                 options: [
-                    { text: "Go left", next: "leftPath" },
-                    { text: "Go right", next: "rightPath" }
+                    { text: "Go left to the cave", next: "caveEntrance" },
+                    { text: "Go right to the mountains", next: "mountainTrail" },
+                    { text: "Go straight into the woods", next: "deeperWoods" }
                 ]
             },
-            leftPath: {
-                text: "You walk down the left path and encounter a friendly elf. Do you talk to the elf or ignore it?",
+            caveEntrance: {
+                text: "You arrive at the mouth of a dark cave. You can hear strange noises inside. Do you enter the cave or leave?",
                 options: [
-                    { text: "Talk to the elf", next: "talkToElf" },
-                    { text: "Ignore the elf", next: "ignoreElf" }
+                    { text: "Enter the cave", next: "insideCave" },
+                    { text: "Leave the cave", next: "goBack" }
                 ]
             },
-            rightPath: {
-                text: "You take the right path and find a raging river. Do you try to swim across or look for a bridge?",
+            mountainTrail: {
+                text: "As you climb the mountain, the air gets thinner. You find an old stone tablet. Do you try to read it or keep climbing?",
                 options: [
-                    { text: "Swim across", next: "swim" },
-                    { text: "Look for a bridge", next: "bridge" }
+                    { text: "Read the tablet", next: "readTablet" },
+                    { text: "Keep climbing", next: "summit" }
                 ]
             },
-            talkToElf: {
-                text: "The elf gives you a magical sword that can defeat any monster. You can continue your journey or head back to find the treasure.",
+            deeperWoods: {
+                text: "The deeper woods are serene, but you hear rustling nearby. Do you investigate the noise or continue walking?",
                 options: [
-                    { text: "Continue your journey", next: "continueJourney" },
-                    { text: "Go back to seek treasure", next: "treasurePath" }
+                    { text: "Investigate the noise", next: "investigateNoise" },
+                    { text: "Continue walking", next: "findClearing" }
                 ]
             },
-            continueJourney: {
-                text: "You continue deeper into the forest and encounter a dragon! Do you fight the dragon or try to escape?",
+            goBack: {
+                text: "You decide to go back and choose another path. You find yourself at the same starting point.",
                 options: [
-                    { text: "Fight the dragon", next: "fightDragon" },
-                    { text: "Try to escape", next: "escapeDragon" }
+                    { text: "Go left to the cave", next: "caveEntrance" },
+                    { text: "Go right to the mountains", next: "mountainTrail" },
+                    { text: "Go straight into the woods", next: "deeperWoods" }
                 ]
             },
-            ignoreElf: {
-                text: "As you walk away, the elf casts a spell on you. You fall asleep and never wake up. Game Over.",
+            insideCave: {
+                text: "Inside the cave, you see glittering crystals and a sleeping bear. Do you sneak past the bear to collect crystals or turn back?",
+                options: [
+                    { text: "Sneak past the bear", next: "collectCrystals" },
+                    { text: "Turn back", next: "goBack" }
+                ]
+            },
+            collectCrystals: {
+                text: "You manage to collect some crystals without waking the bear! You leave the cave with newfound treasure. Do you head back to the forest or seek more adventure in the cave?",
+                options: [
+                    { text: "Head back to the forest", next: "headBackToForest" },
+                    { text: "Seek more adventure in the cave", next: "exploreMoreCave" }
+                ]
+            },
+            headBackToForest: {
+                text: "You return to the forest with your crystals. As you contemplate your next move, a traveler approaches and offers to trade. Do you trade or keep your crystals?",
+                options: [
+                    { text: "Trade crystals", next: "tradeCrystals" },
+                    { text: "Keep crystals", next: "keepCrystals" }
+                ]
+            },
+            exploreMoreCave: {
+                text: "You venture deeper into the cave and find a hidden passageway leading to a treasure room. Do you take the treasure or leave it?",
+                options: [
+                    { text: "Take the treasure", next: "claimTreasure" },
+                    { text: "Leave the treasure", next: "leaveTreasureRoom" }
+                ]
+            },
+            claimTreasure: {
+                text: "You take the treasure, but as you turn to leave, the bear wakes up. Do you fight or attempt to escape?",
+                options: [
+                    { text: "Fight the bear", next: "fightBear" },
+                    { text: "Attempt to escape", next: "escapeBear" }
+                ]
+            },
+            leaveTreasureRoom: {
+                text: "You exit the treasure room and accidentally trigger a trap! You must choose quickly to jump to safety or roll to avoid danger.",
+                options: [
+                    { text: "Jump to safety", next: "jumpToSafety" },
+                    { text: "Roll to avoid danger", next: "rollToAvoid" }
+                ]
+            },
+            mountainTrail: {
+                text: "You find an old stone tablet. It speaks of a hidden treasure guarded by a guardian spirit. Do you seek the treasure or leave?",
+                options: [
+                    { text: "Seek the treasure", next: "treasureQuest" },
+                    { text: "Leave", next: "returnToMountains" }
+                ]
+            },
+            readTablet: {
+                text: "The tablet contains ancient runes that speak of a hidden treasure guarded by a guardian spirit. Do you seek the treasure or leave?",
+                options: [
+                    { text: "Seek the treasure", next: "treasureQuest" },
+                    { text: "Leave", next: "returnToMountains" }
+                ]
+            },
+            summit: {
+                text: "You've reached the summit, overlooking the entire forest. Suddenly, a rockslide occurs! Do you try to climb down or find shelter?",
+                options: [
+                    { text: "Climb down", next: "climbDown" },
+                    { text: "Find shelter", next: "shelter" }
+                ]
+            },
+            investigateNoise: {
+                text: "You find a small group of fairies, fluttering around a glowing orb. Do you approach them or stay hidden?",
+                options: [
+                    { text: "Approach the fairies", next: "meetFairies" },
+                    { text: "Stay hidden", next: "watchFairies" }
+                ]
+            },
+            findClearing: {
+                text: "You stumble into a beautiful clearing filled with flowers. A unicorn appears! Do you try to pet it or step back?",
+                options: [
+                    { text: "Pet the unicorn", next: "petUnicorn" },
+                    { text: "Step back", next: "leaveClearing" }
+                ]
+            },
+            treasureQuest: {
+                text: "Your quest leads you to a hidden valley where the guardian spirit blocks your path. Do you fight it or negotiate?",
+                options: [
+                    { text: "Fight the spirit", next: "fightSpirit" },
+                    { text: "Negotiate", next: "negotiateSpirit" }
+                ]
+            },
+            returnToMountains: {
+                text: "You head back to the mountains, but the tablet disintegrates in your hands, taking all your knowledge with it. Game Over.",
                 options: []
             },
-            swim: {
-                text: "You attempt to swim across but the current is too strong. You drown. Game Over.",
+            climbDown: {
+                text: "You make it down safely but twist your ankle. You find a friendly traveler who helps you. You win the friendship! Do you travel with them or part ways?",
+                options: [
+                    { text: "Travel together", next: "travelTogether" },
+                    { text: "Part ways", next: "partWays" }
+                ]
+            },
+            shelter: {
+                text: "You find a cave to hide in, but it is the same bear's cave! The bear wakes up and you are caught. Game Over.",
                 options: []
             },
-            bridge: {
-                text: "You find a bridge and cross safely. On the other side, you discover a treasure chest filled with gold! You win!",
+            meetFairies: {
+                text: "The fairies invite you to their kingdom. You learn magic and gain great power. Do you use your power for good or for mischief?",
+                options: [
+                    { text: "Use power for good", next: "powerForGood" },
+                    { text: "Use power for mischief", next: "powerForMischief" }
+                ]
+            },
+            watchFairies: {
+                text: "The fairies notice you and become angry. They enchant you, and you can't move for a day. Game Over.",
                 options: []
             },
-            fightDragon: {
-                text: "You bravely fight the dragon with your magical sword but it proves to be a fearsome foe. You are defeated. Game Over.",
+            petUnicorn: {
+                text: "The unicorn blesses you with good luck for your journey. You find a path to safety. Do you continue your adventure or settle down in the forest?",
+                options: [
+                    { text: "Continue your adventure", next: "continueAdventure" },
+                    { text: "Settle down", next: "settleDown" }
+                ]
+            },
+            leaveClearing: {
+                text: "As you leave, the unicorn curses you for not accepting its gift. You wander aimlessly. Game Over.",
                 options: []
             },
-            escapeDragon: {
-                text: "You manage to escape the dragon but end up lost in the forest forever. Game Over.",
+            fightSpirit: {
+                text: "You bravely fight the spirit, but it overwhelms you with its power. Game Over.",
                 options: []
             },
-            treasurePath: {
-                text: "You head back and follow the elf's instructions to the treasure. You open the chest and find it empty! Game Over.",
+            negotiateSpirit: {
+                text: "You successfully negotiate with the spirit, who grants you access to the treasure. You can choose to keep it or share it with a village in need.",
+                options: [
+                    { text: "Keep the treasure", next: "keepTreasure" },
+                    { text: "Share with the village", next: "shareTreasure" }
+                ]
+            },
+            travelTogether: {
+                text: "You embark on a new adventure with the traveler. Together you find hidden realms and untold stories. You win!",
+                options: []
+            },
+            partWays: {
+                text: "You part ways with the traveler, taking a different path. Both of you have wonderful adventures ahead. You win!",
+                options: []
+            },
+            continueAdventure: {
+                text: "With newfound luck, you journey through various lands, collecting stories and treasures. You win!",
+                options: []
+            },
+            settleDown: {
+                text: "You find peace in the forest, living harmoniously with nature. You win!",
+                options: []
+            },
+            powerForGood: {
+                text: "You use your magic to heal the wounded and protect the forest. The inhabitants honor you. You win!",
+                options: []
+            },
+            powerForMischief: {
+                text: "You cause playful chaos with your magic, bringing joy and laughter—but also trouble. You win with a laugh!",
+                options: []
+            },
+            keepTreasure: {
+                text: "You keep the treasure for yourself but live in constant worry of it being stolen. Game Over.",
+                options: []
+            },
+            shareTreasure: {
+                text: "The village uses the treasure to prosper, and you become their beloved hero. You win!",
+                options: []
+            },
+            fightBear: {
+                text: "You fight bravely, but the bear is too powerful. Game Over.",
+                options: []
+            },
+            escapeBear: {
+                text: "You manage to escape the bear and flee the cave. You return to the forest. Do you seek new adventures or rest?",
+                options: [
+                    { text: "Seek new adventures", next: "seekAdventures" },
+                    { text: "Rest", next: "rest" }
+                ]
+            },
+            jumpToSafety: {
+                text: "You leap to safety and escape the cave as it collapses. You exit with the crystals. You have survived and gained treasure! You win!",
+                options: []
+            },
+            rollToAvoid: {
+                text: "You roll to avoid danger and manage to escape! You leave the cave with valuable crystals. Do you use them for trade or keep them?",
+                options: [
+                    { text: "Trade crystals", next: "tradeCrystalOutcome" },
+                    { text: "Keep crystals", next: "keepCrystalOutcome" }
+                ]
+            },
+            seekAdventures: {
+                text: "You dive back into the forest for more quests, finding hidden secrets as you go. You are rewarded for your curiosity, living a life full of stories. You win!",
+                options: []
+            },
+            rest: {
+                text: "You take a moment to rest and truly appreciate the beauty around you. A rare phoenix appears, granting you one wish. You win!",
+                options: []
+            },
+            tradeCrystals: {
+                text: "In exchange for your crystals, you receive unique items that serve you well in your adventures. You win!",
+                options: []
+            },
+            keepCrystals: {
+                text: "You keep the crystals, but as you use them, you realize they bring more trouble than good. Game Over.",
+                options: []
+            },
+            tradeCrystalOutcome: {
+                text: "You trade your crystals successfully and gain magical items. Do you choose to take on quests for more treasure or settle down with your new items?",
+                options: [
+                    { text: "Take on quests", next: "questing" },
+                    { text: "Settle down", next: "settlement" }
+                ]
+            },
+            keepCrystalOutcome: {
+                text: "Keeping the crystals leads to a troubling event; they attract the attention of a dark sorcerer! Game Over.",
+                options: []
+            },
+            questing: {
+                text: "You embark on thrilling quests across lands, gaining more skills and allies. You become a legend across the kingdoms! You win!",
+                options: []
+            },
+            settlement: {
+                text: "You build a peaceful home for yourself and share tales of your adventures with future generations. You win!",
                 options: []
             }
         };
