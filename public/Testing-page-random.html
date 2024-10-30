@@ -68,8 +68,18 @@
                 ]
             },
             talkToElf: {
-                text: "The elf gives you a magical sword that can defeat any monster. You win!",
-                options: []
+                text: "The elf gives you a magical sword that can defeat any monster. You can continue your journey or head back to find the treasure.",
+                options: [
+                    { text: "Continue your journey", next: "continueJourney" },
+                    { text: "Go back to seek treasure", next: "treasurePath" }
+                ]
+            },
+            continueJourney: {
+                text: "You continue deeper into the forest and encounter a dragon! Do you fight the dragon or try to escape?",
+                options: [
+                    { text: "Fight the dragon", next: "fightDragon" },
+                    { text: "Try to escape", next: "escapeDragon" }
+                ]
             },
             ignoreElf: {
                 text: "As you walk away, the elf casts a spell on you. You fall asleep and never wake up. Game Over.",
@@ -81,6 +91,18 @@
             },
             bridge: {
                 text: "You find a bridge and cross safely. On the other side, you discover a treasure chest filled with gold! You win!",
+                options: []
+            },
+            fightDragon: {
+                text: "You bravely fight the dragon with your magical sword but it proves to be a fearsome foe. You are defeated. Game Over.",
+                options: []
+            },
+            escapeDragon: {
+                text: "You manage to escape the dragon but end up lost in the forest forever. Game Over.",
+                options: []
+            },
+            treasurePath: {
+                text: "You head back and follow the elf's instructions to the treasure. You open the chest and find it empty! Game Over.",
                 options: []
             }
         };
