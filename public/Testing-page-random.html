@@ -3,663 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text-based Adventure Game</title>
+    <title>The Enchanted Forest</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             color: #333;
-            margin: 20px;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-        }
-        .option {
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            text-align: center;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .option:hover {
-            background-color: #0056b3;
         }
         #story {
             margin-bottom: 20px;
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <h1>Text-based Adventure Game</h1>
-    <div id="story"></div>
-    <div id="options"></div>
+<h1>The Enchanted Forest</h1>
+<div id="story"></div>
+<div id="options"></div>
 
-    <script>
-        const storyElement = document.getElementById('story');
-        const optionsElement = document.getElementById('options');
+<script>
+    const gameState = {
+        currentLocation: "start",
+        inventory: [],
+    };
 
-        const story = {
-            start: {
-                text: "You awaken in a dark forest filled with ancient trees looming above you. You see three paths ahead: one leading left toward a cave, one right toward the mountains, and one straight ahead into deeper woods. Which path do you choose?",
-                options: [
-                    { text: "Go left to the cave", next: "caveEntrance" },
-                    { text: "Go right to the mountains", next: "mountainTrail" },
-                    { text: "Go straight into the woods", next: "deeperWoods" }
-                ]
-            },
-            caveEntrance: {
-                text: "You arrive at the mouth of a dark cave. Strange noises echo from within. Do you enter the cave or turn back?",
-                options: [
-                    { text: "Enter the cave", next: "insideCave" },
-                    { text: "Turn back", next: "goBack" }
-                ]
-            },
-            mountainTrail: {
-                text: "As you climb the mountain, the air gets thinner. You find an old stone tablet with cryptic markings. Do you try to read it or keep climbing?",
-                options: [
-                    { text: "Read the tablet", next: "readTablet" },
-                    { text: "Keep climbing", next: "summit" }
-                ]
-            },
-            deeperWoods: {
-                text: "In the serene woods, you hear rustling nearby. Investigate the noise or continue walking?",
-                options: [
-                    { text: "Investigate the noise", next: "investigateNoise" },
-                    { text: "Continue walking", next: "findClearing" }
-                ]
-            },
-            goBack: {
-                text: "You return to the starting path. Choose again:",
-                options: [
-                    { text: "Go left to the cave", next: "caveEntrance" },
-                    { text: "Go right to the mountains", next: "mountainTrail" },
-                    { text: "Go straight into the woods", next: "deeperWoods" }
-                ]
-            },
-            insideCave: {
-                text: "Inside the cave, sparkling crystals illuminate the walls. A sleeping bear guards a pile of treasure. Do you sneak past the bear or turn back?",
-                options: [
-                    { text: "Sneak past the bear", next: "collectCrystals" },
-                    { text: "Turn back", next: "goBack" }
-                ]
-            },
-            collectCrystals: {
-                text: "You collect several shiny crystals without waking the bear! Now, do you leave the cave or explore further?",
-                options: [
-                    { text: "Leave the cave", next: "headBackToForest" },
-                    { text: "Explore further", next: "deeperIntoCave" }
-                ]
-            },
-            headBackToForest: {
-                text: "Outside the cave, you meet a traveler who offers to share stories. Do you sit and listen or explore the forest?",
-                options: [
-                    { text: "Listen to stories", next: "stories" },
-                    { text: "Explore the forest", next: "exploreForest" }
-                ]
-            },
-            deeperIntoCave: {
-                text: "Venturing deeper into the cave, you find a hidden passageway leading to a treasure room guarded by enchanted creatures. Attempt to negotiate or fight?",
-                options: [
-                    { text: "Negotiate", next: "negotiateCreatures" },
-                    { text: "Fight", next: "fightCreatures" }
-                ]
-            },
-            stories: {
-                text: "The traveler shares tales of a lost city filled with treasures and dangers. Inspired, do you pursue this treasure or stick around?",
-                options: [
-                    { text: "Pursue the treasure", next: "lostCity" },
-                    { text: "Stick around", next: "home" }
-                ]
-            },
-            exploreForest: {
-                text: "The forest is thick with trees and wildlife. You stumble upon a druid who offers to teach you magic. Do you accept or decline?",
-                options: [
-                    { text: "Accept the offer", next: "learnMagic" },
-                    { text: "Decline", next: "continueExploration" }
-                ]
-            },
-            negotiateCreatures: {
-                text: "You successfully negotiate with the enchanted creatures, and they grant you access to the treasure. Do you take it or leave it?",
-                options: [
-                    { text: "Take the treasure", next: "treasureTaken" },
-                    { text: "Leave the treasure", next: "leaveTreasureRoom" }
-                ]
-            },
-            fightCreatures: {
-                text: "You attempt to fight the creatures, but they are too powerful and overpower you. Game Over.",
-                options: []
-            },
-            lostCity: {
-                text: "You follow the traveler's directions and arrive at the lost city, which is filled with traps and treasure. Explore cautiously or charge in?",
-                options: [
-                    { text: "Explore cautiously", next: "cautiousExplore" },
-                    { text: "Charge in", next: "chargeIn" }
-                ]
-            },
-            cautiousExplore: {
-                text: "You cautiously navigate the traps and find a hidden chamber filled with gems. Do you take a gem or keep exploring?",
-                options: [
-                    { text: "Take a gem", next: "takeGem" },
-                    { text: "Keep exploring", next: "deeperInCity" }
-                ]
-            },
-            chargeIn: {
-                text: "You charge in and set off traps everywhere! You must escape quickly! Choose to leap over a pit or duck under falling debris.",
-                options: [
-                    { text: "Leap over pit", next: "jumpPit" },
-                    { text: "Duck under debris", next: "dodgeDebris" }
-                ]
-            },
-            jumpPit: {
-                text: "You leap over the pit and land safely on the other side. You find an exit leading outside! You win!",
-                options: []
-            },
-            dodgeDebris: {
-                text: "You duck under the debris but narrowly get trapped in a collapsing room! Do you call for help or try to escape?",
-                options: [
-                    { text: "Call for help", next: "callHelp" },
-                    { text: "Try to escape", next: "escapeRoom" }
-                ]
-            },
-            callHelp: {
-                text: "A wandering hero hears your call and rescues you. You become friends and decide to go on adventures together. You win!",
-                options: []
-            },
-            escapeRoom: {
-                text: "You manage to escape the collapsing room but leave empty-handed. However, you have learned valuable lessons. Game Over.",
-                options: []
-            },
-            takeGem: {
-                text: "As soon as you take a gem, you trigger a curse! You must either return the gem or find a way to lift the curse.",
-                options: [
-                    { text: "Return the gem", next: "returnGem" },
-                    { text: "Find a way to lift the curse", next: "liftCurse" }
-                ]
-            },
-            returnGem: {
-                text: "Returning the gem lifts the curse and you find a passageway leading outside. You exit with newfound knowledge. You win!",
-                options: []
-            },
-            liftCurse: {
-                text: "You explore the city to find a way to lift the curse. You discover an ancient spell inscribed on a wall. Do you attempt the spell or consult a wizard?",
-                options: [
-                    { text: "Attempt the spell", next: "attemptSpell" },
-                    { text: "Consult a wizard", next: "consultWizard" }
-                ]
-            },
-            attemptSpell: {
-                text: "You attempt the spell, and it works! The curse is lifted. You feel empowered. Do you use this power for good or mischief?",
-                options: [
-                    { text: "Use for good", next: "powerForGood" },
-                    { text: "Use for mischief", next: "powerForMischief" }
-                ]
-            },
-            consultWizard: {
-                text: "You find a wizard who helps lift the curse, but asks for a favor in return. Do you agree or refuse?",
-                options: [
-                    { text: "Agree to the favor", next: "favorDone" },
-                    { text: "Refuse the favor", next: "gameOver" }
-                ]
-            },
-            favorDone: {
-                text: "You complete the favor for the wizard. In return, you gain powerful artifacts for your journey. You win!",
-                options: []
-            },
-            gameOver: {
-                text: "The wizard curses you for refusing the favor. You roam the lands aimlessly. Game Over.",
-                options: []
-            },
-            learnMagic: {
-                text: "The druid teaches you how to harness elemental magic. Do you want to practice magic or explore the forest with your new skills?",
-                options: [
-                    { text: "Practice magic", next: "practiceMagic" },
-                    { text: "Explore the forest", next: "exploreWithMagic" }
-                ]
-            },
-            practiceMagic: {
-                text: "You practice various spells. One spell backfires and creates a magical creature! Do you befriend it or capture it?",
-                options: [
-                    { text: "Befriend", next: "befriendCreature" },
-                    { text: "Capture", next: "captureCreature" }
-                ]
-            },
-            exploreWithMagic: {
-                text: "Exploring with your new powers leads to the discovery of a hidden world filled with mythical creatures. Do you wish to explore deeper or create a portal back home?",
-                options: [
-                    { text: "Explore deeper", next: "deeperExploration" },
-                    { text: "Create portal", next: "returnHome" }
-                ]
-            },
-            befriendCreature: {
-                text: "The creature becomes your loyal companion! Together, you can undertake great adventures. You win!",
-                options: []
-            },
-            captureCreature: {
-                text: "Capturing the creature angers its kin. They chase you out of the forest. Game Over.",
-                options: []
-            },
-            deeperExploration: {
-                text: "You delve deeper into the hidden world, encountering various challenges and earning great rewards. You win!",
-                options: []
-            },
-            returnHome: {
-                text: "You create a portal that safely takes you back home. You reflect on your adventures with gratitude. You win!",
-                options: []
-            },
-            deeperWoods: {
-                text: "As you wander deeper into the woods, you come across a magical fountain. You can drink from it or leave it be.",
-                options: [
-                    { text: "Drink from the fountain", next: "drinkFountain" },
-                    { text: "Leave it be", next: "leaveFountain" }
-                ]
-            },
-            drinkFountain: {
-                text: "Drinking from the fountain grants you temporary invincibility. Emboldened, you explore dangerous areas of the forest. Do you wish to confront a beast or find rare herbs?",
-                options: [
-                    { text: "Confront a beast", next: "confrontBeast" },
-                    { text: "Find rare herbs", next: "findHerbs" }
-                ]
-            },
-            leaveFountain: {
-                text: "You decide to leave the fountain. As you walk away, you see a shadowy figure lurking in the trees. Investigate or avoid?",
-                options: [
-                    { text: "Investigate", next: "investigateShadow" },
-                    { text: "Avoid", next: "avoidShadow" }
-                ]
-            },
-            confrontBeast: {
-                text: "You confront a fierce beast protecting its territory. Do you fight with magic or try to communicate?",
-                options: [
-                    { text: "Fight with magic", next: "magicFight" },
-                    { text: "Communicate", next: "communicateBeast" }
-                ]
-            },
-            findHerbs: {
-                text: "While searching for rare herbs, you stumble upon an ancient druid who offers to teach you. Do you accept or turn back?",
-                options: [
-                    { text: "Accept the offer", next: "learnFromDruid" },
-                    { text: "Turn back", next: "headBackToForest" }
-                ]
-            },
-            investigateShadow: {
-                text: "You find a mysterious stranger. They offer you a powerful artifact in exchange for a favor. Accept or decline?",
-                options: [
-                    { text: "Accept the favor", next: "favorFromStranger" },
-                    { text: "Decline", next: "leaveStranger" }
-                ]
-            },
-            avoidShadow: {
-                text: "You choose to avoid the shadowy figure, but stumble into a group of bandits! Do you fight or surrender?",
-                options: [
-                    { text: "Fight", next: "fightBandits" },
-                    { text: "Surrender", next: "surrender" }
-                ]
-            },
-            magicFight: {
-                text: "Your magic proves powerful against the beast, but it flees, vowing revenge. You win the battle but not the war. Do you set a trap or brace for its return?",
-                options: [
-                    { text: "Set a trap", next: "setTrap" },
-                    { text: "Brace for return", next: "braceForReturn" }
-                ]
-            },
-            communicateBeast: {
-                text: "To your surprise, the beast understands. You form a bond, and it guides you to hidden treasures. You win!",
-                options: []
-            },
-            learnFromDruid: {
-                text: "The druid teaches you the art of potion-making. Do you wish to brew your first potion or explore more?",
-                options: [
-                    { text: "Brew potion", next: "brewPotion" },
-                    { text: "Explore more", next: "deeperWoods" }
-                ]
-            },
-            favorFromStranger: {
-                text: "You accept the favor, which entails retrieving an item from a haunted estate. Do you accept the challenge or decline?",
-                options: [
-                    { text: "Accept challenge", next: "hauntedEstate" },
-                    { text: "Decline", next: "leaveStranger" }
-                ]
-            },
-            leaveStranger: {
-                text: "You leave the mysterious stranger behind, only to discover a hidden passage that leads to ancient ruins. Do you explore the ruins or head back?",
-                options: [
-                    { text: "Explore ruins", next: "ruinsAdventure" },
-                    { text: "Head back", next: "goBack" }
-                ]
-            },
-            fightBandits: {
-                text: "You bravely fight the bandits. Some flee, but others surround you. Do you hold your ground or try to escape?",
-                options: [
-                    { text: "Hold your ground", next: "steadyDefense" },
-                    { text: "Try to escape", next: "escapeBandits" }
-                ]
-            },
-            surrender: {
-                text: "You surrender, but the bandits respect your bravery and offer you a chance to join them instead. Do you join or refuse?",
-                options: [
-                    { text: "Join", next: "joinBandits" },
-                    { text: "Refuse", next: "refuse" }
-                ]
-            },
-            setTrap: {
-                text: "You set a trap, and as the beast approaches, it gets caught! Do you risk freeing it or leave it trapped?",
-                options: [
-                    { text: "Free it", next: "freeBeast" },
-                    { text: "Leave it", next: "leaveBeast" }
-                ]
-            },
-            braceForReturn: {
-                text: "You prepare for the beast's return, arming yourself with weapons. It arrives, and this time you are ready! Do you fight or try to communicate?",
-                options: [
-                    { text: "Fight", next: "finalBattle" },
-                    { text: "Communicate", next: "communicateFinal" }
-                ]
-            },
-            brewPotion: {
-                text: "After brewing your first potion, you discover its effects enhance your abilities. Do you test it on yourself or share it with a friend?",
-                options: [
-                    { text: "Use on self", next: "testPotion" },
-                    { text: "Share", next: "sharePotion" }
-                ]
-            },
-            hauntedEstate: {
-                text: "The haunted estate is filled with illusions and traps. Do you search for the item stealthily or move boldly?",
-                options: [
-                    { text: "Search stealthily", next: "stealthSearch" },
-                    { text: "Move boldly", next: "boldMove" }
-                ]
-            },
-            ruinsAdventure: {
-                text: "Inside the ruins, you find ancient relics and powerful magic. Do you take a relic or leave it undisturbed?",
-                options: [
-                    { text: "Take a relic", next: "takeRelic" },
-                    { text: "Leave it", next: "leaveRuins" }
-                ]
-            },
-            steadyDefense: {
-                text: "You defend against the bandits valiantly. Just as you're about to lose, a friendly traveler intervenes! Do you join them or continue fighting?",
-                options: [
-                    { text: "Join traveler", next: "joinTraveler" },
-                    { text: "Continue fighting", next: "fightOn" }
-                ]
-            },
-            escapeBandits: {
-                text: "You cleverly escape the bandits and flee to safety. However, now you're lost in the woods. Do you look for a way out or set up camp?",
-                options: [
-                    { text: "Look for a way out", next: "searchForExit" },
-                    { text: "Set up camp", next: "camp" }
-                ]
-            },
-            joinBandits: {
-                text: "Joining the bandits leads you to a life of adventure and treasure hunts, forging a loyal band of friends. You win!",
-                options: []
-            },
-            refuse: {
-                text: "Declining the offer leaves you alone again, but your courage inspires the bandits to reconsider their choices. Game Over.",
-                options: []
-            },
-            freeBeast: {
-                text: "The beast is grateful for its freedom and offers to be your ally in future adventures! You win!",
-                options: []
-            },
-            leaveBeast: {
-                text: "You leave the beast trapped. It roars in anger, and the surrounding wildlife becomes hostile. Game Over.",
-                options: []
-            },
-            finalBattle: {
-                text: "The battle is fierce, but you emerge victorious, having tamed the beast. It pledges allegiance, and you gain a fierce ally! You win!",
-                options: []
-            },
-            communicateFinal: {
-                text: "You decide to communicate. Tremendously surprised, the beast agrees to join you in forming a pact. Together, you uncover more mysteries. You win!",
-                options: []
-            },
-            testPotion: {
-                text: "The potion works wondrously for you, enhancing your abilities. Now, do you seek out challenges or share this newfound power?",
-                options: [
-                    { text: "Seek out challenges", next: "faceChallenges" },
-                    { text: "Share power", next: "sharePower" }
-                ]
-            },
-            sharePotion: {
-                text: "You share the potion with a fellow adventurer, empowering them for future quests. You win!",
-                options: []
-            },
-            stealthSearch: {
-                text: "Your stealth pays off, and you find the item you were looking for—a powerful artifact! Do you try to leave quietly or make a run for it?",
-                options: [
-                    { text: "Leave quietly", next: "sneakOut" },
-                    { text: "Make a run for it", next: "boldEscape" }
-                ]
-            },
-            boldMove: {
-                text: "Moving boldly draws the attention of the ghosts in the estate! Do you confront them or run?",
-                options: [
-                    { text: "Confront ghosts", next: "confrontGhosts" },
-                    { text: "Run", next: "escapeHaunted" }
-                ]
-            },
-            takeRelic: {
-                text: "As soon as you take a relic, you unleash a curse, binding you to guard the ruins forever. Game Over.",
-                options: []
-            },
-            leaveRuins: {
-                text: "Leaving the relic undisturbed, the ancient spirits rise to thank you, granting you wisdom. You win!",
-                options: []
-            },
-            joinTraveler: {
-                text: "Joining forces with the traveler opens up new quests and bonds of friendship. You win!",
-                options: []
-            },
-            fightOn: {
-                text: "You continue the fight valiantly, but the overwhelming bandits prove too strong. Game Over.",
-                options: []
-            },
-            searchForExit: {
-                text: "As you search for an exit, you encounter a wise sage who promises guidance if you answer his riddles. Do you accept or walk away?",
-                options: [
-                    { text: "Accept the riddles", next: "sageRiddles" },
-                    { text: "Walk away", next: "walkAway" }
-                ]
-            },
-            camp: {
-                text: "Setting up camp helps you gather your thoughts. Do you explore your surroundings or meditate?",
-                options: [
-                    { text: "Explore surroundings", next: "exploreSurroundings" },
-                    { text: "Meditate", next: "meditate" }
-                ]
-            },
-            sageRiddles: {
-                text: "You answer the sage's riddles correctly and gain access to a map leading to hidden treasures. You win!",
-                options: []
-            },
-            walkAway: {
-                text: "Walking away leads you deeper into the wilderness without guidance. Game Over.",
-                options: []
-            },
-            exploreSurroundings: {
-                text: "While exploring, you stumble upon a hidden treasure chest! Do you open it or leave it alone?",
-                options: [
-                    { text: "Open it", next: "openChest" },
-                    { text: "Leave it alone", next: "leaveChest" }
-                ]
-            },
-            meditate: {
-                text: "Meditating brings you peace and clarity. As you focus, a spirit appears, granting you knowledge of ancient spells. Do you wish to learn them?",
-                options: [
-                    { text: "Learn spells", next: "learnSpells" },
-                    { text: "Decline", next: "continueJourney" }
-                ]
-            },
-            openChest: {
-                text: "You open the chest, revealing rare artifacts and gold! Do you take them or share them with travelers you see nearby?",
-                options: [
-                    { text: "Take them", next: "takeArtifacts" },
-                    { text: "Share with travelers", next: "shareArtifacts" }
-                ]
-            },
-            leaveChest: {
-                text: "You leave the chest alone, feeling that some treasures are meant to be discovered at the right moment. You find a path that leads home. You win!",
-                options: []
-            },
-            learnSpells: {
-                text: "Learning the spells opens up new possibilities. Do you want to practice casting or explore the forest with your spells?",
-                options: [
-                    { text: "Practice casting", next: "castSpells" },
-                    { text: "Explore with spells", next: "spellExploration" }
-                ]
-            },
-            continueJourney: {
-                text: "You choose not to learn the spells and continue your journey. On your way, you find a village needing help. Do you assist them or move on?",
-                options: [
-                    { text: "Assist the village", next: "helpVillage" },
-                    { text: "Move on", next: "leaveVillage" }
-                ]
-            },
-            takeArtifacts: {
-                text: "Taking the artifacts brings you great wealth, but you attract the attention of thieves! Do you fortify your camp or try to escape?",
-                options: [
-                    { text: "Fortify camp", next: "fortifyCamp" },
-                    { text: "Try to escape", next: "escapeThieves" }
-                ]
-            },
-            shareArtifacts: {
-                text: "Sharing artifacts strengthens your bond with travelers. Your kindness is rewarded with friendships and future adventures. You win!",
-                options: []
-            },
-            spellExploration: {
-                text: "Exploring the forest with your spells leads you to new adventures, encountering mystical creatures and deep mysteries. You win!",
-                options: []
-            },
-            castSpells: {
-                text: "Practicing spells leads to unforeseen consequences. One spell misfires, causing chaos. Do you try to control it or flee?",
-                options: [
-                    { text: "Try to control it", next: "controlChaos" },
-                    { text: "Flee", next: "fleeChaos" }
-                ]
-            },
-            helpVillage: {
-                text: "Helping the village earns you their gratitude. You become a legend! Do you decide to settle there or continue adventuring?",
-                options: [
-                    { text: "Settle", next: "settleVillage" },
-                    { text: "Continue adventuring", next: "continueAdventuring" }
-                ]
-            },
-            leaveVillage: {
-                text: "Moving on from the village, you hear tales of distant lands. Curious, do you venture forth or stay near the village?",
-                options: [
-                    { text: "Venture forth", next: "distantLands" },
-                    { text: "Stay", next: "stayNearVillage" }
-                ]
-            },
-            fortifyCamp: {
-                text: "Fortifying your camp protects you from the thieves, and you learn valuable skills. You win!",
-                options: []
-            },
-            escapeThieves: {
-                text: "You successfully escape the thieves but lose some of your artifacts. Game Over.",
-                options: []
-            },
-            settleVillage: {
-                text: "Settling in the village allows you to build lasting relationships, helping others for years to come. You win!",
-                options: []
-            },
-            continueAdventuring: {
-                text: "Continuing your adventures, you face new challenges and gain legendary status. You win!",
-                options: []
-            },
-            distantLands: {
-                text: "Venture into distant lands, facing new obstacles and forging alliances. Your reputation grows! You win!",
-                options: []
-            },
-            stayNearVillage: {
-                text: "Staying near the village keeps you safe but limits your adventures. Reflecting upon your choices, you find peace. Game Over.",
-                options: []
-            },
-            controlChaos: {
-                text: "Attempting to control the chaos proves successful, and you master the spell. You gain new powers. Do you want to test your powers or help others?",
-                options: [
-                    { text: "Test powers", next: "testPowers" },
-                    { text: "Help others", next: "helpOthers" }
-                ]
-            },
-            fleeChaos: {
-                text: "Fleeing from the chaos leads you into the arms of an unexpected ally. Together, you face new adventures. You win!",
-                options: []
-            },
-            testPowers: {
-                text: "Testing your powers brings unforeseen recognition. You become a renowned magician. Do you seek fame or use your powers for good?",
-                options: [
-                    { text: "Seek fame", next: "fame" },
-                    { text: "Use for good", next: "good" }
-                ]
-            },
-            helpOthers: {
-                text: "Helping others brings joy and a network of grateful allies. You build a community of adventurers together. You win!",
-                options: []
-            },
-            fame: {
-                text: "Fame comes with its challenges. You must navigate fame with careful decision-making. Do you stay true to yourself or indulge in excess?",
-                options: [
-                    { text: "Stay true", next: "trueSelf" },
-                    { text: "Indulge", next: "indulge" }
-                ]
-            },
-            good: {
-                text: "Using your powers for good seals your reputation as a hero. Many adventures await you. You win!",
-                options: []
-            },
-            trueSelf: {
-                text: "Staying true to yourself grants you inner peace and incredible adventures ahead. You win!",
-                options: []
-            },
-            indulge: {
-                text: "Indulging in excess leads to a fall from grace. You leave a trail of disappointment. Game Over.",
-                options: []
-            },
-        };
+    const story = {
+        start: {
+            text: "Welcome to the Enchanted Forest! You stand at the edge of a vast, enchanting forest. What would you like to do?",
+            options: [
+                { text: "Go North (into the forest)", action: () => move("forestPath") },
+                { text: "Go South (back to the village)", action: () => move("village") },
+                { text: "Look around", action: () => lookAround() }
+            ]
+        },
+        forestPath: {
+            text: "You venture down a narrow path lined with shimmering flowers. Suddenly, you notice a fork in the road.",
+            options: [
+                { text: "Go Left (towards a sparkling stream)", action: () => move("sparklingStream") },
+                { text: "Go Right (towards a mysterious cave)", action: () => move("mysteriousCave") },
+                { text: "Climb a tree to get a better view", action: () => climbTree() }
+            ]
+        },
+        sparklingStream: {
+            text: "You arrive at a beautiful stream with crystal-clear waters. Would you like to:",
+            options: [
+                { text: "Fish in the stream", action: () => fish() },
+                { text: "Look under the waterfall", action: () => move("waterfall") },
+                { text: "Drink from the stream", action: () => drink() },
+                { text: "Build a raft", action: () => buildRaft() }
+            ]
+        },
+        mysteriousCave: {
+            text: "You enter a dark cave filled with strange symbols. You see a faint glow deeper inside.",
+            options: [
+                { text: "Go deeper into the cave", action: () => move("caveChamber") },
+                { text: "Examine the symbols", action: () => examineSymbols() },
+                { text: "Leave the cave", action: () => move("forestPath") }
+            ]
+        },
+        caveChamber: {
+            text: "You find a chamber filled with glowing crystals and an ancient book on a pedestal.",
+            options: [
+                { text: "Read the book", action: () => readBook() },
+                { text: "Take a crystal", action: () => takeCrystal() },
+                { text: "Look for a secret door", action: () => lookForDoors() }
+            ]
+        },
+        waterfall: {
+            text: "You find a hidden cave behind the waterfall. Inside, you see some ancient treasures!",
+            options: [
+                { text: "Take the treasures", action: () => takeTreasures() },
+                { text: "Explore the cave further", action: () => exploreHiddenCave() },
+                { text: "Return to the stream", action: () => move("sparklingStream") }
+            ]
+        },
+        village: {
+            text: "You've returned to the village. The villagers welcome you back.",
+            options: [
+                { text: "Visit the blacksmith", action: () => move("blacksmith") },
+                { text: "Go back to the forest", action: () => move("start") },
+                { text: "Help the villagers with a quest", action: () => assistVillagers() }
+            ]
+        },
+        blacksmith: {
+            text: "The blacksmith greets you warmly. You could ask for a weapon or help him with a task.",
+            options: [
+                { text: "Ask for a weapon", action: () => getWeapon() },
+                { text: "Help him forge something", action: () => assistBlacksmith() },
+                { text: "Leave the blacksmith", action: () => move("village") }
+            ]
+        },
+        mysticalLake: {
+            text: "You arrive at a mystical lake filled with shimmering water and magical fish swimming around.",
+            options: [
+                { text: "Try to catch a magical fish", action: () => catchMagicalFish() },
+                { text: "Swim in the lake", action: () => swimInLake() },
+                { text: "Search for hidden treasures along the shore", action: () => searchShore() }
+            ]
+        },
+        enchantedClearing: {
+            text: "You find a magical clearing where the flowers glow softly. There's a fairy dancing.",
+            options: [
+                { text: "Approach the fairy", action: () => approachFairy() },
+                { text: "Sit and rest", action: () => sitAndRest() },
+                { text: "Look for other paths", action: () => move("forestPath") }
+            ]
+        },
+        mountain: {
+            text: "You reach the base of a towering mountain. It looks intimidating!",
+            options: [
+                { text: "Climb the mountain", action: () => move("mountainTrail") },
+                { text: "Camp for the night", action: () => campOnMountain() },
+                { text: "Go back to the forest", action: () => move("forestPath") }
+            ]
+        },
+        mountainTrail: {
+            text: "The trail is steep and rocky. You spot a cave halfway up.",
+            options: [
+                { text: "Investigate the cave", action: () => move("mountainCave") },
+                { text: "Keep climbing", action: () => reachMountainPeak() },
+                { text: "Rest for a moment", action: () => rest() }
+            ]
+        },
+        mountainCave: {
+            text: "Inside the cave, you find ancient drawings on the walls and a treasure chest.",
+            options: [
+                { text: "Examine the drawings", action: () => examineDrawings() },
+                { text: "Open the treasure chest", action: () => openTreasureChest() },
+                { text: "Leave the cave", action: () => move("mountainTrail") }
+            ]
+        },
+        mountainPeak: {
+            text: "You reach the peak! The view is stunning, and you can see for miles.",
+            options: [
+                { text: "Take a moment to enjoy the view", action: () => enjoyView() },
+                { text: "Search for hidden paths", action: () => searchForHiddenPaths() },
+                { text: "Go back down", action: () => move("mountain") }
+            ]
+        },
+        hiddenValley: {
+            text: "You discover a hidden valley filled with colorful flowers and gentle breezes.",
+            options: [
+                { text: "Pick some flowers", action: () => pickFlowers() },
+                { text: "Explore the valley", action: () => move("valleyPath") },
+                { text: "Find a place to rest", action: () => restInValley() }
+            ]
+        },
+        valleyPath: {
+            text: "The path through the valley leads you to an ancient tree with a door.",
+            options: [
+                { text: "Knock on the door", action: () => knockOnDoor() },
+                { text: "Inspect the tree", action: () => inspectTree() },
+                { text: "Continue exploring the valley", action: () => move("hiddenValley") }
+            ]
+        },
+        ancientLibrary: {
+            text: "You stumble upon an ancient library filled with dusty old books.",
+            options: [
+                { text: "Read a book on magic", action: () => readMagicBook() },
+                { text: "Look for scrolls", action: () => lookForScrolls() },
+                { text: "Leave the library", action: () => move("hiddenValley") }
+            ]
+        },
+        forestClearing: {
+            text: "You find a serene clearing in the forest. It's quiet here.",
+            options: [
+                { text: "Set up camp", action: () => campInClearing() },
+                { text: "Scout the area", action: () => scoutArea() },
+                { text: "Continue on the path", action: () => move("forestPath") }
+            ]
+        },
+        enchantedBridge: {
+            text: "You've come across an old bridge. A guardian stands in your way.",
+            options: [
+                { text: "Talk to the guardian", action: () => talkToGuardian() },
+                { text: "Cross the bridge", action: () => crossBridge() },
+                { text: "Look for another way", action: () => move("forestPath") }
+            ]
+        },
+        caveOfEchoes: {
+            text: "You enter a cave where your voice echoes. A strange feeling fills the air.",
+            options: [
+                { text: "Yell to test the echoes", action: () => testEchoes() },
+                { text: "Search for hidden items", action: () => searchCave() },
+                { text: "Leave the cave", action: () => move("forestPath") }
+            ]
+        },
+        darkForest: {
+            text: "You wander into a dark part of the forest, where shadows dance.",
+            options: [
+                { text: "Light a torch", action: () => lightTorch() },
+                { text: "Leave the dark forest", action: () => move("forestPath") },
+                { text: "Listen for sounds", action: () => listenInDark() }
+            ]
+        },
+    };
 
-        function startGame() {
-            showStory('start');
+    // New Function Implementations
+    function lookAround() {
+        document.getElementById("story").innerText = "You see trees, flowers, and a clear path leading into the forest.";
+        updateOptions([]);
+    }
+
+    function climbTree() {
+        document.getElementById("story").innerText = "You climb a tree and see a beautiful view of the forest. You also spot a path leading to a mountain.";
+        updateOptions([{ text: "Go to the mountain", action: () => move("mountain") }]);
+    }
+
+    function fish() {
+        const fishCaught = "You catch a glimmering fish! It's magical.";
+        gameState.inventory.push("magical fish");
+        document.getElementById("story").innerText = fishCaught;
+        updateOptions([{ text: "Keep the fish", action: () => move("sparklingStream") }]);
+    }
+
+    function drink() {
+        document.getElementById("story").innerText = "The water is refreshing! You feel rejuvenated.";
+        updateOptions([{ text: "Continue exploring the stream", action: () => move("sparklingStream") }]);
+    }
+
+    function readBook() {
+        document.getElementById("story").innerText = "The book contains powerful spells. You learn a new spell!";
+        updateOptions([{ text: "Leave the cave", action: () => move("mysteriousCave") }]);
+    }
+
+    function takeCrystal() {
+        document.getElementById("story").innerText = "You take a glowing crystal. It feels warm in your hand.";
+        gameState.inventory.push("glowing crystal");
+        updateOptions([{ text: "Leave the cave", action: () => move("mysteriousCave") }]);
+    }
+
+    function takeTreasures() {
+        document.getElementById("story").innerText = "You take the treasures and feel a surge of power!";
+        gameState.inventory.push("ancient treasures");
+        updateOptions([{ text: "Leave the cave", action: () => move("sparklingStream") }]);
+    }
+
+    // Adding more functionality to all new locations
+    function approachFairy() {
+        document.getElementById("story").innerText = "The fairy smiles and offers you a blessing.";
+        updateOptions([{ text: "Accept the blessing", action: () => acceptBlessing() }, { text: "Politely decline", action: () => move("enchantedClearing") }]);
+    }
+
+    function acceptBlessing() {
+        document.getElementById("story").innerText = "You feel a warm light surround you. You gain +1 luck!";
+        updateOptions([{ text: "Continue exploring", action: () => move("enchantedClearing") }]);
+    }
+    
+    function swimInLake() {
+        document.getElementById("story").innerText = "You swim in the lake and feel its refreshing magic.";
+        updateOptions([{ text: "Get out of the lake", action: () => move("mysticalLake") }]);
+    }
+
+    function searchShore() {
+        document.getElementById("story").innerText = "You find a hidden stash of coins along the shore.";
+        gameState.inventory.push("gold coins");
+        updateOptions([{ text: "Take the coins", action: () => move("mysticalLake") }]);
+    }
+
+    function move(location) {
+        gameState.currentLocation = location;
+        updateStory();
+    }
+
+    function updateStory() {
+        const current = story[gameState.currentLocation];
+        if (current) {
+            document.getElementById("story").innerText = current.text;
+            updateOptions(current.options);
         }
+    }
 
-        function showStory(key) {
-            const currentStory = story[key];
-            storyElement.innerText = currentStory.text;
-            optionsElement.innerHTML = ""; // Clear options
+    function updateOptions(options) {
+        const optionsDiv = document.getElementById("options");
+        optionsDiv.innerHTML = '';
+        options.forEach(option => {
+            const button = document.createElement("button");
+            button.innerText = option.text;
+            button.onclick = option.action;
+            optionsDiv.appendChild(button);
+        });
+    }
 
-            currentStory.options.forEach(option => {
-                const button = document.createElement('div');
-                button.className = 'option';
-                button.innerText = option.text;
-                button.onclick = () => {
-                    if (option.next) {
-                        showStory(option.next);
-                    }
-                };
-                optionsElement.appendChild(button);
-            });
-
-            // If no options are available, show a replay button
-            if (currentStory.options.length === 0) {
-                const playAgainButton = document.createElement('div');
-                playAgainButton.className = 'option';
-                playAgainButton.innerText = 'Play Again';
-                playAgainButton.onclick = startGame;
-                optionsElement.appendChild(playAgainButton);
-            }
-        }
-
-        // Start the game on load
-        startGame();
-    </script>
+    // Initialize game
+    updateStory();
+</script>
 
 </body>
 </html>
