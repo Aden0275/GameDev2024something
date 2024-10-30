@@ -106,6 +106,14 @@ function autoMove(direction) {
         }
     }, 30);  // Activate click every 30 ms
 }
+
+// Function to reset image position
+function resetImage() {
+    var img = document.getElementById('myImage01');
+    img.style.left = '0px';
+    img.style.top = '0px';
+    stopAutoMove(); // Stop any ongoing auto movement
+}
 </script>
 
 <div class="button-container">
@@ -147,6 +155,9 @@ function autoMove(direction) {
     </div>
 
     <input type="button" value="Stop Auto Move" onclick="stopAutoMove()"><br><br>
+    
+    <!-- Reset Button -->
+    <input type="button" value="Reset" onclick="resetImage()">
 
 </div>
 
