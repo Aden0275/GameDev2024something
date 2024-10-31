@@ -95,7 +95,6 @@
         const resetButton = document.getElementById('resetButton');
         const scoreDisplay = document.getElementById('score');
 
-        let jumpCount = 0; // Counter for successful jumps over the first cactus
         let jumpSuccessCount = 0; // Count successful jumps to determine when to spawn second cactus
         let score = 0; // Score variable
         let isJumping = false; // Track if the T-Rex is currently jumping
@@ -121,8 +120,14 @@
 
                             // Check if jumped over the first cactus
                             if (didJumpOverCactus()) {
-                                jumpSuccessCount++;
                                 updateScore(); // Update score whenever the player jumps over the cactus
+                                jumpSuccessCount++;
+
+                                // Check to create the second cactus after third jump over the first cactus
+                                if (jumpSuccessCount === 3) {
+                                    createSecondCactus(); // Create the second cactus
+                                    jumpSuccessCount = 0; // Reset jump success count
+                                }
                             }
                         }
                     }, 20);
@@ -183,13 +188,6 @@
 
                 if (cactusPosition < -20) { // If the first cactus goes off screen
                     cactus.style.left = '800px'; // Reset first cactus position
-                    jumpCount++;
-
-                    // Check if we should create the second cactus
-                    if (jumpSuccessCount >= 3 && !secondCactus) {
-                        createSecondCactus(); // Create the second cactus
-                        jumpSuccessCount = 0; // Reset the jump success count
-                    }
                 }
 
                 // Move the second cactus, if it exists
@@ -206,12 +204,15 @@
         }
 
         function createSecondCactus() {
+            if (secondCactus) return; // Prevent creation if already exists
+
             secondCactus = document.createElement('div');
             secondCactus.className = 'cactus'; // Apply the same styles as the first cactus
             document.getElementById('gameCanvas').appendChild(secondCactus);
 
             // Set the second cactus to be positioned right next to the first cactus
-            secondCactus.style.left = (parseInt(cactus.style.left) + parseInt(window.getComputedStyle(cactus).getPropertyValue("width"))) + 'px';
+            const cactusRect = cactus.getBoundingClientRect();
+            secondCactus.style.left = (cactusRect.right) + 'px'; // Position next to first cactus
             secondCactus.style.bottom = '10px'; // Align with the ground
         }
 
