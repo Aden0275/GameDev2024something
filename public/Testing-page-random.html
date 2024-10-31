@@ -13,6 +13,7 @@
             height: 100vh;
             margin: 0;
             background-color: #f7f7f7;
+            position: relative;
         }
 
         #gameCanvas {
@@ -41,6 +42,28 @@
             background-color: green; /* Green box representing the cactus */
             left: 600px; /* Start off screen */
         }
+
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            text-align: center;
+        }
+
+        #gameOver h1 {
+            color: red;
+        }
+
+        #resetButton {
+            padding: 10px 20px;
+            background-color: #007BFF; /* Bootstrap primary color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -48,11 +71,18 @@
     <div id="gameCanvas">
         <div class="trex" id="trex"></div>
         <div class="cactus" id="cactus"></div>
+        <div id="gameOver">
+            <h1>Game Over!</h1>
+            <button id="resetButton">Press this to reset</button>
+        </div>
     </div>
 
     <script>
         const trex = document.getElementById('trex');
         const cactus = document.getElementById('cactus');
+        const gameOverDiv = document.getElementById('gameOver');
+        const resetButton = document.getElementById('resetButton');
+
         let isJumping = false; // Track if the T-Rex is currently jumping
         let gameOver = false; // Track if the game is over
 
@@ -132,9 +162,21 @@
                 trexRect.bottom > cactusRect.top
             ) {
                 gameOver = true; // Set game over if collision happens
-                alert('Game Over! Refresh the page to play again.');
+                gameOverDiv.style.display = 'block'; // Show the game over message
             }
         }, 50);
+
+        resetButton.addEventListener('click', resetGame); // Attach event listener to reset button
+
+        function resetGame() {
+            gameOver = false; // Reset gameOver state
+            gameOverDiv.style.display = 'none'; // Hide game over message
+            trex.style.left = '50px'; // Reset T-Rex position
+            trex.style.bottom = '10px'; // Reset T-Rex jump position
+            cactus.style.left = '600px'; // Reset cactus position
+            isJumping = false; // Reset jumping state
+            moveCactus(); // Restart cactus movement
+        }
     </script>
 </body>
 
