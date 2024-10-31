@@ -172,10 +172,12 @@
             secondCactus.className = 'cactus'; // Apply the same styles as the first cactus
             document.getElementById('gameCanvas').appendChild(secondCactus);
 
-            // Get the position of the first cactus
+            // Get the position and width of the first cactus
             const cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
+            const cactusWidth = parseInt(window.getComputedStyle(cactus).getPropertyValue("width"));
+
             // Set the second cactus position to be right beside the first cactus
-            secondCactus.style.left = (cactusPosition + 20) + 'px'; // Adjust "20" as needed for separation
+            secondCactus.style.left = (cactusPosition + cactusWidth) + 'px'; // Position based on first cactus width
         }
 
         function getRandomPosition() {
