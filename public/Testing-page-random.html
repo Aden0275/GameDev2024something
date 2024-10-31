@@ -19,24 +19,24 @@
             border: 1px solid #000;
             background-color: #fff;
             position: relative;
-            overflow: hidden;
+            overflow: hidden; /* Prevent overflow */
             width: 600px;
             height: 150px;
         }
 
         .trex {
             position: absolute;
-            bottom: 10px;
-            width: 50px;
-            height: 50px;
+            bottom: 10px; /* Height from the bottom */
+            width: 30px; /* Smaller width */
+            height: 30px; /* Smaller height */
             background-color: #555; /* Gray box representing the T-Rex */
         }
 
         .cactus {
             position: absolute;
             bottom: 10px;
-            width: 20px;
-            height: 30px;
+            width: 20px; /* Width of the cactus */
+            height: 30px; /* Height of the cactus */
             background-color: green; /* Green box representing the cactus */
             left: 600px; /* Start off screen */
         }
@@ -61,28 +61,29 @@
     <script>
         const trex = document.getElementById('trex');
         const cactus = document.getElementById('cactus');
-        let isJumping = false;
-        let gameOver = false;
+        let isJumping = false; // Track if the T-Rex is currently jumping
+        let gameOver = false; // Track if the game is over
 
         function jump() {
-            if (isJumping || gameOver) return; // Prevent multiple jumps
+            if (isJumping || gameOver) return; // Prevent double jump or jumping when game is over
             
             isJumping = true;
             let jumpHeight = 0;
+
             const jumpInterval = setInterval(() => {
-                if (jumpHeight >= 100) {
+                if (jumpHeight >= 60) { // Maximum jump height
                     clearInterval(jumpInterval);
                     const fallInterval = setInterval(() => {
-                        jumpHeight -= 10;
+                        jumpHeight -= 5; // Falling speed
                         trex.style.bottom = jumpHeight + 'px';
 
                         if (jumpHeight <= 10) {
                             clearInterval(fallInterval);
-                            isJumping = false;
+                            isJumping = false; // Allow jumping again
                         }
                     }, 20);
                 } else {
-                    jumpHeight += 10;
+                    jumpHeight += 5; // Ascending speed
                     trex.style.bottom = jumpHeight + 'px';
                 }
             }, 20);
@@ -90,7 +91,7 @@
 
         document.addEventListener('keydown', event => {
             if (event.code === 'Space') {
-                jump();
+                jump(); // Trigger jump on Space key press
             }
         });
 
@@ -103,7 +104,7 @@
 
                 if (cactusPosition < -20) { // If cactus goes off screen
                     cactus.style.left = '600px'; // Reset position
-                    cactus.style.animation = 'none';
+                    cactus.style.animation = 'none'; // Reset animation
                     clearInterval(moveInterval);
                     moveCactus(); // Restart moving cactus
                 }
@@ -118,13 +119,14 @@
             const trexRect = trex.getBoundingClientRect();
             const cactusRect = cactus.getBoundingClientRect();
 
+            // Check if T-Rex collides with cactus
             if (
                 trexRect.left < cactusRect.right &&
                 trexRect.right > cactusRect.left &&
                 trexRect.bottom > cactusRect.top
             ) {
-                gameOver = true;
-                alert('Game Over! Refresh to play again.');
+                gameOver = true; // Set game over if collision happens
+                alert('Game Over! Refresh the page to play again.');
             }
         }, 50);
     </script>
