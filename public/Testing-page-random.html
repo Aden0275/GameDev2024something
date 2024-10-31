@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive 3D Cube</title>
+    <title>Interactive 3D Shapes</title>
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             background-color: #f0f0f0;
             perspective: 1000px;
         }
 
-        .cube {
+        .shape-container {
             position: relative;
             width: 100px;
             height: 100px;
@@ -22,7 +23,15 @@
             transition: transform 0.1s;
         }
 
-        .cube-face {
+        .shape {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .front, .back, .left, .right, .top, .bottom {
             position: absolute;
             width: 100px;
             height: 100px;
@@ -31,60 +40,109 @@
             opacity: 0.9;
         }
 
-        .front {
-            transform: translateZ(50px);
+        .cube .front { transform: translateZ(50px); }
+        .cube .back { transform: rotateY(180deg) translateZ(50px); }
+        .cube .left { transform: rotateY(-90deg) translateZ(50px); }
+        .cube .right { transform: rotateY(90deg) translateZ(50px); }
+        .cube .top { transform: rotateX(90deg) translateZ(50px); }
+        .cube .bottom { transform: rotateX(-90deg) translateZ(50px); }
+
+        .tetrahedron {
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            width: 100px;
+            aspect-ratio: 1;
+            background: rgba(0, 0, 255, 0.8);
+            opacity: 0;
         }
 
-        .back {
-            transform: rotateY(180deg) translateZ(50px);
+        .sphere {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; 
+            background: rgba(0, 255, 0, 0.8);
+            opacity: 0;
         }
 
-        .left {
-            transform: rotateY(-90deg) translateZ(50px);
+        .button-container {
+            margin-top: 20px;
         }
 
-        .right {
-            transform: rotateY(90deg) translateZ(50px);
+        button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
         }
 
-        .top {
-            transform: rotateX(90deg) translateZ(50px);
-        }
-
-        .bottom {
-            transform: rotateX(-90deg) translateZ(50px);
+        button:hover {
+            background-color: #555;
         }
     </style>
 </head>
 <body>
-    <div class="cube" id="cube">
-        <div class="cube-face front"></div>
-        <div class="cube-face back"></div>
-        <div class="cube-face left"></div>
-        <div class="cube-face right"></div>
-        <div class="cube-face top"></div>
-        <div class="cube-face bottom"></div>
+    <div class="shape-container" id="shapeContainer">
+        <!-- Cube -->
+        <div class="shape cube" id="cube">
+            <div class="front"></div>
+            <div class="back"></div>
+            <div class="left"></div>
+            <div class="right"></div>
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+        
+        <!-- Tetrahedron -->
+        <div class="shape tetrahedron" id="tetrahedron" style="opacity: 0;">
+            <div class="tetrahedron"></div>
+        </div>
+        
+        <!-- Sphere -->
+        <div class="shape sphere" id="sphere" style="opacity: 0;"></div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="showShape('cube')">Cube</button>
+        <button onclick="showShape('tetrahedron')">Tetrahedron</button>
+        <button onclick="showShape('sphere')">Sphere</button>
     </div>
 
     <script>
-        const cube = document.getElementById('cube');
+        const shapeContainer = document.getElementById('shapeContainer');
+        const shapes = {
+            cube: document.getElementById('cube'),
+            tetrahedron: document.getElementById('tetrahedron'),
+            sphere: document.getElementById('sphere')
+        };
+
         let mouseX = 0;
         let mouseY = 0;
         let rotationX = 0;
         let rotationY = 0;
 
         document.addEventListener('mousemove', (event) => {
-            // Get the mouse position in relation to the center of the cube
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
 
-            // Calculate rotation
             rotationY = (event.clientX - centerX) / 10; // Adjust sensitivity
             rotationX = (event.clientY - centerY) / 10; // Adjust sensitivity
 
-            // Apply rotation
-            cube.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
+            shapeContainer.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
         });
+
+        function showShape(shape) {
+            // Hide all shapes
+            for (let key in shapes) {
+                shapes[key].style.opacity = 0;
+            }
+
+            // Show the selected shape
+            shapes[shape].style.opacity = 1;
+        }
+
+        // Show the cube by default
+        showShape('cube');
     </script>
 </body>
 </html>
