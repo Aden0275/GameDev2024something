@@ -72,9 +72,15 @@
             border-bottom: 86.6px solid rgba(0, 0, 255, 0.8);
         }
 
-        .tetrahedron .face1 { transform: rotateY(0deg) translateZ(43.3px); }
-        .tetrahedron .face2 { transform: rotateY(120deg) translateZ(43.3px); }
-        .tetrahedron .face3 { transform: rotateY(240deg) translateZ(43.3px); }
+        .tetrahedron .face1 { 
+            transform: rotateY(0deg) translateZ(43.3px); 
+        }
+        .tetrahedron .face2 { 
+            transform: rotateY(120deg) translateZ(43.3px); 
+        }
+        .tetrahedron .face3 { 
+            transform: rotateY(240deg) translateZ(43.3px); 
+        }
         .tetrahedron .base {
             position: absolute;
             width: 100px;
@@ -85,14 +91,29 @@
 
         /* 3D Sphere Styles */
         .sphere {
+            position: relative;
             width: 100px;
             height: 100px;
-            background: rgba(0, 255, 0, 0.5);
-            border-radius: 50%;
             opacity: 0;
             transition: opacity 0.5s ease;
-            position: relative;
             transform-style: preserve-3d;
+        }
+
+        .sphere .half {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(0, 255, 0, 0.5);
+            opacity: 0.8;
+        }
+
+        .sphere .half.top {
+            transform: rotateX(90deg) translateZ(50px);
+        }
+
+        .sphere .half.bottom {
+            transform: rotateX(-90deg) translateZ(50px);
         }
 
         /* Button Styles */
@@ -135,7 +156,10 @@
         </div>
         
         <!-- Sphere -->
-        <div class="shape sphere" id="sphere"></div>
+        <div class="shape sphere" id="sphere">
+            <div class="half top"></div>
+            <div class="half bottom"></div>
+        </div>
     </div>
 
     <div class="button-container">
