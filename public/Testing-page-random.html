@@ -19,7 +19,7 @@
             border: 1px solid #000;
             background-color: #fff;
             position: relative;
-            overflow: hidden; /* Prevent overflow from elements moving out of bounds */
+            overflow: hidden;
             width: 600px;
             height: 150px;
         }
@@ -29,7 +29,7 @@
             bottom: 10px;
             width: 50px;
             height: 50px;
-            background-color: #555; /* A gray box to represent the T-Rex */
+            background-color: #555; /* Gray box representing the T-Rex */
         }
 
         .cactus {
@@ -37,7 +37,17 @@
             bottom: 10px;
             width: 20px;
             height: 30px;
-            background-color: green;
+            background-color: green; /* Green box representing the cactus */
+            left: 600px; /* Start off screen */
+        }
+
+        @keyframes slide {
+            from {
+                left: 100%;
+            }
+            to {
+                left: -20px;
+            }
         }
     </style>
 </head>
@@ -52,13 +62,13 @@
         const trex = document.getElementById('trex');
         const cactus = document.getElementById('cactus');
         let isJumping = false;
+        let gameOver = false;
 
         function jump() {
-            if (isJumping) return;
-
+            if (isJumping || gameOver) return; // Prevent multiple jumps
+            
             isJumping = true;
             let jumpHeight = 0;
-
             const jumpInterval = setInterval(() => {
                 if (jumpHeight >= 100) {
                     clearInterval(jumpInterval);
@@ -84,30 +94,27 @@
             }
         });
 
-        // Spawn cactus and check for collision
-        let cactusInterval = setInterval(() => {
-            cactus.style.animation = 'none'; // Reset animation
-            cactus.style.left = '600px'; // Reset cactus position
-            cactus.offsetHeight; // Trigger reflow
-            cactus.style.animation = 'slide 2s infinite linear'; // Start new animation
-        }, 2000);
+        function moveCactus() {
+            if (gameOver) return; // Stop if game is over
 
-        const slideKeyframes = `@keyframes slide {
-            from {
-                left: 100%;
-            }
-            to {
-                left: -20px;
-            }
-        }`;
+            cactus.style.animation = 'slide 2s infinite linear'; // Start animation
+            let moveInterval = setInterval(() => {
+                let cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
 
-        const styleSheet = document.createElement("style");
-        styleSheet.type = "text/css";
-        styleSheet.innerText = slideKeyframes;
+                if (cactusPosition < -20) { // If cactus goes off screen
+                    cactus.style.left = '600px'; // Reset position
+                    cactus.style.animation = 'none';
+                    clearInterval(moveInterval);
+                    moveCactus(); // Restart moving cactus
+                }
+            }, 20);
+        }
 
-        document.head.appendChild(styleSheet);
+        moveCactus(); // Start the cactus animation
 
         setInterval(() => {
+            if (gameOver) return;
+
             const trexRect = trex.getBoundingClientRect();
             const cactusRect = cactus.getBoundingClientRect();
 
@@ -116,9 +123,8 @@
                 trexRect.right > cactusRect.left &&
                 trexRect.bottom > cactusRect.top
             ) {
-                alert('Game Over!');
-                clearInterval(cactusInterval);
-                document.location.reload();
+                gameOver = true;
+                alert('Game Over! Refresh to play again.');
             }
         }, 50);
     </script>
