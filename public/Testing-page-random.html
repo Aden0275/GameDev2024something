@@ -64,11 +64,22 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        /* Score Display */
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
     </style>
 </head>
 
 <body>
     <div id="gameCanvas">
+        <div id="score">Score: 0</div> <!-- Score display -->
         <div class="trex" id="trex"></div>
         <div class="cactus" id="cactus"></div>
         <div id="gameOver">
@@ -82,38 +93,41 @@
         const cactus = document.getElementById('cactus');
         const gameOverDiv = document.getElementById('gameOver');
         const resetButton = document.getElementById('resetButton');
+        const scoreDisplay = document.getElementById('score');
 
         let jumpCount = 0; // Counter for successful jumps over the first cactus
         let jumpSuccessCount = 0; // Count successful jumps to determine when to spawn second cactus
+        let score = 0; // Score variable
         let isJumping = false; // Track if the T-Rex is currently jumping
         let gameOver = false; // Track if the game is over
         const cactusSpeed = 3; // Speed of the cactus
 
         function jump() {
-            if (isJumping || gameOver) return; // Prevent double jump or jumping when game is over
+            if (isJumping || gameOver) return;
 
             isJumping = true;
             let jumpHeight = 0;
 
             const jumpInterval = setInterval(() => {
-                if (jumpHeight >= 80) { // Increased jump height
+                if (jumpHeight >= 80) {
                     clearInterval(jumpInterval);
                     const fallInterval = setInterval(() => {
-                        jumpHeight -= 5; // Falling speed
+                        jumpHeight -= 5;
                         trex.style.bottom = jumpHeight + 'px';
 
                         if (jumpHeight <= 10) {
                             clearInterval(fallInterval);
-                            isJumping = false; // Allow jumping again
+                            isJumping = false;
 
                             // Check if jumped over the first cactus
                             if (didJumpOverCactus()) {
-                                jumpSuccessCount++; // Increment successful jump count
+                                jumpSuccessCount++;
+                                updateScore(); // Update score whenever the player jumps over the cactus
                             }
                         }
                     }, 20);
                 } else {
-                    jumpHeight += 5; // Ascending speed
+                    jumpHeight += 5;
                     trex.style.bottom = jumpHeight + 'px';
                 }
             }, 20);
@@ -130,15 +144,20 @@
             );
         }
 
-        function moveTrex(direction) {
-            if (gameOver) return; // Do not move if the game is over
+        function updateScore() {
+            score += 10; // Increment score by 10
+            scoreDisplay.textContent = 'Score: ' + score; // Update score display
+        }
 
-            const trexPosition = parseInt(trex.style.left) || 0; // Current position of T-Rex
-            const stepSize = 5; // Amount to move
+        function moveTrex(direction) {
+            if (gameOver) return;
+
+            const trexPosition = parseInt(trex.style.left) || 0;
+            const stepSize = 5;
 
             if (direction === 'left' && trexPosition > 0) {
                 trex.style.left = (trexPosition - stepSize) + 'px'; // Move left
-            } else if (direction === 'right' && trexPosition < 570) { // 570 allows for the width of the T-Rex
+            } else if (direction === 'right' && trexPosition < 570) {
                 trex.style.left = (trexPosition + stepSize) + 'px'; // Move right
             }
         }
@@ -156,7 +175,7 @@
         let secondCactus = null;
 
         function moveCactus() {
-            if (gameOver) return; // Stop if game is over
+            if (gameOver) return;
 
             const cactusInterval = setInterval(() => {
                 let cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
@@ -164,7 +183,7 @@
 
                 if (cactusPosition < -20) { // If the first cactus goes off screen
                     cactus.style.left = '800px'; // Reset first cactus position
-                    jumpCount++; // Increment jump count when cactus resets
+                    jumpCount++;
 
                     // Check if we should create the second cactus
                     if (jumpSuccessCount >= 3 && !secondCactus) {
