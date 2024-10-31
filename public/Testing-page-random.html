@@ -83,6 +83,7 @@
         const gameOverDiv = document.getElementById('gameOver');
         const resetButton = document.getElementById('resetButton');
 
+        let jumpCount = 0; // Counter for successful jumps over the first cactus
         let isJumping = false; // Track if the T-Rex is currently jumping
         let gameOver = false; // Track if the game is over
         const cactusSpeed = 5; // Initial speed of the cactus
@@ -135,6 +136,9 @@
             }
         });
 
+        // Create a second cactus
+        let secondCactus = null;
+
         function moveCactus() {
             if (gameOver) return; // Stop if game is over
 
@@ -142,10 +146,37 @@
                 let cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
                 cactus.style.left = (cactusPosition - cactusSpeed) + 'px'; // Move cactus left
 
-                if (cactusPosition < -20) { // If cactus goes off screen
-                    cactus.style.left = '800px'; // Reset position to farther back
+                if (cactusPosition < -20) { // If the first cactus goes off screen
+                    cactus.style.left = '800px'; // Reset first cactus position
+                    jumpCount++; // Increment jump count when cactus resets
+                }
+
+                // Check if the second cactus should be created
+                if (jumpCount >= 3 && !secondCactus) {
+                    createSecondCactus(); // Create the second cactus
+                }
+
+                if (secondCactus) {
+                    let secondCactusPosition = parseInt(window.getComputedStyle(secondCactus).getPropertyValue("left"));
+                    secondCactus.style.left = (secondCactusPosition - cactusSpeed) + 'px'; // Move second cactus left
+
+                    if (secondCactusPosition < -20) { // If the second cactus goes off screen
+                        secondCactus.style.left = getRandomPosition() + 'px'; // Reset second cactus position randomly
+                    }
                 }
             }, 20);
+        }
+
+        function createSecondCactus() {
+            secondCactus = document.createElement('div');
+            secondCactus.className = 'cactus'; // Apply the same styles as the first cactus
+            document.getElementById('gameCanvas').appendChild(secondCactus);
+            secondCactus.style.left = getRandomPosition() + 'px'; // Start it at a random position
+        }
+
+        function getRandomPosition() {
+            // Generate a random position between 600px and 800px (ensuring it starts off-screen)
+            return Math.floor(Math.random() * 200 + 600);
         }
 
         moveCactus(); // Start the cactus movement
@@ -155,14 +186,25 @@
 
             const trexRect = trex.getBoundingClientRect();
             const cactusRect = cactus.getBoundingClientRect();
+            let secondCactusRect = secondCactus ? secondCactus.getBoundingClientRect() : null;
 
-            // Check if T-Rex collides with cactus
+            // Check if T-Rex collides with the first cactus
             if (
                 trexRect.left < cactusRect.right &&
                 trexRect.right > cactusRect.left &&
                 trexRect.bottom > cactusRect.top
             ) {
                 gameOver = true; // Set game over if collision happens
+                gameOverDiv.style.display = 'block'; // Show the game over message
+            }
+
+            // Check if T-Rex collides with the second cactus
+            if (secondCactusRect && (
+                trexRect.left < secondCactusRect.right &&
+                trexRect.right > secondCactusRect.left &&
+                trexRect.bottom > secondCactusRect.top
+            )) {
+                gameOver = true; // Set game over if collision happens with second cactus
                 gameOverDiv.style.display = 'block'; // Show the game over message
             }
         }, 50);
