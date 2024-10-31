@@ -1,226 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T-Rex Run Game</title>
+    <title>3D Square</title>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background-color: #f7f7f7;
+            background-color: #f0f0f0;
+            perspective: 1000px;
+        }
+
+        .cube {
             position: relative;
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+            animation: rotate 5s infinite linear;
         }
 
-        #gameCanvas {
-            border: 1px solid #000;
-            background-color: #fff;
-            position: relative;
-            overflow: hidden; /* Prevent overflow */
-            width: 600px;
-            height: 150px;
-        }
-
-        .trex {
+        .cube-face {
             position: absolute;
-            bottom: 10px; /* Height from the bottom */
-            width: 30px; /* Smaller width */
-            height: 30px; /* Smaller height */
-            background-color: #555; /* Gray box representing the T-Rex */
-            left: 50px; /* Initial forward position */
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 0, 0, 0.8);
+            border: 1px solid #333;
+            opacity: 0.9;
         }
 
-        .cactus {
-            position: absolute;
-            bottom: 10px;
-            width: 15px; /* Reduced width of the cactus */
-            height: 25px; /* Reduced height of the cactus */
-            background-color: green; /* Green box representing the cactus */
-            left: 800px; /* Start from farther back position */
+        .front {
+            transform: translateZ(50px);
         }
 
-        .border {
-            position: absolute;
-            bottom: 10px;
-            width: 30px; /* Width of the invisible border */
-            height: 80px; /* Height of the invisible border */
-            left: 810px; /* Start position right next to the cactus */
-            background-color: rgba(0, 0, 0, 0); /* Make it invisible */
+        .back {
+            transform: rotateY(180deg) translateZ(50px);
         }
 
-        #gameOver {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            text-align: center;
+        .left {
+            transform: rotateY(-90deg) translateZ(50px);
         }
 
-        #gameOver h1 {
-            color: red;
+        .right {
+            transform: rotateY(90deg) translateZ(50px);
         }
 
-        #resetButton {
-            padding: 10px 20px;
-            background-color: #007BFF; /* Bootstrap primary color */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .top {
+            transform: rotateX(90deg) translateZ(50px);
         }
 
-        /* Score Display */
-        #score {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
+        .bottom {
+            transform: rotateX(-90deg) translateZ(50px);
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotateY(0);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
         }
     </style>
 </head>
-
 <body>
-    <div id="gameCanvas">
-        <div id="score">Score: 0</div> <!-- Score display -->
-        <div class="trex" id="trex"></div>
-        <div class="cactus" id="cactus"></div>
-        <div class="border" id="border"></div> <!-- Invisible border element -->
-        <div id="gameOver">
-            <h1>Game Over!</h1>
-            <button id="resetButton">Press this to reset</button>
-        </div>
+    <div class="cube">
+        <div class="cube-face front"></div>
+        <div class="cube-face back"></div>
+        <div class="cube-face left"></div>
+        <div class="cube-face right"></div>
+        <div class="cube-face top"></div>
+        <div class="cube-face bottom"></div>
     </div>
-
-    <script>
-        const trex = document.getElementById('trex');
-        const cactus = document.getElementById('cactus');
-        const border = document.getElementById('border'); // Reference to the border
-        const gameOverDiv = document.getElementById('gameOver');
-        const resetButton = document.getElementById('resetButton');
-        const scoreDisplay = document.getElementById('score');
-
-        let score = 0; // Score variable
-        let isJumping = false; // Track if the T-Rex is currently jumping
-        let gameOver = false; // Track if the game is over
-        const cactusSpeed = 3; // Speed of the cactus
-
-        function jump() {
-            if (isJumping || gameOver) return;
-
-            isJumping = true;
-            let jumpHeight = 0;
-
-            const jumpInterval = setInterval(() => {
-                if (jumpHeight >= 80) {
-                    clearInterval(jumpInterval);
-                    const fallInterval = setInterval(() => {
-                        jumpHeight -= 5;
-                        trex.style.bottom = jumpHeight + 'px';
-
-                        if (jumpHeight <= 10) {
-                            clearInterval(fallInterval);
-                            isJumping = false;
-
-                            // Check if jumped through the invisible border
-                            if (didJumpThroughBorder()) {
-                                updateScore(); // Increment the score by 10
-                            }
-                        }
-                    }, 20);
-                } else {
-                    jumpHeight += 5;
-                    trex.style.bottom = jumpHeight + 'px';
-                }
-            }, 20);
-        }
-
-        function didJumpThroughBorder() {
-            const trexRect = trex.getBoundingClientRect();
-            const borderRect = border.getBoundingClientRect();
-
-            return (
-                trexRect.left < borderRect.right &&
-                trexRect.right > borderRect.left &&
-                trexRect.bottom < borderRect.top
-            );
-        }
-
-        function updateScore() {
-            score += 10; // Increment score by 10
-            scoreDisplay.textContent = 'Score: ' + score; // Update score display
-        }
-
-        function moveTrex(direction) {
-            if (gameOver) return;
-
-            const trexPosition = parseInt(trex.style.left) || 0;
-            const stepSize = 5;
-
-            if (direction === 'left' && trexPosition > 0) {
-                trex.style.left = (trexPosition - stepSize) + 'px'; // Move left
-            } else if (direction === 'right' && trexPosition < 570) {
-                trex.style.left = (trexPosition + stepSize) + 'px'; // Move right
-            }
-        }
-
-        document.addEventListener('keydown', event => {
-            if (event.code === 'ArrowUp') {
-                jump(); // Trigger jump on Up arrow key press
-            } else if (event.code === 'ArrowLeft') {
-                moveTrex('left'); // Move T-Rex left
-            } else if (event.code === 'ArrowRight') {
-                moveTrex('right'); // Move T-Rex right
-            }
-        });
-
-        function moveCactus() {
-            if (gameOver) return;
-
-            const cactusInterval = setInterval(() => {
-                let cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
-                cactus.style.left = (cactusPosition - cactusSpeed) + 'px'; // Move cactus left
-                border.style.left = (cactusPosition - cactusSpeed) + 'px'; // Move border with the cactus
-
-                if (cactusPosition < -20) { // If the cactus goes off screen
-                    cactus.style.left = '800px'; // Reset cactus position
-                    border.style.left = '810px'; // Reset border position
-                }
-            }, 20);
-        }
-
-        moveCactus(); // Start the cactus and border movement
-
-        // Check for collisions
-        setInterval(() => {
-            if (gameOver) return;
-
-            const trexRect = trex.getBoundingClientRect();
-            const cactusRect = cactus.getBoundingClientRect();
-
-            // Check if T-Rex collides with the cactus
-            if (
-                trexRect.left < cactusRect.right &&
-                trexRect.right > cactusRect.left &&
-                trexRect.bottom > cactusRect.top
-            ) {
-                gameOver = true; // Set game over if collision happens
-                gameOverDiv.style.display = 'block'; // Show the game over message
-            }
-        }, 50);
-
-        resetButton.addEventListener('click', () => {
-            location.reload(); // Reloads the page when the reset button is clicked
-        });
-
-        moveCactus(); // Start the cactus movement
-    </script>
 </body>
-
 </html>
