@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Cube, Sphere, and Pyramid</title>
+    <title>3D Shapes Toggle</title>
     <style>
         body {
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
             perspective: 1000px;
-            overflow: hidden; /* Prevent scrollbars */
+            overflow: hidden;
         }
 
         .container {
             position: relative;
             width: 200px;
             height: 200px;
+            margin-bottom: 20px; /* Space for the buttons */
         }
 
         .cube, .sphere, .pyramid {
@@ -39,35 +41,18 @@
             border: 1px solid #333;
         }
 
-        .front {
-            transform: translateZ(50px);
-        }
-
-        .back {
-            transform: rotateY(180deg) translateZ(50px);
-        }
-
-        .left {
-            transform: rotateY(-90deg) translateZ(50px);
-        }
-
-        .right {
-            transform: rotateY(90deg) translateZ(50px);
-        }
-
-        .top {
-            transform: rotateX(90deg) translateZ(50px);
-        }
-
-        .bottom {
-            transform: rotateX(-90deg) translateZ(50px);
-        }
+        .front { transform: translateZ(50px); }
+        .back { transform: rotateY(180deg) translateZ(50px); }
+        .left { transform: rotateY(-90deg) translateZ(50px); }
+        .right { transform: rotateY(90deg) translateZ(50px); }
+        .top { transform: rotateX(90deg) translateZ(50px); }
+        .bottom { transform: rotateX(-90deg) translateZ(50px); }
 
         /* Sphere Styles */
         .sphere {
             border-radius: 50%;
             background: rgba(0, 0, 255, 0.8);
-            position: relative; /* Needed for child elements */
+            position: relative; 
         }
 
         .sphere::before, .sphere::after {
@@ -80,15 +65,9 @@
             top: 0;
             left: 0;
         }
-
-        /* Sphere top and bottom halves */
-        .sphere::before {
-            transform: rotateX(90deg) translateZ(50px);
-        }
-
-        .sphere::after {
-            transform: rotateX(-90deg) translateZ(50px);
-        }
+        
+        .sphere::before { transform: rotateX(90deg) translateZ(50px); }
+        .sphere::after { transform: rotateX(-90deg) translateZ(50px); }
 
         /* Pyramid Styles */
         .pyramid {
@@ -106,23 +85,33 @@
 
         .face {
             position: absolute;
-            width: 0; /* Use width and height to form triangular shapes with borders */
+            width: 0;
             height: 0;
             border-left: 50px solid transparent;
             border-right: 50px solid transparent;
             border-bottom: 80px solid rgba(255, 255, 0, 0.8);
         }
 
-        .face1 {
-            transform: rotateY(0deg) translateY(-50px);
+        .face1 { transform: rotateY(0deg) translateY(-50px); }
+        .face2 { transform: rotateY(120deg) translateY(-50px); }
+        .face3 { transform: rotateY(-120deg) translateY(-50px); }
+
+        /* Button Styles */
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
         }
 
-        .face2 {
-            transform: rotateY(120deg) translateY(-50px);
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 5px;
         }
 
-        .face3 {
-            transform: rotateY(-120deg) translateY(-50px);
+        button:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
@@ -137,14 +126,20 @@
             <div class="cube-face bottom"></div>
         </div>
 
-        <div class="sphere" id="sphere"></div>
+        <div class="sphere" id="sphere" style="display: none;"></div>
 
-        <div class="pyramid" id="pyramid">
+        <div class="pyramid" id="pyramid" style="display: none;">
             <div class="base"></div>
             <div class="face face1"></div>
             <div class="face face2"></div>
             <div class="face face3"></div>
         </div>
+    </div>
+
+    <div class="button-container">
+        <button onclick="showShape('cube')">Show Cube</button>
+        <button onclick="showShape('sphere')">Show Sphere</button>
+        <button onclick="showShape('pyramid')">Show Pyramid</button>
     </div>
 
     <script>
@@ -154,20 +149,46 @@
 
         let rotationX = 0;
         let rotationY = 0;
+        let currentShape = '';
 
         document.addEventListener('mousemove', (event) => {
+            if (!currentShape) return; // Do nothing if no shape is selected
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
 
-            // Update rotation angles based on mouse position
-            rotationY = (event.clientX - centerX) / 10; // Adjust sensitivity
-            rotationX = (event.clientY - centerY) / 10; // Adjust sensitivity
+            rotationY = (event.clientX - centerX) / 10;
+            rotationX = (event.clientY - centerY) / 10;
 
-            // Apply transformations
-            cube.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
-            sphere.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
-            pyramid.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
+            // Apply transformations based on the selected shape
+            if (currentShape === 'cube') {
+                cube.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
+            }
+            if (currentShape === 'sphere') {
+                sphere.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
+            }
+            if (currentShape === 'pyramid') {
+                pyramid.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
+            }
         });
+
+        function showShape(shape) {
+            // Hide all shapes
+            cube.style.display = 'none';
+            sphere.style.display = 'none';
+            pyramid.style.display = 'none';
+
+            // Show the selected shape
+            if (shape === 'cube') {
+                cube.style.display = 'block';
+                currentShape = 'cube';
+            } else if (shape === 'sphere') {
+                sphere.style.display = 'block';
+                currentShape = 'sphere';
+            } else if (shape === 'pyramid') {
+                pyramid.style.display = 'block';
+                currentShape = 'pyramid';
+            }
+        }
     </script>
 </body>
 </html>
