@@ -86,7 +86,7 @@
         let jumpCount = 0; // Counter for successful jumps over the first cactus
         let isJumping = false; // Track if the T-Rex is currently jumping
         let gameOver = false; // Track if the game is over
-        const cactusSpeed = 3; // Changed speed of the cactus to 3
+        const cactusSpeed = 3; // Speed of the cactus
 
         function jump() {
             if (isJumping || gameOver) return; // Prevent double jump or jumping when game is over
@@ -149,6 +149,11 @@
                 if (cactusPosition < -20) { // If the first cactus goes off screen
                     cactus.style.left = '800px'; // Reset first cactus position
                     jumpCount++; // Increment jump count when cactus resets
+
+                    // When the cactus resets, also position the second cactus next to it
+                    if (secondCactus) {
+                        secondCactus.style.left = (parseInt(cactus.style.left) + parseInt(window.getComputedStyle(cactus).getPropertyValue("width"))) + 'px';
+                    }
                 }
 
                 // Check if the second cactus should be created
@@ -156,12 +161,14 @@
                     createSecondCactus(); // Create the second cactus
                 }
 
+                // Move the second cactus, if it exists
                 if (secondCactus) {
                     let secondCactusPosition = parseInt(window.getComputedStyle(secondCactus).getPropertyValue("left"));
                     secondCactus.style.left = (secondCactusPosition - cactusSpeed) + 'px'; // Move second cactus left
 
                     if (secondCactusPosition < -20) { // If the second cactus goes off screen
-                        secondCactus.style.left = getRandomPosition() + 'px'; // Reset second cactus position randomly
+                        secondCactus.remove(); // Remove the cactus from DOM
+                        secondCactus = null; // Clear reference
                     }
                 }
             }, 20);
@@ -172,12 +179,9 @@
             secondCactus.className = 'cactus'; // Apply the same styles as the first cactus
             document.getElementById('gameCanvas').appendChild(secondCactus);
 
-            // Get the position and width of the first cactus
-            const cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
-            const cactusWidth = parseInt(window.getComputedStyle(cactus).getPropertyValue("width"));
-
-            // Set the second cactus position to be right beside the first cactus
-            secondCactus.style.left = (cactusPosition + cactusWidth) + 'px'; // Position based on first cactus width
+            // Set the second cactus to be positioned right next to the first cactus
+            secondCactus.style.left = (parseInt(cactus.style.left) + parseInt(window.getComputedStyle(cactus).getPropertyValue("width"))) + 'px';
+            secondCactus.style.bottom = '10px'; // Align with the ground
         }
 
         function getRandomPosition() {
