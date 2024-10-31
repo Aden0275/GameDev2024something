@@ -89,7 +89,7 @@
 
         function jump() {
             if (isJumping || gameOver) return; // Prevent double jump or jumping when game is over
-            
+
             isJumping = true;
             let jumpHeight = 0;
 
@@ -167,17 +167,12 @@
             }
         }, 50);
 
-        resetButton.addEventListener('click', resetGame); // Attach event listener to reset button
+        resetButton.addEventListener('click', () => {
+            location.reload(); // Reloads the page when the reset button is clicked
+        });
 
-        function resetGame() {
-            gameOver = false; // Reset gameOver state
-            gameOverDiv.style.display = 'none'; // Hide game over message
-            trex.style.left = '50px'; // Reset T-Rex position
-            trex.style.bottom = '10px'; // Reset T-Rex jump position
-            cactus.style.left = '600px'; // Reset cactus position
-            isJumping = false; // Reset jumping state
-            moveCactus(); // Restart cactus movement
-        }
+        // Make cactus movement continuous
+        moveCactus();
     </script>
 </body>
 
