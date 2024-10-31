@@ -37,8 +37,8 @@
         .cactus {
             position: absolute;
             bottom: 10px;
-            width: 20px; /* Width of the cactus */
-            height: 30px; /* Height of the cactus */
+            width: 15px; /* Reduced width of the cactus */
+            height: 25px; /* Reduced height of the cactus */
             background-color: green; /* Green box representing the cactus */
             left: 600px; /* Start off screen */
         }
@@ -93,7 +93,7 @@
             let jumpHeight = 0;
 
             const jumpInterval = setInterval(() => {
-                if (jumpHeight >= 60) { // Maximum jump height
+                if (jumpHeight >= 80) { // Increased jump height
                     clearInterval(jumpInterval);
                     const fallInterval = setInterval(() => {
                         jumpHeight -= 5; // Falling speed
