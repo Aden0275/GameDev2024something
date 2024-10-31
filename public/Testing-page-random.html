@@ -86,7 +86,7 @@
         let jumpCount = 0; // Counter for successful jumps over the first cactus
         let isJumping = false; // Track if the T-Rex is currently jumping
         let gameOver = false; // Track if the game is over
-        const cactusSpeed = 5; // Initial speed of the cactus
+        const cactusSpeed = 3; // Changed speed of the cactus to 3
 
         function jump() {
             if (isJumping || gameOver) return; // Prevent double jump or jumping when game is over
@@ -171,7 +171,11 @@
             secondCactus = document.createElement('div');
             secondCactus.className = 'cactus'; // Apply the same styles as the first cactus
             document.getElementById('gameCanvas').appendChild(secondCactus);
-            secondCactus.style.left = getRandomPosition() + 'px'; // Start it at a random position
+
+            // Get the position of the first cactus
+            const cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
+            // Set the second cactus position to be right beside the first cactus
+            secondCactus.style.left = (cactusPosition + 20) + 'px'; // Adjust "20" as needed for separation
         }
 
         function getRandomPosition() {
