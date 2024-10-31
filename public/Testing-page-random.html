@@ -85,6 +85,7 @@
 
         let isJumping = false; // Track if the T-Rex is currently jumping
         let gameOver = false; // Track if the game is over
+        const cactusSpeed = 5; // Initial speed of the cactus
 
         function jump() {
             if (isJumping || gameOver) return; // Prevent double jump or jumping when game is over
@@ -139,7 +140,7 @@
 
             const cactusInterval = setInterval(() => {
                 let cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
-                cactus.style.left = (cactusPosition - 5) + 'px'; // Move cactus left
+                cactus.style.left = (cactusPosition - cactusSpeed) + 'px'; // Move cactus left
 
                 if (cactusPosition < -20) { // If cactus goes off screen
                     cactus.style.left = '600px'; // Reset position
