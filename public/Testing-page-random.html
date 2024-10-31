@@ -1,306 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Enchanted Forest</title>
+    <title>T-Rex Run Game</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
         }
-        #story {
-            margin-bottom: 20px;
+
+        #gameCanvas {
+            border: 1px solid #000;
+            background-color: #fff;
+            position: relative;
         }
-        button {
-            background-color: #4CAF50; /* Green */
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
+
+        .trex {
+            position: absolute;
+            bottom: 10px;
+            width: 50px;
+            height: 50px;
+            background: url('data:image/png;base64,...') no-repeat; /* You can use a base64 image of a T-Rex here */
+            background-size: cover;
+        }
+
+        .cactus {
+            position: absolute;
+            bottom: 10px;
+            width: 20px;
+            height: 30px;
+            background-color: green;
+            animation: slide 2s infinite linear;
+        }
+
+        @keyframes slide {
+            from {
+                left: 100%;
+            }
+
+            to {
+                left: -20px;
+            }
         }
     </style>
 </head>
+
 <body>
+    <div id="gameCanvas" style="width: 600px; height: 150px;">
+        <div class="trex" id="trex"></div>
+        <div class="cactus" id="cactus"></div>
+    </div>
 
-<h1>The Enchanted Forest</h1>
-<div id="story"></div>
-<div id="options"></div>
+    <script>
+        const trex = document.getElementById('trex');
+        const cactus = document.getElementById('cactus');
+        let isJumping = false;
 
-<script>
-    const gameState = {
-        currentLocation: "start",
-        inventory: [],
-    };
+        function jump() {
+            if (isJumping) return;
 
-    const story = {
-        start: {
-            text: "Welcome to the Enchanted Forest! You stand at the edge of a vast, enchanting forest. What would you like to do?",
-            options: [
-                { text: "Go North (into the forest)", action: () => move("forestPath") },
-                { text: "Go South (back to the village)", action: () => move("village") },
-                { text: "Look around", action: () => lookAround() }
-            ]
-        },
-        forestPath: {
-            text: "You venture down a narrow path lined with shimmering flowers. Suddenly, you notice a fork in the road.",
-            options: [
-                { text: "Go Left (towards a sparkling stream)", action: () => move("sparklingStream") },
-                { text: "Go Right (towards a mysterious cave)", action: () => move("mysteriousCave") },
-                { text: "Climb a tree to get a better view", action: () => climbTree() }
-            ]
-        },
-        sparklingStream: {
-            text: "You arrive at a beautiful stream with crystal-clear waters. Would you like to:",
-            options: [
-                { text: "Fish in the stream", action: () => fish() },
-                { text: "Look under the waterfall", action: () => move("waterfall") },
-                { text: "Drink from the stream", action: () => drink() },
-                { text: "Build a raft", action: () => buildRaft() }
-            ]
-        },
-        mysteriousCave: {
-            text: "You enter a dark cave filled with strange symbols. You see a faint glow deeper inside.",
-            options: [
-                { text: "Go deeper into the cave", action: () => move("caveChamber") },
-                { text: "Examine the symbols", action: () => examineSymbols() },
-                { text: "Leave the cave", action: () => move("forestPath") }
-            ]
-        },
-        caveChamber: {
-            text: "You find a chamber filled with glowing crystals and an ancient book on a pedestal.",
-            options: [
-                { text: "Read the book", action: () => readBook() },
-                { text: "Take a crystal", action: () => takeCrystal() },
-                { text: "Look for a secret door", action: () => lookForDoors() }
-            ]
-        },
-        waterfall: {
-            text: "You find a hidden cave behind the waterfall. Inside, you see some ancient treasures!",
-            options: [
-                { text: "Take the treasures", action: () => takeTreasures() },
-                { text: "Explore the cave further", action: () => exploreHiddenCave() },
-                { text: "Return to the stream", action: () => move("sparklingStream") }
-            ]
-        },
-        village: {
-            text: "You've returned to the village. The villagers welcome you back.",
-            options: [
-                { text: "Visit the blacksmith", action: () => move("blacksmith") },
-                { text: "Go back to the forest", action: () => move("start") },
-                { text: "Help the villagers with a quest", action: () => assistVillagers() }
-            ]
-        },
-        blacksmith: {
-            text: "The blacksmith greets you warmly. You could ask for a weapon or help him with a task.",
-            options: [
-                { text: "Ask for a weapon", action: () => getWeapon() },
-                { text: "Help him forge something", action: () => assistBlacksmith() },
-                { text: "Leave the blacksmith", action: () => move("village") }
-            ]
-        },
-        mysticalLake: {
-            text: "You arrive at a mystical lake filled with shimmering water and magical fish swimming around.",
-            options: [
-                { text: "Try to catch a magical fish", action: () => catchMagicalFish() },
-                { text: "Swim in the lake", action: () => swimInLake() },
-                { text: "Search for hidden treasures along the shore", action: () => searchShore() }
-            ]
-        },
-        enchantedClearing: {
-            text: "You find a magical clearing where the flowers glow softly. There's a fairy dancing.",
-            options: [
-                { text: "Approach the fairy", action: () => approachFairy() },
-                { text: "Sit and rest", action: () => sitAndRest() },
-                { text: "Look for other paths", action: () => move("forestPath") }
-            ]
-        },
-        mountain: {
-            text: "You reach the base of a towering mountain. It looks intimidating!",
-            options: [
-                { text: "Climb the mountain", action: () => move("mountainTrail") },
-                { text: "Camp for the night", action: () => campOnMountain() },
-                { text: "Go back to the forest", action: () => move("forestPath") }
-            ]
-        },
-        mountainTrail: {
-            text: "The trail is steep and rocky. You spot a cave halfway up.",
-            options: [
-                { text: "Investigate the cave", action: () => move("mountainCave") },
-                { text: "Keep climbing", action: () => reachMountainPeak() },
-                { text: "Rest for a moment", action: () => rest() }
-            ]
-        },
-        mountainCave: {
-            text: "Inside the cave, you find ancient drawings on the walls and a treasure chest.",
-            options: [
-                { text: "Examine the drawings", action: () => examineDrawings() },
-                { text: "Open the treasure chest", action: () => openTreasureChest() },
-                { text: "Leave the cave", action: () => move("mountainTrail") }
-            ]
-        },
-        mountainPeak: {
-            text: "You reach the peak! The view is stunning, and you can see for miles.",
-            options: [
-                { text: "Take a moment to enjoy the view", action: () => enjoyView() },
-                { text: "Search for hidden paths", action: () => searchForHiddenPaths() },
-                { text: "Go back down", action: () => move("mountain") }
-            ]
-        },
-        hiddenValley: {
-            text: "You discover a hidden valley filled with colorful flowers and gentle breezes.",
-            options: [
-                { text: "Pick some flowers", action: () => pickFlowers() },
-                { text: "Explore the valley", action: () => move("valleyPath") },
-                { text: "Find a place to rest", action: () => restInValley() }
-            ]
-        },
-        valleyPath: {
-            text: "The path through the valley leads you to an ancient tree with a door.",
-            options: [
-                { text: "Knock on the door", action: () => knockOnDoor() },
-                { text: "Inspect the tree", action: () => inspectTree() },
-                { text: "Continue exploring the valley", action: () => move("hiddenValley") }
-            ]
-        },
-        ancientLibrary: {
-            text: "You stumble upon an ancient library filled with dusty old books.",
-            options: [
-                { text: "Read a book on magic", action: () => readMagicBook() },
-                { text: "Look for scrolls", action: () => lookForScrolls() },
-                { text: "Leave the library", action: () => move("hiddenValley") }
-            ]
-        },
-        forestClearing: {
-            text: "You find a serene clearing in the forest. It's quiet here.",
-            options: [
-                { text: "Set up camp", action: () => campInClearing() },
-                { text: "Scout the area", action: () => scoutArea() },
-                { text: "Continue on the path", action: () => move("forestPath") }
-            ]
-        },
-        enchantedBridge: {
-            text: "You've come across an old bridge. A guardian stands in your way.",
-            options: [
-                { text: "Talk to the guardian", action: () => talkToGuardian() },
-                { text: "Cross the bridge", action: () => crossBridge() },
-                { text: "Look for another way", action: () => move("forestPath") }
-            ]
-        },
-        caveOfEchoes: {
-            text: "You enter a cave where your voice echoes. A strange feeling fills the air.",
-            options: [
-                { text: "Yell to test the echoes", action: () => testEchoes() },
-                { text: "Search for hidden items", action: () => searchCave() },
-                { text: "Leave the cave", action: () => move("forestPath") }
-            ]
-        },
-        darkForest: {
-            text: "You wander into a dark part of the forest, where shadows dance.",
-            options: [
-                { text: "Light a torch", action: () => lightTorch() },
-                { text: "Leave the dark forest", action: () => move("forestPath") },
-                { text: "Listen for sounds", action: () => listenInDark() }
-            ]
-        },
-    };
+            isJumping = true;
+            let jumpHeight = 0;
 
-    // New Function Implementations
-    function lookAround() {
-        document.getElementById("story").innerText = "You see trees, flowers, and a clear path leading into the forest.";
-        updateOptions([]);
-    }
+            const jumpInterval = setInterval(() => {
+                if (jumpHeight >= 100) {
+                    clearInterval(jumpInterval);
+                    const fallInterval = setInterval(() => {
+                        jumpHeight -= 10;
+                        trex.style.bottom = jumpHeight + 'px';
 
-    function climbTree() {
-        document.getElementById("story").innerText = "You climb a tree and see a beautiful view of the forest. You also spot a path leading to a mountain.";
-        updateOptions([{ text: "Go to the mountain", action: () => move("mountain") }]);
-    }
-
-    function fish() {
-        const fishCaught = "You catch a glimmering fish! It's magical.";
-        gameState.inventory.push("magical fish");
-        document.getElementById("story").innerText = fishCaught;
-        updateOptions([{ text: "Keep the fish", action: () => move("sparklingStream") }]);
-    }
-
-    function drink() {
-        document.getElementById("story").innerText = "The water is refreshing! You feel rejuvenated.";
-        updateOptions([{ text: "Continue exploring the stream", action: () => move("sparklingStream") }]);
-    }
-
-    function readBook() {
-        document.getElementById("story").innerText = "The book contains powerful spells. You learn a new spell!";
-        updateOptions([{ text: "Leave the cave", action: () => move("mysteriousCave") }]);
-    }
-
-    function takeCrystal() {
-        document.getElementById("story").innerText = "You take a glowing crystal. It feels warm in your hand.";
-        gameState.inventory.push("glowing crystal");
-        updateOptions([{ text: "Leave the cave", action: () => move("mysteriousCave") }]);
-    }
-
-    function takeTreasures() {
-        document.getElementById("story").innerText = "You take the treasures and feel a surge of power!";
-        gameState.inventory.push("ancient treasures");
-        updateOptions([{ text: "Leave the cave", action: () => move("sparklingStream") }]);
-    }
-
-    // Adding more functionality to all new locations
-    function approachFairy() {
-        document.getElementById("story").innerText = "The fairy smiles and offers you a blessing.";
-        updateOptions([{ text: "Accept the blessing", action: () => acceptBlessing() }, { text: "Politely decline", action: () => move("enchantedClearing") }]);
-    }
-
-    function acceptBlessing() {
-        document.getElementById("story").innerText = "You feel a warm light surround you. You gain +1 luck!";
-        updateOptions([{ text: "Continue exploring", action: () => move("enchantedClearing") }]);
-    }
-    
-    function swimInLake() {
-        document.getElementById("story").innerText = "You swim in the lake and feel its refreshing magic.";
-        updateOptions([{ text: "Get out of the lake", action: () => move("mysticalLake") }]);
-    }
-
-    function searchShore() {
-        document.getElementById("story").innerText = "You find a hidden stash of coins along the shore.";
-        gameState.inventory.push("gold coins");
-        updateOptions([{ text: "Take the coins", action: () => move("mysticalLake") }]);
-    }
-
-    function move(location) {
-        gameState.currentLocation = location;
-        updateStory();
-    }
-
-    function updateStory() {
-        const current = story[gameState.currentLocation];
-        if (current) {
-            document.getElementById("story").innerText = current.text;
-            updateOptions(current.options);
+                        if (jumpHeight <= 10) {
+                            clearInterval(fallInterval);
+                            isJumping = false;
+                        }
+                    }, 20);
+                } else {
+                    jumpHeight += 10;
+                    trex.style.bottom = jumpHeight + 'px';
+                }
+            }, 20);
         }
-    }
 
-    function updateOptions(options) {
-        const optionsDiv = document.getElementById("options");
-        optionsDiv.innerHTML = '';
-        options.forEach(option => {
-            const button = document.createElement("button");
-            button.innerText = option.text;
-            button.onclick = option.action;
-            optionsDiv.appendChild(button);
+        document.addEventListener('keydown', event => {
+            if (event.code === 'Space') {
+                jump();
+            }
         });
-    }
 
-    // Initialize game
-    updateStory();
-</script>
+        setInterval(() => {
+            const trexRect = trex.getBoundingClientRect();
+            const cactusRect = cactus.getBoundingClientRect();
 
+            if (
+                trexRect.left < cactusRect.right &&
+                trexRect.right > cactusRect.left &&
+                trexRect.bottom > cactusRect.top
+            ) {
+                alert('Game Over!');
+                document.location.reload();
+            }
+        }, 50);
+    </script>
 </body>
+
 </html>
