@@ -56,11 +56,11 @@
         /* 3D Tetrahedron Styles */
         .tetrahedron {
             position: relative;
-            width: 100px;
-            height: 100px;
-            transform-style: preserve-3d;
+            width: 0;
+            height: 0;
             opacity: 0;
             transition: opacity 0.5s ease;
+            transform-style: preserve-3d;
         }
 
         .tetrahedron .face {
@@ -72,10 +72,16 @@
             border-bottom: 86.6px solid rgba(0, 0, 255, 0.8);
         }
 
-        .tetrahedron .face1 { transform: rotateY(0deg) rotateX(-60deg) translateY(-29.8px) translateZ(50px); }
-        .tetrahedron .face2 { transform: rotateY(120deg) rotateX(-60deg) translateY(-29.8px) translateZ(50px); }
-        .tetrahedron .face3 { transform: rotateY(240deg) rotateX(-60deg) translateY(-29.8px) translateZ(50px); }
-        .tetrahedron .base { position: absolute; width: 100px; height: 100px; background: rgba(0, 0, 255, 0.5); transform: rotateX(60deg) translateY(29.8px) translateZ(0); }
+        .tetrahedron .face1 { transform: rotateY(0deg) translateZ(43.3px); }
+        .tetrahedron .face2 { transform: rotateY(120deg) translateZ(43.3px); }
+        .tetrahedron .face3 { transform: rotateY(240deg) translateZ(43.3px); }
+        .tetrahedron .base {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 0, 255, 0.5);
+            transform: rotateX(60deg) translateY(29.8px) translateZ(43.3px);
+        }
 
         /* 3D Sphere Styles */
         .sphere {
@@ -146,8 +152,6 @@
             sphere: document.getElementById('sphere')
         };
 
-        let mouseX = 0;
-        let mouseY = 0;
         let rotationX = 0;
         let rotationY = 0;
 
