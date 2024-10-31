@@ -40,15 +40,6 @@
             background-color: green; /* Green box representing the cactus */
             left: 600px; /* Start off screen */
         }
-
-        @keyframes slide {
-            from {
-                left: 100%;
-            }
-            to {
-                left: -20px;
-            }
-        }
     </style>
 </head>
 
@@ -89,29 +80,43 @@
             }, 20);
         }
 
+        function moveTrex(direction) {
+            if (gameOver) return; // Do not move if the game is over
+
+            const trexPosition = parseInt(trex.style.left) || 0; // Current position of T-Rex
+            const stepSize = 5; // Amount to move
+
+            if (direction === 'left' && trexPosition > 0) {
+                trex.style.left = (trexPosition - stepSize) + 'px'; // Move left
+            } else if (direction === 'right' && trexPosition < 570) { // 570 allows for the width of the T-Rex
+                trex.style.left = (trexPosition + stepSize) + 'px'; // Move right
+            }
+        }
+
         document.addEventListener('keydown', event => {
-            if (event.code === 'Space') {
-                jump(); // Trigger jump on Space key press
+            if (event.code === 'ArrowUp') {
+                jump(); // Trigger jump on Up arrow key press
+            } else if (event.code === 'ArrowLeft') {
+                moveTrex('left'); // Move T-Rex left
+            } else if (event.code === 'ArrowRight') {
+                moveTrex('right'); // Move T-Rex right
             }
         });
 
         function moveCactus() {
             if (gameOver) return; // Stop if game is over
 
-            cactus.style.animation = 'slide 2s infinite linear'; // Start animation
-            let moveInterval = setInterval(() => {
+            const cactusInterval = setInterval(() => {
                 let cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
+                cactus.style.left = (cactusPosition - 5) + 'px'; // Move cactus left
 
                 if (cactusPosition < -20) { // If cactus goes off screen
                     cactus.style.left = '600px'; // Reset position
-                    cactus.style.animation = 'none'; // Reset animation
-                    clearInterval(moveInterval);
-                    moveCactus(); // Restart moving cactus
                 }
             }, 20);
         }
 
-        moveCactus(); // Start the cactus animation
+        moveCactus(); // Start the cactus movement
 
         setInterval(() => {
             if (gameOver) return;
