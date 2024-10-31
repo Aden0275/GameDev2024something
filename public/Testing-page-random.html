@@ -40,7 +40,7 @@
             width: 15px; /* Reduced width of the cactus */
             height: 25px; /* Reduced height of the cactus */
             background-color: green; /* Green box representing the cactus */
-            left: 600px; /* Start off screen */
+            left: 800px; /* Start from farther back position */
         }
 
         #gameOver {
@@ -143,7 +143,7 @@
                 cactus.style.left = (cactusPosition - cactusSpeed) + 'px'; // Move cactus left
 
                 if (cactusPosition < -20) { // If cactus goes off screen
-                    cactus.style.left = '600px'; // Reset position
+                    cactus.style.left = '800px'; // Reset position to farther back
                 }
             }, 20);
         }
