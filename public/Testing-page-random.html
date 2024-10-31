@@ -43,6 +43,15 @@
             left: 800px; /* Start from farther back position */
         }
 
+        .border {
+            position: absolute;
+            bottom: 10px;
+            width: 30px; /* Width of the invisible border */
+            height: 80px; /* Height of the invisible border */
+            left: 810px; /* Start position right next to the cactus */
+            background-color: rgba(0, 0, 0, 0); /* Make it invisible */
+        }
+
         #gameOver {
             position: absolute;
             top: 50%;
@@ -82,6 +91,7 @@
         <div id="score">Score: 0</div> <!-- Score display -->
         <div class="trex" id="trex"></div>
         <div class="cactus" id="cactus"></div>
+        <div class="border" id="border"></div> <!-- Invisible border element -->
         <div id="gameOver">
             <h1>Game Over!</h1>
             <button id="resetButton">Press this to reset</button>
@@ -91,6 +101,7 @@
     <script>
         const trex = document.getElementById('trex');
         const cactus = document.getElementById('cactus');
+        const border = document.getElementById('border'); // Reference to the border
         const gameOverDiv = document.getElementById('gameOver');
         const resetButton = document.getElementById('resetButton');
         const scoreDisplay = document.getElementById('score');
@@ -117,8 +128,8 @@
                             clearInterval(fallInterval);
                             isJumping = false;
 
-                            // Check if jumped over the first cactus
-                            if (didJumpOverCactus()) {
+                            // Check if jumped through the invisible border
+                            if (didJumpThroughBorder()) {
                                 updateScore(); // Increment the score by 10
                             }
                         }
@@ -130,14 +141,14 @@
             }, 20);
         }
 
-        function didJumpOverCactus() {
+        function didJumpThroughBorder() {
             const trexRect = trex.getBoundingClientRect();
-            const cactusRect = cactus.getBoundingClientRect();
+            const borderRect = border.getBoundingClientRect();
 
             return (
-                trexRect.left < cactusRect.right &&
-                trexRect.right > cactusRect.left &&
-                trexRect.bottom < cactusRect.top
+                trexRect.left < borderRect.right &&
+                trexRect.right > borderRect.left &&
+                trexRect.bottom < borderRect.top
             );
         }
 
@@ -175,14 +186,16 @@
             const cactusInterval = setInterval(() => {
                 let cactusPosition = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
                 cactus.style.left = (cactusPosition - cactusSpeed) + 'px'; // Move cactus left
+                border.style.left = (cactusPosition - cactusSpeed) + 'px'; // Move border with the cactus
 
                 if (cactusPosition < -20) { // If the cactus goes off screen
                     cactus.style.left = '800px'; // Reset cactus position
+                    border.style.left = '810px'; // Reset border position
                 }
             }, 20);
         }
 
-        moveCactus(); // Start the cactus movement
+        moveCactus(); // Start the cactus and border movement
 
         // Check for collisions
         setInterval(() => {
