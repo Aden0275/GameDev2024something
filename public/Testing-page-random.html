@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Cube and Sphere</title>
+    <title>3D Cube, Sphere, and Pyramid</title>
     <style>
         body {
             display: flex;
@@ -21,7 +21,7 @@
             height: 200px;
         }
 
-        .cube, .sphere {
+        .cube, .sphere, .pyramid {
             position: absolute;
             width: 100px;
             height: 100px;
@@ -30,6 +30,7 @@
             will-change: transform;
         }
 
+        /* Cube Styles */
         .cube-face {
             position: absolute;
             width: 100px;
@@ -89,13 +90,39 @@
             transform: rotateX(-90deg) translateZ(50px);
         }
 
-        /* Adjust the cube and sphere margin */
-        .cube {
-            margin-bottom: 0; /* No margin for better alignment */
+        /* Pyramid Styles */
+        .pyramid {
+            position: relative;
+            transform-style: preserve-3d;
         }
 
-        .sphere {
-            margin-top: 0; /* No margin for better alignment */
+        .base {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(0, 255, 0, 0.8);
+            transform: rotateX(90deg) translateY(-50px);
+        }
+
+        .face {
+            position: absolute;
+            width: 0; /* Use width and height to form triangular shapes with borders */
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 80px solid rgba(255, 255, 0, 0.8);
+        }
+
+        .face1 {
+            transform: rotateY(0deg) translateY(-50px);
+        }
+
+        .face2 {
+            transform: rotateY(120deg) translateY(-50px);
+        }
+
+        .face3 {
+            transform: rotateY(-120deg) translateY(-50px);
         }
     </style>
 </head>
@@ -111,11 +138,19 @@
         </div>
 
         <div class="sphere" id="sphere"></div>
+
+        <div class="pyramid" id="pyramid">
+            <div class="base"></div>
+            <div class="face face1"></div>
+            <div class="face face2"></div>
+            <div class="face face3"></div>
+        </div>
     </div>
 
     <script>
         const cube = document.getElementById('cube');
         const sphere = document.getElementById('sphere');
+        const pyramid = document.getElementById('pyramid');
 
         let rotationX = 0;
         let rotationY = 0;
@@ -131,6 +166,7 @@
             // Apply transformations
             cube.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
             sphere.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
+            pyramid.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
         });
     </script>
 </body>
