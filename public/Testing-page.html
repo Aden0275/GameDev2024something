@@ -131,6 +131,24 @@
         updateImagePosition();
     }
 
+    // Keydown event handler for arrow keys
+    document.addEventListener('keydown', function(event) {
+        switch(event.key) {
+            case 'ArrowLeft':
+                moveImageLeft();
+                break;
+            case 'ArrowRight':
+                moveImageRight();
+                break;
+            case 'ArrowUp':
+                moveImageUp();
+                break;
+            case 'ArrowDown':
+                moveImageDown();
+                break;
+        }
+    });
+
 </script>
 
 <h1>Move Background and Image</h1>
