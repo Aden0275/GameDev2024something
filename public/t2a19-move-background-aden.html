@@ -4,8 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Move Background and Image</title>
+    <style>
+        body {
+            background-repeat: repeat;
+            background-size: cover; /* Adjusted to 'cover' for full background */
+            background-image: url('https://i.ibb.co/Zf7hHsh/OIP.jpg'); /* Set the image as background */
+        }
+        #myImage01 {
+            position: relative; 
+            width: 100px; 
+            height: 80px; 
+            top: 0px; 
+            left: 0px; 
+            z-index: 10; /* Ensure the image appears above the background */
+        }
+    </style>
 </head>
-<body id="myBody" style="background-repeat: repeat; background-size: 80%; background-image: url('myBackground.jpg');">
+<body id="myBody">
 <script>
     let myGlobalX = 0; // Global variable for background position
     let myClock01; // Timer for automatic background movement
@@ -51,14 +66,13 @@
 <!-- Button to move the image to the right -->
 <input type="button" id="myButton02" value="Image Right" onclick="moveImageRight();"><br><br>
 
-<!-- Button for automatic movement of the image to the left -->
-<input type="button" value="Auto Move Left" onclick="{
+<!-- Button for automatic movement of the image to the right -->
+<input type="button" value="Auto Move Right" onclick="{
     clearInterval(myClock02);
     myClock02 = setInterval(moveImageRight, 30);
 }">
 
 <!-- Image element with specified source -->
-<img id="myImage01" style="position: relative; width: 100px; height: 80px; top: 0px; left: 0px;" 
-src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
+<img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
 </body>
 </html>
