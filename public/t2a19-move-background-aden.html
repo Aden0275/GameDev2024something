@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,20 +7,23 @@
     <title>Move Background and Image</title>
     <style>
         body {
-            background-repeat: no-repeat;  /* Prevents the background image from repeating */
-            background-size: cover;         /* Ensures the background covers the entire body */
+            background-repeat: repeat;      /* Allow the background image to repeat */
+            background-size: auto;          /* Use auto for the background size to keep it repeating */
             background-image: url('https://i.ibb.co/yXNJrzG/1247160.jpg');
             text-align: center;
             font-family: Arial, sans-serif;
             padding: 20px;
-            height: 100vh;                /* Makes body full height of the viewport */
-            overflow: hidden;             /* Prevents scrollbar from appearing */
+            height: 100vh;                 /* Makes body full height of the viewport */
+            overflow: hidden;              /* Prevents scrollbar from appearing */
+            color: white;                  /* Sets general text color to white */
         }
         #myImage01 {
-            position: relative; 
+            position: absolute; 
             width: 100px; 
             height: 80px; 
             z-index: 10; 
+            top: 200px;  /* Initial top position for the image */
+            left: 0;  /* Initial left position for the image */
         }
         .button-section {
             margin: 20px 0;
@@ -36,44 +40,116 @@
 <script>
     let myGlobalX = 0; // Global variable for background horizontal position
     let myGlobalY = 0; // Global variable for background vertical position
-    let myClock01, myClock02, myClock03, myClock04, myClock05; // Timers
-    let mySpeed01 = 400, mySpeed02 = 400, mySpeedUp = 400, mySpeedDown = 400; // Speeds
+    let imgGlobalX = 0; // Global variable for image horizontal position
+    let imgGlobalY = 200; // Global variable for image vertical position (original position)
+    
+    // Original positions
+    const originalBackgroundX = 0; // Original horizontal position for the background
+    const originalBackgroundY = 0; // Original vertical position for the background
+    const originalImageX = 0; // Original horizontal position for the image
+    const originalImageY = 200; // Original vertical position for the image
+    
+    // Timer variables
+    let myClock01, myClock02, myClock03, myClock04, myClock05, imgClock01, imgClock02, imgClock04, imgClock05; 
+    let mySpeed01 = 400, mySpeed02 = 400, mySpeedUp = 400, mySpeedDown = 400; // Background speeds
+    let imgSpeedLeft = 400, imgSpeedRight = 400, imgSpeedUp = 400, imgSpeedDown = 400; // Image speeds
 
-    // Function to move the background left
+    // Background movement functions
     function moveBackgroundLeft() {
         myGlobalX -= 5;
         updateBackgroundPosition();
     }
 
-    // Function to move the background right
     function moveBackgroundRight() {
         myGlobalX += 5;
         updateBackgroundPosition();
     }
 
-    // Function to move the background up
     function moveBackgroundUp() {
         myGlobalY -= 5;
         updateBackgroundPosition();
     }
 
-    // Function to move the background down
     function moveBackgroundDown() {
         myGlobalY += 5;
         updateBackgroundPosition();
     }
 
-    // Update background position
     function updateBackgroundPosition() {
         document.getElementById('myBody').style.backgroundPosition = `${myGlobalX}px ${myGlobalY}px`;
     }
 
-    // Move image to the right
-    function moveImageRight() {
-        const imgElement = document.getElementById('myImage01');
-        const currentLeft = parseInt(imgElement.style.left || '0');
-        imgElement.style.left = `${currentLeft + 10}px`;
+    // Image movement functions
+    function moveImageLeft() {
+        imgGlobalX -= 5;
+        updateImagePosition();
     }
+
+    function moveImageRight() {
+        imgGlobalX += 5;
+        updateImagePosition();
+    }
+
+    function moveImageUp() {
+        imgGlobalY -= 5;
+        updateImagePosition();
+    }
+
+    function moveImageDown() {
+        imgGlobalY += 5;
+        updateImagePosition();
+    }
+
+    function updateImagePosition() {
+        const imgElement = document.getElementById('myImage01');
+        imgElement.style.left = `${imgGlobalX}px`;
+        imgElement.style.top = `${imgGlobalY}px`;
+    }
+
+    // Clear all intervals
+    function clearAllIntervals() {
+        clearInterval(myClock01);
+        clearInterval(myClock02);
+        clearInterval(myClock03);
+        clearInterval(myClock04);
+        clearInterval(myClock05);
+        clearInterval(imgClock01);
+        clearInterval(imgClock02);
+        clearInterval(imgClock04);
+        clearInterval(imgClock05);
+    }
+
+    // Reset function
+    function resetPositions() {
+        clearAllIntervals();  // Stop any auto movement
+        
+        myGlobalX = originalBackgroundX;
+        myGlobalY = originalBackgroundY;
+        imgGlobalX = originalImageX;
+        imgGlobalY = originalImageY;
+        
+        updateBackgroundPosition();
+        updateImagePosition();
+    }
+
+    // Keydown event handler for arrow keys
+    document.addEventListener('keydown', function(event) {
+        switch(event.key) {
+            case 'ArrowLeft':
+                moveImageLeft();
+                break;
+            case 'ArrowRight':
+                moveImageRight();
+                break;
+            case 'ArrowUp':
+                moveImageUp();
+                break;
+            case 'ArrowDown':
+                moveImageDown();
+                break;
+        }
+    });
+
 </script>
 
 <h1>Move Background and Image</h1>
@@ -81,65 +157,109 @@
 <!-- Horizontal Movement Section -->
 <div class="button-section">
     <h2>Horizontal Movement</h2>
-    <button onclick="moveBackgroundLeft()">Move Left</button>
-    <button onclick="moveBackgroundRight()">Move Right</button>
+    <button onclick="moveBackgroundLeft()">Move Background Left</button>
+    <button onclick="moveBackgroundRight()">Move Background Right</button>
     <button onclick="{
         clearInterval(myClock01);
         mySpeed01 = Math.max(10, mySpeed01 - 30);
         myClock01 = setInterval(moveBackgroundLeft, mySpeed01);
-    }">Auto Left Faster</button>
+    }">Auto Background Left Faster</button>
     <button onclick="{
         clearInterval(myClock01);
         mySpeed01 += 30;
         myClock01 = setInterval(moveBackgroundLeft, mySpeed01);
-    }">Auto Left Slower</button>
+    }">Auto Background Left Slower</button>
     <button onclick="{
         clearInterval(myClock02);
         mySpeed02 = Math.max(10, mySpeed02 - 30);
         myClock02 = setInterval(moveBackgroundRight, mySpeed02);
-    }">Auto Right Faster</button>
+    }">Auto Background Right Faster</button>
     <button onclick="{
         clearInterval(myClock02);
         mySpeed02 += 30;
         myClock02 = setInterval(moveBackgroundRight, mySpeed02);
-    }">Auto Right Slower</button>
+    }">Auto Background Right Slower</button>
 </div>
 
 <!-- Vertical Movement Section -->
 <div class="button-section">
     <h2>Vertical Movement</h2>
-    <button onclick="moveBackgroundUp()">Move Up</button>
+    <button onclick="moveBackgroundUp()">Move Background Up</button>
     <button onclick="{
         clearInterval(myClock04);
         mySpeedUp = Math.max(10, mySpeedUp - 30);
         myClock04 = setInterval(moveBackgroundUp, mySpeedUp);
-    }">Auto Up Faster</button>
+    }">Auto Background Up Faster</button>
     <button onclick="{
         clearInterval(myClock04);
         mySpeedUp += 30;
         myClock04 = setInterval(moveBackgroundUp, mySpeedUp);
-    }">Auto Up Slower</button>
-    <button onclick="moveBackgroundDown()">Move Down</button>
+    }">Auto Background Up Slower</button>
+    <button onclick="moveBackgroundDown()">Move Background Down</button>
     <button onclick="{
         clearInterval(myClock05);
         mySpeedDown = Math.max(10, mySpeedDown - 30);
         myClock05 = setInterval(moveBackgroundDown, mySpeedDown);
-    }">Auto Down Faster</button>
+    }">Auto Background Down Faster</button>
     <button onclick="{
         clearInterval(myClock05);
         mySpeedDown += 30;
         myClock05 = setInterval(moveBackgroundDown, mySpeedDown);
-    }">Auto Down Slower</button>
+    }">Auto Background Down Slower</button>
 </div>
 
 <!-- Image Movement Section -->
 <div class="button-section">
     <h2>Image Movement</h2>
+    <button onclick="moveImageLeft()">Move Image Left</button>
     <button onclick="moveImageRight()">Move Image Right</button>
     <button onclick="{
-        clearInterval(myClock03);
-        myClock03 = setInterval(moveImageRight, 30);
-    }">Auto Move Image Right</button>
+        clearInterval(imgClock01);
+        imgSpeedLeft = Math.max(10, imgSpeedLeft - 30);
+        imgClock01 = setInterval(moveImageLeft, imgSpeedLeft);
+    }">Auto Image Left Faster</button>
+    <button onclick="{
+        clearInterval(imgClock01);
+        imgSpeedLeft += 30;
+        imgClock01 = setInterval(moveImageLeft, imgSpeedLeft);
+    }">Auto Image Left Slower</button>
+    <button onclick="{
+        clearInterval(imgClock02);
+        imgSpeedRight = Math.max(10, imgSpeedRight - 30);
+        imgClock02 = setInterval(moveImageRight, imgSpeedRight);
+    }">Auto Image Right Faster</button>
+    <button onclick="{
+        clearInterval(imgClock02);
+        imgSpeedRight += 30;
+        imgClock02 = setInterval(moveImageRight, imgSpeedRight);
+    }">Auto Image Right Slower</button>
+    <button onclick="moveImageUp()">Move Image Up</button>
+    <button onclick="{
+        clearInterval(imgClock04);
+        imgSpeedUp = Math.max(10, imgSpeedUp - 30);
+        imgClock04 = setInterval(moveImageUp, imgSpeedUp);
+    }">Auto Image Up Faster</button>
+    <button onclick="{
+        clearInterval(imgClock04);
+        imgSpeedUp += 30;
+        imgClock04 = setInterval(moveImageUp, imgSpeedUp);
+    }">Auto Image Up Slower</button>
+    <button onclick="moveImageDown()">Move Image Down</button>
+    <button onclick="{
+        clearInterval(imgClock05);
+        imgSpeedDown = Math.max(10, imgSpeedDown - 30);
+        imgClock05 = setInterval(moveImageDown, imgSpeedDown);
+    }">Auto Image Down Faster</button>
+    <button onclick="{
+        clearInterval(imgClock05);
+        imgSpeedDown += 30;
+        imgClock05 = setInterval(moveImageDown, imgSpeedDown);
+    }">Auto Image Down Slower</button>
+</div>
+
+<!-- Reset Button -->
+<div class="button-section">
+    <button onclick="resetPositions()">Reset Positions</button>
 </div>
 
 <!-- Image Element -->
