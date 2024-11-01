@@ -1,49 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move Background and Image</title>
+</head>
 <body id="myBody" style="background-repeat: repeat; background-size: 80%; background-image: url('myBackground.jpg');">
 <script>
-   let myGlobalX = 0;
-   let myClock01;
-   let myClock02;
-   let mySpeed01 = 400;
+    let myGlobalX = 0; // Global variable for background position
+    let myClock01; // Timer for automatic background movement
+    let myClock02; // Timer for automatic image movement
+    let mySpeed01 = 400; // Speed for background movement
+
+    // Function to move the background to the left
+    function moveBackgroundLeft() {
+        myGlobalX -= 5; // Decrease global X value
+        let myTemp = myGlobalX + 'px 0px'; // Set new background position
+        document.getElementById('myBody').style.backgroundPosition = myTemp; // Apply new position
+    }
+
+    // Function to move the image to the right
+    function moveImageRight() {
+        let imgElement = document.getElementById('myImage01');
+        let currentLeft = parseInt(imgElement.style.left || '0'); // Get current left position
+        imgElement.style.left = (currentLeft + 10) + 'px'; // Move image to the right
+    }
 </script>
 
 <h1 align="center">t2a19-move-background-fred.html</h1>
 
-<input id="myButton01" type="button" value="Background Move Left" onclick="{
-  myGlobalX -= 5;
-  let myTemp = myGlobalX + 'px 0px';
-  document.getElementById('myBody').style.backgroundPosition = myTemp;
-}">
+<!-- Button to move the background left -->
+<input id="myButton01" type="button" value="Background Move Left" onclick="moveBackgroundLeft()">
 
+<!-- Button for automatic background movement, faster -->
 <input type="button" value="Auto Background Left Faster" onclick="{
-  clearInterval(myClock01);
-  mySpeed01 -= 30;
-  if (mySpeed01 < 10) { mySpeed01 = 10; }
-  myClock01 = setInterval(function() {
-     document.getElementById('myButton01').click();
-  }, mySpeed01);
+    clearInterval(myClock01);
+    mySpeed01 -= 30;
+    if (mySpeed01 < 10) { mySpeed01 = 10; }
+    myClock01 = setInterval(moveBackgroundLeft, mySpeed01);
 }">
 
+<!-- Button for automatic background movement, slower -->
 <input type="button" value="Auto Background Left Slower" onclick="{
-  clearInterval(myClock01);
-  mySpeed01 += 30;
-  if (mySpeed01 > 1000) { mySpeed01 = 1000; }
-  myClock01 = setInterval(function() {
-     document.getElementById('myButton01').click();
-  }, mySpeed01);
+    clearInterval(myClock01);
+    mySpeed01 += 30;
+    if (mySpeed01 > 1000) { mySpeed01 = 1000; }
+    myClock01 = setInterval(moveBackgroundLeft, mySpeed01);
 }">
 
-<input type="button" id="myButton02" value="Image Right" onclick="{
-  document.getElementById('myImage01').style.left = 
-  parseInt(document.getElementById('myImage01').style.left || '0') + 10 + 'px';
-}"><br><br>
+<!-- Button to move the image to the right -->
+<input type="button" id="myButton02" value="Image Right" onclick="moveImageRight();"><br><br>
 
+<!-- Button for automatic movement of the image to the left -->
 <input type="button" value="Auto Move Left" onclick="{
-  clearInterval(myClock02);
-  myClock02 = setInterval(function() {
-    document.getElementById('myButton02').click();
-  }, 30);
+    clearInterval(myClock02);
+    myClock02 = setInterval(moveImageRight, 30);
 }">
 
+<!-- Image element with specified source -->
 <img id="myImage01" style="position: relative; width: 100px; height: 80px; top: 0px; left: 0px;" 
 src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
 </body>
+</html>
