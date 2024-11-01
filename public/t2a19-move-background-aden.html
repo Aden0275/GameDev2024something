@@ -42,17 +42,20 @@
     let myGlobalY = 0; // Global variable for background vertical position
     let imgGlobalX = 0; // Global variable for image horizontal position
     let imgGlobalY = 200; // Global variable for image vertical position (original position)
-    
+
     // Original positions
     const originalBackgroundX = 0; // Original horizontal position for the background
     const originalBackgroundY = 0; // Original vertical position for the background
     const originalImageX = 0; // Original horizontal position for the image
     const originalImageY = 200; // Original vertical position for the image
-    
+
     // Timer variables
     let myClock01, myClock02, myClock03, myClock04, myClock05, imgClock01, imgClock02, imgClock04, imgClock05; 
     let mySpeed01 = 400, mySpeed02 = 400, mySpeedUp = 400, mySpeedDown = 400; // Background speeds
     let imgSpeedLeft = 400, imgSpeedRight = 400, imgSpeedUp = 400, imgSpeedDown = 400; // Image speeds
+
+    // Control state
+    let controlMode = 'image'; // Start with the image being controlled
 
     // Background movement functions
     function moveBackgroundLeft() {
@@ -122,37 +125,67 @@
     // Reset function
     function resetPositions() {
         clearAllIntervals();  // Stop any auto movement
-        
+
         myGlobalX = originalBackgroundX;
         myGlobalY = originalBackgroundY;
         imgGlobalX = originalImageX;
         imgGlobalY = originalImageY;
-        
+
         updateBackgroundPosition();
         updateImagePosition();
     }
 
+    // Switch control between the image and background
+    function toggleControl() {
+        controlMode = controlMode === 'image' ? 'background' : 'image';
+        const controlLabel = document.getElementById('controlLabel');
+        controlLabel.textContent = `Control Mode: ${controlMode.charAt(0).toUpperCase() + controlMode.slice(1)}`;
+    }
+
     // Keydown event handler for arrow keys
     document.addEventListener('keydown', function(event) {
-        switch(event.key) {
-            case 'ArrowLeft':
-                moveImageLeft();
-                break;
-            case 'ArrowRight':
-                moveImageRight();
-                break;
-            case 'ArrowUp':
-                moveImageUp();
-                break;
-            case 'ArrowDown':
-                moveImageDown();
-                break;
+        if (controlMode === 'image') {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    moveImageLeft();
+                    break;
+                case 'ArrowRight':
+                    moveImageRight();
+                    break;
+                case 'ArrowUp':
+                    moveImageUp();
+                    break;
+                case 'ArrowDown':
+                    moveImageDown();
+                    break;
+            }
+        } else if (controlMode === 'background') {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    moveBackgroundLeft();
+                    break;
+                case 'ArrowRight':
+                    moveBackgroundRight();
+                    break;
+                case 'ArrowUp':
+                    moveBackgroundUp();
+                    break;
+                case 'ArrowDown':
+                    moveBackgroundDown();
+                    break;
+            }
         }
     });
 
 </script>
 
 <h1>Move Background and Image</h1>
+
+<!-- Control Toggle Section -->
+<div class="button-section">
+    <button onclick="toggleControl()">Toggle Control (Image/Background)</button>
+    <p id="controlLabel">Control Mode: Image</p>
+</div>
 
 <!-- Horizontal Movement Section -->
 <div class="button-section">
