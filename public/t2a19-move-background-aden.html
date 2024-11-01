@@ -25,9 +25,12 @@
     let myGlobalX = 0; // Global variable for background position
     let myClock01; // Timer for automatic background movement to the left
     let myClock02; // Timer for automatic background movement to the right
-    let myClock03; // Timer for automatic image movement
+    let myClock03; // Timer for automatic image horizontal movement
+    let myClockUp; // Timer for automatic image upward movement
+    let myClockDown; // Timer for automatic image downward movement
     let mySpeed01 = 400; // Speed for background movement to the left
     let mySpeed02 = 400; // Speed for background movement to the right
+    let mySpeedUpDown = 30; // Speed for vertical movement of the image
 
     // Function to move the background to the left
     function moveBackgroundLeft() {
@@ -48,6 +51,20 @@
         let imgElement = document.getElementById('myImage01');
         let currentLeft = parseInt(imgElement.style.left || '0'); // Get current left position
         imgElement.style.left = (currentLeft + 10) + 'px'; // Move image to the right
+    }
+
+    // Function to move the image up
+    function moveImageUp() {
+        let imgElement = document.getElementById('myImage01');
+        let currentTop = parseInt(imgElement.style.top || '0'); // Get current top position
+        imgElement.style.top = (currentTop - 10) + 'px'; // Move image up
+    }
+
+    // Function to move the image down
+    function moveImageDown() {
+        let imgElement = document.getElementById('myImage01');
+        let currentTop = parseInt(imgElement.style.top || '0'); // Get current top position
+        imgElement.style.top = (currentTop + 10) + 'px'; // Move image down
     }
 </script>
 
@@ -98,7 +115,47 @@
 <input type="button" value="Auto Move Right" onclick="{
     clearInterval(myClock03);
     myClock03 = setInterval(moveImageRight, 30);
+}"><br><br>
+
+<!-- Add buttons for moving the image up and down -->
+<input type="button" value="Image Up" onclick="moveImageUp();">
+<input type="button" value="Image Down" onclick="moveImageDown();"><br><br>
+
+<!-- Button for automatic upward movement of the image -->
+<input type="button" value="Auto Move Up" onclick="{
+    clearInterval(myClockUp);
+    myClockUp = setInterval(moveImageUp, mySpeedUpDown);
 }">
+
+<!-- Button for automatic downward movement of the image -->
+<input type="button" value="Auto Move Down" onclick="{
+    clearInterval(myClockDown);
+    myClockDown = setInterval(moveImageDown, mySpeedUpDown);
+}"><br><br>
+
+<!-- Button to increase speed of the auto move up -->
+<input type="button" value="Auto Up Faster" onclick="{
+    mySpeedUpDown -= 5;
+    if (mySpeedUpDown < 5) { mySpeedUpDown = 5; }
+}">
+
+<!-- Button to decrease speed of the auto move up -->
+<input type="button" value="Auto Up Slower" onclick="{
+    mySpeedUpDown += 5;
+    if (mySpeedUpDown > 1000) { mySpeedUpDown = 1000; }
+}"><br><br>
+
+<!-- Button to increase speed of the auto move down -->
+<input type="button" value="Auto Down Faster" onclick="{
+    mySpeedUpDown -= 5;
+    if (mySpeedUpDown < 5) { mySpeedUpDown = 5; }
+}">
+
+<!-- Button to decrease speed of the auto move down -->
+<input type="button" value="Auto Down Slower" onclick="{
+    mySpeedUpDown += 5;
+    if (mySpeedUpDown > 1000) { mySpeedUpDown = 1000; }
+}"><br><br>
 
 <!-- Image element with the old specified source -->
 <img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
