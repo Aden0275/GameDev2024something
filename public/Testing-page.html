@@ -53,6 +53,9 @@
     let mySpeed01 = 400, mySpeed02 = 400, mySpeedUp = 400, mySpeedDown = 400; // Background speeds
     let imgSpeedLeft = 400, imgSpeedRight = 400, imgSpeedUp = 400, imgSpeedDown = 400; // Image speeds
 
+    // Control state
+    let controlMode = 'image'; // Start with the image being controlled
+
     // Background movement functions
     function moveBackgroundLeft() {
         myGlobalX -= 5;
@@ -131,27 +134,55 @@
         updateImagePosition();
     }
 
+    // Switch control between the image and background
+    function toggleControl() {
+        controlMode = controlMode === 'image' ? 'background' : 'image';
+        alert(`Control switched to: ${controlMode}`);
+    }
+
     // Keydown event handler for arrow keys
     document.addEventListener('keydown', function(event) {
-        switch(event.key) {
-            case 'ArrowLeft':
-                moveImageLeft();
-                break;
-            case 'ArrowRight':
-                moveImageRight();
-                break;
-            case 'ArrowUp':
-                moveImageUp();
-                break;
-            case 'ArrowDown':
-                moveImageDown();
-                break;
+        if (controlMode === 'image') {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    moveImageLeft();
+                    break;
+                case 'ArrowRight':
+                    moveImageRight();
+                    break;
+                case 'ArrowUp':
+                    moveImageUp();
+                    break;
+                case 'ArrowDown':
+                    moveImageDown();
+                    break;
+            }
+        } else if (controlMode === 'background') {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    moveBackgroundLeft();
+                    break;
+                case 'ArrowRight':
+                    moveBackgroundRight();
+                    break;
+                case 'ArrowUp':
+                    moveBackgroundUp();
+                    break;
+                case 'ArrowDown':
+                    moveBackgroundDown();
+                    break;
+            }
         }
     });
 
 </script>
 
 <h1>Move Background and Image</h1>
+
+<!-- Control Toggle Section -->
+<div class="button-section">
+    <button onclick="toggleControl()">Toggle Control (Image/Background)</button>
+</div>
 
 <!-- Horizontal Movement Section -->
 <div class="button-section">
