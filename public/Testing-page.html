@@ -20,7 +20,7 @@
             width: 100px; 
             height: 80px; 
             z-index: 10; 
-            top: 200px;  /* Initial top position for the image */
+            top: 200px;  /* Adjust this value as needed */
             left: 0;  /* Initial left position for the image */
         }
         .button-section {
@@ -196,14 +196,8 @@
         imgSpeedDown = Math.max(10, imgSpeedDown - 30);
         imgClock05 = setInterval(moveImageDown, imgSpeedDown);
     }">Auto Image Down Faster</button>
-    <button onclick="{
-        clearInterval(imgClock05);
-        imgSpeedDown += 30;
-        imgClock05 = setInterval(moveImageDown, imgSpeedDown);
-    }">Auto Image Down Slower</button>
+    <!-- Image Element moved below the last button -->
+    <img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
 </div>
-
-<!-- Image Element -->
-<img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
 </body>
 </html>
