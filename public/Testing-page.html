@@ -16,10 +16,12 @@
             overflow: hidden;             /* Prevents scrollbar from appearing */
         }
         #myImage01 {
-            position: relative; 
+            position: absolute; 
             width: 100px; 
             height: 80px; 
             z-index: 10; 
+            top: 200px;  /* Initial top position for the image */
+            left: 0;  /* Initial left position for the image */
         }
         .button-section {
             margin: 20px 0;
@@ -94,10 +96,6 @@
         imgElement.style.top = `${imgGlobalY}px`;
     }
 
-    // Move image to the right (single movement)
-    function singleMoveImageRight() {
-        moveImageRight();
-    }
 </script>
 
 <h1>Move Background and Image</h1>
@@ -206,6 +204,6 @@
 </div>
 
 <!-- Image Element -->
-<img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP" style="position:absolute; top:0; left:0;">
+<img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
 </body>
 </html>
