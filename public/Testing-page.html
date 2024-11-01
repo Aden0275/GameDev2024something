@@ -41,13 +41,13 @@
     let myGlobalY = 0; // Global variable for background vertical position
     let imgGlobalX = 0; // Global variable for image horizontal position
     let imgGlobalY = 200; // Global variable for image vertical position (original position)
-    
+
     // Original positions
     const originalBackgroundX = 0; // Original horizontal position for the background
     const originalBackgroundY = 0; // Original vertical position for the background
     const originalImageX = 0; // Original horizontal position for the image
     const originalImageY = 200; // Original vertical position for the image
-    
+
     // Timer variables
     let myClock01, myClock02, myClock03, myClock04, myClock05, imgClock01, imgClock02, imgClock04, imgClock05; 
     let mySpeed01 = 400, mySpeed02 = 400, mySpeedUp = 400, mySpeedDown = 400; // Background speeds
@@ -124,12 +124,12 @@
     // Reset function
     function resetPositions() {
         clearAllIntervals();  // Stop any auto movement
-        
+
         myGlobalX = originalBackgroundX;
         myGlobalY = originalBackgroundY;
         imgGlobalX = originalImageX;
         imgGlobalY = originalImageY;
-        
+
         updateBackgroundPosition();
         updateImagePosition();
     }
@@ -137,7 +137,8 @@
     // Switch control between the image and background
     function toggleControl() {
         controlMode = controlMode === 'image' ? 'background' : 'image';
-        alert(`Control switched to: ${controlMode}`);
+        const controlLabel = document.getElementById('controlLabel');
+        controlLabel.textContent = `Control Mode: ${controlMode.charAt(0).toUpperCase() + controlMode.slice(1)}`;
     }
 
     // Keydown event handler for arrow keys
@@ -182,6 +183,7 @@
 <!-- Control Toggle Section -->
 <div class="button-section">
     <button onclick="toggleControl()">Toggle Control (Image/Background)</button>
+    <p id="controlLabel">Control Mode: Image</p>
 </div>
 
 <!-- Horizontal Movement Section -->
