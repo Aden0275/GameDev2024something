@@ -41,11 +41,15 @@
     let myGlobalY = 0; // Global variable for background vertical position
     let imgGlobalX = 0; // Global variable for image horizontal position
     let imgGlobalY = 200; // Global variable for image vertical position (original position)
+    
+    // Original positions
     const originalBackgroundX = 0; // Original horizontal position for the background
     const originalBackgroundY = 0; // Original vertical position for the background
     const originalImageX = 0; // Original horizontal position for the image
     const originalImageY = 200; // Original vertical position for the image
-    let myClock01, myClock02, myClock03, myClock04, myClock05, imgClock01, imgClock02, imgClock04, imgClock05; // Timers
+    
+    // Timer variables
+    let myClock01, myClock02, myClock03, myClock04, myClock05, imgClock01, imgClock02, imgClock04, imgClock05; 
     let mySpeed01 = 400, mySpeed02 = 400, mySpeedUp = 400, mySpeedDown = 400; // Background speeds
     let imgSpeedLeft = 400, imgSpeedRight = 400, imgSpeedUp = 400, imgSpeedDown = 400; // Image speeds
 
@@ -101,8 +105,23 @@
         imgElement.style.top = `${imgGlobalY}px`;
     }
 
+    // Clear all intervals
+    function clearAllIntervals() {
+        clearInterval(myClock01);
+        clearInterval(myClock02);
+        clearInterval(myClock03);
+        clearInterval(myClock04);
+        clearInterval(myClock05);
+        clearInterval(imgClock01);
+        clearInterval(imgClock02);
+        clearInterval(imgClock04);
+        clearInterval(imgClock05);
+    }
+
     // Reset function
     function resetPositions() {
+        clearAllIntervals();  // Stop any auto movement
+        
         myGlobalX = originalBackgroundX;
         myGlobalY = originalBackgroundY;
         imgGlobalX = originalImageX;
