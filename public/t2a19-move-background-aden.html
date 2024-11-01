@@ -22,27 +22,45 @@
 </head>
 <body id="myBody">
 <script>
-    let myGlobalX = 0; // Global variable for background position
+    let myGlobalX = 0; // Global variable for background horizontal position
+    let myGlobalY = 0; // Global variable for background vertical position
     let myClock01; // Timer for automatic background movement to the left
     let myClock02; // Timer for automatic background movement to the right
-    let myClock03; // Timer for automatic image horizontal movement
-    let myClockUp; // Timer for automatic image upward movement
-    let myClockDown; // Timer for automatic image downward movement
+    let myClock04; // Timer for automatic background movement up
+    let myClock05; // Timer for automatic background movement down
+    let myClock03; // Timer for automatic image movement
     let mySpeed01 = 400; // Speed for background movement to the left
     let mySpeed02 = 400; // Speed for background movement to the right
-    let mySpeedUpDown = 30; // Speed for vertical movement of the image
+    let mySpeedUp = 400; // Speed for moving the background up
+    let mySpeedDown = 400; // Speed for moving the background down
 
     // Function to move the background to the left
     function moveBackgroundLeft() {
         myGlobalX -= 5; // Decrease global X value
-        let myTemp = myGlobalX + 'px 0px'; // Set new background position
-        document.getElementById('myBody').style.backgroundPosition = myTemp; // Apply new position
+        updateBackgroundPosition();
     }
 
     // Function to move the background to the right
     function moveBackgroundRight() {
         myGlobalX += 5; // Increase global X value
-        let myTemp = myGlobalX + 'px 0px'; // Set new background position
+        updateBackgroundPosition();
+    }
+
+    // Function to move the background up
+    function moveBackgroundUp() {
+        myGlobalY -= 5; // Decrease global Y value
+        updateBackgroundPosition();
+    }
+
+    // Function to move the background down
+    function moveBackgroundDown() {
+        myGlobalY += 5; // Increase global Y value
+        updateBackgroundPosition();
+    }
+
+    // Function to update the background position based on X and Y coordinates
+    function updateBackgroundPosition() {
+        let myTemp = myGlobalX + 'px ' + myGlobalY + 'px'; 
         document.getElementById('myBody').style.backgroundPosition = myTemp; // Apply new position
     }
 
@@ -52,55 +70,31 @@
         let currentLeft = parseInt(imgElement.style.left || '0'); // Get current left position
         imgElement.style.left = (currentLeft + 10) + 'px'; // Move image to the right
     }
-
-    // Function to move the image up
-    function moveImageUp() {
-        let imgElement = document.getElementById('myImage01');
-        let currentTop = parseInt(imgElement.style.top || '0'); // Get current top position
-        imgElement.style.top = (currentTop - 10) + 'px'; // Move image up
-    }
-
-    // Function to move the image down
-    function moveImageDown() {
-        let imgElement = document.getElementById('myImage01');
-        let currentTop = parseInt(imgElement.style.top || '0'); // Get current top position
-        imgElement.style.top = (currentTop + 10) + 'px'; // Move image down
-    }
 </script>
 
 <h1 align="center">Move Background and Image</h1>
 
-<!-- Button to move the background left -->
+<!-- Horizontal Movement Buttons -->
 <input id="myButton01" type="button" value="Background Move Left" onclick="moveBackgroundLeft()">
-
-<!-- Button for automatic background movement to the left, faster -->
 <input type="button" value="Auto Background Left Faster" onclick="{
     clearInterval(myClock01);
     mySpeed01 -= 30;
     if (mySpeed01 < 10) { mySpeed01 = 10; }
     myClock01 = setInterval(moveBackgroundLeft, mySpeed01);
 }">
-
-<!-- Button for automatic background movement to the left, slower -->
 <input type="button" value="Auto Background Left Slower" onclick="{
     clearInterval(myClock01);
     mySpeed01 += 30;
     if (mySpeed01 > 1000) { mySpeed01 = 1000; }
     myClock01 = setInterval(moveBackgroundLeft, mySpeed01);
 }">
-
-<!-- Button to move the background right -->
 <input id="myButton02" type="button" value="Background Move Right" onclick="moveBackgroundRight()">
-
-<!-- Button for automatic background movement to the right, faster -->
 <input type="button" value="Auto Background Right Faster" onclick="{
     clearInterval(myClock02);
     mySpeed02 -= 30;
     if (mySpeed02 < 10) { mySpeed02 = 10; }
     myClock02 = setInterval(moveBackgroundRight, mySpeed02);
 }">
-
-<!-- Button for automatic background movement to the right, slower -->
 <input type="button" value="Auto Background Right Slower" onclick="{
     clearInterval(myClock02);
     mySpeed02 += 30;
@@ -108,56 +102,42 @@
     myClock02 = setInterval(moveBackgroundRight, mySpeed02);
 }">
 
-<!-- Button to move the image to the right -->
-<input type="button" id="myButton03" value="Image Right" onclick="moveImageRight();"><br><br>
+<!-- Vertical Movement Buttons -->
+<input id="myButton03" type="button" value="Background Move Up" onclick="moveBackgroundUp()">
+<input type="button" value="Auto Background Up Faster" onclick="{
+    clearInterval(myClock04);
+    mySpeedUp -= 30;
+    if (mySpeedUp < 10) { mySpeedUp = 10; }
+    myClock04 = setInterval(moveBackgroundUp, mySpeedUp);
+}">
+<input type="button" value="Auto Background Up Slower" onclick="{
+    clearInterval(myClock04);
+    mySpeedUp += 30;
+    if (mySpeedUp > 1000) { mySpeedUp = 1000; }
+    myClock04 = setInterval(moveBackgroundUp, mySpeedUp);
+}">
+<input id="myButton04" type="button" value="Background Move Down" onclick="moveBackgroundDown()">
+<input type="button" value="Auto Background Down Faster" onclick="{
+    clearInterval(myClock05);
+    mySpeedDown -= 30;
+    if (mySpeedDown < 10) { mySpeedDown = 10; }
+    myClock05 = setInterval(moveBackgroundDown, mySpeedDown);
+}">
+<input type="button" value="Auto Background Down Slower" onclick="{
+    clearInterval(myClock05);
+    mySpeedDown += 30;
+    if (mySpeedDown > 1000) { mySpeedDown = 1000; }
+    myClock05 = setInterval(moveBackgroundDown, mySpeedDown);
+}">
 
-<!-- Button for automatic movement of the image to the right -->
+<!-- Image Movement -->
+<input type="button" id="myButton06" value="Image Right" onclick="moveImageRight();"><br><br>
 <input type="button" value="Auto Move Right" onclick="{
     clearInterval(myClock03);
     myClock03 = setInterval(moveImageRight, 30);
-}"><br><br>
-
-<!-- Add buttons for moving the image up and down -->
-<input type="button" value="Image Up" onclick="moveImageUp();">
-<input type="button" value="Image Down" onclick="moveImageDown();"><br><br>
-
-<!-- Button for automatic upward movement of the image -->
-<input type="button" value="Auto Move Up" onclick="{
-    clearInterval(myClockUp);
-    myClockUp = setInterval(moveImageUp, mySpeedUpDown);
 }">
 
-<!-- Button for automatic downward movement of the image -->
-<input type="button" value="Auto Move Down" onclick="{
-    clearInterval(myClockDown);
-    myClockDown = setInterval(moveImageDown, mySpeedUpDown);
-}"><br><br>
-
-<!-- Button to increase speed of the auto move up -->
-<input type="button" value="Auto Up Faster" onclick="{
-    mySpeedUpDown -= 5;
-    if (mySpeedUpDown < 5) { mySpeedUpDown = 5; }
-}">
-
-<!-- Button to decrease speed of the auto move up -->
-<input type="button" value="Auto Up Slower" onclick="{
-    mySpeedUpDown += 5;
-    if (mySpeedUpDown > 1000) { mySpeedUpDown = 1000; }
-}"><br><br>
-
-<!-- Button to increase speed of the auto move down -->
-<input type="button" value="Auto Down Faster" onclick="{
-    mySpeedUpDown -= 5;
-    if (mySpeedUpDown < 5) { mySpeedUpDown = 5; }
-}">
-
-<!-- Button to decrease speed of the auto move down -->
-<input type="button" value="Auto Down Slower" onclick="{
-    mySpeedUpDown += 5;
-    if (mySpeedUpDown > 1000) { mySpeedUpDown = 1000; }
-}"><br><br>
-
-<!-- Image element with the old specified source -->
+<!-- Image element -->
 <img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
 </body>
 </html>
