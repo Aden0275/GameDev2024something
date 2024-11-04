@@ -11,14 +11,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            height: 100vh;
+            background: linear-gradient(to right, #ff5733, #ffbd33, #33c6ff);
             margin: 0;
-            background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
+            padding: 20px;
+            color: #fff;
         }
         h1 {
-            color: #ffffff;
+            color: #fff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
         textarea {
@@ -28,12 +28,14 @@
             height: 80px;
             font-size: 16px;
             padding: 10px;
-            border-radius: 5px;
             border: none;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-            resize: none;
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #333;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            resize: none; /* Prevent resizing */
+        }
+        textarea:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
         input[type=button] {
             padding: 10px 15px;
@@ -42,21 +44,21 @@
             cursor: pointer;
             border: none;
             border-radius: 5px;
-            background-color: #007BFF;
-            color: white;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: background-color 0.2s, transform 0.2s;
         }
         input[type=button]:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #333;
+            transform: scale(1.05);
         }
         .container {
-            max-width: 700px;
-            width: 90%;
+            max-width: 600px;
+            width: 100%;
+            margin: auto;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.6); /* Slightly darkened background for contrast */
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
