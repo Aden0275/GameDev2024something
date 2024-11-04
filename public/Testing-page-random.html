@@ -3,200 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Mario-like Game</title>
+    <title>Mario-like Game</title>
     <style>
         body {
             margin: 0;
-            background-color: #87CEEB; /* Sky Color */
+            overflow: hidden;
+            background-color: #87CEEB; /* Sky blue */
         }
 
-        #gameArea {
+        #game {
+            position: relative;
             width: 800px;
             height: 400px;
-            position: relative;
-            overflow: hidden;
             border: 2px solid #000;
-            background-color: #87CEEB; /* Sky Color */
+            background-color: #5C94FC; /* Game background color */
         }
 
-        #character {
-            width: 50px;
-            height: 50px;
+        #player {
+            width: 40px;
+            height: 60px;
+            background-color: #FF0000; /* Player color */
             position: absolute;
-            bottom: 50px; /* Start above ground */
-            background-image: url('https://example.com/character.png'); /* Replace with a character image URL */
-            background-size: cover;
+            bottom: 100px; /* Starting position above ground */
+            left: 50px;
         }
 
         .ground {
+            position: absolute;
             width: 100%;
-            height: 50px;
-            background-color: green; /* Ground Color */
-            position: absolute;
-            bottom: 0;
-        }
-
-        .obstacle {
-            width: 40px;
-            height: 40px;
-            background-color: brown; /* Obstacle Color */
-            position: absolute;
-            bottom: 50px;
-            animation: move 2s linear forwards; /* Animate obstacle */
-        }
-
-        @keyframes move {
-            to { left: -40px; }
-        }
-
-        .coin {
-            width: 20px;
             height: 20px;
-            background-color: gold; /* Coin Color */
-            border-radius: 50%; /* Make it circular */
-            position: absolute;
-            bottom: 100px; /* Above the ground */
-        }
-
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 24px;
-            color: black;
+            background-color: #654321; /* Ground color */
+            bottom: 0;
         }
     </style>
 </head>
 <body>
-    <div id="gameArea">
-        <div id="character"></div>
+    <div id="game">
+        <div id="player"></div>
         <div class="ground"></div>
-        <div id="score">Score: 0</div>
     </div>
-
     <script>
-        const character = document.getElementById('character');
-        const gameArea = document.getElementById('gameArea');
-        const scoreDisplay = document.getElementById('score');
-        const groundHeight = 50;
-        const characterHeight = 50;
+        const player = document.getElementById('player');
+        const gameArea = document.getElementById('game');
+
         let isJumping = false;
-        let position = 0;
-        let score = 0;
-        let gameOver = false;
+        let jumpHeight = 0;
 
-        // Function to make the character jump
-        function jump() {
-            if (isJumping || gameOver) return;
-            isJumping = true;
-
-            let jumpHeight = 0;
-            const jumpInterval = setInterval(() => {
-                if (jumpHeight >= 100) {
-                    clearInterval(jumpInterval);
-
-                    // Start falling
-                    const fallInterval = setInterval(() => {
-                        if (jumpHeight <= 0) {
-                            clearInterval(fallInterval);
-                            isJumping = false;
-                        }
-                        jumpHeight -= 4; // Control fall speed
-                        character.style.bottom = `${position + jumpHeight}px`;
-                    }, 20);
-                }
-                jumpHeight += 4; // Control jump speed
-                character.style.bottom = `${position + jumpHeight}px`;
-            }, 20);
-        }
-
-        // Function to create obstacles
-        function createObstacle() {
-            const obstacle = document.createElement('div');
-            obstacle.classList.add('obstacle');
-            obstacle.style.left = '800px'; // Start left position
-            gameArea.appendChild(obstacle);
-
-            const obstacleInterval = setInterval(() => {
-                const characterRect = character.getBoundingClientRect();
-                const obstacleRect = obstacle.getBoundingClientRect();
-
-                if (characterRect.right > obstacleRect.left &&
-                    characterRect.left < obstacleRect.right &&
-                    characterRect.bottom > obstacleRect.top) {
-                    clearInterval(obstacleInterval);
-                    endGame();
-                }
-
-                if (obstacleRect.left < 0) {
-                    clearInterval(obstacleInterval);
-                    gameArea.removeChild(obstacle);
-                }
-            }, 20);
-        }
-
-        // Function to create coins
-        function createCoin() {
-            const coin = document.createElement('div');
-            coin.classList.add('coin');
-            coin.style.left = Math.random() * (gameArea.clientWidth - 20) + 'px'; // Random position
-            gameArea.appendChild(coin);
-
-            const coinInterval = setInterval(() => {
-                const characterRect = character.getBoundingClientRect();
-                const coinRect = coin.getBoundingClientRect();
-
-                if (characterRect.right > coinRect.left &&
-                    characterRect.left < coinRect.right &&
-                    characterRect.bottom > coinRect.top) {
-                    score++;
-                    scoreDisplay.innerText = "Score: " + score;
-                    clearInterval(coinInterval);
-                    gameArea.removeChild(coin);
-                }
-
-                if (coinRect.bottom < 0) {
-                    clearInterval(coinInterval);
-                    gameArea.removeChild(coin);
-                }
-            }, 20);
-        }
-
-        // End game function
-        function endGame() {
-            gameOver = true;
-            alert("Game Over! Final Score: " + score);
-            resetGame();
-        }
-
-        // Reset game function
-        function resetGame() {
-            const obstacles = document.querySelectorAll('.obstacle');
-            obstacles.forEach(obstacle => gameArea.removeChild(obstacle));
-
-            const coins = document.querySelectorAll('.coin');
-            coins.forEach(coin => gameArea.removeChild(coin));
-
-            score = 0;
-            scoreDisplay.innerText = "Score: " + score;
-            character.style.bottom = '50px'; // Reset character position
-            gameOver = false; // Allow a new game to start
-        }
-
-        // Start the game
-        setInterval(() => {
-            if (!gameOver) {
-                createObstacle();
-                if (Math.random() < 0.5) createCoin(); // 50% chance to create a coin
-            }
-        }, 2000);
-
-        // Event listener for keyboard input
         document.addEventListener('keydown', (event) => {
-            if (event.code === 'Space') {
+            if (event.code === 'ArrowRight') {
+                moveRight();
+            } else if (event.code === 'ArrowLeft') {
+                moveLeft();
+            } else if (event.code === 'Space' && !isJumping) {
                 jump();
             }
         });
+
+        function moveRight() {
+            let left = parseInt(window.getComputedStyle(player).getPropertyValue('left'));
+            if (left < gameArea.clientWidth - 50) { // Keep within bounds
+                player.style.left = left + 5 + 'px';
+            }
+        }
+
+        function moveLeft() {
+            let left = parseInt(window.getComputedStyle(player).getPropertyValue('left'));
+            if (left > 0) { // Keep within bounds
+                player.style.left = left - 5 + 'px';
+            }
+        }
+
+        function jump() {
+            isJumping = true;
+            let jumpInterval = setInterval(() => {
+                if (jumpHeight >= 100) {
+                    clearInterval(jumpInterval);
+                    let downInterval = setInterval(() => {
+                        if (jumpHeight <= 0) {
+                            clearInterval(downInterval);
+                            isJumping = false;
+                        }
+                        jumpHeight -= 5;
+                        player.style.bottom = 100 + jumpHeight + 'px'; // Adjust height
+                    }, 20);
+                }
+                jumpHeight += 5;
+                player.style.bottom = 100 + jumpHeight + 'px'; // Adjust height
+            }, 20);
+        }
     </script>
 </body>
 </html>
