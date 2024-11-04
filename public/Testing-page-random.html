@@ -3,192 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Shapes Toggle</title>
+    <title>Simple Mario-like Game</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            perspective: 1000px;
+            margin: 0;
+            background-color: #87CEEB; /* Sky Color */
+        }
+
+        #gameArea {
+            width: 800px;
+            height: 400px;
+            position: relative;
             overflow: hidden;
+            border: 2px solid #000;
+            background-color: #87CEEB; /* Sky Color */
         }
 
-        .container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 20px; /* Space for the buttons */
-        }
-
-        .cube, .sphere, .pyramid {
+        #character {
+            width: 50px;
+            height: 50px;
             position: absolute;
-            width: 100px;
-            height: 100px;
-            transform-style: preserve-3d;
-            transition: transform 0.1s;
-            will-change: transform;
+            bottom: 50px; /* Start above ground */
+            background-color: red; /* Character color */
         }
 
-        /* Cube Styles */
-        .cube-face {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 0, 0, 0.8);
-            border: 1px solid #333;
-        }
-
-        .front { transform: translateZ(50px); }
-        .back { transform: rotateY(180deg) translateZ(50px); }
-        .left { transform: rotateY(-90deg) translateZ(50px); }
-        .right { transform: rotateY(90deg) translateZ(50px); }
-        .top { transform: rotateX(90deg) translateZ(50px); }
-        .bottom { transform: rotateX(-90deg) translateZ(50px); }
-
-        /* Sphere Styles */
-        .sphere {
-            border-radius: 50%;
-            background: rgba(0, 0, 255, 0.8);
-            position: relative; 
-        }
-
-        .sphere::before, .sphere::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            background: inherit;
-            top: 0;
-            left: 0;
-        }
-        
-        .sphere::before { transform: rotateX(90deg) translateZ(50px); }
-        .sphere::after { transform: rotateX(-90deg) translateZ(50px); }
-
-        /* Pyramid Styles */
-        .pyramid {
-            position: relative;
-            transform-style: preserve-3d;
-        }
-
-        .base {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: rgba(0, 255, 0, 0.8);
-            transform: rotateX(90deg) translateY(-50px);
-        }
-
-        .face {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-bottom: 80px solid rgba(255, 255, 0, 0.8);
-        }
-
-        .face1 { transform: rotateY(0deg) translateY(-50px); }
-        .face2 { transform: rotateY(120deg) translateY(-50px); }
-        .face3 { transform: rotateY(-120deg) translateY(-50px); }
-
-        /* Button Styles */
-        .button-container {
-            display: flex;
-            justify-content: space-around;
+        .ground {
             width: 100%;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 0 5px;
-        }
-
-        button:hover {
-            background-color: #ddd;
+            height: 50px;
+            background-color: green; /* Ground color */
+            position: absolute;
+            bottom: 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="cube" id="cube">
-            <div class="cube-face front"></div>
-            <div class="cube-face back"></div>
-            <div class="cube-face left"></div>
-            <div class="cube-face right"></div>
-            <div class="cube-face top"></div>
-            <div class="cube-face bottom"></div>
-        </div>
-
-        <div class="sphere" id="sphere" style="display: none;"></div>
-
-        <div class="pyramid" id="pyramid" style="display: none;">
-            <div class="base"></div>
-            <div class="face face1"></div>
-            <div class="face face2"></div>
-            <div class="face face3"></div>
-        </div>
+    <div id="gameArea">
+        <div id="character"></div>
+        <div class="ground"></div>
     </div>
-
-    <div class="button-container">
-        <button onclick="showShape('cube')">Show Cube</button>
-        <button onclick="showShape('sphere')">Show Sphere</button>
-        <button onclick="showShape('pyramid')">Show Pyramid</button>
-    </div>
-
     <script>
-        const cube = document.getElementById('cube');
-        const sphere = document.getElementById('sphere');
-        const pyramid = document.getElementById('pyramid');
+        const character = document.getElementById('character');
+        let isJumping = false;
+        let position = 0;
 
-        let rotationX = 0;
-        let rotationY = 0;
-        let currentShape = '';
+        // Function to make the character jump
+        function jump() {
+            if (isJumping) return;
+            isJumping = true;
 
-        document.addEventListener('mousemove', (event) => {
-            if (!currentShape) return; // Do nothing if no shape is selected
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
+            let jumpHeight = 0;
+            const jumpInterval = setInterval(() => {
+                if (jumpHeight >= 100) {
+                    clearInterval(jumpInterval);
+                    
+                    // Start falling
+                    const fallInterval = setInterval(() => {
+                        if (jumpHeight <= 0) {
+                            clearInterval(fallInterval);
+                            isJumping = false;
+                        }
+                        jumpHeight -= 4; // Control fall speed
+                        character.style.bottom = `${position + jumpHeight}px`;
+                    }, 20);
+                }
+                jumpHeight += 4; // Control jump speed
+                character.style.bottom = `${position + jumpHeight}px`;
+            }, 20);
+        }
 
-            rotationY = (event.clientX - centerX) / 10;
-            rotationX = (event.clientY - centerY) / 10;
-
-            // Apply transformations based on the selected shape
-            if (currentShape === 'cube') {
-                cube.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
-            }
-            if (currentShape === 'sphere') {
-                sphere.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
-            }
-            if (currentShape === 'pyramid') {
-                pyramid.style.transform = `rotateY(${rotationY}deg) rotateX(${-rotationX}deg)`;
+        // Listen for key presses to jump
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                jump();
             }
         });
-
-        function showShape(shape) {
-            // Hide all shapes
-            cube.style.display = 'none';
-            sphere.style.display = 'none';
-            pyramid.style.display = 'none';
-
-            // Show the selected shape
-            if (shape === 'cube') {
-                cube.style.display = 'block';
-                currentShape = 'cube';
-            } else if (shape === 'sphere') {
-                sphere.style.display = 'block';
-                currentShape = 'sphere';
-            } else if (shape === 'pyramid') {
-                pyramid.style.display = 'block';
-                currentShape = 'pyramid';
-            }
-        }
     </script>
 </body>
 </html>
