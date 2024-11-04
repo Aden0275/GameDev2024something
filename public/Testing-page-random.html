@@ -48,6 +48,8 @@
 
         let isJumping = false;
         let jumpHeight = 0;
+        let gravity = 5; // Adjust gravity speed
+        let playerBottom = 100; // Player's bottom position
 
         document.addEventListener('keydown', (event) => {
             if (event.code === 'ArrowRight') {
@@ -78,17 +80,27 @@
             let jumpInterval = setInterval(() => {
                 if (jumpHeight >= 100) {
                     clearInterval(jumpInterval);
-                    let downInterval = setInterval(() => {
-                        if (jumpHeight <= 0) {
-                            clearInterval(downInterval);
-                            isJumping = false;
-                        }
-                        jumpHeight -= 5;
-                        player.style.bottom = 100 + jumpHeight + 'px'; // Adjust height
-                    }, 20);
+                    fall();
+                } else {
+                    jumpHeight += 5;
+                    playerBottom += 5; // Raise player
+                    player.style.bottom = playerBottom + 'px';
                 }
-                jumpHeight += 5;
-                player.style.bottom = 100 + jumpHeight + 'px'; // Adjust height
+            }, 20);
+        }
+
+        function fall() {
+            let fallInterval = setInterval(() => {
+                if (playerBottom <= 100) {
+                    clearInterval(fallInterval);
+                    playerBottom = 100; // Reset to ground level
+                    player.style.bottom = playerBottom + 'px';
+                    isJumping = false;
+                    jumpHeight = 0;
+                } else {
+                    playerBottom -= gravity; // Apply gravity
+                    player.style.bottom = playerBottom + 'px';
+                }
             }, 20);
         }
     </script>
