@@ -6,7 +6,7 @@
     <title>Spy Name Encryptor</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace; /* Monospaced font */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -14,12 +14,14 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            background-color: #2c2c2c; /* Lighter background color */
-            color: #28a745; /* Green text color */
+            background-color: #1a1a1a; /* Dark background for a hacking feel */
+            color: #00ff00; /* Bright green text for a terminal look */
+            overflow: hidden;
         }
         h1 {
-            color: #28a745; /* Green color */
+            color: #00ff00; /* Bright green */
             margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8); /* Glowing effect */
         }
         textarea {
             margin: 10px 0;
@@ -28,34 +30,34 @@
             height: 80px;
             font-size: 16px;
             padding: 10px;
-            border: 1px solid white; /* Thin white border */
+            border: 1px solid #00ff00; /* Green border */
             border-radius: 5px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             resize: none;
-            color: #28a745; /* Green text color */
-            background-color: rgba(50, 50, 50, 0.8); /* Slightly transparent dark gray background */
+            color: #00ff00; /* Bright green text */
+            background-color: #2a2a2a; /* Dark gray for text area */
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
         }
         textarea::placeholder {
-            color: #90ee90; /* Lighter green for placeholder text */
+            color: rgba(0, 255, 0, 0.7); /* Dimmed placeholder color */
         }
         textarea:focus {
             outline: none;
-            box-shadow: 0 0 5px #28a745; /* Green glow effect */
+            box-shadow: 0 0 5px #00ff00; /* Green glow effect on focus */
         }
         input[type=button] {
             padding: 10px 15px;
             font-size: 16px;
             margin: 5px;
             cursor: pointer;
-            border: 1px solid white; /* Thin white border */
+            border: 1px solid #00ff00; /* Green border */
             border-radius: 5px;
-            background-color: #2c2c2c; /* Matching button background */
-            color: #28a745; /* Green button text */
+            background-color: #1a1a1a; /* Matching button background */
+            color: #00ff00; /* Bright green text */
             transition: background 0.3s, color 0.3s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 5px rgba(0, 255, 0, 0.5);
         }
         input[type=button]:hover {
-            background-color: #28a745; /* Change button background to green on hover */
+            background-color: #00ff00; /* Change button background to green on hover */
             color: black; /* Change button text to black */
         }
         .container {
@@ -63,9 +65,18 @@
             width: 100%;
             margin: auto;
             padding: 20px;
-            background-color: rgba(70, 70, 70, 0.9); /* Darker container for contrast */
+            background-color: rgba(20, 20, 20, 0.9); /* Darker container for contrast */
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            text-align: center; /* Centered text */
+        }
+        /* Terminal-style style for text */
+        .terminal {
+            display: inline-block;
+            border-left: 2px solid #00ff00; /* Left border to mimic terminal style */
+            padding-left: 10px;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -74,15 +85,21 @@
 <div class="container">
     <h1 align="center">Spy Name Encryptor</h1>
     
-    <textarea id="myArea01" placeholder="Enter your text here...">Hello how are you</textarea><br>
+    <div class="terminal">
+        <textarea id="myArea01" placeholder="Enter your text here...">Hello how are you</textarea>
+    </div><br>
 
     <input type="button" value="Encrypt" onclick="encryptText()"><br><br>
 
-    <textarea id="myArea02" placeholder="Your encrypted text will appear here..."></textarea><br>
+    <div class="terminal">
+        <textarea id="myArea02" placeholder="Your encrypted text will appear here..."></textarea>
+    </div><br>
 
     <input type="button" value="Decrypt" onclick="decryptText()"><br><br>
 
-    <textarea id="myArea03" placeholder="Your decrypted text will appear here..."></textarea><br>
+    <div class="terminal">
+        <textarea id="myArea03" placeholder="Your decrypted text will appear here..."></textarea>
+    </div><br>
 </div>
 
 <script>
