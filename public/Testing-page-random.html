@@ -24,8 +24,8 @@
             height: 50px;
             position: absolute;
             bottom: 50px; /* Start above ground */
-            background-color: red; /* Character color */
-            transition: bottom 0.1s;
+            background-image: url('https://example.com/character.png'); /* Replace with a character image URL */
+            background-size: cover;
         }
 
         .ground {
@@ -42,11 +42,10 @@
             background-color: brown; /* Obstacle Color */
             position: absolute;
             bottom: 50px;
-            animation: move 3s linear infinite;
+            animation: move 2s linear forwards; /* Animate obstacle */
         }
 
         @keyframes move {
-            from { left: 800px; }
             to { left: -40px; }
         }
 
@@ -79,13 +78,16 @@
         const character = document.getElementById('character');
         const gameArea = document.getElementById('gameArea');
         const scoreDisplay = document.getElementById('score');
+        const groundHeight = 50;
+        const characterHeight = 50;
         let isJumping = false;
         let position = 0;
         let score = 0;
+        let gameOver = false;
 
         // Function to make the character jump
         function jump() {
-            if (isJumping) return;
+            if (isJumping || gameOver) return;
             isJumping = true;
 
             let jumpHeight = 0;
@@ -112,11 +114,9 @@
         function createObstacle() {
             const obstacle = document.createElement('div');
             obstacle.classList.add('obstacle');
-            obstacle.style.bottom = '50px'; // Start height
             obstacle.style.left = '800px'; // Start left position
             gameArea.appendChild(obstacle);
 
-            // Check for collision with character
             const obstacleInterval = setInterval(() => {
                 const characterRect = character.getBoundingClientRect();
                 const obstacleRect = obstacle.getBoundingClientRect();
@@ -124,12 +124,10 @@
                 if (characterRect.right > obstacleRect.left &&
                     characterRect.left < obstacleRect.right &&
                     characterRect.bottom > obstacleRect.top) {
-                    alert("Game Over! Final Score: " + score);
                     clearInterval(obstacleInterval);
-                    resetGame();
+                    endGame();
                 }
 
-                // Remove the obstacle if it goes off screen
                 if (obstacleRect.left < 0) {
                     clearInterval(obstacleInterval);
                     gameArea.removeChild(obstacle);
@@ -144,7 +142,6 @@
             coin.style.left = Math.random() * (gameArea.clientWidth - 20) + 'px'; // Random position
             gameArea.appendChild(coin);
 
-            // Check for collection
             const coinInterval = setInterval(() => {
                 const characterRect = character.getBoundingClientRect();
                 const coinRect = coin.getBoundingClientRect();
@@ -158,7 +155,6 @@
                     gameArea.removeChild(coin);
                 }
 
-                // Remove the coin if it goes off screen (optional, can adjust timing)
                 if (coinRect.bottom < 0) {
                     clearInterval(coinInterval);
                     gameArea.removeChild(coin);
@@ -166,28 +162,36 @@
             }, 20);
         }
 
-        // Function to reset the game
+        // End game function
+        function endGame() {
+            gameOver = true;
+            alert("Game Over! Final Score: " + score);
+            resetGame();
+        }
+
+        // Reset game function
         function resetGame() {
-            // Remove all obstacles and coins
             const obstacles = document.querySelectorAll('.obstacle');
             obstacles.forEach(obstacle => gameArea.removeChild(obstacle));
 
             const coins = document.querySelectorAll('.coin');
             coins.forEach(coin => gameArea.removeChild(coin));
 
-            // Reset score and character position
             score = 0;
             scoreDisplay.innerText = "Score: " + score;
-            character.style.bottom = '50px';
+            character.style.bottom = '50px'; // Reset character position
+            gameOver = false; // Allow a new game to start
         }
 
         // Start the game
         setInterval(() => {
-            createObstacle();
-            if (Math.random() < 0.5) createCoin(); // 50% chance to create a coin
+            if (!gameOver) {
+                createObstacle();
+                if (Math.random() < 0.5) createCoin(); // 50% chance to create a coin
+            }
         }, 2000);
 
-        // Listen for key presses to jump
+        // Event listener for keyboard input
         document.addEventListener('keydown', (event) => {
             if (event.code === 'Space') {
                 jump();
