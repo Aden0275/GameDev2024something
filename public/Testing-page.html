@@ -7,90 +7,75 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet"> <!-- Futuristic font -->
     <style>
         body {
-            font-family: 'Courier New', Courier, monospace; /* Monospaced font */
+            font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
             height: 100vh;
-            background-color: #0a0a0a; /* Dark background */
-            overflow: hidden;
+            background-color: #000; /* Solid black background */
             color: #00ff00; /* Bright green text */
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
             overflow: hidden;
         }
-        /* Background animation */
-        .background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://media.giphy.com/media/1YpBviytPKfTof5D8D/giphy.gif') center center / cover no-repeat; /* Background image */
-            filter: blur(4px);
-            z-index: 1; /* Behind all other content */
-        }
         .container {
-            position: relative; /* Allow layering */
-            z-index: 2; /* In front of the background */
-            background: rgba(20, 20, 20, 0.9); /* Semi-transparent dark background */
+            background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
             border-radius: 10px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Green glow around container */
             padding: 30px;
-            max-width: 600px;
-            width: 80%; /* Full width for smaller devices */
-            text-align: center; /* Center text */
+            max-width: 500px; /* Slightly smaller for sleekness */
+            width: 90%;
+            text-align: center;
         }
         h1 {
             font-family: 'Orbitron', sans-serif; /* Futuristic font */
-            color: #00ffcc; /* Neon color */
+            color: #00ffcc; /* Neon teal color */
             margin-bottom: 30px;
-            text-shadow: 0 0 20px rgba(0, 255, 204, 0.8); /* Glowing effect */
-            font-size: 2.5em; /* Larger font size */
+            text-shadow: 0 0 20px #00ffcc; /* Glowing text effect */
+            font-size: 2.5em;
         }
         textarea {
             width: 100%;
-            height: 100px; /* Increased height */
-            font-size: 18px; /* Larger font */
+            height: 100px; /* Increased height for better visibility */
+            font-size: 18px;
             padding: 10px;
-            border: 2px solid #00ffcc; /* Light green border */
+            border: 2px solid #00ffcc; /* Light teal border */
             border-radius: 5px;
-            resize: none;
-            color: #00ff00; /* Bright green text */
-            background-color: #1b1b1b; /* Darker area for contrast */
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5); /* Glowing effect */
+            color: #00ff00;
+            background-color: #1b1b1b; /* Very dark background for contrast */
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5); /* Teal glow effect */
             transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+            resize: none; /* Disable resize */
         }
         textarea::placeholder {
             color: rgba(0, 255, 204, 0.7); /* Dimmed placeholder color */
         }
         textarea:focus {
             outline: none;
-            border-color: #00ccff; /* Lighter glow when focused */
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.8); /* Bright glow on focus */
+            border-color: #00ccff; /* Lighter border on focus */
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.8); /* Enhanced glow */
         }
         input[type=button] {
-            padding: 12px 25px;
+            padding: 12px 20px;
             font-size: 16px;
             margin: 10px;
             cursor: pointer;
-            border: 2px solid #00ffcc; /* Light green border */
+            border: 2px solid #00ffcc; /* Light teal border */
             border-radius: 5px;
-            background-color: #1a1a1a; /* Matching background */
-            color: #00ffcc; /* Bright green text */
+            background-color: #1a1a1a; /* Matching dark background */
+            color: #00ffcc; /* Bright teal text */
             transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
-            box-shadow: 0 4px 20px rgba(0, 204, 255, 0.5); /* Glow effect */
+            box-shadow: 0 3px 10px rgba(0, 204, 255, 0.5); /* Box shadow */
         }
         input[type=button]:hover {
-            background-color: #00ffcc; /* Change button background on hover */
-            color: black; /* Button text changes to black */
-            transform: scale(1.1); /* Slightly enlarge button on hover */
-            box-shadow: 0 8px 30px rgba(0, 204, 255, 0.8); /* More pronounced glow on hover */
+            background-color: #00ffcc; /* Button background changes on hover */
+            color: black; /* Black text on hover */
+            transform: translateY(-2px); /* Lifting effect during hover */
+            box-shadow: 0 6px 20px rgba(0, 204, 255, 0.8); /* Enhanced shadow on hover */
         }
         .terminal {
             margin: 20px 0;
-            border-left: 2px solid #00ffcc; /* Left border to mimic terminal style */
+            border-left: 4px solid #00ffcc; /* Bold left border to mimic terminal */
             padding-left: 15px;
             text-align: left;
         }
@@ -103,30 +88,29 @@
             100% { opacity: 1; }
         }
         .glitch {
-            animation: glitch 2s infinite; /* Animate to mimic a glitch effect */
+            animation: glitch 2s infinite; /* Glitch animation for title */
         }
     </style>
 </head>
 <body>
 
-<div class="background"></div>  <!-- Background Animation -->
 <div class="container">
     <h1 class="glitch">Spy Name Encryptor</h1>
     
     <div class="terminal">
-        <textarea id="myArea01" placeholder="Enter your text here...">Hello how are you</textarea>
+        <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
     </div>
 
     <input type="button" value="Encrypt" onclick="encryptText()"><br>
 
     <div class="terminal">
-        <textarea id="myArea02" placeholder="Your encrypted text will appear here..."></textarea>
+        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." readonly></textarea>
     </div>
 
     <input type="button" value="Decrypt" onclick="decryptText()"><br>
 
     <div class="terminal">
-        <textarea id="myArea03" placeholder="Your decrypted text will appear here..."></textarea>
+        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." readonly></textarea>
     </div>
 </div>
 
