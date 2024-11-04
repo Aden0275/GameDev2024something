@@ -14,11 +14,11 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(to right, #4a00E0, #8E2DE2); /* Gradient background */
-            color: white;
+            background-color: black; /* Black background */
+            color: #28a745; /* Green text color */
         }
         h1 {
-            color: #fff;
+            color: #28a745; /* Green color */
             margin-bottom: 20px;
         }
         textarea {
@@ -30,17 +30,17 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             resize: none;
             color: #28a745; /* Green text color */
-            background-color: rgba(255, 255, 255, 0.1); /* Slight translucent background */
+            background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent background */
         }
         textarea::placeholder {
             color: #90ee90; /* Lighter green for placeholder text */
         }
         textarea:focus {
             outline: none;
-            box-shadow: 0 0 5px #fff;
+            box-shadow: 0 0 5px #28a745; /* Green glow effect */
         }
         input[type=button] {
             padding: 10px 15px;
@@ -49,22 +49,23 @@
             cursor: pointer;
             border: none;
             border-radius: 5px;
-            background-color: #fff;
-            color: #4a00E0;
+            background-color: black; /* Black button background */
+            color: #28a745; /* Green button text */
             transition: background 0.3s, color 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
         input[type=button]:hover {
-            background-color: #4a00E0;
-            color: #fff;
+            background-color: #28a745; /* Change button background to green on hover */
+            color: black; /* Change button text to black */
         }
         .container {
             max-width: 600px;
             width: 100%;
             margin: auto;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+            background-color: rgba(0, 0, 0, 0.9); /* Darker container */
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
         }
     </style>
 </head>
