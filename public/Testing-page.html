@@ -55,6 +55,12 @@
             border-color: #00ccff; /* Lighter border on focus */
             box-shadow: 0 0 15px rgba(0, 204, 255, 0.8); /* Enhanced glow */
         }
+        .glitch {
+            animation: glitch 1s infinite; /* Glitch animation for title */
+        }
+        .glitch-textarea {
+            animation: glitch 1s infinite; /* Glitch animation for text areas */
+        }
         input[type=button] {
             padding: 12px 20px;
             font-size: 16px;
@@ -80,15 +86,12 @@
             text-align: left;
         }
         @keyframes glitch {
-            0% { opacity: 1; }
-            20% { opacity: 0.8; }
-            40% { opacity: 1; }
-            60% { opacity: 0.8; }
-            80% { opacity: 1; }
-            100% { opacity: 1; }
-        }
-        .glitch {
-            animation: glitch 2s infinite; /* Glitch animation for title */
+            0% { opacity: 1; transform: translate(0); }
+            20% { opacity: 0.8; transform: translate(-2px, -2px); }
+            40% { opacity: 1; transform: translate(2px, 2px); }
+            60% { opacity: 0.8; transform: translate(-2px, -2px); }
+            80% { opacity: 1; transform: translate(2px, 2px); }
+            100% { opacity: 1; transform: translate(0); }
         }
     </style>
 </head>
@@ -104,13 +107,13 @@
     <input type="button" value="Encrypt" onclick="encryptText()"><br>
 
     <div class="terminal">
-        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." readonly></textarea>
+        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
     </div>
 
     <input type="button" value="Decrypt" onclick="decryptText()"><br>
 
     <div class="terminal">
-        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." readonly></textarea>
+        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." class="glitch-textarea" readonly></textarea>
     </div>
 </div>
 
