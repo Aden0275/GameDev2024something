@@ -26,14 +26,43 @@
             position: absolute;
             bottom: 100px; /* Starting position above ground */
             left: 50px;
+            transition: left 0.1s; /* Smooth movement */
         }
 
-        .ground {
+        .ground, .platform {
             position: absolute;
             width: 100%;
             height: 20px;
             background-color: #654321; /* Ground color */
-            bottom: 0;
+        }
+
+        .platform {
+            background-color: #228B22; /* Platform color */
+        }
+
+        .enemy {
+            width: 40px;
+            height: 40px;
+            background-color: #0000FF; /* Enemy color */
+            position: absolute;
+            bottom: 100px;
+            transition: left 0.1s;
+        }
+
+        .collectible {
+            width: 20px;
+            height: 20px;
+            background-color: #FFD700; /* Collectible color */
+            position: absolute;
+            bottom: 120px; /* Above ground */
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: #FFFFFF; /* Score text color */
         }
     </style>
 </head>
@@ -41,15 +70,97 @@
     <div id="game">
         <div id="player"></div>
         <div class="ground"></div>
+        <div class="platform" style="width: 150px; bottom: 200px; left: 300px;"></div>
+        <div class="platform" style="width: 100px; bottom: 300px; left: 600px;"></div>
+        <div id="score">Score: 0</div>
     </div>
     <script>
         const player = document.getElementById('player');
         const gameArea = document.getElementById('game');
+        const scoreDisplay = document.getElementById('score');
 
         let isJumping = false;
         let jumpHeight = 0;
-        let gravity = 5; // Adjust gravity speed
-        let playerBottom = 100; // Player's bottom position
+        let gravity = 5;
+        let playerBottom = 100;
+        let score = 0;
+        let gameOver = false;
+
+        // Create enemies
+        const enemies = [];
+        function createEnemy() {
+            const enemy = document.createElement('div');
+            enemy.classList.add('enemy');
+            enemy.style.left = '800px'; // Start off screen
+            enemy.style.bottom = '100px';
+            gameArea.appendChild(enemy);
+            enemies.push(enemy);
+            moveEnemy(enemy);
+        }
+
+        function moveEnemy(enemy) {
+            let left = 800;
+            const enemyInterval = setInterval(() => {
+                if (gameOver) {
+                    clearInterval(enemyInterval);
+                    return;
+                }
+                left -= 2; // Move left
+                enemy.style.left = left + 'px';
+                if (left < -40) {
+                    clearInterval(enemyInterval);
+                    gameArea.removeChild(enemy);
+                    enemies.splice(enemies.indexOf(enemy), 1);
+                    createEnemy(); // Respawn enemy
+                }
+                checkCollision(enemy);
+            }, 20);
+        }
+
+        // Create collectibles
+        function createCollectible() {
+            const collectible = document.createElement('div');
+            collectible.classList.add('collectible');
+            collectible.style.left = Math.random() * (gameArea.clientWidth - 20) + 'px';
+            collectible.style.bottom = Math.random() * (gameArea.clientHeight - 120) + 80 + 'px'; // Above ground
+            gameArea.appendChild(collectible);
+            checkCollectible(collectible);
+        }
+
+        function checkCollectible(collectible) {
+            const collectibleInterval = setInterval(() => {
+                if (gameArea.contains(collectible)) {
+                    let playerRect = player.getBoundingClientRect();
+                    let collectibleRect = collectible.getBoundingClientRect();
+                    if (playerRect.x < collectibleRect.x + collectibleRect.width &&
+                        playerRect.x + playerRect.width > collectibleRect.x &&
+                        playerRect.y < collectibleRect.y + collectibleRect.height &&
+                        playerRect.y + playerRect.height > collectibleRect.y) {
+                        score += 10; // Increase score
+                        scoreDisplay.innerText = `Score: ${score}`;
+                        gameArea.removeChild(collectible);
+                        clearInterval(collectibleInterval);
+                        createCollectible(); // Respawn collectible
+                    }
+                } else {
+                    clearInterval(collectibleInterval);
+                }
+            }, 100);
+        }
+
+        // Check for player and enemy collision
+        function checkCollision(enemy) {
+            let playerRect = player.getBoundingClientRect();
+            let enemyRect = enemy.getBoundingClientRect();
+            if (playerRect.x < enemyRect.x + enemyRect.width &&
+                playerRect.x + playerRect.width > enemyRect.x &&
+                playerRect.y < enemyRect.y + enemyRect.height &&
+                playerRect.y + playerRect.height > enemyRect.y) {
+                gameOver = true;
+                alert('Game Over! Your score: ' + score);
+                window.location.reload(); // Restart game
+            }
+        }
 
         document.addEventListener('keydown', (event) => {
             if (event.code === 'ArrowRight') {
@@ -63,14 +174,14 @@
 
         function moveRight() {
             let left = parseInt(window.getComputedStyle(player).getPropertyValue('left'));
-            if (left < gameArea.clientWidth - 50) { // Keep within bounds
+            if (left < gameArea.clientWidth - 50) {
                 player.style.left = left + 5 + 'px';
             }
         }
 
         function moveLeft() {
             let left = parseInt(window.getComputedStyle(player).getPropertyValue('left'));
-            if (left > 0) { // Keep within bounds
+            if (left > 0) {
                 player.style.left = left - 5 + 'px';
             }
         }
@@ -83,7 +194,7 @@
                     fall();
                 } else {
                     jumpHeight += 5;
-                    playerBottom += 5; // Raise player
+                    playerBottom += 5;
                     player.style.bottom = playerBottom + 'px';
                 }
             }, 20);
@@ -93,16 +204,20 @@
             let fallInterval = setInterval(() => {
                 if (playerBottom <= 100) {
                     clearInterval(fallInterval);
-                    playerBottom = 100; // Reset to ground level
+                    playerBottom = 100;
                     player.style.bottom = playerBottom + 'px';
                     isJumping = false;
                     jumpHeight = 0;
                 } else {
-                    playerBottom -= gravity; // Apply gravity
+                    playerBottom -= gravity;
                     player.style.bottom = playerBottom + 'px';
                 }
             }, 20);
         }
+
+        // Start the game loop
+        setInterval(createEnemy, 2000); // Create enemy every 2 seconds
+        setInterval(createCollectible, 5000); // Create collectible every 5 seconds
     </script>
 </body>
 </html>
