@@ -14,92 +14,102 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            background-color: #1a1a1a; /* Dark background for a hacking feel */
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a); /* Subtle gradient for depth */
             color: #00ff00; /* Bright green text for a terminal look */
             overflow: hidden;
         }
         h1 {
             color: #00ff00; /* Bright green */
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.8); /* Glowing effect */
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.8); /* Glowing effect */
+            font-size: 2.5em; /* Larger font size */
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: rgba(20, 20, 20, 0.9); /* Darker background for contrast */
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            text-align: center; /* Centered text */
         }
         textarea {
-            margin: 10px 0;
-            width: 90%;
-            max-width: 600px;
+            width: 100%; /* Full width */
             height: 80px;
             font-size: 16px;
             padding: 10px;
-            border: 1px solid #00ff00; /* Green border */
+            border: 2px solid #00ff00; /* Green border */
             border-radius: 5px;
             resize: none;
             color: #00ff00; /* Bright green text */
             background-color: #2a2a2a; /* Dark gray for text area */
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
+            transition: border-color 0.3s; /* Smooth transition for border color */
         }
         textarea::placeholder {
             color: rgba(0, 255, 0, 0.7); /* Dimmed placeholder color */
         }
         textarea:focus {
             outline: none;
-            box-shadow: 0 0 5px #00ff00; /* Green glow effect on focus */
+            border-color: #00cc00; /* Lighter green when focused */
         }
         input[type=button] {
-            padding: 10px 15px;
+            padding: 10px 20px;
             font-size: 16px;
-            margin: 5px;
+            margin: 10px;
             cursor: pointer;
-            border: 1px solid #00ff00; /* Green border */
+            border: 2px solid #00ff00; /* Green border */
             border-radius: 5px;
             background-color: #1a1a1a; /* Matching button background */
             color: #00ff00; /* Bright green text */
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.3s, color 0.3s, transform 0.1s; /* Smooth transitions */
             box-shadow: 0 2px 5px rgba(0, 255, 0, 0.5);
         }
         input[type=button]:hover {
             background-color: #00ff00; /* Change button background to green on hover */
             color: black; /* Change button text to black */
+            transform: scale(1.05); /* Slightly enlarge button on hover */
         }
-        .container {
-            max-width: 600px;
-            width: 100%;
-            margin: auto;
-            padding: 20px;
-            background-color: rgba(20, 20, 20, 0.9); /* Darker container for contrast */
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-            overflow: hidden;
-            text-align: center; /* Centered text */
-        }
-        /* Terminal-style style for text */
         .terminal {
-            display: inline-block;
+            margin: 20px 0;
             border-left: 2px solid #00ff00; /* Left border to mimic terminal style */
             padding-left: 10px;
-            margin: 10px 0;
+            text-align: left;
+        }
+        /* Add a subtle animation to enhance the feel */
+        @keyframes glitch {
+            0% { opacity: 1; }
+            20% { opacity: 0.8; }
+            40% { opacity: 1; }
+            60% { opacity: 0.8; }
+            80% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+        .glitch {
+            animation: glitch 2s infinite; /* Animate to mimic a glitch effect */
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 align="center">Spy Name Encryptor</h1>
+    <h1 class="glitch" align="center">Spy Name Encryptor</h1>
     
     <div class="terminal">
         <textarea id="myArea01" placeholder="Enter your text here...">Hello how are you</textarea>
-    </div><br>
+    </div>
 
-    <input type="button" value="Encrypt" onclick="encryptText()"><br><br>
+    <input type="button" value="Encrypt" onclick="encryptText()"><br>
 
     <div class="terminal">
         <textarea id="myArea02" placeholder="Your encrypted text will appear here..."></textarea>
-    </div><br>
+    </div>
 
-    <input type="button" value="Decrypt" onclick="decryptText()"><br><br>
+    <input type="button" value="Decrypt" onclick="decryptText()"><br>
 
     <div class="terminal">
         <textarea id="myArea03" placeholder="Your decrypted text will appear here..."></textarea>
-    </div><br>
+    </div>
 </div>
 
 <script>
