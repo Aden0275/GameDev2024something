@@ -32,6 +32,11 @@
             border-radius: 5px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             resize: none;
+            color: #28a745; /* Green text color */
+            background-color: rgba(255, 255, 255, 0.1); /* Slight translucent background */
+        }
+        textarea::placeholder {
+            color: #90ee90; /* Lighter green for placeholder text */
         }
         textarea:focus {
             outline: none;
@@ -68,7 +73,7 @@
 <div class="container">
     <h1 align="center">Spy Name Encryptor</h1>
     
-    <textarea id="myArea01" placeholder="Enter your text here...">Cheese Burger</textarea><br>
+    <textarea id="myArea01" placeholder="Enter your text here...">Hello how are you</textarea><br>
 
     <input type="button" value="Encrypt" onclick="encryptText()"><br><br>
 
