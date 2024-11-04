@@ -3,151 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spy Name Encryptor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet"> <!-- Futuristic font -->
+    <title>Enhanced Mario-like Game</title>
     <style>
         body {
-            font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-color: #000; /* Solid black background */
-            color: #00ff00; /* Bright green text */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: #87CEEB; /* Sky Color */
+        }
+
+        #gameArea {
+            width: 800px;
+            height: 400px;
+            position: relative;
             overflow: hidden;
+            border: 2px solid #000;
+            background-color: #87CEEB; /* Sky Color */
         }
-        .container {
-            background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Green glow around container */
-            padding: 30px;
-            max-width: 500px; /* Slightly smaller for sleekness */
-            width: 90%;
-            text-align: center;
+
+        #character {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            bottom: 50px; /* Start above ground */
+            background-color: red; /* Character color */
+            transition: bottom 0.1s;
         }
-        h1 {
-            font-family: 'Orbitron', sans-serif; /* Futuristic font */
-            color: #00ffcc; /* Neon teal color */
-            margin-bottom: 30px;
-            text-shadow: 0 0 20px #00ffcc; /* Glowing text effect */
-            font-size: 2.5em;
-        }
-        textarea {
+
+        .ground {
             width: 100%;
-            height: 100px; /* Increased height for better visibility */
-            font-size: 18px;
-            padding: 10px;
-            border: 2px solid #00ffcc; /* Light teal border */
-            border-radius: 5px;
-            color: #00ff00;
-            background-color: #1b1b1b; /* Very dark background for contrast */
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5); /* Teal glow effect */
-            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-            resize: none; /* Disable resize */
+            height: 50px;
+            background-color: green; /* Ground Color */
+            position: absolute;
+            bottom: 0;
         }
-        textarea::placeholder {
-            color: rgba(0, 255, 204, 0.7); /* Dimmed placeholder color */
+
+        .obstacle {
+            width: 40px;
+            height: 40px;
+            background-color: brown; /* Obstacle Color */
+            position: absolute;
+            bottom: 50px;
+            animation: move 3s linear infinite;
         }
-        textarea:focus {
-            outline: none;
-            border-color: #00ccff; /* Lighter border on focus */
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.8); /* Enhanced glow */
+
+        @keyframes move {
+            from { left: 800px; }
+            to { left: -40px; }
         }
-        .glitch {
-            animation: glitch 1s infinite; /* Glitch animation for title */
+
+        .coin {
+            width: 20px;
+            height: 20px;
+            background-color: gold; /* Coin Color */
+            border-radius: 50%; /* Make it circular */
+            position: absolute;
+            bottom: 100px; /* Above the ground */
         }
-        .glitch-textarea {
-            animation: glitch 1s infinite; /* Glitch animation for text areas */
-        }
-        input[type=button] {
-            padding: 12px 20px;
-            font-size: 16px;
-            margin: 10px;
-            cursor: pointer;
-            border: 2px solid #00ffcc; /* Light teal border */
-            border-radius: 5px;
-            background-color: #1a1a1a; /* Matching dark background */
-            color: #00ffcc; /* Bright teal text */
-            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
-            box-shadow: 0 3px 10px rgba(0, 204, 255, 0.5); /* Box shadow */
-        }
-        input[type=button]:hover {
-            background-color: #00ffcc; /* Button background changes on hover */
-            color: black; /* Black text on hover */
-            transform: translateY(-2px); /* Lifting effect during hover */
-            box-shadow: 0 6px 20px rgba(0, 204, 255, 0.8); /* Enhanced shadow on hover */
-        }
-        .terminal {
-            margin: 20px 0;
-            border-left: 4px solid #00ffcc; /* Bold left border to mimic terminal */
-            padding-left: 15px;
-            text-align: left;
-        }
-        @keyframes glitch {
-            0% { opacity: 1; transform: translate(0); }
-            20% { opacity: 0.8; transform: translate(-2px, -2px); }
-            40% { opacity: 1; transform: translate(2px, 2px); }
-            60% { opacity: 0.8; transform: translate(-2px, -2px); }
-            80% { opacity: 1; transform: translate(2px, 2px); }
-            100% { opacity: 1; transform: translate(0); }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: black;
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1 class="glitch">Spy Name Encryptor</h1>
-    
-    <div class="terminal">
-        <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
+    <div id="gameArea">
+        <div id="character"></div>
+        <div class="ground"></div>
+        <div id="score">Score: 0</div>
     </div>
 
-    <input type="button" value="Encrypt" onclick="encryptText()"><br>
+    <script>
+        const character = document.getElementById('character');
+        const gameArea = document.getElementById('gameArea');
+        const scoreDisplay = document.getElementById('score');
+        let isJumping = false;
+        let position = 0;
+        let score = 0;
 
-    <div class="terminal">
-        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
-    </div>
+        // Function to make the character jump
+        function jump() {
+            if (isJumping) return;
+            isJumping = true;
 
-    <input type="button" value="Decrypt" onclick="decryptText()"><br>
+            let jumpHeight = 0;
+            const jumpInterval = setInterval(() => {
+                if (jumpHeight >= 100) {
+                    clearInterval(jumpInterval);
 
-    <div class="terminal">
-        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." class="glitch-textarea" readonly></textarea>
-    </div>
-</div>
-
-<script>
-    function encryptText() {
-        let myTemp = '';
-        let myString = document.getElementById('myArea01').value.toLowerCase().split('');
-        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
-            myTemp = myString[myLoop];
-            if (myString[myLoop] === 'e') {
-                myTemp = 'f';
-            } else if (myString[myLoop] === 'h') {
-                myTemp = 'i';
-            }
-            myString[myLoop] = myTemp;
+                    // Start falling
+                    const fallInterval = setInterval(() => {
+                        if (jumpHeight <= 0) {
+                            clearInterval(fallInterval);
+                            isJumping = false;
+                        }
+                        jumpHeight -= 4; // Control fall speed
+                        character.style.bottom = `${position + jumpHeight}px`;
+                    }, 20);
+                }
+                jumpHeight += 4; // Control jump speed
+                character.style.bottom = `${position + jumpHeight}px`;
+            }, 20);
         }
-        document.getElementById('myArea02').value = myString.join('');
-    }
 
-    function decryptText() {
-        let myTemp = '';
-        let myString = document.getElementById('myArea02').value.toLowerCase().split('');
-        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
-            myTemp = myString[myLoop];
-            if (myString[myLoop] === 'f') {
-                myTemp = 'e';
-            } else if (myString[myLoop] === 'i') {
-                myTemp = 'h';
-            }
-            myString[myLoop] = myTemp;
+        // Function to create obstacles
+        function createObstacle() {
+            const obstacle = document.createElement('div');
+            obstacle.classList.add('obstacle');
+            obstacle.style.bottom = '50px'; // Start height
+            obstacle.style.left = '800px'; // Start left position
+            gameArea.appendChild(obstacle);
+
+            // Check for collision with character
+            const obstacleInterval = setInterval(() => {
+                const characterRect = character.getBoundingClientRect();
+                const obstacleRect = obstacle.getBoundingClientRect();
+
+                if (characterRect.right > obstacleRect.left &&
+                    characterRect.left < obstacleRect.right &&
+                    characterRect.bottom > obstacleRect.top) {
+                    alert("Game Over! Final Score: " + score);
+                    clearInterval(obstacleInterval);
+                    resetGame();
+                }
+
+                // Remove the obstacle if it goes off screen
+                if (obstacleRect.left < 0) {
+                    clearInterval(obstacleInterval);
+                    gameArea.removeChild(obstacle);
+                }
+            }, 20);
         }
-        document.getElementById('myArea03').value = myString.join('');
-    }
-</script>
 
+        // Function to create coins
+        function createCoin() {
+            const coin = document.createElement('div');
+            coin.classList.add('coin');
+            coin.style.left = Math.random() * (gameArea.clientWidth - 20) + 'px'; // Random position
+            gameArea.appendChild(coin);
+
+            // Check for collection
+            const coinInterval = setInterval(() => {
+                const characterRect = character.getBoundingClientRect();
+                const coinRect = coin.getBoundingClientRect();
+
+                if (characterRect.right > coinRect.left &&
+                    characterRect.left < coinRect.right &&
+                    characterRect.bottom > coinRect.top) {
+                    score++;
+                    scoreDisplay.innerText = "Score: " + score;
+                    clearInterval(coinInterval);
+                    gameArea.removeChild(coin);
+                }
+
+                // Remove the coin if it goes off screen (optional, can adjust timing)
+                if (coinRect.bottom < 0) {
+                    clearInterval(coinInterval);
+                    gameArea.removeChild(coin);
+                }
+            }, 20);
+        }
+
+        // Function to reset the game
+        function resetGame() {
+            // Remove all obstacles and coins
+            const obstacles = document.querySelectorAll('.obstacle');
+            obstacles.forEach(obstacle => gameArea.removeChild(obstacle));
+
+            const coins = document.querySelectorAll('.coin');
+            coins.forEach(coin => gameArea.removeChild(coin));
+
+            // Reset score and character position
+            score = 0;
+            scoreDisplay.innerText = "Score: " + score;
+            character.style.bottom = '50px';
+        }
+
+        // Start the game
+        setInterval(() => {
+            createObstacle();
+            if (Math.random() < 0.5) createCoin(); // 50% chance to create a coin
+        }, 2000);
+
+        // Listen for key presses to jump
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                jump();
+            }
+        });
+    </script>
 </body>
 </html>
