@@ -8,12 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Share Tech Mono', monospace; /* Use hacker-style font */
+            font-family: 'Share Tech Mono', monospace;
             margin: 0;
             padding: 0;
             height: 100vh;
-            background-color: #000; /* Solid black background */
-            color: #00ff00; /* Bright green text */
+            background-color: #000;
+            color: #00ff00;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -21,89 +21,89 @@
         }
 
         .container {
-            background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
+            background-color: rgba(20, 20, 20, 0.9);
             border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Initial green glow */
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
             padding: 30px;
-            max-width: 500px; /* Slightly smaller for sleekness */
+            max-width: 500px;
             width: 90%;
             text-align: center;
-            transition: box-shadow 5s; /* Smooth transition for glow effect */
+            transition: box-shadow 0.3s;
         }
 
         .red-glow {
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8); /* Red glow effect */
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
         }
 
         h1 {
-            font-family: 'Share Tech Mono', monospace; /* Hacker-style font */
-            color: #00ff00; /* Neon green color */
+            font-family: 'Share Tech Mono', monospace;
+            color: #00ff00;
             margin-bottom: 30px;
-            text-shadow: 0 0 20px #00ff00; /* Glowing green text effect */
+            text-shadow: 0 0 20px #00ff00;
             font-size: 2.5em;
         }
 
         textarea {
             width: 100%;
-            height: 100px; /* Increased height for better visibility */
+            height: 100px;
             font-size: 18px;
             padding: 10px;
-            border: 2px solid #00ff00; /* Light green border */
+            border: 2px solid #00ff00;
             border-radius: 5px;
-            color: #00ff00; /* Green text color */
-            background-color: #1b1b1b; /* Very dark background for contrast */
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
-            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-            resize: none; /* Disable resize */
+            color: #00ff00;
+            background-color: #1b1b1b;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            resize: none;
         }
 
         textarea::placeholder {
-            color: rgba(0, 255, 0, 0.7); /* Dimmed placeholder color */
+            color: rgba(0, 255, 0, 0.7);
         }
 
         textarea:focus {
             outline: none;
-            border-color: #00cc00; /* Lighter green border on focus */
-            box-shadow: 0 0 15px rgba(0, 204, 0, 0.8); /* Enhanced green glow */
+            border-color: #00cc00;
+            box-shadow: 0 0 15px rgba(0, 204, 0, 0.8);
         }
 
         .glitch {
-            animation: glitch-title 1s infinite; /* Glitch animation for title */
+            animation: glitch-title 1s infinite;
         }
 
         .glitch-textarea {
-            animation: glitch-textarea 0.5s infinite; /* Enhanced glitch animation for text areas */
+            animation: glitch-textarea 0.5s infinite;
         }
 
         .button-container {
-            display: flex; /* Use flexbox for button alignment */
-            justify-content: center; /* Center align the buttons */
-            margin: 10px 0; /* Add margin for spacing */
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
         }
 
         input[type=button] {
             padding: 12px 20px;
             font-size: 16px;
-            margin: 0 5px; /* Add horizontal margin between buttons */
+            margin: 0 5px;
             cursor: pointer;
-            border: 2px solid #00ff00; /* Light green border */
+            border: 2px solid #00ff00;
             border-radius: 5px;
-            background-color: #1a1a1a; /* Matching dark background */
-            color: #00ff00; /* Bright green text */
-            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
-            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.5); /* Green box shadow */
+            background-color: #1a1a1a;
+            color: #00ff00;
+            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.5);
         }
 
         input[type=button]:hover {
-            background-color: #00ff00; /* Button background changes to green on hover */
-            color: black; /* Black text on hover */
-            transform: translateY(-2px); /* Lifting effect during hover */
-            box-shadow: 0 6px 20px rgba(0, 255, 0, 0.8); /* Enhanced green shadow on hover */
+            background-color: #00ff00;
+            color: black;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 0, 0.8);
         }
 
         .terminal {
             margin: 20px 0;
-            border-left: 4px solid #00ff00; /* Bold left border to mimic terminal */
+            border-left: 4px solid #00ff00;
             padding-left: 15px;
             text-align: left;
         }
@@ -245,17 +245,34 @@
 </div>
 
 <script>
-    // Function to handle the glow effect
-    function changeGlow() {
-        const container = document.getElementById('main-container');
-        container.style.boxShadow = '0 0 30px rgba(255, 0, 0, 0.8)'; // Change to red glow
-        setTimeout(() => {
-            container.style.boxShadow = '0 0 30px rgba(0, 255, 0, 0.8)'; // Change back to green glow
-        }, 1000); // Revert glow after 1 second
+    // Function to handle the glow effect for all elements
+    function applyGlowEffect() {
+        // Get elements that need glow effect
+        const elements = [
+            document.getElementById('main-container'),
+            document.querySelector('h1'),
+            document.querySelectorAll('textarea'),
+            document.querySelectorAll('input[type=button]'),
+        ];
+        
+        // Add red-glow class
+        elements.forEach(element => {
+            if (element) {
+                element.classList.toggle('red-glow');
+            }
+        });
     }
 
-    // Set an interval to change the glow effect every 5 seconds
-    setInterval(changeGlow, 5000);
+    // Set an interval to apply the glow effect every 5 seconds
+    setInterval(() => {
+        // Apply red glow
+        applyGlowEffect();
+        
+        // Remove red glow after 1 second
+        setTimeout(() => {
+            applyGlowEffect();
+        }, 1000);
+    }, 5000);
 
     function encryptText() {
         let myTemp = '';
