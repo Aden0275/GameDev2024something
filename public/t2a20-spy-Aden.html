@@ -16,12 +16,29 @@
 }"><br><br>
 
 
+}
 
-<textarea id="myArea02" rows=4 cols=70></textarea><br> 
+    function decryptText() {
+        let myTemp = '';
+        let myString = document.getElementById('myArea02').value.toLowerCase().split('');
+        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+            myTemp = myString[myLoop];
+            if (myString[myLoop] === 'f') {
+                myTemp = 'e';
+            } else if (myString[myLoop] === 'i') {
+                myTemp = 'h';
+            }
+            myString[myLoop] = myTemp;
+        }
+        document.getElementById('myArea03').value = myString.join('');
+    }
 
-<input type=button value="decrypt" onclick="{
-   alert('Sorry, you have to do this!')
-}"><br><br>
+    function resetFields() {
+        document.getElementById('myArea01').value = ''; // Clear input field
+        document.getElementById('myArea02').value = ''; // Clear encrypted output field
+        document.getElementById('myArea03').value = ''; // Clear decrypted output field
+    }
+</script>
 
-
-<textarea id="myArea03" rows=4 cols=70></textarea><br>
+</body>
+</html>
