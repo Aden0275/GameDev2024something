@@ -1,318 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mario-like Game</title>
+    <title>Spy Name Encryptor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         body {
+            font-family: 'Share Tech Mono', monospace; /* Use hacker-style font */
             margin: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-        }
-
-        #game {
-            position: relative;
-            width: 800px;
-            height: 400px;
-            border: 2px solid #000;
-            background: url('background1.jpg') no-repeat center center; /* Background image for level 1 */
-            background-size: cover;
+            padding: 0;
+            height: 100vh;
+            background-color: #000; /* Solid black background */
+            color: #00ff00; /* Bright green text */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
 
-        #player {
-            width: 40px;
-            height: 60px;
-            background-color: #FF0000; /* Player color */
-            position: absolute;
-            bottom: 100px; /* Starting position above ground */
-            left: 50px;
-            transition: left 0.1s;
-        }
-
-        .ground, .platform {
-            position: absolute;
-            width: 100%;
-            height: 20px;
-            background-color: #654321; /* Ground color */
-        }
-
-        .platform {
-            background-color: #228B22; /* Platform color */
-        }
-
-        .enemy {
-            width: 40px;
-            height: 40px;
-            background-color: #0000FF; /* Default enemy color */
-            position: absolute;
-            bottom: 100px;
-            transition: left 0.1s;
-        }
-
-        .collectible {
-            width: 20px;
-            height: 20px;
-            background-color: #FFD700; /* Collectible color */
-            position: absolute;
-            bottom: 120px; /* Above ground */
-        }
-
-        #score, #lives, #level {
-            position: absolute;
-            top: 10px;
-            font-size: 24px;
-            color: #FFFFFF; /* Text color */
-        }
-
-        #lives {
-            right: 10px;
-        }
-
-        #level {
-            left: 10px;
-        }
-
-        #menu {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
+        .container {
+            background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
             border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Green glow around container */
+            padding: 30px;
+            max-width: 500px; /* Slightly smaller for sleekness */
+            width: 90%;
+            text-align: center;
+            transition: box-shadow 0.3s; /* Smooth transition for glowing effect */
         }
 
-        #menu button {
-            padding: 10px 20px;
+        .red-glow {
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8); /* Red glow effect */
+        }
+
+        h1 {
+            font-family: 'Share Tech Mono', monospace; /* Hacker-style font */
+            color: #00ff00; /* Neon green color */
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #00ff00; /* Glowing green text effect */
+            font-size: 2.5em;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px; /* Increased height for better visibility */
+            font-size: 18px;
+            padding: 10px;
+            border: 2px solid #00ff00; /* Light green border */
+            border-radius: 5px;
+            color: #00ff00; /* Green text color */
+            background-color: #1b1b1b; /* Very dark background for contrast */
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+            resize: none; /* Disable resize */
+        }
+
+        textarea::placeholder {
+            color: rgba(0, 255, 0, 0.7); /* Dimmed placeholder color */
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #00cc00; /* Lighter green border on focus */
+            box-shadow: 0 0 15px rgba(0, 204, 0, 0.8); /* Enhanced green glow */
+        }
+
+        .glitch {
+            animation: glitch-title 1s infinite; /* Glitch animation for title */
+        }
+
+        .glitch-textarea {
+            animation: glitch-textarea 0.5s infinite; /* Enhanced glitch animation for text areas */
+        }
+
+        .button-container {
+            display: flex; /* Use flexbox for button alignment */
+            justify-content: center; /* Center align the buttons */
+            margin: 10px 0; /* Add margin for spacing */
+        }
+
+        input[type=button] {
+            padding: 12px 20px;
             font-size: 16px;
+            margin: 0 5px; /* Add horizontal margin between buttons */
+            cursor: pointer;
+            border: 2px solid #00ff00; /* Light green border */
+            border-radius: 5px;
+            background-color: #1a1a1a; /* Matching dark background */
+            color: #00ff00; /* Bright green text */
+            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.5); /* Green box shadow */
+        }
+
+        input[type=button]:hover {
+            background-color: #00ff00; /* Button background changes to green on hover */
+            color: black; /* Black text on hover */
+            transform: translateY(-2px); /* Lifting effect during hover */
+            box-shadow: 0 6px 20px rgba(0, 255, 0, 0.8); /* Enhanced green shadow on hover */
+        }
+
+        .terminal {
+            margin: 20px 0;
+            border-left: 4px solid #00ff00; /* Bold left border to mimic terminal */
+            padding-left: 15px;
+            text-align: left;
+        }
+
+        @keyframes glitch-title {
+            0% {
+                opacity: 1;
+                transform: translate(0);
+            }
+
+            10% {
+                opacity: 0.8;
+                transform: translate(-2px, -2px);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translate(2px, -2px);
+            }
+
+            30% {
+                opacity: 0.9;
+                transform: translate(-2px, 2px);
+            }
+
+            40% {
+                opacity: 1;
+                transform: translate(2px, 2px);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: translate(-2px, 0);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translate(0, -2px);
+            }
+
+            70% {
+                opacity: 0.9;
+                transform: translate(2px, 2px);
+            }
+
+            80% {
+                opacity: 1;
+                transform: translate(-2px, -2px);
+            }
+
+            90% {
+                opacity: 0.8;
+                transform: translate(0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(0);
+            }
+        }
+
+        @keyframes glitch-textarea {
+            0% {
+                opacity: 1;
+            }
+
+            10% {
+                opacity: 0.9;
+                transform: skewX(-1deg);
+            }
+
+            20% {
+                opacity: 0.8;
+                transform: skewX(1deg);
+            }
+
+            30% {
+                opacity: 0.9;
+                transform: skewX(-2deg);
+            }
+
+            40% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            60% {
+                opacity: 0.8;
+                transform: skewX(2deg);
+            }
+
+            70% {
+                opacity: 0.9;
+                transform: skewX(-1deg);
+            }
+
+            80% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.9;
+                transform: skewX(1deg);
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div id="game">
-        <div id="player"></div>
-        <div class="ground"></div>
-        <div class="platform" style="width: 150px; bottom: 200px; left: 300px;"></div>
-        <div class="platform" style="width: 100px; bottom: 300px; left: 600px;"></div>
-        <div id="score">Score: 0</div>
-        <div id="lives">Lives: 3</div>
-        <div id="level">Level: 1</div>
-        <div id="menu">
-            <h1>Mario-like Game</h1>
-            <button onclick="startGame()">Start Game</button>
-        </div>
+
+<div class="container" id="main-container">
+    <h1 class="glitch">Spy Name Encryptor</h1>
+
+    <div class="terminal">
+        <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
     </div>
-    <audio id="jumpSound" src="jump.mp3"></audio>
-    <audio id="collectSound" src="collect.mp3"></audio>
-    <audio id="gameOverSound" src="gameover.mp3"></audio>
 
-    <script>
-        const player = document.getElementById('player');
-        const gameArea = document.getElementById('game');
-        const scoreDisplay = document.getElementById('score');
-        const livesDisplay = document.getElementById('lives');
-        const levelDisplay = document.getElementById('level');
-        const menu = document.getElementById('menu');
-        const jumpSound = document.getElementById('jumpSound');
-        const collectSound = document.getElementById('collectSound');
-        const gameOverSound = document.getElementById('gameOverSound');
+    <div class="button-container">
+        <input type="button" value="Encrypt" onclick="encryptText()">
+        <input type="button" value="Reset" onclick="resetFields()">
+    </div>
 
-        let isJumping = false;
-        let jumpHeight = 0;
-        let gravity = 5;
-        let playerBottom = 100;
-        let score = 0;
-        let lives = 3;
-        let gameOver = false;
-        let level = 1;
+    <div class="terminal">
+        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
+    </div>
 
-        // Start game function
-        function startGame() {
-            score = 0;
-            lives = 3;
-            level = 1;
-            gameOver = false;
-            scoreDisplay.innerText = `Score: ${score}`;
-            livesDisplay.innerText = `Lives: ${lives}`;
-            levelDisplay.innerText = `Level: ${level}`;
-            menu.style.display = 'none';
-            resetGame();
-            createEnemies();
-            createCollectibles();
-        }
+    <input type="button" value="Decrypt" onclick="decryptText()"><br>
 
-        // Reset game state
-        function resetGame() {
-            player.style.left = '50px';
-            player.style.bottom = '100px';
-            playerBottom = 100;
-            document.querySelectorAll('.enemy').forEach(enemy => enemy.remove());
-            document.querySelectorAll('.collectible').forEach(collectible => collectible.remove());
-            gameArea.style.backgroundImage = `url('background${level}.jpg')`; // Change background based on level
-        }
+    <div class="terminal">
+        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." class="glitch-textarea" readonly></textarea>
+    </div>
+</div>
 
-        // Create enemies
-        function createEnemies() {
-            setInterval(() => {
-                if (gameOver) return;
-                const enemy = document.createElement('div');
-                enemy.classList.add('enemy');
-                enemy.style.left = '800px'; // Start off screen
-                enemy.style.bottom = Math.random() * (gameArea.clientHeight - 120) + 80 + 'px'; // Random vertical position
-                gameArea.appendChild(enemy);
-                moveEnemy(enemy);
-            }, 2000); // Create enemy every 2 seconds
-        }
+<script>
+    // Function to handle the glow effect
+    function applyGlowEffect() {
+        document.getElementById('main-container').classList.toggle('red-glow');
+    }
 
-        function moveEnemy(enemy) {
-            let left = 800;
-            const enemyInterval = setInterval(() => {
-                if (gameOver) {
-                    clearInterval(enemyInterval);
-                    return;
-                }
-                left -= 2; // Move left
-                enemy.style.left = left + 'px';
-                if (left < -40) {
-                    clearInterval(enemyInterval);
-                    gameArea.removeChild(enemy);
-                }
-                checkCollision(enemy);
-            }, 20);
-        }
+    // Set an interval to apply the glow effect every 5 seconds
+    setInterval(applyGlowEffect, 5000);
 
-        // Create collectibles
-        function createCollectibles() {
-            setInterval(() => {
-                if (gameOver) return;
-                const collectible = document.createElement('div');
-                collectible.classList.add('collectible');
-                collectible.style.left = Math.random() * (gameArea.clientWidth - 20) + 'px';
-                collectible.style.bottom = Math.random() * (gameArea.clientHeight - 120) + 80 + 'px'; // Above ground
-                gameArea.appendChild(collectible);
-                checkCollectible(collectible);
-            }, 5000); // Create collectible every 5 seconds
-        }
+    // Set a timeout to remove the glow effect after 1 second
+    setInterval(function() {
+        setTimeout(() => {
+            document.getElementById('main-container').classList.remove('red-glow');
+        }, 1000);
+    }, 5000);
 
-        function checkCollectible(collectible) {
-            const collectibleInterval = setInterval(() => {
-                if (gameArea.contains(collectible)) {
-                    let playerRect = player.getBoundingClientRect();
-                    let collectibleRect = collectible.getBoundingClientRect();
-                    if (playerRect.x < collectibleRect.x + collectibleRect.width &&
-                        playerRect.x + playerRect.width > collectibleRect.x &&
-                        playerRect.y < collectibleRect.y + collectibleRect.height &&
-                        playerRect.y + playerRect.height > collectibleRect.y) {
-                        score += 10; // Increase score
-                        scoreDisplay.innerText = `Score: ${score}`;
-                        collectSound.play(); // Play collect sound
-                        gameArea.removeChild(collectible);
-                        clearInterval(collectibleInterval);
-                    }
-                } else {
-                    clearInterval(collectibleInterval);
-                }
-            }, 100);
-        }
-
-        // Check for player and enemy collision
-        function checkCollision(enemy) {
-            let playerRect = player.getBoundingClientRect();
-            let enemyRect = enemy.getBoundingClientRect();
-            if (playerRect.x < enemyRect.x + enemyRect.width &&
-                playerRect.x + playerRect.width > enemyRect.x &&
-                playerRect.y < enemyRect.y + enemyRect.height &&
-                playerRect.y + playerRect.height > enemyRect.y) {
-                loseLife();
+    function encryptText() {
+        let myTemp = '';
+        let myString = document.getElementById('myArea01').value.toLowerCase().split('');
+        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+            myTemp = myString[myLoop];
+            if (myString[myLoop] === 'e') {
+                myTemp = 'f';
+            } else if (myString[myLoop] === 'h') {
+                myTemp = 'i';
             }
+            myString[myLoop] = myTemp;
         }
+        document.getElementById('myArea02').value = myString.join('');
+    }
 
-        function loseLife() {
-            lives--;
-            livesDisplay.innerText = `Lives: ${lives}`;
-            if (lives <= 0) {
-                gameOver = true;
-                gameOverSound.play(); // Play game over sound
-                alert('Game Over! Your score: ' + score);
-                menu.style.display = 'block';
-                resetGame();
+    function decryptText() {
+        let myTemp = '';
+        let myString = document.getElementById('myArea02').value.toLowerCase().split('');
+        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+            myTemp = myString[myLoop];
+            if (myString[myLoop] === 'f') {
+                myTemp = 'e';
+            } else if (myString[myLoop] === 'i') {
+                myTemp = 'h';
             }
+            myString[myLoop] = myTemp;
         }
+        document.getElementById('myArea03').value = myString.join('');
+    }
 
-        document.addEventListener('keydown', (event) => {
-            if (event.code === 'ArrowRight') {
-                moveRight();
-            } else if (event.code === 'ArrowLeft') {
-                moveLeft();
-            } else if (event.code === 'Space' && !isJumping) {
-                jump();
-            }
-        });
+    function resetFields() {
+        document.getElementById('myArea01').value = ''; // Clear input field
+        document.getElementById('myArea02').value = ''; // Clear encrypted output field
+        document.getElementById('myArea03').value = ''; // Clear decrypted output field
+    }
+</script>
 
-        function moveRight() {
-            let left = parseInt(window.getComputedStyle(player).getPropertyValue('left'));
-            if (left < gameArea.clientWidth - 50) {
-                player.style.left = left + 5 + 'px';
-            }
-        }
-
-        function moveLeft() {
-            let left = parseInt(window.getComputedStyle(player).getPropertyValue('left'));
-            if (left > 0) {
-                player.style.left = left - 5 + 'px';
-            }
-        }
-
-        function jump() {
-            isJumping = true;
-            jumpSound.play(); // Play jump sound
-            let jumpInterval = setInterval(() => {
-                if (jumpHeight >= 100) {
-                    clearInterval(jumpInterval);
-                    fall();
-                } else {
-                    jumpHeight += 5;
-                    playerBottom += 5;
-                    player.style.bottom = playerBottom + 'px';
-                }
-            }, 20);
-        }
-
-        function fall() {
-            let fallInterval = setInterval(() => {
-                if (playerBottom <= 100) {
-                    clearInterval(fallInterval);
-                    playerBottom = 100;
-                    player.style.bottom = playerBottom + 'px';
-                    isJumping = false;
-                    jumpHeight = 0;
-                } else {
-                    playerBottom -= gravity;
-                    player.style.bottom = playerBottom + 'px';
-                }
-            }, 20);
-        }
-
-        // Level transition
-        function nextLevel() {
-            level++;
-            if (level > 3) {
-                level = 1; // Loop back to level 1
-            }
-            levelDisplay.innerText = `Level: ${level}`;
-            resetGame();
-            createEnemies();
-            createCollectibles();
-        }
-
-        // Show menu on load
-        window.onload = () => {
-            menu.style.display = 'block';
-        };
-    </script>
 </body>
+
 </html>
