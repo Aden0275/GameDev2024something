@@ -67,14 +67,6 @@
             box-shadow: 0 0 15px rgba(0, 204, 0, 0.8);
         }
 
-        .glitch {
-            animation: glitch-title 1s infinite;
-        }
-
-        .glitch-textarea {
-            animation: glitch-textarea 0.5s infinite;
-        }
-
         .button-container {
             display: flex;
             justify-content: center;
@@ -107,122 +99,13 @@
             padding-left: 15px;
             text-align: left;
         }
-
-        @keyframes glitch-title {
-            0% {
-                opacity: 1;
-                transform: translate(0);
-            }
-
-            10% {
-                opacity: 0.8;
-                transform: translate(-2px, -2px);
-            }
-
-            20% {
-                opacity: 1;
-                transform: translate(2px, -2px);
-            }
-
-            30% {
-                opacity: 0.9;
-                transform: translate(-2px, 2px);
-            }
-
-            40% {
-                opacity: 1;
-                transform: translate(2px, 2px);
-            }
-
-            50% {
-                opacity: 0.7;
-                transform: translate(-2px, 0);
-            }
-
-            60% {
-                opacity: 1;
-                transform: translate(0, -2px);
-            }
-
-            70% {
-                opacity: 0.9;
-                transform: translate(2px, 2px);
-            }
-
-            80% {
-                opacity: 1;
-                transform: translate(-2px, -2px);
-            }
-
-            90% {
-                opacity: 0.8;
-                transform: translate(0);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translate(0);
-            }
-        }
-
-        @keyframes glitch-textarea {
-            0% {
-                opacity: 1;
-            }
-
-            10% {
-                opacity: 0.9;
-                transform: skewX(-1deg);
-            }
-
-            20% {
-                opacity: 0.8;
-                transform: skewX(1deg);
-            }
-
-            30% {
-                opacity: 0.9;
-                transform: skewX(-2deg);
-            }
-
-            40% {
-                opacity: 0.8;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            60% {
-                opacity: 0.8;
-                transform: skewX(2deg);
-            }
-
-            70% {
-                opacity: 0.9;
-                transform: skewX(-1deg);
-            }
-
-            80% {
-                opacity: 0.8;
-            }
-
-            90% {
-                opacity: 0.9;
-                transform: skewX(1deg);
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
     </style>
 </head>
 
 <body>
 
 <div class="container" id="main-container">
-    <h1 class="glitch">Spy Name Encryptor</h1>
+    <h1>Spy Name Encryptor</h1>
 
     <div class="terminal">
         <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
@@ -234,28 +117,27 @@
     </div>
 
     <div class="terminal">
-        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
+        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." readonly></textarea>
     </div>
 
     <input type="button" value="Decrypt" onclick="decryptText()"><br>
 
     <div class="terminal">
-        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." class="glitch-textarea" readonly></textarea>
+        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." readonly></textarea>
     </div>
 </div>
 
 <script>
-    // Function to handle the glow effect for all elements
     function applyGlowEffect() {
-        // Get elements that need glow effect
+        // Get all elements that need the glow effect
         const elements = [
             document.getElementById('main-container'),
             document.querySelector('h1'),
-            document.querySelectorAll('textarea'),
-            document.querySelectorAll('input[type=button]'),
+            ...document.querySelectorAll('textarea'),
+            ...document.querySelectorAll('input[type=button]')
         ];
-        
-        // Add red-glow class
+
+        // Toggle the red-glow class for all elements
         elements.forEach(element => {
             if (element) {
                 element.classList.toggle('red-glow');
@@ -263,14 +145,12 @@
         });
     }
 
-    // Set an interval to apply the glow effect every 5 seconds
+    // Start interval for glow effect
     setInterval(() => {
-        // Apply red glow
-        applyGlowEffect();
-        
-        // Remove red glow after 1 second
+        applyGlowEffect(); // Apply red glow
+
         setTimeout(() => {
-            applyGlowEffect();
+            applyGlowEffect(); // Remove red glow after 1 second
         }, 1000);
     }, 5000);
 
