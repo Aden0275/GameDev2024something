@@ -22,13 +22,14 @@
 
         .container {
             background-color: rgba(20, 20, 20, 0.9);
+            border: 2px solid #00ff00; /* Default border */
             border-radius: 10px;
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
             padding: 30px;
             max-width: 500px;
             width: 90%;
             text-align: center;
-            transition: box-shadow 0.3s;
+            transition: box-shadow 0.3s, border-color 0.3s;
         }
 
         .red-glow {
@@ -38,6 +39,10 @@
         .red-text {
             color: #ff0000 !important;
             text-shadow: 0 0 20px #ff0000 !important;
+        }
+
+        .red-border {
+            border-color: #ff0000 !important;
         }
 
         h1 {
@@ -53,7 +58,7 @@
             height: 100px;
             font-size: 18px;
             padding: 10px;
-            border: 2px solid #00ff00;
+            border: 2px solid #00ff00; /* Default border */
             border-radius: 5px;
             color: #00ff00;
             background-color: #1b1b1b;
@@ -83,7 +88,7 @@
             font-size: 16px;
             margin: 0 5px;
             cursor: pointer;
-            border: 2px solid #00ff00;
+            border: 2px solid #00ff00; /* Default border */
             border-radius: 5px;
             background-color: #1a1a1a;
             color: #00ff00;
@@ -133,8 +138,8 @@
 </div>
 
 <script>
-    function applyGlowAndTextEffect() {
-        // Get all elements that need the glow effect and text effect
+    function applyGlitchEffect() {
+        // Get all elements that need the glitch effect
         const elements = [
             document.getElementById('main-container'),
             document.getElementById('title'),
@@ -142,23 +147,27 @@
             ...document.querySelectorAll('input[type=button]')
         ];
 
-        // Toggle the red-glow class for all elements and change text to red
+        // Toggle classes for glow, text color, and border color
         elements.forEach(element => {
             if (element) {
                 element.classList.toggle('red-glow');
                 if (element.tagName === "H1" || element.tagName === "TEXTAREA" || element.tagName === "BUTTON") {
                     element.classList.toggle('red-text');
                 }
+                // Apply red border if it's a textarea or input button
+                if (element.tagName === "TEXTAREA" || element.tagName === "INPUT") {
+                    element.classList.toggle('red-border');
+                }
             }
         });
     }
 
-    // Start interval for glow and text effect
+    // Start interval for applying the glitch effect
     setInterval(() => {
-        applyGlowAndTextEffect(); // Apply red glow and text color
+        applyGlitchEffect(); // Apply glitch effect (red glow, text color, and border)
 
         setTimeout(() => {
-            applyGlowAndTextEffect(); // Remove red glow and text color after 1 second
+            applyGlitchEffect(); // Remove glitch effect after 1 second
         }, 1000);
     }, 5000);
 
