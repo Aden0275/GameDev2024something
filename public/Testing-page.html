@@ -123,6 +123,7 @@
     </div>
 
     <input type="button" value="Encrypt" onclick="encryptText()"><br>
+    <input type="button" value="Reset" onclick="resetFields()"><br>
 
     <div class="terminal">
         <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
@@ -164,6 +165,12 @@
             myString[myLoop] = myTemp;
         }
         document.getElementById('myArea03').value = myString.join('');
+    }
+
+    function resetFields() {
+        document.getElementById('myArea01').value = ''; // Clear input field
+        document.getElementById('myArea02').value = ''; // Clear encrypted output field
+        document.getElementById('myArea03').value = ''; // Clear decrypted output field
     }
 </script>
 
