@@ -42,7 +42,7 @@
         }
 
         .red-border {
-            border-color: #ff0000 !important; /* Turn borders red */
+            border-color: #ff0000 !important; /* Change borders to red */
         }
 
         h1 {
@@ -60,7 +60,7 @@
             padding: 10px;
             border: 2px solid #00ff00; /* Default border */
             border-radius: 5px;
-            color: #00ff00;
+            color: #00ff00; /* Default text color */
             background-color: #1b1b1b;
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
             transition: border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
@@ -151,12 +151,13 @@
         elements.forEach(element => {
             if (element) {
                 element.classList.toggle('red-glow'); // Apply red glow
-                if (element.tagName === "H1" || element.tagName === "TEXTAREA" || element.tagName === "INPUT") {
+                if (element.tagName === "H1" || element.tagName === "INPUT") {
                     element.classList.toggle('red-text'); // Change text color to red
                 }
                 // Apply red border if it's a textarea or input button
                 if (element.tagName === "TEXTAREA" || element.tagName === "INPUT") {
                     element.classList.toggle('red-border'); // Change border color to red
+                    element.style.color = '#ff0000'; // Change text color inside textbox to red
                 }
             }
         });
