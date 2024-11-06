@@ -61,10 +61,15 @@
         .glitch-textarea {
             animation: glitch-textarea 0.5s infinite; /* Enhanced glitch animation for text areas */
         }
+        .button-container {
+            display: flex; /* Use flexbox for button alignment */
+            justify-content: center; /* Center align the buttons */
+            margin: 10px 0; /* Add margin for spacing */
+        }
         input[type=button] {
             padding: 12px 20px;
             font-size: 16px;
-            margin: 10px;
+            margin: 0 5px; /* Add horizontal margin between buttons */
             cursor: pointer;
             border: 2px solid #00ff00; /* Light green border */
             border-radius: 5px;
@@ -122,8 +127,10 @@
         <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
     </div>
 
-    <input type="button" value="Encrypt" onclick="encryptText()"><br>
-    <input type="button" value="Reset" onclick="resetFields()"><br>
+    <div class="button-container">
+        <input type="button" value="Encrypt" onclick="encryptText()">
+        <input type="button" value="Reset" onclick="resetFields()">
+    </div>
 
     <div class="terminal">
         <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
