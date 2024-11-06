@@ -1,149 +1,38 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spy Name Encryptor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"> <!-- Hacker-like font -->
+    <title>t2a20-spy-name.html</title>
     <style>
-        body {
-            font-family: 'Share Tech Mono', monospace; /* Use hacker-style font */
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-color: #000; /* Solid black background */
-            color: #00ff00; /* Bright green text */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .container {
-            background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Green glow around container */
-            padding: 30px;
-            max-width: 500px; /* Slightly smaller for sleekness */
-            width: 90%;
-            text-align: center;
-        }
-        h1 {
-            font-family: 'Share Tech Mono', monospace; /* Hacker-style font */
-            color: #00ff00; /* Neon green color */
-            margin-bottom: 30px;
-            text-shadow: 0 0 20px #00ff00; /* Glowing green text effect */
-            font-size: 2.5em;
-        }
-        textarea {
-            width: 100%;
-            height: 100px; /* Increased height for better visibility */
-            font-size: 18px;
-            padding: 10px;
-            border: 2px solid #00ff00; /* Light green border */
-            border-radius: 5px;
-            color: #00ff00; /* Green text color */
-            background-color: #1b1b1b; /* Very dark background for contrast */
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
-            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-            resize: none; /* Disable resize */
-        }
-        textarea::placeholder {
-            color: rgba(0, 255, 0, 0.7); /* Dimmed placeholder color */
-        }
-        textarea:focus {
-            outline: none;
-            border-color: #00cc00; /* Lighter green border on focus */
-            box-shadow: 0 0 15px rgba(0, 204, 0, 0.8); /* Enhanced green glow */
-        }
-        .glitch {
-            animation: glitch-title 1s infinite; /* Glitch animation for title */
-        }
-        .glitch-textarea {
-            animation: glitch-textarea 0.5s infinite; /* Enhanced glitch animation for text areas */
-        }
-        .button-container {
-            display: flex; /* Use flexbox for button alignment */
-            justify-content: center; /* Center align the buttons */
-            margin: 10px 0; /* Add margin for spacing */
-        }
-        input[type=button] {
-            padding: 12px 20px;
-            font-size: 16px;
-            margin: 0 5px; /* Add horizontal margin between buttons */
-            cursor: pointer;
-            border: 2px solid #00ff00; /* Light green border */
-            border-radius: 5px;
-            background-color: #1a1a1a; /* Matching dark background */
-            color: #00ff00; /* Bright green text */
-            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
-            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.5); /* Green box shadow */
-        }
-        input[type=button]:hover {
-            background-color: #00ff00; /* Button background changes to green on hover */
-            color: black; /* Black text on hover */
-            transform: translateY(-2px); /* Lifting effect during hover */
-            box-shadow: 0 6px 20px rgba(0, 255, 0, 0.8); /* Enhanced green shadow on hover */
-        }
-        .terminal {
-            margin: 20px 0;
-            border-left: 4px solid #00ff00; /* Bold left border to mimic terminal */
-            padding-left: 15px;
-            text-align: left;
-        }
-        @keyframes glitch-title {
-            0% { opacity: 1; transform: translate(0); }
-            10% { opacity: 0.8; transform: translate(-2px, -2px); }
-            20% { opacity: 1; transform: translate(2px, -2px); }
-            30% { opacity: 0.9; transform: translate(-2px, 2px); }
-            40% { opacity: 1; transform: translate(2px, 2px); }
-            50% { opacity: 0.7; transform: translate(-2px, 0); }
-            60% { opacity: 1; transform: translate(0, -2px); }
-            70% { opacity: 0.9; transform: translate(2px, 2px); }
-            80% { opacity: 1; transform: translate(-2px, -2px); }
-            90% { opacity: 0.8; transform: translate(0); }
-            100% { opacity: 1; transform: translate(0); }
-        }
-        @keyframes glitch-textarea {
-            0% { opacity: 1; }
-            10% { opacity: 0.9; transform: skewX(-1deg); }
-            20% { opacity: 0.8; transform: skewX(1deg); }
-            30% { opacity: 0.9; transform: skewX(-2deg); }
-            40% { opacity: 0.8; }
-            50% { opacity: 1; }
-            60% { opacity: 0.8; transform: skewX(2deg); }
-            70% { opacity: 0.9; transform: skewX(-1deg); }
-            80% { opacity: 0.8; }
-            90% { opacity: 0.9; transform: skewX(1deg); }
-            100% { opacity: 1; }
+        #colorBox {
+            width: 200px;
+            height: 200px;
+            background-color: green; /* Initial color */
+            margin: 20px auto;
+            transition: background-color 0.5s; /* Smooth transition */
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="glitch">Spy Name Encryptor</h1>
-    
-    <div class="terminal">
-        <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
-    </div>
+<h1 align="center">t2a20-spy-name.html</h1>
+<textarea id="myArea01" rows="4" cols="70">Hello how are you</textarea>
+<br>
+<input type="button" value="Encrypt" onclick="encryptText()">
+<br><br>
+<textarea id="myArea02" rows="4" cols="70" placeholder="Encrypted text will appear here"></textarea>
+<br>
+<input type="button" value="Decrypt" onclick="decryptText()">
+<br><br>
+<textarea id="myArea03" rows="4" cols="70" placeholder="Decrypted text will appear here"></textarea>
+<br>
+<input type="button" value="Reset" onclick="resetFields()">
+<br><br>
 
-    <div class="button-container">
-        <input type="button" value="Encrypt" onclick="encryptText()">
-        <input type="button" value="Reset" onclick="resetFields()">
-    </div>
-
-    <div class="terminal">
-        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
-    </div>
-
-    <input type="button" value="Decrypt" onclick="decryptText()"><br>
-
-    <div class="terminal">
-        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." class="glitch-textarea" readonly></textarea>
-    </div>
-</div>
+<!-- Color flashing box -->
+<div id="colorBox"></div>
 
 <script>
     function encryptText() {
@@ -151,11 +40,8 @@
         let myString = document.getElementById('myArea01').value.toLowerCase().split('');
         for (let myLoop = 0; myLoop < myString.length; myLoop++) {
             myTemp = myString[myLoop];
-            if (myString[myLoop] === 'e') {
-                myTemp = 'f';
-            } else if (myString[myLoop] === 'h') {
-                myTemp = 'i';
-            }
+            if (myString[myLoop] === 'e') { myTemp = 'f'; }
+            if (myString[myLoop] === 'h') { myTemp = 'i'; }
             myString[myLoop] = myTemp;
         }
         document.getElementById('myArea02').value = myString.join('');
@@ -181,6 +67,21 @@
         document.getElementById('myArea02').value = ''; // Clear encrypted output field
         document.getElementById('myArea03').value = ''; // Clear decrypted output field
     }
+
+    function flashColor() {
+        const colorBox = document.getElementById('colorBox');
+        
+        // Change to red
+        colorBox.style.backgroundColor = 'red';
+
+        // After 1 second, change it back to green
+        setTimeout(() => {
+            colorBox.style.backgroundColor = 'green';
+        }, 1000); // 1000 milliseconds = 1 second
+    }
+
+    // Flash color every 5 seconds
+    setInterval(flashColor, 5000); // 5000 milliseconds = 5 seconds
 </script>
 
 </body>
