@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flappy Bird Clone with Background Control</title>
+    <title>Flappy Bird Clone</title>
     <style>
         body {
             background-repeat: no-repeat; /* Disable background repeat */
@@ -18,20 +17,17 @@
             color: white; /* Sets general text color to white */
             position: relative; /* Allows absolute positioning of the bird */
         }
-
         #myImage01 {
-            position: absolute;
-            width: 100px;
-            height: 80px;
-            z-index: 10;
+            position: absolute; 
+            width: 100px; 
+            height: 80px; 
+            z-index: 10; 
             bottom: 50px; /* Position it 50px above the bottom of the screen */
             left: calc(50% - 50px); /* Center it horizontally; subtract half its width */
         }
-
         .button-section {
             margin: 20px 0;
         }
-
         button {
             margin: 5px;
             padding: 10px 15px;
@@ -40,101 +36,118 @@
         }
     </style>
 </head>
-
 <body id="myBody">
-    <script>
-        // Background movement variables
-        let myGlobalX = 0; // Global variable for background horizontal position
-        let myGlobalY = 0; // Global variable for background vertical position
-        let mySpeed01 = 400, mySpeed02 = 400, mySpeedUp = 400, mySpeedDown = 400; // Background speeds
+<script>
+    // Global variables for the bird
+    const imgElement = document.getElementById('myImage01');
+    let gravity = 0.5; // The force of gravity
+    let lift = -10; // The jump force
+    let velocity = 0; // Current velocity of the bird
+    let positionY = window.innerHeight - 50 - imgElement.clientHeight; // Initial position
 
-        // Image control variables
-        const imgElement = document.getElementById('myImage01');
-        let gravity = 0.5; // The force of gravity
-        let lift = -10; // The jump force
-        let velocity = 0; // Current velocity of the bird
-        let positionY = window.innerHeight - 50 - imgElement.clientHeight; // Initial position
+    // Set initial position of the bird
+    imgElement.style.bottom = `${positionY}px`;
 
-        // Set initial position of the bird
+    // Jump function
+    function jump() {
+        velocity += lift; // Apply the jump force
+    }
+
+    // Update function that handles gravity and position
+    function update() {
+        velocity += gravity; // Apply gravity
+        positionY += velocity; // Update position with velocity
+
+        // Prevent the bird from going off-screen
+        if (positionY > window.innerHeight - imgElement.clientHeight - 50) {
+            positionY = window.innerHeight - imgElement.clientHeight - 50; // Keep it above bottom
+            velocity = 0; // Reset velocity if touching the ground
+        }
+
+        if (positionY < 0) {
+            positionY = 0; // Prevent it from going above the top
+            velocity = 0; // Reset velocity
+        }
+
+        // Update the bird's position
         imgElement.style.bottom = `${positionY}px`;
 
-        // Function to jump
-        function jump() {
-            velocity += lift; // Apply the jump force
-        }
+        // Continue the animation
+        requestAnimationFrame(update);
+    }
 
-        // Update function that handles gravity and position
-        function update() {
-            velocity += gravity; // Apply gravity
-            positionY += velocity; // Update position with velocity
+    // Event Listener for mouse click to make the bird jump
+    document.addEventListener('click', jump);
+    
+    // Start the update loop for the bird
+    update();
 
-            // Prevent the bird from going off-screen
-            if (positionY > window.innerHeight - imgElement.clientHeight - 50) {
-                positionY = window.innerHeight - imgElement.clientHeight - 50; // Keep it above bottom
-                velocity = 0; // Reset velocity if it's touching the ground
-            }
+    // Global variables for background movement
+    let myGlobalX = 0; // Global variable for background horizontal position
+    let myGlobalY = 0; // Global variable for background vertical position
+    // Original positions
+    const originalBackgroundX = 0; // Original horizontal position for the background
+    const originalBackgroundY = 0; // Original vertical position for the background
 
-            if (positionY < 0) {
-                positionY = 0; // Prevent it from going above the top
-                velocity = 0; // Reset velocity
-            }
+    // Timer variables
+    let myClock01, myClock02, myClock04, myClock05; 
+    let mySpeed01 = 400, mySpeed02 = 400; // Background speeds
 
-            // Update the bird's position
-            imgElement.style.bottom = `${positionY}px`;
+    // Control state
+    let controlMode = 'image'; // Start with the image being controlled
 
-            // Continue the animation
-            requestAnimationFrame(update);
-        }
+    // Background movement functions
+    function moveBackgroundLeft() {
+        myGlobalX -= 5;
+        updateBackgroundPosition();
+    }
 
-        // Event Listener for mouse click
-        document.addEventListener('click', jump);
+    function moveBackgroundRight() {
+        myGlobalX += 5;
+        updateBackgroundPosition();
+    }
 
-        // Background movement functions
-        function moveBackgroundLeft() {
-            myGlobalX -= 5;
-            updateBackgroundPosition();
-        }
+    function moveBackgroundUp() {
+        myGlobalY -= 5;
+        updateBackgroundPosition();
+    }
 
-        function moveBackgroundRight() {
-            myGlobalX += 5;
-            updateBackgroundPosition();
-        }
+    function moveBackgroundDown() {
+        myGlobalY += 5;
+        updateBackgroundPosition();
+    }
 
-        function moveBackgroundUp() {
-            myGlobalY -= 5;
-            updateBackgroundPosition();
-        }
+    function updateBackgroundPosition() {
+        document.getElementById('myBody').style.backgroundPosition = `${myGlobalX}px ${myGlobalY}px`;
+    }
 
-        function moveBackgroundDown() {
-            myGlobalY += 5;
-            updateBackgroundPosition();
-        }
+    // Clear all intervals for movement
+    function clearAllIntervals() {
+        clearInterval(myClock01);
+        clearInterval(myClock02);
+    }
 
-        function updateBackgroundPosition() {
-            document.getElementById('myBody').style.backgroundPosition = `${myGlobalX}px ${myGlobalY}px`;
-        }
+    // Reset function for the background
+    function resetPositions() {
+        clearAllIntervals();  // Stop any auto movement
 
-        // Clear all intervals
-        function clearAllIntervals() {
-            // Not needed for this simplified version
-        }
+        myGlobalX = originalBackgroundX;
+        myGlobalY = originalBackgroundY;
 
-        // Reset function
-        function resetPositions() {
-            myGlobalX = 0;
-            myGlobalY = 0;
-            velocity = 0; // Reset bird's velocity
-            positionY = window.innerHeight - 50 - imgElement.clientHeight; // Reset bird's position
-            imgElement.style.bottom = `${positionY}px`; // Update bird position
-            updateBackgroundPosition();
-        }
+        updateBackgroundPosition();
+    }
 
-        // Start the update loop
-        update();
+    // Switch control between the image and background
+    function toggleControl() {
+        controlMode = controlMode === 'image' ? 'background' : 'image';
+        const controlLabel = document.getElementById('controlLabel');
+        controlLabel.textContent = `Control Mode: ${controlMode.charAt(0).toUpperCase() + controlMode.slice(1)}`;
+    }
 
-        // Keydown event handler for arrow keys (background control)
-        document.addEventListener('keydown', function (event) {
-            switch (event.key) {
+    // Keydown event handler for arrow keys
+    document.addEventListener('keydown', function(event) {
+        if (controlMode === 'background') {
+            switch(event.key) {
                 case 'ArrowLeft':
                     moveBackgroundLeft();
                     break;
@@ -148,18 +161,59 @@
                     moveBackgroundDown();
                     break;
             }
-        });
-    </script>
+        }
+    });
 
-    <h1>Flappy Bird Clone with Background Control</h1>
+</script>
 
-    <!-- Control Section -->
-    <div class="button-section">
-        <button onclick="resetPositions()">Reset Positions</button>
-    </div>
+<h1>Flappy Bird Clone</h1>
 
-    <!-- Image Element -->
-    <img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
+<!-- Control Toggle Section -->
+<div class="button-section">
+    <button onclick="toggleControl()">Toggle Control (Image/Background)</button>
+    <p id="controlLabel">Control Mode: Image</p>
+</div>
+
+<!-- Horizontal Movement Section for Background -->
+<div class="button-section">
+    <h2>Background Horizontal Movement</h2>
+    <button onclick="moveBackgroundLeft()">Move Background Left</button>
+    <button onclick="moveBackgroundRight()">Move Background Right</button>
+    <button onclick="{
+        clearInterval(myClock01);
+        mySpeed01 = Math.max(10, mySpeed01 - 30);
+        myClock01 = setInterval(moveBackgroundLeft, mySpeed01);
+    }">Auto Background Left Faster</button>
+    <button onclick="{
+        clearInterval(myClock01);
+        mySpeed01 += 30;
+        myClock01 = setInterval(moveBackgroundLeft, mySpeed01);
+    }">Auto Background Left Slower</button>
+    <button onclick="{
+        clearInterval(myClock02);
+        mySpeed02 = Math.max(10, mySpeed02 - 30);
+        myClock02 = setInterval(moveBackgroundRight, mySpeed02);
+    }">Auto Background Right Faster</button>
+    <button onclick="{
+        clearInterval(myClock02);
+        mySpeed02 += 30;
+        myClock02 = setInterval(moveBackgroundRight, mySpeed02);
+    }">Auto Background Right Slower</button>
+</div>
+
+<!-- Vertical Movement Section for Background -->
+<div class="button-section">
+    <h2>Background Vertical Movement</h2>
+    <button onclick="moveBackgroundUp()">Move Background Up</button>
+    <button onclick="moveBackgroundDown()">Move Background Down</button>
+</div>
+
+<!-- Reset Button -->
+<div class="button-section">
+    <button onclick="resetPositions()">Reset Background Position</button>
+</div>
+
+<!-- Image Element -->
+<img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
 </body>
-
 </html>
