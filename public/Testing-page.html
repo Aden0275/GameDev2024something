@@ -35,6 +35,11 @@
             box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
         }
 
+        .red-text {
+            color: #ff0000 !important;
+            text-shadow: 0 0 20px #ff0000 !important;
+        }
+
         h1 {
             font-family: 'Share Tech Mono', monospace;
             color: #00ff00;
@@ -105,7 +110,7 @@
 <body>
 
 <div class="container" id="main-container">
-    <h1>Spy Name Encryptor</h1>
+    <h1 id="title">Spy Name Encryptor</h1>
 
     <div class="terminal">
         <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
@@ -128,29 +133,32 @@
 </div>
 
 <script>
-    function applyGlowEffect() {
-        // Get all elements that need the glow effect
+    function applyGlowAndTextEffect() {
+        // Get all elements that need the glow effect and text effect
         const elements = [
             document.getElementById('main-container'),
-            document.querySelector('h1'),
+            document.getElementById('title'),
             ...document.querySelectorAll('textarea'),
             ...document.querySelectorAll('input[type=button]')
         ];
 
-        // Toggle the red-glow class for all elements
+        // Toggle the red-glow class for all elements and change text to red
         elements.forEach(element => {
             if (element) {
                 element.classList.toggle('red-glow');
+                if (element.tagName === "H1" || element.tagName === "TEXTAREA" || element.tagName === "BUTTON") {
+                    element.classList.toggle('red-text');
+                }
             }
         });
     }
 
-    // Start interval for glow effect
+    // Start interval for glow and text effect
     setInterval(() => {
-        applyGlowEffect(); // Apply red glow
+        applyGlowAndTextEffect(); // Apply red glow and text color
 
         setTimeout(() => {
-            applyGlowEffect(); // Remove red glow after 1 second
+            applyGlowAndTextEffect(); // Remove red glow and text color after 1 second
         }, 1000);
     }, 5000);
 
