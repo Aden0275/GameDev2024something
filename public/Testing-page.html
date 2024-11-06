@@ -23,12 +23,12 @@
         .container {
             background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
             border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Green glow around container */
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Initial green glow */
             padding: 30px;
             max-width: 500px; /* Slightly smaller for sleekness */
             width: 90%;
             text-align: center;
-            transition: box-shadow 0.3s; /* Smooth transition for glowing effect */
+            transition: box-shadow 5s; /* Smooth transition for glow effect */
         }
 
         .red-glow {
@@ -246,19 +246,16 @@
 
 <script>
     // Function to handle the glow effect
-    function applyGlowEffect() {
-        document.getElementById('main-container').classList.toggle('red-glow');
+    function changeGlow() {
+        const container = document.getElementById('main-container');
+        container.style.boxShadow = '0 0 30px rgba(255, 0, 0, 0.8)'; // Change to red glow
+        setTimeout(() => {
+            container.style.boxShadow = '0 0 30px rgba(0, 255, 0, 0.8)'; // Change back to green glow
+        }, 1000); // Revert glow after 1 second
     }
 
-    // Set an interval to apply the glow effect every 5 seconds
-    setInterval(applyGlowEffect, 5000);
-
-    // Set a timeout to remove the glow effect after 1 second
-    setInterval(function() {
-        setTimeout(() => {
-            document.getElementById('main-container').classList.remove('red-glow');
-        }, 1000);
-    }, 5000);
+    // Set an interval to change the glow effect every 5 seconds
+    setInterval(changeGlow, 5000);
 
     function encryptText() {
         let myTemp = '';
