@@ -147,23 +147,19 @@
     // Keydown event handler for arrow keys
     document.addEventListener('keydown', function(event) {
         if (controlMode === 'image') {
-            switch(event.key) {
+            switch (event.key) {
                 case 'ArrowLeft':
                     moveImageLeft();
                     break;
                 case 'ArrowRight':
                     moveImageRight();
                     break;
-                case 'ArrowUp':
-                case 'Space':
-                    jump(); // Jump when Arrow Up or Space is pressed
-                    break;
                 case 'ArrowDown':
                     moveImageDown();
                     break;
             }
         } else if (controlMode === 'background') {
-            switch(event.key) {
+            switch (event.key) {
                 case 'ArrowLeft':
                     moveBackgroundLeft();
                     break;
@@ -196,7 +192,7 @@
             imgGlobalY = window.innerHeight - 80; // Reset to bottom
             imgVelocityY = 0; // Stop falling
         }
-        
+
         // Prevent the image from going off the top of the screen
         if (imgGlobalY < 0) {
             imgGlobalY = 0;
@@ -209,6 +205,11 @@
 
     // Start the game loop
     requestAnimationFrame(gameLoop);
+
+    // Mouse click event handler for jumping
+    document.addEventListener('click', function() {
+        jump(); // Trigger jump on mouse click
+    });
 
 </script>
 
