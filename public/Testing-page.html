@@ -1,185 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spy Name Encryptor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"> <!-- Hacker-like font -->
+    <title>Flappy Bird Clone with Background Control</title>
     <style>
         body {
-            font-family: 'Share Tech Mono', monospace; /* Use hacker-style font */
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-color: #000; /* Solid black background */
-            color: #00ff00; /* Bright green text */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        .container {
-            background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Green glow around container */
-            padding: 30px;
-            max-width: 500px; /* Slightly smaller for sleekness */
-            width: 90%;
+            background-repeat: no-repeat; /* Disable background repeat */
+            background-image: url('https://i.ibb.co/yXNJrzG/1247160.jpg');
+            background-size: cover; /* Cover the entire background */
             text-align: center;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            height: 100vh; /* Makes body full height of the viewport */
+            overflow: hidden; /* Prevents scrollbar from appearing */
+            color: white; /* Sets general text color to white */
+            position: relative; /* Allows absolute positioning of the bird */
         }
-        h1 {
-            font-family: 'Share Tech Mono', monospace; /* Hacker-style font */
-            color: #00ff00; /* Neon green color */
-            margin-bottom: 30px;
-            text-shadow: 0 0 20px #00ff00; /* Glowing green text effect */
-            font-size: 2.5em;
+
+        #myImage01 {
+            position: absolute;
+            width: 100px;
+            height: 80px;
+            z-index: 10;
+            bottom: 50px; /* Position it 50px above the bottom of the screen */
+            left: calc(50% - 50px); /* Center it horizontally; subtract half its width */
         }
-        textarea {
-            width: 100%;
-            height: 100px; /* Increased height for better visibility */
-            font-size: 18px;
-            padding: 10px;
-            border: 2px solid #00ff00; /* Light green border */
-            border-radius: 5px;
-            color: #00ff00; /* Green text color */
-            background-color: #1b1b1b; /* Very dark background for contrast */
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
-            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-            resize: none; /* Disable resize */
-        }
-        textarea::placeholder {
-            color: rgba(0, 255, 0, 0.7); /* Dimmed placeholder color */
-        }
-        textarea:focus {
-            outline: none;
-            border-color: #00cc00; /* Lighter green border on focus */
-            box-shadow: 0 0 15px rgba(0, 204, 0, 0.8); /* Enhanced green glow */
-        }
-        .glitch {
-            animation: glitch-title 1s infinite; /* Glitch animation for title */
-        }
-        .glitch-textarea {
-            animation: glitch-textarea 0.5s infinite; /* Enhanced glitch animation for text areas */
-        }
-        .button-container {
-            display: flex; /* Use flexbox for button alignment */
-            justify-content: center; /* Center align the buttons */
-            margin: 10px 0; /* Add margin for spacing */
-        }
-        input[type=button] {
-            padding: 12px 20px;
-            font-size: 16px;
-            margin: 0 5px; /* Add horizontal margin between buttons */
-            cursor: pointer;
-            border: 2px solid #00ff00; /* Light green border */
-            border-radius: 5px;
-            background-color: #1a1a1a; /* Matching dark background */
-            color: #00ff00; /* Bright green text */
-            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
-            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.5); /* Green box shadow */
-        }
-        input[type=button]:hover {
-            background-color: #00ff00; /* Button background changes to green on hover */
-            color: black; /* Black text on hover */
-            transform: translateY(-2px); /* Lifting effect during hover */
-            box-shadow: 0 6px 20px rgba(0, 255, 0, 0.8); /* Enhanced green shadow on hover */
-        }
-        .terminal {
+
+        .button-section {
             margin: 20px 0;
-            border-left: 4px solid #00ff00; /* Bold left border to mimic terminal */
-            padding-left: 15px;
-            text-align: left;
         }
-        @keyframes glitch-title {
-            0% { opacity: 1; transform: translate(0); }
-            10% { opacity: 0.8; transform: translate(-2px, -2px); }
-            20% { opacity: 1; transform: translate(2px, -2px); }
-            30% { opacity: 0.9; transform: translate(-2px, 2px); }
-            40% { opacity: 1; transform: translate(2px, 2px); }
-            50% { opacity: 0.7; transform: translate(-2px, 0); }
-            60% { opacity: 1; transform: translate(0, -2px); }
-            70% { opacity: 0.9; transform: translate(2px, 2px); }
-            80% { opacity: 1; transform: translate(-2px, -2px); }
-            90% { opacity: 0.8; transform: translate(0); }
-            100% { opacity: 1; transform: translate(0); }
-        }
-        @keyframes glitch-textarea {
-            0% { opacity: 1; }
-            10% { opacity: 0.9; transform: skewX(-1deg); }
-            20% { opacity: 0.8; transform: skewX(1deg); }
-            30% { opacity: 0.9; transform: skewX(-2deg); }
-            40% { opacity: 0.8; }
-            50% { opacity: 1; }
-            60% { opacity: 0.8; transform: skewX(2deg); }
-            70% { opacity: 0.9; transform: skewX(-1deg); }
-            80% { opacity: 0.8; }
-            90% { opacity: 0.9; transform: skewX(1deg); }
-            100% { opacity: 1; }
+
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
-<body>
 
-<div class="container">
-    <h1 class="glitch">Spy Name Encryptor</h1>
-    
-    <div class="terminal">
-        <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
-    </div>
+<body id="myBody">
+    <script>
+        // Background movement variables
+        let myGlobalX = 0; // Global variable for background horizontal position
+        let myGlobalY = 0; // Global variable for background vertical position
+        let mySpeed01 = 400, mySpeed02 = 400, mySpeedUp = 400, mySpeedDown = 400; // Background speeds
 
-    <div class="button-container">
-        <input type="button" value="Encrypt" onclick="encryptText()">
-        <input type="button" value="Reset" onclick="resetFields()">
-    </div>
+        // Image control variables
+        const imgElement = document.getElementById('myImage01');
+        let gravity = 0.5; // The force of gravity
+        let lift = -10; // The jump force
+        let velocity = 0; // Current velocity of the bird
+        let positionY = window.innerHeight - 50 - imgElement.clientHeight; // Initial position
 
-    <div class="terminal">
-        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
-    </div>
+        // Set initial position of the bird
+        imgElement.style.bottom = `${positionY}px`;
 
-    <input type="button" value="Decrypt" onclick="decryptText()"><br>
-
-    <div class="terminal">
-        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." class="glitch-textarea" readonly></textarea>
-    </div>
-</div>
-
-<script>
-    function encryptText() {
-        let myTemp = '';
-        let myString = document.getElementById('myArea01').value.toLowerCase().split('');
-        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
-            myTemp = myString[myLoop];
-            if (myString[myLoop] === 'e') {
-                myTemp = 'f';
-            } else if (myString[myLoop] === 'h') {
-                myTemp = 'i';
-            }
-            myString[myLoop] = myTemp;
+        // Function to jump
+        function jump() {
+            velocity += lift; // Apply the jump force
         }
-        document.getElementById('myArea02').value = myString.join('');
-    }
 
-    function decryptText() {
-        let myTemp = '';
-        let myString = document.getElementById('myArea02').value.toLowerCase().split('');
-        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
-            myTemp = myString[myLoop];
-            if (myString[myLoop] === 'f') {
-                myTemp = 'e';
-            } else if (myString[myLoop] === 'i') {
-                myTemp = 'h';
+        // Update function that handles gravity and position
+        function update() {
+            velocity += gravity; // Apply gravity
+            positionY += velocity; // Update position with velocity
+
+            // Prevent the bird from going off-screen
+            if (positionY > window.innerHeight - imgElement.clientHeight - 50) {
+                positionY = window.innerHeight - imgElement.clientHeight - 50; // Keep it above bottom
+                velocity = 0; // Reset velocity if it's touching the ground
             }
-            myString[myLoop] = myTemp;
+
+            if (positionY < 0) {
+                positionY = 0; // Prevent it from going above the top
+                velocity = 0; // Reset velocity
+            }
+
+            // Update the bird's position
+            imgElement.style.bottom = `${positionY}px`;
+
+            // Continue the animation
+            requestAnimationFrame(update);
         }
-        document.getElementById('myArea03').value = myString.join('');
-    }
 
-    function resetFields() {
-        document.getElementById('myArea01').value = ''; // Clear input field
-        document.getElementById('myArea02').value = ''; // Clear encrypted output field
-        document.getElementById('myArea03').value = ''; // Clear decrypted output field
-    }
-</script>
+        // Event Listener for mouse click
+        document.addEventListener('click', jump);
 
+        // Background movement functions
+        function moveBackgroundLeft() {
+            myGlobalX -= 5;
+            updateBackgroundPosition();
+        }
+
+        function moveBackgroundRight() {
+            myGlobalX += 5;
+            updateBackgroundPosition();
+        }
+
+        function moveBackgroundUp() {
+            myGlobalY -= 5;
+            updateBackgroundPosition();
+        }
+
+        function moveBackgroundDown() {
+            myGlobalY += 5;
+            updateBackgroundPosition();
+        }
+
+        function updateBackgroundPosition() {
+            document.getElementById('myBody').style.backgroundPosition = `${myGlobalX}px ${myGlobalY}px`;
+        }
+
+        // Clear all intervals
+        function clearAllIntervals() {
+            // Not needed for this simplified version
+        }
+
+        // Reset function
+        function resetPositions() {
+            myGlobalX = 0;
+            myGlobalY = 0;
+            velocity = 0; // Reset bird's velocity
+            positionY = window.innerHeight - 50 - imgElement.clientHeight; // Reset bird's position
+            imgElement.style.bottom = `${positionY}px`; // Update bird position
+            updateBackgroundPosition();
+        }
+
+        // Start the update loop
+        update();
+
+        // Keydown event handler for arrow keys (background control)
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    moveBackgroundLeft();
+                    break;
+                case 'ArrowRight':
+                    moveBackgroundRight();
+                    break;
+                case 'ArrowUp':
+                    moveBackgroundUp();
+                    break;
+                case 'ArrowDown':
+                    moveBackgroundDown();
+                    break;
+            }
+        });
+    </script>
+
+    <h1>Flappy Bird Clone with Background Control</h1>
+
+    <!-- Control Section -->
+    <div class="button-section">
+        <button onclick="resetPositions()">Reset Positions</button>
+    </div>
+
+    <!-- Image Element -->
+    <img id="myImage01" src="https://i.ibb.co/Zf7hHsh/OIP.jpg" alt="OIP">
 </body>
+
 </html>
