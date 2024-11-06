@@ -1,22 +1,30 @@
 
-<h1 align=center>t2a20-spy-name.html</h1>
-<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br> 
+<h1 align="center">t2a20-spy-name.html</h1>
+<textarea id="myArea01" rows="4" cols="70">Hello how are you</textarea>
+<br>
+<input type="button" value="Encrypt" onclick="encryptText()">
+<br><br>
+<textarea id="myArea02" rows="4" cols="70" placeholder="Encrypted text will appear here"></textarea>
+<br>
+<input type="button" value="Decrypt" onclick="decryptText()">
+<br><br>
+<textarea id="myArea03" rows="4" cols="70" placeholder="Decrypted text will appear here"></textarea>
+<br>
+<input type="button" value="Reset" onclick="resetFields()">
+<br><br>
 
-
-<input type=button value="encrypt" onclick="{
-   let myTemp = ''
-   myString = document.getElementById('myArea01').value.toLowerCase().split('')
-   for (let myLoop=0;   myLoop < myString.length; myLoop++){
-      myTemp = myString[myLoop]
-      if (myString[myLoop] == 'e') {myTemp  = 'f'} 
-      if (myString[myLoop] == 'h') {myTemp  = 'i'} 
-      myString[myLoop] = myTemp
-   }
-   document.getElementById('myArea02').value = myString.join('')
-}"><br><br>
-
-
-}
+<script>
+    function encryptText() {
+        let myTemp = '';
+        let myString = document.getElementById('myArea01').value.toLowerCase().split('');
+        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+            myTemp = myString[myLoop];
+            if (myString[myLoop] === 'e') { myTemp = 'f'; }
+            if (myString[myLoop] === 'h') { myTemp = 'i'; }
+            myString[myLoop] = myTemp;
+        }
+        document.getElementById('myArea02').value = myString.join('');
+    }
 
     function decryptText() {
         let myTemp = '';
@@ -39,6 +47,3 @@
         document.getElementById('myArea03').value = ''; // Clear decrypted output field
     }
 </script>
-
-</body>
-</html>
