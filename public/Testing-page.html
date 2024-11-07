@@ -54,22 +54,16 @@
     <h2 align="center">t2a08-canvas by Fred</h2>
     
     <div>
-        <!-- Button to draw a line -->
+        <!-- Button to draw an animated triangle -->
+        <button class="button" onclick="startAnimatedTriangle();">Animate Triangle</button>
+
+        <!-- Other buttons -->
         <button class="button" onclick="drawLine();">.lineTo(30,200)</button>
-        
-        <!-- Button to draw an arc -->
         <button class="button" onclick="drawArc();">.arc(95, 50, 40, 0, 2 * Math.PI)</button>
-        
-        <!-- Button to add text -->
         <button class="button" onclick="drawText();">.fillText('Hello World', 400, 100)</button>
-        
-        <!-- Button to draw a quadratic curve -->
         <button class="button" onclick="drawQuadraticCurve();">.quadraticCurveTo(100,220,240,110)</button>
-        
-        <!-- Button to create a linear gradient -->
         <button class="button" onclick="drawGradient();">.createLinearGradient(100, 300, 200, 400)</button><br><br>
 
-        <!-- New features -->
         <button class="button" onclick="drawRectangle();">.drawRectangle(150, 150, 100, 50)</button>
         <button class="button" onclick="fillCircle();">.fillCircle(300, 300, 40)</button>
         <button class="button" onclick="drawBezierCurve();">.drawBezierCurve()</button>
@@ -77,21 +71,15 @@
         <button class="button" onclick="drawCube();">Draw 3D Cube</button>
         <button class="button" onclick="drawImage();">Draw Image</button><br><br>
 
-        <!-- Button to clear a small rectangle -->
         <button class="button" onclick="clearRectangle();">clearRect(20, 20, 50, 50)</button>
-
-        <!-- Button to clear all drawings -->
         <button class="button" onclick="clearAll();">Clear all</button><br><br>
 
-        <!-- Color Selection -->
         <label for="color">Choose Color:</label>
         <input type="color" id="color" value="#000000">
         
-        <!-- Line Width Selection -->
         <label for="lineWidth">Line Width:</label>
         <input type="range" id="lineWidth" min="1" max="10" value="1"><br><br>
 
-        <!-- Drawing Options -->
         <button class="button" onclick="setDrawingMode('free')">Draw Free</button>
         <button class="button" onclick="setDrawingMode('rectangle')">Draw Rectangle</button>
         <button class="button" onclick="setDrawingMode('circle')">Draw Circle</button>
@@ -112,6 +100,9 @@
         let drawingMode = 'free'; // Default drawing mode
         let currentColor = '#000000'; // Default color
         let currentLineWidth = 1; // Default line width
+        let angle = 0; // Initial angle for rotation
+        let scale = 0; // Initial scale for the triangle
+        let animationId; // Variable to hold the requestAnimationFrame ID
 
         // Mouse event listeners
         myCanvas.addEventListener('mousedown', (e) => {
@@ -231,21 +222,36 @@
             myContext.stroke();
         }
 
-        function drawTriangle(fromX, fromY, toX, toY) {
+        function drawTriangle(centerX, centerY, size, angle) {
+            myContext.save(); // Save the current state
+            myContext.translate(centerX, centerY); // Move to the center of the triangle
+            myContext.rotate(angle); // Rotate the triangle
+            myContext.beginPath();
+            myContext.moveTo(0, -size); // Top point
+            myContext.lineTo(size, size); // Bottom right point
+            myContext.lineTo(-size, size); // Bottom left point
+            myContext.closePath();
             myContext.strokeStyle = currentColor;
             myContext.lineWidth = currentLineWidth;
-            myContext.beginPath();
-            myContext.moveTo(fromX, fromY); // Start point
-            myContext.lineTo(toX, toY); // Base right point
-            myContext.lineTo(fromX - (toX - fromX), toY); // Base left point
-            myContext.closePath(); // Connect to the start point
             myContext.stroke();
+            myContext.restore(); // Restore the original state
         }
 
-        function finalizeShape() {
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.stroke();
+        function animateTriangle() {
+            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear the canvas for each frame
+            drawTriangle(myCanvas.width / 2, myCanvas.height / 2, scale, angle); // Draw the triangle
+            scale += 1; // Increase size
+            angle += 0.05; // Increase angle for rotation
+
+            if (scale < 100) { // Stop increasing size after reaching a limit
+                animationId = requestAnimationFrame(animateTriangle); // Request the next frame
+            }
+        }
+
+        function startAnimatedTriangle() {
+            scale = 1; // Reset size for animation
+            angle = 0; // Reset angle for animation
+            animateTriangle(); // Start the animation
         }
 
         function drawBezierCurve() {
