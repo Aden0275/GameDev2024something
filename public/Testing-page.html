@@ -12,6 +12,7 @@
         canvas {
             margin-top: 20px;
             border: 1px solid #000;
+            cursor: crosshair; /* Changes cursor to crosshair for drawing */
         }
     </style>
 </head>
@@ -56,11 +57,45 @@
         let myCanvas = document.getElementById('myCoolTag');
         let myContext = myCanvas.getContext('2d');
 
-        function drawLine() {
+        // Variables for drawing with the mouse
+        let drawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Mouse event listeners
+        myCanvas.addEventListener('mousedown', (e) => {
+            drawing = true;
+            [lastX, lastY] = getMousePos(e);
+        });
+
+        myCanvas.addEventListener('mousemove', (e) => {
+            if (drawing) {
+                const [x, y] = getMousePos(e);
+                drawLine(lastX, lastY, x, y);
+                lastX = x;
+                lastY = y;
+            }
+        });
+
+        myCanvas.addEventListener('mouseup', () => {
+            drawing = false;
+        });
+
+        myCanvas.addEventListener('mouseout', () => {
+            drawing = false; // Stop drawing when mouse leaves canvas
+        });
+
+        function getMousePos(evt) {
+            const rect = myCanvas.getBoundingClientRect();
+            const x = evt.clientX - rect.left; // Get mouse x position relative to canvas
+            const y = evt.clientY - rect.top;  // Get mouse y position relative to canvas
+            return [x, y];
+        }
+
+        function drawLine(fromX, fromY, toX, toY) {
             myContext.beginPath();
-            myContext.lineWidth = 1;   
-            myContext.moveTo(20, 10);
-            myContext.lineTo(30, 200);
+            myContext.moveTo(fromX, fromY);
+            myContext.lineTo(toX, toY);
             myContext.stroke();
         }
 
