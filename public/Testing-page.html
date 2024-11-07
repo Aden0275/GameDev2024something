@@ -8,73 +8,75 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: linear-gradient(to right, purple, yellow);
+            background: linear-gradient(to right, purple, yellow); /* Gradient background from purple to yellow */
             margin: 0;
             padding: 20px;
         }
         canvas {
             margin-top: 20px;
             border: 1px solid #000;
-            cursor: crosshair;
-            background-color: white;
+            cursor: crosshair; /* Changes cursor to crosshair for drawing */
+            background-color: white; /* Sets the background color of the canvas */
         }
         .button {
             margin: 5px;
             padding: 10px 20px;
             font-size: 16px;
             border: none;
-            border-radius: 5px;
+            border-radius: 5px; /* Rounded corners */
             background-color: white;
             color: purple;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transition effect */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
         }
         .button:hover {
-            background-color: lightgray;
-            transform: scale(1.05);
+            background-color: lightgray; /* Hover effect for buttons */
+            transform: scale(1.05); /* Slightly enlarge the button on hover */
         }
         .button:active {
-            transform: scale(0.95);
+            transform: scale(0.95); /* Slightly shrink the button on click */
         }
         label {
             font-size: 16px;
-            color: white;
+            color: white; /* White text for labels for better contrast */
         }
         input[type="color"], input[type="range"] {
             margin: 5px;
             padding: 10px;
             border: none;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
     </style>
 </head>
 <body>
-    <h2 align="center">Canvas Drawing Example</h2>
+    <h2 align="center">t2a08-canvas by Fred</h2>
     
     <div>
         <button class="button" onclick="startAnimatedTriangle();">Animate Triangle</button>
-        <button class="button" onclick="drawLine();">Draw Line</button>
-        <button class="button" onclick="drawArc();">Draw Arc</button>
-        <button class="button" onclick="drawText();">Draw Text</button>
-        <button class="button" onclick="drawQuadraticCurve();">Quadratic Curve</button>
-        <button class="button" onclick="drawGradient();">Linear Gradient</button><br><br>
+        <button class="button" onclick="drawLine();">.lineTo(30,200)</button>
+        <button class="button" onclick="drawArc();">.arc(95, 50, 40, 0, 2 * Math.PI)</button>
+        <button class="button" onclick="drawText();">.fillText('Hello World', 400, 100)</button>
+        <button class="button" onclick="drawQuadraticCurve();">.quadraticCurveTo(100,220,240,110)</button>
+        <button class="button" onclick="drawGradient();">.createLinearGradient(100, 300, 200, 400)</button><br><br>
+
         <button class="button" onclick="drawRectangle();">Draw Rectangle</button>
         <button class="button" onclick="fillCircle();">Fill Circle</button>
-        <button class="button" onclick="drawBezierCurve();">Bezier Curve</button>
+        <button class="button" onclick="drawBezierCurve();">Draw Bezier Curve</button>
         <button class="button" onclick="drawStar(500, 300, 30, 70, 5);">Draw Star</button>
         <button class="button" onclick="drawCube();">Draw 3D Cube</button>
         <button class="button" onclick="drawImage();">Draw Image</button><br><br>
-        <button class="button" onclick="clearRectangle();">Clear Rectangle</button>
+
+        <button class="button" onclick="clearRectangle();">Clear Rect</button>
         <button class="button" onclick="clearAll();">Clear All</button><br><br>
-        
+
         <label for="color">Choose Color:</label>
         <input type="color" id="color" value="#000000">
         
         <label for="lineWidth">Line Width:</label>
         <input type="range" id="lineWidth" min="1" max="10" value="1"><br><br>
-        
+
         <button class="button" onclick="setDrawingMode('free')">Draw Free</button>
         <button class="button" onclick="setDrawingMode('rectangle')">Draw Rectangle</button>
         <button class="button" onclick="setDrawingMode('circle')">Draw Circle</button>
@@ -85,20 +87,20 @@
 
     <script>
         // Set up global variables
-        const myCanvas = document.getElementById('myCoolTag');
-        const myContext = myCanvas.getContext('2d');
+        let myCanvas = document.getElementById('myCoolTag');
+        let myContext = myCanvas.getContext('2d');
 
+        // Variables for drawing with the mouse
         let drawing = false;
         let lastX = 0;
         let lastY = 0;
-        let drawingMode = 'free';
-        let currentColor = '#000000';
-        let currentLineWidth = 1;
-        let animationId;
-        let angle = 0;
-        let scale = 1;
+        let drawingMode = 'free'; // Default drawing mode
+        let currentColor = '#000000'; // Default color
+        let currentLineWidth = 1; // Default line width
+        let angle = 0; // For animated triangle rotation
+        let scale = 1; // For animated triangle scaling
+        let animationId; // Variable to hold the requestAnimationFrame ID
 
-        // Mouse event listeners
         myCanvas.addEventListener('mousedown', (e) => {
             drawing = true;
             [lastX, lastY] = getMousePos(e);
@@ -107,29 +109,45 @@
         myCanvas.addEventListener('mousemove', (e) => {
             if (drawing) {
                 const [x, y] = getMousePos(e);
-                drawInCurrentMode(lastX, lastY, x, y);
+                switch (drawingMode) {
+                    case 'free':
+                        drawLine(lastX, lastY, x, y);
+                        break;
+                    case 'rectangle':
+                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
+                        drawRectangle(lastX, lastY, x, y);
+                        break;
+                    case 'circle':
+                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
+                        drawCircle(lastX, lastY, x, y);
+                        break;
+                    case 'triangle':
+                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
+                        drawTriangle(lastX, lastY, x, y);
+                        break;
+                }
                 lastX = x;
                 lastY = y;
             }
         });
 
         myCanvas.addEventListener('mouseup', () => {
-            drawing = false;
-            if (drawingMode !== 'free') {
-                finalizeShape();
+            if (drawing) {
+                drawing = false; 
+                finalizeShape(); // Finalize the shape if not free drawing 
             }
         });
 
         myCanvas.addEventListener('mouseout', () => {
-            drawing = false;
+            drawing = false; // Stop drawing when mouse leaves canvas
         });
 
         document.getElementById('color').addEventListener('input', (e) => {
-            currentColor = e.target.value;
+            currentColor = e.target.value; // Update current color
         });
 
         document.getElementById('lineWidth').addEventListener('input', (e) => {
-            currentLineWidth = e.target.value;
+            currentLineWidth = e.target.value; // Update current line width
         });
 
         function getMousePos(evt) {
@@ -137,23 +155,6 @@
             const x = evt.clientX - rect.left;
             const y = evt.clientY - rect.top;
             return [x, y];
-        }
-
-        function drawInCurrentMode(fromX, fromY, toX, toY) {
-            switch (drawingMode) {
-                case 'free':
-                    drawLine(fromX, fromY, toX, toY);
-                    break;
-                case 'rectangle':
-                    drawRectangle(fromX, fromY, toX, toY);
-                    break;
-                case 'circle':
-                    drawCircle(fromX, fromY, toX, toY);
-                    break;
-                case 'triangle':
-                    drawTriangle(fromX, fromY, toX, toY);
-                    break;
-            }
         }
 
         function drawLine(fromX, fromY, toX, toY) {
@@ -167,14 +168,15 @@
 
         function drawArc() {
             myContext.beginPath();
-            myContext.lineWidth = 10;
-            myContext.strokeStyle = 'green';
+            myContext.lineWidth = currentLineWidth;
+            myContext.strokeStyle = currentColor;
             myContext.arc(95, 50, 40, 0, 2 * Math.PI);
             myContext.stroke();
         }
 
         function drawText() {
             myContext.font = '20px Arial';
+            myContext.fillStyle = currentColor;
             myContext.fillText('Hello World', 400, 100);
         }
 
@@ -190,6 +192,7 @@
             myGradient.addColorStop(0, 'red');
             myGradient.addColorStop(0.5, 'blue');
             myGradient.addColorStop(1, 'yellow');
+
             myContext.fillStyle = myGradient;
             myContext.fillRect(100, 300, 200, 100);
         }
@@ -204,7 +207,7 @@
 
         function fillCircle() {
             myContext.beginPath();
-            myContext.fillStyle = 'purple';
+            myContext.fillStyle = currentColor;
             myContext.arc(300, 300, 40, 0, 2 * Math.PI);
             myContext.fill();
         }
@@ -219,69 +222,58 @@
         }
 
         function drawTriangle(fromX, fromY, toX, toY) {
+            const size = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2)) / 2; // Create size based on distance
+            myContext.save();
+            myContext.translate(fromX, fromY); // Move to the starting point
+            myContext.beginPath();
+            myContext.moveTo(0, -size); // Top point
+            myContext.lineTo(size, size); // Bottom right point
+            myContext.lineTo(-size, size); // Bottom left point
+            myContext.closePath();
             myContext.strokeStyle = currentColor;
             myContext.lineWidth = currentLineWidth;
-            const triangleHeight = Math.abs(toY - fromY);
-            const triangleBase = Math.abs(toX - fromX);
-            myContext.beginPath();
-            myContext.moveTo(fromX, fromY);
-            myContext.lineTo(toX, toY);
-            myContext.lineTo(fromX - triangleBase, toY);
-            myContext.closePath();
             myContext.stroke();
-        }
-
-        function startAnimatedTriangle() {
-            scale = 1;
-            angle = 0;
-            if (animationId) {
-                cancelAnimationFrame(animationId); // Stop any existing animations
-            }
-            animateTriangle();
+            myContext.restore(); // Restore state
         }
 
         function animateTriangle() {
-            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
-            drawAnimatedTriangle(myCanvas.width / 2, myCanvas.height / 2);
-            scale += 1; 
-            angle += 0.05; 
-            if (scale < 100) {
+            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear the canvas
+            drawTriangle(myCanvas.width / 2, myCanvas.height / 2, scale * Math.sin(angle), scale * Math.sin(angle / 2)); // Draw animated triangle
+            scale += 0.5; // Increase size gradually
+            angle += 0.1; // Increase rotation angle
+
+            if (scale < 100) { // Maintain a size limit
                 animationId = requestAnimationFrame(animateTriangle);
             }
         }
 
-        function drawAnimatedTriangle(centerX, centerY) {
-            myContext.save();
-            myContext.translate(centerX, centerY);
-            myContext.rotate(angle);
-            myContext.beginPath();
-            myContext.moveTo(0, -scale);
-            myContext.lineTo(scale, scale);
-            myContext.lineTo(-scale, scale);
-            myContext.closePath();
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.stroke();
-            myContext.restore();
+        function startAnimatedTriangle() {
+            angle = 0; // Reset angle for animation
+            scale = 1; // Reset size for animation
+            animateTriangle(); // Start the animation
         }
 
         function drawBezierCurve() {
             myContext.beginPath();
             myContext.moveTo(200, 300);
             myContext.bezierCurveTo(250, 100, 350, 500, 400, 300);
+            myContext.strokeStyle = currentColor;
+            myContext.lineWidth = currentLineWidth;
             myContext.stroke();
         }
 
         function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
-            let rot = (Math.PI / 2) * 3;
-            const step = Math.PI / spikes;
+            let rot = (Math.PI / 2) * 3; // Starting rotation
+            const step = Math.PI / spikes; // Angle between spikes
             myContext.beginPath();
             myContext.moveTo(cx, cy - outerRadius);
+
             for (let i = 0; i < spikes; i++) {
                 let x = cx + Math.cos(rot) * outerRadius;
                 let y = cy + Math.sin(rot) * outerRadius;
                 myContext.lineTo(x, y);
                 rot += step;
+
                 x = cx + Math.cos(rot) * innerRadius;
                 y = cy + Math.sin(rot) * innerRadius;
                 myContext.lineTo(x, y);
@@ -294,40 +286,47 @@
         }
 
         function drawCube() {
-            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear previous drawings
+
             let size = 100;
-            let x = 500; 
-            let y = 300; 
+            let x = 500; // Center x for the cube
+            let y = 300; // Center y for the cube
+            
+            // Define the vertices of the cube
             let vertices = [
-                {x: x - size, y: y - size, z: -size},
-                {x: x + size, y: y - size, z: -size},
-                {x: x + size, y: y + size, z: -size},
-                {x: x - size, y: y + size, z: -size},
-                {x: x - size, y: y - size, z: size},
-                {x: x + size, y: y - size, z: size},
-                {x: x + size, y: y + size, z: size},
-                {x: x - size, y: y + size, z: size}
+                {x: x - size, y: y - size, z: -size}, // Front top left
+                {x: x + size, y: y - size, z: -size}, // Front top right
+                {x: x + size, y: y + size, z: -size}, // Front bottom right
+                {x: x - size, y: y + size, z: -size}, // Front bottom left
+                {x: x - size, y: y - size, z: size},  // Back top left
+                {x: x + size, y: y - size, z: size},  // Back top right
+                {x: x + size, y: y + size, z: size},  // Back bottom right
+                {x: x - size, y: y + size, z: size}   // Back bottom left
             ];
-            let scale = 200; 
+
             let projectedVertices = vertices.map(v => ({
-                x: v.x * scale / (v.z + scale) + x,
-                y: v.y * scale / (v.z + scale) + y
+                x: v.x * 200 / (v.z + 200) + x,
+                y: v.y * 200 / (v.z + 200) + y
             }));
+
+            // Draw the cube edges
             myContext.beginPath();
             for (let i = 0; i < 4; i++) {
                 myContext.moveTo(projectedVertices[i].x, projectedVertices[i].y);
-                myContext.lineTo(projectedVertices[(i + 1) % 4].x, projectedVertices[(i + 1) % 4].y);
+                myContext.lineTo(projectedVertices[(i + 1) % 4].x, projectedVertices[(i + 1) % 4].y); // Front face
                 myContext.moveTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y);
-                myContext.lineTo(projectedVertices[(i + 1) % 4 + 4].x, projectedVertices[(i + 1) % 4 + 4].y);
+                myContext.lineTo(projectedVertices[(i + 1) % 4 + 4].x, projectedVertices[(i + 1) % 4 + 4].y); // Back face
                 myContext.moveTo(projectedVertices[i].x, projectedVertices[i].y);
-                myContext.lineTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y);
+                myContext.lineTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y); // Connecting edges
             }
+            myContext.strokeStyle = currentColor;
+            myContext.lineWidth = currentLineWidth;
             myContext.stroke();
         }
 
         function drawImage() {
             const img = new Image();
-            img.src = 'https://via.placeholder.com/150';
+            img.src = 'https://via.placeholder.com/150'; // Placeholder image
             img.onload = function() {
                 myContext.drawImage(img, 450, 250, 150, 150);
             };
@@ -342,9 +341,14 @@
         }
 
         function finalizeShape() {
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.stroke();
+            // This function will be used for any actions required for the current drawing mode
+            if (drawingMode === 'rectangle') {
+                drawRectangle(lastX, lastY, lastX + 0, lastY + 0); // To finalize without moving cursor
+            } else if (drawingMode === 'circle') {
+                drawCircle(lastX, lastY, lastX + 0, lastY + 0); // To finalize without moving cursor
+            } else if (drawingMode === 'triangle') {
+                drawTriangle(lastX, lastY, lastX + 0, lastY + 0); // To finalize without moving cursor
+            }
         }
 
         function setDrawingMode(mode) {
