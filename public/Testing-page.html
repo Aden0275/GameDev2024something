@@ -19,107 +19,23 @@
     <h2 align="center">t2a08-canvas by Fred</h2>
     
     <div>
-        <!-- Button to draw a line -->
-        <input type="button" value=".lineTo(30,200)" onclick="drawLine();">
-        
-        <!-- Button to draw an arc -->
-        <input type="button" value=".arc(95, 50, 40, 0, 2 * Math.PI)" onclick="drawArc();">
-        
-        <!-- Button to add text -->
-        <input type="button" value=".fillText('Hello World', 400, 100)" onclick="drawText();">
-        
-        <!-- Button to draw a quadratic curve -->
-        <input type="button" value=".quadraticCurveTo(100,220,240,110)" onclick="drawQuadraticCurve();">
-        
-        <!-- Button to create a linear gradient -->
-        <input type="button" value=".createLinearGradient(100, 300, 200, 400)" onclick="drawGradient();"><br><br>
+        <!-- Drawing buttons -->
+        <input type="button" value="Draw Star" onclick="drawStar(400, 300, 30, 70, 5);"><br><br>
+        <input type="button" value="Draw 3D Cube" onclick="drawCube();"><br><br>
 
-        <!-- New features -->
-        <input type="button" value=".drawRectangle(150, 150, 100, 50)" onclick="drawRectangle();">
-        <input type="button" value=".fillCircle(300, 300, 40)" onclick="fillCircle();">
-        <input type="button" value=".drawBezierCurve()" onclick="drawBezierCurve();">
-        <input type="button" value=".drawStar(500, 300, 30, 70, 5)" onclick="drawStar();">
-        <input type="button" value="Draw Image" onclick="drawImage();"><br><br>
-
-        <!-- Button to clear a small rectangle -->
-        <input type="button" value="clearRect(20, 20, 50, 50)" onclick="clearRectangle();">
-        
         <!-- Button to clear all drawings -->
         <input type="button" value="Clear all" onclick="clearAll();"><br><br>
     </div>
 
-    <canvas id="myCoolTag" width="1000" height="600"></canvas>
+    <canvas id="myCoolTag" width="800" height="600"></canvas>
 
     <script>
-        // Set up global variables
+        // Set up global canvas context
         let myCanvas = document.getElementById('myCoolTag');
         let myContext = myCanvas.getContext('2d');
 
-        function drawLine() {
-            myContext.beginPath();
-            myContext.lineWidth = 1;   
-            myContext.moveTo(20, 10);
-            myContext.lineTo(30, 200);
-            myContext.stroke();
-        }
-
-        function drawArc() {
-            myContext.beginPath();
-            myContext.lineWidth = 10;
-            myContext.strokeStyle = 'green';
-            myContext.arc(95, 50, 40, 0, 2 * Math.PI);
-            myContext.stroke();
-        }
-
-        function drawText() {
-            myContext.font = '20px Arial';
-            myContext.fillText('Hello World', 400, 100);
-            myContext.translate(400, 100);  
-            myContext.rotate(60 * Math.PI / 180); 
-            myContext.fillText('Hello World', 10, 10);
-            myContext.stroke();
-            myContext.resetTransform();  
-        }
-
-        function drawQuadraticCurve() {
-            myContext.beginPath();
-            myContext.moveTo(300, 100);
-            myContext.quadraticCurveTo(100, 220, 240, 110);
-            myContext.stroke();
-        }
-
-        function drawGradient() {
-            let myGradient = myContext.createLinearGradient(100, 300, 200, 400);
-            myGradient.addColorStop(0, 'red');
-            myGradient.addColorStop(0.5, 'blue');
-            myGradient.addColorStop(1, 'yellow');
-
-            myContext.fillStyle = myGradient;
-            myContext.fillRect(100, 300, 200, 100); // Adjusted height
-            myContext.fillStyle = 'black'; // Reset fillStyle
-        }
-
-        function drawRectangle() {
-            myContext.fillStyle = 'orange';
-            myContext.fillRect(150, 150, 100, 50);
-        }
-
-        function fillCircle() {
-            myContext.beginPath();
-            myContext.fillStyle = 'purple';
-            myContext.arc(300, 300, 40, 0, 2 * Math.PI);
-            myContext.fill();
-        }
-
-        function drawBezierCurve() {
-            myContext.beginPath();
-            myContext.moveTo(200, 300);
-            myContext.bezierCurveTo(250, 100, 350, 500, 400, 300);
-            myContext.stroke();
-        }
-
         function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
-            let rot = (Math.PI / 2) * 3;
+            let rot = (Math.PI / 2) * 3;  // Start at the top of the star
             let x = cx;
             let y = cy;
             const step = Math.PI / spikes;
@@ -144,16 +60,43 @@
             myContext.fill();
         }
 
-        function drawImage() {
-            const img = new Image();
-            img.src = 'https://via.placeholder.com/150'; // Placeholder image
-            img.onload = function() {
-                myContext.drawImage(img, 450, 250, 150, 150);
-            };
-        }
+        function drawCube() {
+            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear previous drawings
 
-        function clearRectangle() {
-            myContext.clearRect(20, 20, 50, 50);
+            let size = 100;
+            let x = 400; // Center x
+            let y = 300; // Center y
+            
+            // Define cube vertices
+            let vertices = [
+                {x: x - size, y: y - size, z: -size}, // Front Top Left
+                {x: x + size, y: y - size, z: -size}, // Front Top Right
+                {x: x + size, y: y + size, z: -size}, // Front Bottom Right
+                {x: x - size, y: y + size, z: -size}, // Front Bottom Left
+                {x: x - size, y: y - size, z: size},  // Back Top Left
+                {x: x + size, y: y - size, z: size},  // Back Top Right
+                {x: x + size, y: y + size, z: size},  // Back Bottom Right
+                {x: x - size, y: y + size, z: size}   // Back Bottom Left
+            ];
+
+            // Define projection scale (for perspective)
+            let scale = 200; 
+            let projectedVertices = vertices.map(v => ({
+                x: v.x * scale / (v.z + scale) + x,
+                y: v.y * scale / (v.z + scale) + y
+            }));
+
+            // Draw edges of the cube
+            myContext.beginPath();
+            for (let i = 0; i < 4; i++) {
+                myContext.moveTo(projectedVertices[i].x, projectedVertices[i].y);
+                myContext.lineTo(projectedVertices[(i + 1) % 4].x, projectedVertices[(i + 1) % 4].y); // Front face
+                myContext.moveTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y);
+                myContext.lineTo(projectedVertices[(i + 1) % 4 + 4].x, projectedVertices[(i + 1) % 4 + 4].y); // Back face
+                myContext.moveTo(projectedVertices[i].x, projectedVertices[i].y);
+                myContext.lineTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y); // Connecting edges
+            }
+            myContext.stroke();
         }
 
         function clearAll() {
