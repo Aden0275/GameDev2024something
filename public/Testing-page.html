@@ -18,22 +18,35 @@
             cursor: crosshair; /* Changes cursor to crosshair for drawing */
             background-color: white; /* Sets the background color of the canvas */
         }
-        input[type="button"], label {
+        .button {
             margin: 5px;
-            padding: 10px;
+            padding: 10px 20px;
             font-size: 16px;
             border: none;
+            border-radius: 5px; /* Rounded corners */
             background-color: white;
             color: purple;
             cursor: pointer;
-            transition: background-color 0.3s; /* Smooth transition effect */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transition effect */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
         }
-        input[type="button"]:hover, label:hover {
+        .button:hover {
             background-color: lightgray; /* Hover effect for buttons */
+            transform: scale(1.05); /* Slightly enlarge the button on hover */
+        }
+        .button:active {
+            transform: scale(0.95); /* Slightly shrink the button on click */
+        }
+        label {
+            font-size: 16px;
+            color: white; /* White text for labels for better contrast */
         }
         input[type="color"], input[type="range"] {
             margin: 5px;
             padding: 10px;
+            border: none;
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
     </style>
 </head>
@@ -42,33 +55,33 @@
     
     <div>
         <!-- Button to draw a line -->
-        <input type="button" value=".lineTo(30,200)" onclick="drawLine();">
+        <button class="button" onclick="drawLine();">.lineTo(30,200)</button>
         
         <!-- Button to draw an arc -->
-        <input type="button" value=".arc(95, 50, 40, 0, 2 * Math.PI)" onclick="drawArc();">
+        <button class="button" onclick="drawArc();">.arc(95, 50, 40, 0, 2 * Math.PI)</button>
         
         <!-- Button to add text -->
-        <input type="button" value=".fillText('Hello World', 400, 100)" onclick="drawText();">
+        <button class="button" onclick="drawText();">.fillText('Hello World', 400, 100)</button>
         
         <!-- Button to draw a quadratic curve -->
-        <input type="button" value=".quadraticCurveTo(100,220,240,110)" onclick="drawQuadraticCurve();">
+        <button class="button" onclick="drawQuadraticCurve();">.quadraticCurveTo(100,220,240,110)</button>
         
         <!-- Button to create a linear gradient -->
-        <input type="button" value=".createLinearGradient(100, 300, 200, 400)" onclick="drawGradient();"><br><br>
+        <button class="button" onclick="drawGradient();">.createLinearGradient(100, 300, 200, 400)</button><br><br>
 
         <!-- New features -->
-        <input type="button" value=".drawRectangle(150, 150, 100, 50)" onclick="drawRectangle();">
-        <input type="button" value=".fillCircle(300, 300, 40)" onclick="fillCircle();">
-        <input type="button" value=".drawBezierCurve()" onclick="drawBezierCurve();">
-        <input type="button" value="Draw Star" onclick="drawStar(500, 300, 30, 70, 5);">
-        <input type="button" value="Draw 3D Cube" onclick="drawCube();">
-        <input type="button" value="Draw Image" onclick="drawImage();"><br><br>
+        <button class="button" onclick="drawRectangle();">.drawRectangle(150, 150, 100, 50)</button>
+        <button class="button" onclick="fillCircle();">.fillCircle(300, 300, 40)</button>
+        <button class="button" onclick="drawBezierCurve();">.drawBezierCurve()</button>
+        <button class="button" onclick="drawStar(500, 300, 30, 70, 5);">Draw Star</button>
+        <button class="button" onclick="drawCube();">Draw 3D Cube</button>
+        <button class="button" onclick="drawImage();">Draw Image</button><br><br>
 
         <!-- Button to clear a small rectangle -->
-        <input type="button" value="clearRect(20, 20, 50, 50)" onclick="clearRectangle();">
-        
+        <button class="button" onclick="clearRectangle();">clearRect(20, 20, 50, 50)</button>
+
         <!-- Button to clear all drawings -->
-        <input type="button" value="Clear all" onclick="clearAll();"><br><br>
+        <button class="button" onclick="clearAll();">Clear all</button><br><br>
 
         <!-- Color Selection -->
         <label for="color">Choose Color:</label>
@@ -79,10 +92,10 @@
         <input type="range" id="lineWidth" min="1" max="10" value="1"><br><br>
 
         <!-- Drawing Options -->
-        <button onclick="setDrawingMode('free')">Draw Free</button>
-        <button onclick="setDrawingMode('rectangle')">Draw Rectangle</button>
-        <button onclick="setDrawingMode('circle')">Draw Circle</button>
-        <button onclick="setDrawingMode('triangle')">Draw Triangle</button>
+        <button class="button" onclick="setDrawingMode('free')">Draw Free</button>
+        <button class="button" onclick="setDrawingMode('rectangle')">Draw Rectangle</button>
+        <button class="button" onclick="setDrawingMode('circle')">Draw Circle</button>
+        <button class="button" onclick="setDrawingMode('triangle')">Draw Triangle</button>
     </div>
 
     <canvas id="myCoolTag" width="1000" height="600"></canvas>
