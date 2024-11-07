@@ -8,11 +8,32 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            background: linear-gradient(to right, purple, yellow); /* Gradient background from purple to yellow */
+            margin: 0;
+            padding: 20px;
         }
         canvas {
             margin-top: 20px;
             border: 1px solid #000;
             cursor: crosshair; /* Changes cursor to crosshair for drawing */
+            background-color: white; /* Sets the background color of the canvas */
+        }
+        input[type="button"], label {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            background-color: white;
+            color: purple;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Smooth transition effect */
+        }
+        input[type="button"]:hover, label:hover {
+            background-color: lightgray; /* Hover effect for buttons */
+        }
+        input[type="color"], input[type="range"] {
+            margin: 5px;
+            padding: 10px;
         }
     </style>
 </head>
