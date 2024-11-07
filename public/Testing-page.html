@@ -14,38 +14,29 @@
             border: 1px solid #000;
             cursor: crosshair; /* Changes cursor to crosshair for drawing */
         }
+        .color-picker {
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
     <h2 align="center">t2a08-canvas by Fred</h2>
     
     <div>
-        <!-- Button to draw a line -->
-        <input type="button" value=".lineTo(30,200)" onclick="drawLine();">
+        <!-- Color Selection -->
+        <label for="color">Choose Color:</label>
+        <input type="color" id="color" class="color-picker" value="#000000">
         
-        <!-- Button to draw an arc -->
-        <input type="button" value=".arc(95, 50, 40, 0, 2 * Math.PI)" onclick="drawArc();">
-        
-        <!-- Button to add text -->
-        <input type="button" value=".fillText('Hello World', 400, 100)" onclick="drawText();">
-        
-        <!-- Button to draw a quadratic curve -->
-        <input type="button" value=".quadraticCurveTo(100,220,240,110)" onclick="drawQuadraticCurve();">
-        
-        <!-- Button to create a linear gradient -->
-        <input type="button" value=".createLinearGradient(100, 300, 200, 400)" onclick="drawGradient();"><br><br>
+        <!-- Line Width Selection -->
+        <label for="lineWidth">Line Width:</label>
+        <input type="range" id="lineWidth" class="color-picker" min="1" max="10" value="1">
 
-        <!-- New features -->
-        <input type="button" value=".drawRectangle(150, 150, 100, 50)" onclick="drawRectangle();">
-        <input type="button" value=".fillCircle(300, 300, 40)" onclick="fillCircle();">
-        <input type="button" value=".drawBezierCurve()" onclick="drawBezierCurve();">
-        <input type="button" value="Draw Star" onclick="drawStar(500, 300, 30, 70, 5);">
-        <input type="button" value="Draw 3D Cube" onclick="drawCube();">
-        <input type="button" value="Draw Image" onclick="drawImage();"><br><br>
+        <!-- Drawing Options -->
+        <input type="button" value="Draw Free" onclick="setDrawingMode('free');">
+        <input type="button" value="Draw Rectangle" onclick="setDrawingMode('rectangle');">
+        <input type="button" value="Draw Circle" onclick="setDrawingMode('circle');">
+        <input type="button" value="Draw Triangle" onclick="setDrawingMode('triangle');"><br><br>
 
-        <!-- Button to clear a small rectangle -->
-        <input type="button" value="clearRect(20, 20, 50, 50)" onclick="clearRectangle();">
-        
         <!-- Button to clear all drawings -->
         <input type="button" value="Clear all" onclick="clearAll();"><br><br>
     </div>
@@ -61,6 +52,9 @@
         let drawing = false;
         let lastX = 0;
         let lastY = 0;
+        let drawingMode = 'free'; // Default mode is free drawing
+        let currentColor = '#000000'; // Default color
+        let currentLineWidth = 1; // Default line width
 
         // Mouse event listeners
         myCanvas.addEventListener('mousedown', (e) => {
@@ -71,7 +65,15 @@
         myCanvas.addEventListener('mousemove', (e) => {
             if (drawing) {
                 const [x, y] = getMousePos(e);
-                drawLine(lastX, lastY, x, y);
+                if (drawingMode === 'free') {
+                    drawLine(lastX, lastY, x, y);
+                } else if (drawingMode === 'rectangle') {
+                    drawRectangle(lastX, lastY, x, y);
+                } else if (drawingMode === 'circle') {
+                    drawCircle(lastX, lastY, x, y);
+                } else if (drawingMode === 'triangle') {
+                    drawTriangle(lastX, lastY, x, y);
+                }
                 lastX = x;
                 lastY = y;
             }
@@ -79,10 +81,21 @@
 
         myCanvas.addEventListener('mouseup', () => {
             drawing = false;
+            if (drawingMode !== 'free') {
+                finalizeShape();
+            }
         });
 
         myCanvas.addEventListener('mouseout', () => {
             drawing = false; // Stop drawing when mouse leaves canvas
+        });
+
+        document.getElementById('color').addEventListener('input', (e) => {
+            currentColor = e.target.value; // Update current color
+        });
+
+        document.getElementById('lineWidth').addEventListener('input', (e) => {
+            currentLineWidth = e.target.value; // Update current line width
         });
 
         function getMousePos(evt) {
@@ -93,142 +106,50 @@
         }
 
         function drawLine(fromX, fromY, toX, toY) {
+            myContext.strokeStyle = currentColor;
+            myContext.lineWidth = currentLineWidth;
             myContext.beginPath();
             myContext.moveTo(fromX, fromY);
             myContext.lineTo(toX, toY);
             myContext.stroke();
         }
 
-        function drawArc() {
-            myContext.beginPath();
-            myContext.lineWidth = 10;
-            myContext.strokeStyle = 'green';
-            myContext.arc(95, 50, 40, 0, 2 * Math.PI);
+        function finalizeShape() {
+            myContext.strokeStyle = currentColor;
+            myContext.lineWidth = currentLineWidth;
             myContext.stroke();
         }
 
-        function drawText() {
-            myContext.font = '20px Arial';
-            myContext.fillText('Hello World', 400, 100);
-            myContext.translate(400, 100);  
-            myContext.rotate(60 * Math.PI / 180); 
-            myContext.fillText('Hello World', 10, 10);
-            myContext.stroke();
-            myContext.resetTransform();  
+        function setDrawingMode(mode) {
+            drawingMode = mode;
         }
 
-        function drawQuadraticCurve() {
+        function drawRectangle(fromX, fromY, toX, toY) {
+            myContext.strokeStyle = currentColor;
+            myContext.lineWidth = currentLineWidth;
             myContext.beginPath();
-            myContext.moveTo(300, 100);
-            myContext.quadraticCurveTo(100, 220, 240, 110);
+            myContext.rect(fromX, fromY, toX - fromX, toY - fromY);
             myContext.stroke();
         }
 
-        function drawGradient() {
-            let myGradient = myContext.createLinearGradient(100, 300, 200, 400);
-            myGradient.addColorStop(0, 'red');
-            myGradient.addColorStop(0.5, 'blue');
-            myGradient.addColorStop(1, 'yellow');
-
-            myContext.fillStyle = myGradient;
-            myContext.fillRect(100, 300, 200, 100); // Adjusted height
-            myContext.fillStyle = 'black'; // Reset fillStyle
-        }
-
-        function drawRectangle() {
-            myContext.fillStyle = 'orange';
-            myContext.fillRect(150, 150, 100, 50);
-        }
-
-        function fillCircle() {
+        function drawCircle(fromX, fromY, toX, toY) {
+            const radius = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
+            myContext.strokeStyle = currentColor;
+            myContext.lineWidth = currentLineWidth;
             myContext.beginPath();
-            myContext.fillStyle = 'purple';
-            myContext.arc(300, 300, 40, 0, 2 * Math.PI);
-            myContext.fill();
-        }
-
-        function drawBezierCurve() {
-            myContext.beginPath();
-            myContext.moveTo(200, 300);
-            myContext.bezierCurveTo(250, 100, 350, 500, 400, 300);
+            myContext.arc(fromX, fromY, radius, 0, Math.PI * 2);
             myContext.stroke();
         }
 
-        function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
-            let rot = (Math.PI / 2) * 3;
-            let x = cx;
-            let y = cy;
-            const step = Math.PI / spikes;
-
+        function drawTriangle(fromX, fromY, toX, toY) {
+            myContext.strokeStyle = currentColor;
+            myContext.lineWidth = currentLineWidth;
             myContext.beginPath();
-            myContext.moveTo(cx, cy - outerRadius);
-
-            for (let i = 0; i < spikes; i++) {
-                x = cx + Math.cos(rot) * outerRadius;
-                y = cy + Math.sin(rot) * outerRadius;
-                myContext.lineTo(x, y);
-                rot += step;
-
-                x = cx + Math.cos(rot) * innerRadius;
-                y = cy + Math.sin(rot) * innerRadius;
-                myContext.lineTo(x, y);
-                rot += step;
-            }
-            myContext.lineTo(cx, cy - outerRadius);
-            myContext.closePath();
-            myContext.fillStyle = 'gold';
-            myContext.fill();
-        }
-
-        function drawCube() {
-            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear previous drawings
-
-            let size = 100;
-            let x = 500; // Center x for the cube
-            let y = 300; // Center y for the cube
-            
-            // Define cube vertices
-            let vertices = [
-                {x: x - size, y: y - size, z: -size}, // Front Top Left
-                {x: x + size, y: y - size, z: -size}, // Front Top Right
-                {x: x + size, y: y + size, z: -size}, // Front Bottom Right
-                {x: x - size, y: y + size, z: -size}, // Front Bottom Left
-                {x: x - size, y: y - size, z: size},  // Back Top Left
-                {x: x + size, y: y - size, z: size},  // Back Top Right
-                {x: x + size, y: y + size, z: size},  // Back Bottom Right
-                {x: x - size, y: y + size, z: size}   // Back Bottom Left
-            ];
-
-            // Define projection scale (for perspective)
-            let scale = 200; 
-            let projectedVertices = vertices.map(v => ({
-                x: v.x * scale / (v.z + scale) + x,
-                y: v.y * scale / (v.z + scale) + y
-            }));
-
-            // Draw edges of the cube
-            myContext.beginPath();
-            for (let i = 0; i < 4; i++) {
-                myContext.moveTo(projectedVertices[i].x, projectedVertices[i].y);
-                myContext.lineTo(projectedVertices[(i + 1) % 4].x, projectedVertices[(i + 1) % 4].y); // Front face
-                myContext.moveTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y);
-                myContext.lineTo(projectedVertices[(i + 1) % 4 + 4].x, projectedVertices[(i + 1) % 4 + 4].y); // Back face
-                myContext.moveTo(projectedVertices[i].x, projectedVertices[i].y);
-                myContext.lineTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y); // Connecting edges
-            }
+            myContext.moveTo(fromX, fromY); // Start point
+            myContext.lineTo(toX, toY); // Base right point
+            myContext.lineTo(fromX - (toX - fromX), toY); // Base left point
+            myContext.closePath(); // Connect to the start point
             myContext.stroke();
-        }
-
-        function drawImage() {
-            const img = new Image();
-            img.src = 'https://via.placeholder.com/150'; // Placeholder image
-            img.onload = function() {
-                myContext.drawImage(img, 450, 250, 150, 150);
-            };
-        }
-
-        function clearRectangle() {
-            myContext.clearRect(20, 20, 50, 50);
         }
 
         function clearAll() {
