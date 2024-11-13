@@ -10,9 +10,12 @@
             background-size: 80%;
             background-image: url('myBackground01.jpg');
         }
-        /* Optional: You can add CSS styles for the headings here */
         h1, h6 {
             text-align: center;
+        }
+        .image-container {
+            text-align: center; /* Center the images */
+            margin: 20px 0; /* Add some space around the images */
         }
     </style>
 </head>
@@ -52,6 +55,16 @@
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="myImage01.jpg" alt="Image 01">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="myImage02.jpg" alt="Image 02">
+
+    <!-- New images with links -->
+    <div class="image-container">
+        <a href="https://imgbb.com/">
+            <img src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="charizard" border="0" style="width:150px;height:auto;">
+        </a>
+        <a href="https://imgbb.com/">
+            <img src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="greninja" border="0" style="width:150px;height:auto;">
+        </a>
+    </div>
 
     <input type="button" value="Auto Background Left" onclick="{
         clearInterval(myClock);
