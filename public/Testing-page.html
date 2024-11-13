@@ -26,6 +26,7 @@
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
         let moveImg2 = { left: false, up: false, right: false, down: false };
+        let myGlobalX = 0; // Background position tracker
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -138,10 +139,19 @@
             }
         });
 
+        // Move the background to the left when the button is clicked
+        function moveBackground() {
+            myGlobalX -= 10; // Adjust speed here
+            document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
+        }
+
     </script>
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+
+    <!-- Button to move the background image left -->
+    <input type="button" value="Move Background Left" onclick="moveBackground()">
 
     <input type="button" value="Auto Background Left" onclick="{
         // This functionality remains unchanged
