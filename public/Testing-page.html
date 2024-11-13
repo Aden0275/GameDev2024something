@@ -14,13 +14,56 @@
             text-align: center;
             color: white; /* Change text color for visibility */
         }
+        /* Modal styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 999; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 100px; 
+        }
+        .modal-content {
+            background-color: white; 
+            margin: 5% auto; 
+            padding: 20px; 
+            border: 1px solid #888; 
+            width: 80%; 
+            text-align: center; 
+        }
+        #nextPage {
+            background-color: #4CAF50; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            font-size: 16px; 
+        }
+        #nextPage:hover {
+            background-color: #45a049; 
+        }
     </style>
 </head>
+
 <body id="myBody">
 
     <h1>T2A11 Game Template by Fred</h1>
     <h6>Version 0.0.1</h6>
     <br><br><br><br>
+
+    <!-- Modal for losing message -->
+    <div id="lossModal" class="modal">
+        <div class="modal-content">
+            <h2>You Lose</h2>
+            <p>Please click below to proceed to the next page.</p>
+            <button id="nextPage" onclick="goToNextPage()">Next Page</button>
+        </div>
+    </div>
 
     <script>
         // Global movement flags
@@ -30,7 +73,6 @@
         // Background movement variables
         let moveBackground = false;
         let myGlobalX = 0;
-        let myClock;
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -48,9 +90,8 @@
         // Function to check for collisions
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02')) {
-                alert('You lose');
+                showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
-                location.href = 't2a13-keydown.html'; // Go to your next level
             }
         }
 
@@ -86,7 +127,6 @@
         // Keydown event listener for movement
         document.addEventListener('keydown', function(event) {
             switch (event.key) {
-                // Control for myImg01 (Greninja) using arrow keys
                 case 'ArrowLeft':
                     moveImg1.left = true;
                     break;
@@ -99,8 +139,6 @@
                 case 'ArrowDown':
                     moveImg1.down = true;
                     break;
-
-                // Control for myImg02 (Charizard) using WASD keys
                 case 'a':
                     moveImg2.left = true;
                     break;
@@ -119,7 +157,6 @@
         // Keyup event listener to stop movement when key is released
         document.addEventListener('keyup', function(event) {
             switch (event.key) {
-                // Stop movement for myImg01
                 case 'ArrowLeft':
                     moveImg1.left = false;
                     break;
@@ -132,8 +169,6 @@
                 case 'ArrowDown':
                     moveImg1.down = false;
                     break;
-
-                // Stop movement for myImg02
                 case 'a':
                     moveImg2.left = false;
                     break;
@@ -149,13 +184,22 @@
             }
         });
 
-        // Toggle auto background movement
-        function toggleBackgroundMovement() {
-            moveBackground = !moveBackground; // Toggle the movement
-            if (moveBackground) {
-                document.getElementById('autoBackgroundButton').value = "Stop Background Movement"; // Change button text
-            } else {
-                document.getElementById('autoBackgroundButton').value = "Start Background Movement"; // Reset button text
+        // Show loss modal
+        function showLossModal() {
+            const modal = document.getElementById('lossModal');
+            modal.style.display = 'block';
+        }
+
+        // Navigate to the next page
+        function goToNextPage() {
+            location.href = 't2a13-keydown.html'; // Replace with your next page URL
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('lossModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
             }
         }
 
