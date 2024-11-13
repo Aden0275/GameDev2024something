@@ -9,6 +9,8 @@
             background-repeat: no-repeat; 
             background-size: cover; 
             background-image: url('https://i.ibb.co/ggWykJY/cool-desktop-wallpaper-wallpapers-backgrounds-images-art-photos-pictures-free-best-1920x1080-coolwal.jpg');
+            position: relative; /* Make sure to set position for child elements */
+            overflow: hidden; /* Prevent scrollbars from appearing */
         }
         h1, h6 {
             text-align: center;
@@ -26,7 +28,9 @@
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
         let moveImg2 = { left: false, up: false, right: false, down: false };
-        let myGlobalX = 0; // Background position tracker
+        
+        let myClock; // For background movement tracking
+        let myGlobalX = 0; // Movement offset for the background
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -139,31 +143,25 @@
             }
         });
 
-        // Move the background to the left when the button is clicked
-        function moveBackground() {
-            myGlobalX -= 10; // Adjust speed here
-            document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
+        // Function to start moving the background
+        function startBackgroundMovement() {
+            clearInterval(myClock); // Clear any existing interval
+            myClock = setInterval(function() {
+                myGlobalX -= 5; // Move the background left
+                document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
+            }, 100); // Adjust the speed of the background movement here
         }
+
+        // Event listener for auto background button
+        document.getElementById("autoMove").addEventListener("click", startBackgroundMovement);
 
     </script>
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
 
-    <!-- Button to move the background image left -->
-    <input type="button" value="Move Background Left" onclick="moveBackground()">
-
-    <input type="button" value="Auto Background Left" onclick="{
-        // This functionality remains unchanged
-        clearInterval(myClock);
-        let myTemp = '100px 0px';
-        myClock = setInterval(function(){
-            myGlobalX -= 5;
-            myTemp = myGlobalX + 'px 0px';
-            document.getElementById('myBody').style.backgroundPosition = myTemp;
-        }, 100);
-    }">
-
+    <input type="button" id="autoMove" value="Auto Background Left">
+    
     <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
         document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
         myCheckHit(); // Checks for all collisions
