@@ -8,7 +8,7 @@
         body {
             background-repeat: repeat;
             background-size: 80%;
-            background-image: url('myBackground01.jpg');
+            background-image: url('myBackground01.jpg'); /* Ensure this image exists */
         }
         h1, h6 {
             text-align: center;
@@ -26,7 +26,7 @@
         let myGlobalX = 0;
         let myClock;
 
-        // Global functions here
+        // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
             let left1 = parseInt(document.getElementById(my1).style.left);
             let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -39,13 +39,14 @@
             return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
         }
 
+        // Function to check for collisions
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02')) {
                 alert('You lose');
                 document.getElementById('myImg01').style.left = '20px';
                 location.href = 't2a13-keydown.html'; // Go to your next level
             }
-            // More if statements here like the above
+            // Additional collision checks can be added here
         }
     </script>
 
