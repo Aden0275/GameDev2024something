@@ -6,13 +6,13 @@
     <title>T2A11 Game Template</title>
     <style>
         body {
-            background-repeat: no-repeat; /* Change this to no-repeat */
-            background-size: cover; /* Change size to cover so it fits the whole window */
+            background-repeat: no-repeat; 
+            background-size: cover; 
             background-image: url('https://i.ibb.co/ggWykJY/cool-desktop-wallpaper-wallpapers-backgrounds-images-art-photos-pictures-free-best-1920x1080-coolwal.jpg');
         }
         h1, h6 {
             text-align: center;
-            color: white; /* Optional: Change text color for better visibility against background */
+            color: white; /* Change text color for visibility */
         }
     </style>
 </head>
@@ -49,6 +49,47 @@
             }
             // Additional collision checks can be added here
         }
+
+        // Keydown event listener for movement
+        document.addEventListener('keydown', function(event) {
+            const img1 = document.getElementById('myImg01');
+            const img2 = document.getElementById('myImg02');
+
+            // Move myImg01 with arrow keys (left, up, right, down)
+            switch (event.key) {
+                case 'ArrowLeft':
+                    img1.style.left = (parseInt(img1.style.left) - 10) + 'px';
+                    break;
+                case 'ArrowUp':
+                    img1.style.top = (parseInt(img1.style.top) - 10) + 'px';
+                    break;
+                case 'ArrowRight':
+                    img1.style.left = (parseInt(img1.style.left) + 10) + 'px';
+                    break;
+                case 'ArrowDown':
+                    img1.style.top = (parseInt(img1.style.top) + 10) + 'px';
+                    break;
+            }
+
+            // Move myImg02 with WASD keys
+            switch (event.key) {
+                case 'a': // Move left
+                    img2.style.left = (parseInt(img2.style.left) - 10) + 'px';
+                    break;
+                case 'w': // Move up
+                    img2.style.top = (parseInt(img2.style.top) - 10) + 'px';
+                    break;
+                case 'd': // Move right
+                    img2.style.left = (parseInt(img2.style.left) + 10) + 'px';
+                    break;
+                case 's': // Move down
+                    img2.style.top = (parseInt(img2.style.top) + 10) + 'px';
+                    break;
+            }
+
+            myCheckHit(); // Checks for all collisions
+        });
+
     </script>
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
