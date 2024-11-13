@@ -72,9 +72,7 @@
         // Background movement variables
         let moveBackground = false;
         let myGlobalX = 0;
-
-        const img1 = document.getElementById('myImg01');
-        const img2 = document.getElementById('myImg02');
+        const charizardSpeed = 2; // Speed of Charizard
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -97,37 +95,59 @@
             }
         }
 
+        // Function to move myImg02 (Charizard) towards myImg01 (Greninja)
+        function moveCharizard() {
+            const img1 = document.getElementById('myImg01');
+            const img2 = document.getElementById('myImg02');
+
+            // Get the positions of both images
+            const rect1 = img1.getBoundingClientRect();
+            const rect2 = img2.getBoundingClientRect();
+
+            // Calculate the center points
+            const centerX1 = rect1.left + rect1.width / 2;
+            const centerY1 = rect1.top + rect1.height / 2;
+            const centerX2 = rect2.left + rect2.width / 2;
+            const centerY2 = rect2.top + rect2.height / 2;
+
+            // Calculate distance vector
+            const dx = centerX1 - centerX2;
+            const dy = centerY1 - centerY2;
+
+            // Calculate distance
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // Normalize the direction vector
+            if (distance > 0) {
+                const directionX = (dx / distance);
+                const directionY = (dy / distance);
+
+                // Move Charizard towards Greninja
+                img2.style.left = (parseInt(img2.style.left) + directionX * charizardSpeed) + 'px';
+                img2.style.top = (parseInt(img2.style.top) + directionY * charizardSpeed) + 'px';
+            }
+        }
+
         // Function to move images based on movement flags
         function moveImages() {
+            const img1 = document.getElementById('myImg01');
+
             // Move myImg01 (Greninja) based on flags
             if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - 5) + 'px';
             if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - 5) + 'px';
             if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + 5) + 'px';
             if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + 5) + 'px';
 
-            // Move myImg02 (Charizard) to follow myImg01 (Greninja)
-            followGreninja();
+            // Move Charizard towards Greninja
+            moveCharizard();
+
+            // Move background if the flag is set
+            if (moveBackground) {
+                myGlobalX -= 5;
+                document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
+            }
 
             myCheckHit(); // Check for collisions
-        }
-
-        // Function for myImg02 (Charizard) to follow myImg01 (Greninja)
-        function followGreninja() {
-            const img1Rect = img1.getBoundingClientRect();
-            const img2Rect = img2.getBoundingClientRect();
-
-            const dx = img1Rect.left + img1Rect.width / 2 - (img2Rect.left + img2Rect.width / 2);
-            const dy = img1Rect.top + img1Rect.height / 2 - (img2Rect.top + img2Rect.height / 2);
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            // If within a certain distance, move towards Greninja
-            if (distance > 5) { // Adjust this to make following more or less aggressive
-                const speed = 1; // Speed of Charizard
-                const normalizationFactor = distance / speed; // Normalization factor
-
-                img2.style.left = (parseInt(img2.style.left) + (dx / normalizationFactor)) + 'px';
-                img2.style.top = (parseInt(img2.style.top) + (dy / normalizationFactor)) + 'px';
-            }
         }
 
         // Set interval to regularly move images and background
@@ -188,19 +208,17 @@
             }
         }
 
-        // Initialization for images positions
-        img1.style.position = 'absolute';
-        img1.style.left = '50px';
-        img1.style.top = '50px';
-
-        img2.style.position = 'absolute';
-        img2.style.left = '300px'; // Initially position myImg02 on the right side
-        img2.style.top = '300px'; // Adjust as needed
+        // Initialize Charizard's position
+        window.onload = function() {
+            const img2 = document.getElementById('myImg02');
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // random vertical position
+        };
 
     </script>
 
-    <img id="myImg01" style="width:100px; height:80px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
-    <img id="myImg02" style="width:100px; height:80px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+    <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
+    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
 
     <input type="button" id="autoBackgroundButton" value="Start Background Movement" onclick="toggleBackgroundMovement()">
 
