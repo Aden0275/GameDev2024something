@@ -9,7 +9,6 @@
             background-repeat: no-repeat; 
             background-size: cover; 
             background-image: url('https://i.ibb.co/ggWykJY/cool-desktop-wallpaper-wallpapers-backgrounds-images-art-photos-pictures-free-best-1920x1080-coolwal.jpg');
-            position: relative; /* Needed for the absolutely positioned images */
         }
         h1, h6 {
             text-align: center;
@@ -24,10 +23,14 @@
     <br><br><br><br>
 
     <script>
-        // Global variables 
+        // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
         let moveImg2 = { left: false, up: false, right: false, down: false };
-        let backgroundPositionX = 0; // Track background position
+        
+        // Background movement variables
+        let moveBackground = false;
+        let myGlobalX = 0;
+        let myClock;
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -68,20 +71,17 @@
             if (moveImg2.right) img2.style.left = (parseInt(img2.style.left) + 5) + 'px';
             if (moveImg2.down) img2.style.top = (parseInt(img2.style.top) + 5) + 'px';
 
+            // Move background if the flag is set
+            if (moveBackground) {
+                myGlobalX -= 5;
+                document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
+            }
+
             myCheckHit(); // Check for collisions
         }
 
-        // Set interval to regularly move images
+        // Set interval to regularly move images and background
         setInterval(moveImages, 100);
-
-        // Function to move the background
-        function moveBackground() {
-            backgroundPositionX -= 2; // Change this value to adjust speed
-            document.getElementById('myBody').style.backgroundPosition = backgroundPositionX + 'px 0'; // Move left
-        }
-
-        // Set interval for background movement
-        setInterval(moveBackground, 100); // Adjust the interval for smoother movement
 
         // Keydown event listener for movement
         document.addEventListener('keydown', function(event) {
@@ -149,15 +149,22 @@
             }
         });
 
+        // Toggle auto background movement
+        function toggleBackgroundMovement() {
+            moveBackground = !moveBackground; // Toggle the movement
+            if (moveBackground) {
+                document.getElementById('autoBackgroundButton').value = "Stop Background Movement"; // Change button text
+            } else {
+                document.getElementById('autoBackgroundButton').value = "Start Background Movement"; // Reset button text
+            }
+        }
+
     </script>
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:250px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
 
-    <input type="button" value="Auto Background Left" onclick="{
-        // Background auto movement is now automatic and doesn't require a button
-        alert('The background moves automatically to the left. You can use keyboard controls for the images.');
-    }">
+    <input type="button" id="autoBackgroundButton" value="Start Background Movement" onclick="toggleBackgroundMovement()">
 
     <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
         document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
