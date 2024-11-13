@@ -68,11 +68,14 @@
     <script>
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
+        let moveImg2 = { left: false, up: false, right: false, down: false };
+
+        // Speed for movement
+        const speed = 5;
         
         // Background movement variables
         let moveBackground = false;
         let myGlobalX = 0;
-        const charizardSpeed = 2; // Speed of Charizard
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -95,55 +98,26 @@
             }
         }
 
-        // Function to move myImg02 (Charizard) towards myImg01 (Greninja)
-        function moveCharizard() {
-            const img1 = document.getElementById('myImg01');
-            const img2 = document.getElementById('myImg02');
-
-            // Get the positions of both images
-            const rect1 = img1.getBoundingClientRect();
-            const rect2 = img2.getBoundingClientRect();
-
-            // Calculate the center points
-            const centerX1 = rect1.left + rect1.width / 2;
-            const centerY1 = rect1.top + rect1.height / 2;
-            const centerX2 = rect2.left + rect2.width / 2;
-            const centerY2 = rect2.top + rect2.height / 2;
-
-            // Calculate distance vector
-            const dx = centerX1 - centerX2;
-            const dy = centerY1 - centerY2;
-
-            // Calculate distance
-            const distance = Math.sqrt(dx * dx + dy * dy);
-
-            // Normalize the direction vector
-            if (distance > 0) {
-                const directionX = (dx / distance);
-                const directionY = (dy / distance);
-
-                // Move Charizard towards Greninja
-                img2.style.left = (parseInt(img2.style.left) + directionX * charizardSpeed) + 'px';
-                img2.style.top = (parseInt(img2.style.top) + directionY * charizardSpeed) + 'px';
-            }
-        }
-
         // Function to move images based on movement flags
         function moveImages() {
             const img1 = document.getElementById('myImg01');
+            const img2 = document.getElementById('myImg02');
 
             // Move myImg01 (Greninja) based on flags
-            if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - 5) + 'px';
-            if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - 5) + 'px';
-            if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + 5) + 'px';
-            if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + 5) + 'px';
+            if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - speed) + 'px';
+            if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - speed) + 'px';
+            if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
+            if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
 
-            // Move Charizard towards Greninja
-            moveCharizard();
+            // Move myImg02 (Charizard) based on flags
+            if (moveImg2.left) img2.style.left = (parseInt(img2.style.left) - speed) + 'px';
+            if (moveImg2.up) img2.style.top = (parseInt(img2.style.top) - speed) + 'px';
+            if (moveImg2.right) img2.style.left = (parseInt(img2.style.left) + speed) + 'px';
+            if (moveImg2.down) img2.style.top = (parseInt(img2.style.top) + speed) + 'px';
 
             // Move background if the flag is set
             if (moveBackground) {
-                myGlobalX -= 5;
+                myGlobalX += 5;  // Move background to the left
                 document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
             }
 
@@ -168,6 +142,18 @@
                 case 'ArrowDown':
                     moveImg1.down = true;
                     break;
+                case 'a':
+                    moveImg2.left = true;
+                    break;
+                case 'w':
+                    moveImg2.up = true;
+                    break;
+                case 'd':
+                    moveImg2.right = true;
+                    break;
+                case 's':
+                    moveImg2.down = true;
+                    break;
             }
         });
 
@@ -185,6 +171,18 @@
                     break;
                 case 'ArrowDown':
                     moveImg1.down = false;
+                    break;
+                case 'a':
+                    moveImg2.left = false;
+                    break;
+                case 'w':
+                    moveImg2.up = false;
+                    break;
+                case 'd':
+                    moveImg2.right = false;
+                    break;
+                case 's':
+                    moveImg2.down = false;
                     break;
             }
         });
