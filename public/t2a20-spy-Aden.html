@@ -4,16 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spy Name Encryptor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"> <!-- Hacker-like font -->
     <style>
-        /* Your CSS remains unchanged */
+        body {
+            font-family: 'Share Tech Mono', monospace; /* Use hacker-style font */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #000; /* Solid black background */
+            color: #00ff00; /* Bright green text */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .container {
+            background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Green glow around container */
+            padding: 30px;
+            max-width: 500px; /* Slightly smaller for sleekness */
+            width: 90%;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Share Tech Mono', monospace; /* Hacker-style font */
+            color: #00ff00; /* Neon green color */
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #00ff00; /* Glowing green text effect */
+            font-size: 2.5em;
+        }
+        textarea {
+            width: 100%;
+            height: 100px; /* Increased height for better visibility */
+            font-size: 18px;
+            padding: 10px;
+            border: 2px solid #00ff00; /* Light green border */
+            border-radius: 5px;
+            color: #00ff00; /* Green text color */
+            background-color: #1b1b1b; /* Very dark background for contrast */
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+            resize: none; /* Disable resize */
+        }
+        textarea::placeholder {
+            color: rgba(0, 255, 0, 0.7); /* Dimmed placeholder color */
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #00cc00; /* Lighter green border on focus */
+            box-shadow: 0 0 15px rgba(0, 204, 0, 0.8); /* Enhanced green glow */
+        }
+        .glitch {
+            animation: glitch-title 1s infinite; /* Glitch animation for title */
+        }
+        .glitch-textarea {
+            animation: glitch-textarea 0.5s infinite; /* Enhanced glitch animation for text areas */
+        }
+        .button-container {
+            display: flex; /* Use flexbox for button alignment */
+            justify-content: center; /* Center align the buttons */
+            margin: 10px 0; /* Add margin for spacing */
+        }
+        input[type=button] {
+            padding: 12px 20px;
+            font-size: 16px;
+            margin: 0 5px; /* Add horizontal margin between buttons */
+            cursor: pointer;
+            border: 2px solid #00ff00; /* Light green border */
+            border-radius: 5px;
+            background-color: #1a1a1a; /* Matching dark background */
+            color: #00ff00; /* Bright green text */
+            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.5); /* Green box shadow */
+        }
+        input[type=button]:hover {
+            background-color: #00ff00; /* Button background changes to green on hover */
+            color: black; /* Black text on hover */
+            transform: translateY(-2px); /* Lifting effect during hover */
+            box-shadow: 0 6px 20px rgba(0, 255, 0, 0.8); /* Enhanced green shadow on hover */
+        }
+        .terminal {
+            margin: 20px 0;
+            border-left: 4px solid #00ff00; /* Bold left border to mimic terminal */
+            padding-left: 15px;
+            text-align: left;
+        }
+        @keyframes glitch-title {
+            0% { opacity: 1; transform: translate(0); }
+            10% { opacity: 0.8; transform: translate(-2px, -2px); }
+            20% { opacity: 1; transform: translate(2px, -2px); }
+            30% { opacity: 0.9; transform: translate(-2px, 2px); }
+            40% { opacity: 1; transform: translate(2px, 2px); }
+            50% { opacity: 0.7; transform: translate(-2px, 0); }
+            60% { opacity: 1; transform: translate(0, -2px); }
+            70% { opacity: 0.9; transform: translate(2px, 2px); }
+            80% { opacity: 1; transform: translate(-2px, -2px); }
+            90% { opacity: 0.8; transform: translate(0); }
+            100% { opacity: 1; transform: translate(0); }
+        }
+        @keyframes glitch-textarea {
+            0% { opacity: 1; }
+            10% { opacity: 0.9; transform: skewX(-1deg); }
+            20% { opacity: 0.8; transform: skewX(1deg); }
+            30% { opacity: 0.9; transform: skewX(-2deg); }
+            40% { opacity: 0.8; }
+            50% { opacity: 1; }
+            60% { opacity: 0.8; transform: skewX(2deg); }
+            70% { opacity: 0.9; transform: skewX(-1deg); }
+            80% { opacity: 0.8; }
+            90% { opacity: 0.9; transform: skewX(1deg); }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1 class="glitch">Spy Name Encryptor</h1>
-
+    
     <div class="terminal">
         <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
     </div>
@@ -35,26 +144,182 @@
 </div>
 
 <script>
-    const encryptionMap = {
-        'a': 'b', 'b': 'c', 'c': 'd', 'd': 'e', 'e': 'f', 'f': 'g', 'g': 'h', 'h': 'i',
-        'i': 'j', 'j': 'k', 'k': 'l', 'l': 'm', 'm': 'n', 'n': 'o', 'o': 'p', 'p': 'q',
-        'q': 'r', 'r': 's', 's': 't', 't': 'u', 'u': 'v', 'v': 'w', 'w': 'x', 'x': 'y',
-        'y': 'z', 'z': 'a', ' ': '_', '!': '@', '@': '#', '#': '$', '$': '%', '%': '^',
-        '^': '&', '&': '*', '*': '(', '(': ')', ')': '-', '-': '+'
-    };
-
-    const decryptionMap = Object.fromEntries(Object.entries(encryptionMap).map(([key, value]) => [value, key]));
-
     function encryptText() {
-        let inputText = document.getElementById('myArea01').value.toLowerCase();
-        let encryptedText = inputText.split('').map(char => encryptionMap[char] || char).join('');
-        document.getElementById('myArea02').value = encryptedText;
+        let myTemp = '';
+        let myString = document.getElementById('myArea01').value.toLowerCase().split('');
+        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+            myTemp = myString[myLoop];
+            if (myString[myLoop] === 'e') {
+            
+            if (myString[myLoop] === 'a') {
+                myTemp = 'b';
+            } else if (myString[myLoop] === 'b') {
+                myTemp = 'c';
+            } else if (myString[myLoop] === 'c') {
+                myTemp = 'd';
+            } else if (myString[myLoop] === 'd') {
+                myTemp = 'e';
+            } else if (myString[myLoop] === 'e') {
+                myTemp = 'f';
+            } else if (myString[myLoop] === 'f') {
+                myTemp = 'g';
+            } else if (myString[myLoop] === 'g') {
+                myTemp = 'h';
+            } else if (myString[myLoop] === 'h') {
+                myTemp = 'i';
+            } else if (myString[myLoop] === 'i') {
+                myTemp = 'j';
+            } else if (myString[myLoop] === 'j') {
+                myTemp = 'k';
+            } else if (myString[myLoop] === 'k') {
+                myTemp = 'l';
+            } else if (myString[myLoop] === 'l') {
+                myTemp = 'm';
+            } else if (myString[myLoop] === 'm') {
+                myTemp = 'n';
+            } else if (myString[myLoop] === 'n') {
+                myTemp = 'o';
+            } else if (myString[myLoop] === 'o') {
+                myTemp = 'p';
+            } else if (myString[myLoop] === 'p') {
+                myTemp = 'q';
+            } else if (myString[myLoop] === 'q') {
+                myTemp = 'r';
+            } else if (myString[myLoop] === 'r') {
+                myTemp = 's';
+            } else if (myString[myLoop] === 's') {
+                myTemp = 't';
+            } else if (myString[myLoop] === 't') {
+                myTemp = 'u';
+            } else if (myString[myLoop] === 'u') {
+                myTemp = 'v';
+            } else if (myString[myLoop] === 'v') {
+                myTemp = 'w';
+            } else if (myString[myLoop] === 'w') {
+                myTemp = 'x';
+            } else if (myString[myLoop] === 'x') {
+                myTemp = 'y';
+            } else if (myString[myLoop] === 'y') {
+                myTemp = 'z';
+            } else if (myString[myLoop] === 'z') {
+                myTemp = 'a';
+            } else if (myString[myLoop] === ' ') {
+                myTemp = '_';
+            } else if (myString[myLoop] === '!') {
+                myTemp = '@';
+            } else if (myString[myLoop] === '@') {
+                myTemp = '#';
+            } else if (myString[myLoop] === '#') {
+                myTemp = '$';
+            } else if (myString[myLoop] === '$') {
+                myTemp = '%';
+            } else if (myString[myLoop] === '%') {
+                myTemp = '^';
+            } else if (myString[myLoop] === '^') {
+                myTemp = '&';
+            } else if (myString[myLoop] === '&') {
+                myTemp = '*';
+            } else if (myString[myLoop] === '*') {
+                myTemp = '(';
+            } else if (myString[myLoop] === '(') {
+                myTemp = ')';
+            } else if (myString[myLoop] === ')') {
+                myTemp = '-';
+            } else if (myString[myLoop] === '-') {
+                myTemp = '+';
+            }
+            
+            myString[myLoop] = myTemp;
+        }
+        document.getElementById('myArea02').value = myString.join('');
     }
 
     function decryptText() {
-        let inputText = document.getElementById('myArea02').value.toLowerCase();
-        let decryptedText = inputText.split('').map(char => decryptionMap[char] || char).join('');
-        document.getElementById('myArea03').value = decryptedText;
+        let myTemp = '';
+        let myString = document.getElementById('myArea02').value.toLowerCase().split('');
+        for (let myLoop = 0; myLoop < myString.length; myLoop++) {
+            myTemp = myString[myLoop];
+            if (myString[myLoop] === 'f') {
+            if (myString[myLoop] === 'b') {
+                myTemp = 'a';
+            } else if (myString[myLoop] === 'c') {
+                myTemp = 'b';
+            } else if (myString[myLoop] === 'd') {
+                myTemp = 'c';
+            } else if (myString[myLoop] === 'e') {
+                myTemp = 'd';
+            } else if (myString[myLoop] === 'f') {
+                myTemp = 'e';
+            } else if (myString[myLoop] === 'g') {
+                myTemp = 'f';
+            } else if (myString[myLoop] === 'h') {
+                myTemp = 'g';
+            } else if (myString[myLoop] === 'i') {
+                myTemp = 'h';
+            } else if (myString[myLoop] === 'j') {
+                myTemp = 'i';
+            } else if (myString[myLoop] === 'k') {
+                myTemp = 'j';
+            } else if (myString[myLoop] === 'l') {
+                myTemp = 'k';
+            } else if (myString[myLoop] === 'm') {
+                myTemp = 'l';
+            } else if (myString[myLoop] === 'n') {
+                myTemp = 'm';
+            } else if (myString[myLoop] === 'o') {
+                myTemp = 'n';
+            } else if (myString[myLoop] === 'p') {
+                myTemp = 'o';
+            } else if (myString[myLoop] === 'q') {
+                myTemp = 'p';
+            } else if (myString[myLoop] === 'r') {
+                myTemp = 'q';
+            } else if (myString[myLoop] === 's') {
+                myTemp = 'r';
+            } else if (myString[myLoop] === 't') {
+                myTemp = 's';
+            } else if (myString[myLoop] === 'u') {
+                myTemp = 't';
+            } else if (myString[myLoop] === 'v') {
+                myTemp = 'u';
+            } else if (myString[myLoop] === 'w') {
+                myTemp = 'v';
+            } else if (myString[myLoop] === 'x') {
+                myTemp = 'w';
+            } else if (myString[myLoop] === 'y') {
+                myTemp = 'x';
+            } else if (myString[myLoop] === 'z') {
+                myTemp = 'y';
+            } else if (myString[myLoop] === 'a') {
+                myTemp = 'z';
+            } else if (myString[myLoop] === '_') {
+                myTemp = ' ';
+            } else if (myString[myLoop] === '@') {
+                myTemp = '!';
+            } else if (myString[myLoop] === '#') {
+                myTemp = '@';
+            } else if (myString[myLoop] === '$') {
+                myTemp = '#';
+            } else if (myString[myLoop] === '%') {
+                myTemp = '$';
+            } else if (myString[myLoop] === '^') {
+                myTemp = '%';
+            } else if (myString[myLoop] === '&') {
+                myTemp = '^';
+            } else if (myString[myLoop] === '*') {
+                myTemp = '&';
+            } else if (myString[myLoop] === '(') {
+                myTemp = '*';
+            } else if (myString[myLoop] === ')') {
+                myTemp = '(';
+            } else if (myString[myLoop] === '-') {
+                myTemp = ')';
+            } else if (myString[myLoop] === '+') {
+                myTemp = '-';
+            }
+            myString[myLoop] = myTemp;
+        }
+        document.getElementById('myArea03').value = myString.join('');
     }
 
     function resetFields() {
