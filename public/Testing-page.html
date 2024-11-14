@@ -3,197 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Maze Game</title>
+    <title>Maze Game</title>
     <style>
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #cce7ff;
             font-family: Arial, sans-serif;
         }
 
-        #maze {
-            position: relative;
-            width: 800px; 
-            height: 600px; 
-            background-color: #fff;
-            overflow: hidden; 
-            border: 5px solid #333;
-        }
-
-        .wall {
-            background-color: #333;
-            position: absolute;
-        }
-
-        #player {
-            width: 30px;
-            height: 30px;
-            background-color: red;
-            border-radius: 50%; 
-            position: absolute;
-        }
-
-        #goal {
-            width: 30px;
-            height: 30px;
-            background-color: green;
-            position: absolute;
-            top: 560px; 
-            left: 760px; 
-            border-radius: 50%; 
-        }
-
-        #controls {
+        h1 {
             margin: 20px;
         }
 
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
+        #maze {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            grid-template-rows: repeat(5, 50px);
+            gap: 1px;
+            background-color: black;
         }
 
-        #timer {
-            font-size: 20px;
-            margin-top: 10px;
+        .cell {
+            width: 50px;
+            height: 50px;
+        }
+
+        .start {
+            background-color: green;
+        }
+
+        .end {
+            background-color: red;
+        }
+
+        .path {
+            background-color: white;
+        }
+
+        .wall {
+            background-color: black;
         }
     </style>
 </head>
 <body>
+    <h1>Maze Game</h1>
+    <div id="maze">
+        <div class="cell start" id="start"></div>
+        <div class="cell path"></div>
+        <div class="cell wall"></div>
+        <div class="cell path"></div>
+        <div class="cell wall"></div>
+        
+        <div class="cell wall"></div>
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+        <div class="cell wall"></div>
+        <div class="cell wall"></div>
 
-<div id="controls">
-    <button onclick="startGame()">Start Game</button>
-    <button onclick="resetGame()">Reset Game</button>
-    <div id="timer">Time: 0 seconds</div>
-</div>
+        <div class="cell wall"></div>
+        <div class="cell path"></div>
+        <div class="cell wall"></div>
+        <div class="cell path"></div>
+        <div class="cell wall"></div>
 
-<div id="maze" style="display: none;">
-    <!-- Enhanced Maze Walls -->
-    <div class="wall" style="top: 0; left: 0; width: 800px; height: 20px;"></div>
-    <div class="wall" style="top: 0; left: 0; width: 20px; height: 600px;"></div>
-    <div class="wall" style="top: 0; left: 780px; width: 20px; height: 600px;"></div>
-    <div class="wall" style="top: 580px; left: 0; width: 800px; height: 20px;"></div>
+        <div class="cell wall"></div>
+        <div class="cell path"></div>
+        <div class="cell path"></div>
+        <div class="cell wall"></div>
+        <div class="cell end" id="end"></div>
+    </div>
+    <script>
+        const startCell = document.getElementById('start');
+        const endCell = document.getElementById('end');
+        let position = { x: 0, y: 0 };
 
-    <!-- Middle walls to create a maze structure -->
-    <div class="wall" style="top: 100px; left: 100px; width: 10px; height: 300px;"></div>
-    <div class="wall" style="top: 100px; left: 300px; width: 10px; height: 200px;"></div>
-    <div class="wall" style="top: 300px; left: 200px; width: 120px; height: 10px;"></div>
-    <div class="wall" style="top: 400px; left: 100px; width: 80px; height: 10px;"></div>
-    <div class="wall" style="top: 400px; left: 230px; width: 10px; height: 100px;"></div>
-    <div class="wall" style="top: 480px; left: 100px; width: 140px; height: 10px;"></div>
-    
-    <div class="wall" style="top: 150px; left: 400px; width: 10px; height: 200px;"></div>
-    <div class="wall" style="top: 200px; left: 450px; width: 150px; height: 10px;"></div>
-    <div class="wall" style="top: 250px; left: 550px; width: 10px; height: 150px;"></div>
-    <div class="wall" style="top: 400px; left: 450px; width: 100px; height: 10px;"></div>
+        // Listen for arrow key presses
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    move(-1, 0);
+                    break;
+                case 'ArrowDown':
+                    move(1, 0);
+                    break;
+                case 'ArrowLeft':
+                    move(0, -1);
+                    break;
+                case 'ArrowRight':
+                    move(0, 1);
+                    break;
+            }
+        });
 
-    <div class="wall" style="top: 300px; left: 600px; width: 10px; height: 200px;"></div>
-    <div class="wall" style="top: 500px; left: 450px; width: 160px; height: 10px;"></div);
-    <div class="wall" style="top: 500px; left: 600px; width: 10px; height: 80px;"></div>
-    <div class="wall" style="top: 100px; left: 650px; width: 10px; height: 80px;"></div>
-    <div class="wall" style="top: 180px; left: 300px; width: 350px; height: 10px;"></div>
+        function move(dx, dy) {
+            const newX = position.x + dx;
+            const newY = position.y + dy;
 
-    <div id="goal"></div>
-    <div id="player" style="top: 30px; left: 30px;"></div>
-</div>
+            const newCell = document.querySelector(`.cell:nth-child(${(newX * 5) + (newY + 1)})`);
 
-<audio id="winSound" src="win_sound.mp3" preload="auto"></audio>
-<audio id="moveSound" src="move_sound.mp3" preload="auto"></audio>
+            // Check if the new cell is a path or the end cell
+            if (newCell && (newCell.classList.contains('path') || newCell.classList.contains('end'))) {
+                position.x = newX;
+                position.y = newY;
 
-<script>
-    const player = document.getElementById('player');
-    const walls = document.querySelectorAll('.wall');
-    const goal = document.getElementById('goal');
-    const maze = document.getElementById('maze');
-    const timerDisplay = document.getElementById('timer');
-
-    let playerPos = { x: 30, y: 30 };
-    let gameActive = false;
-    let timer;
-    let seconds = 0;
-
-    function startGame() {
-        gameActive = true;
-        maze.style.display = 'block';
-        playerPos = { x: 30, y: 30 };
-        updatePlayerPosition();
-        startTimer();
-    }
-
-    function resetGame() {
-        clearInterval(timer);
-        seconds = 0;
-        timerDisplay.textContent = "Time: 0 seconds";
-        maze.style.display = 'none';
-        player.style.left = '30px';
-        player.style.top = '30px';
-        playerPos = { x: 30, y: 30 };
-        gameActive = false;
-    }
-
-    function startTimer() {
-        timer = setInterval(() => {
-            seconds++;
-            timerDisplay.textContent = "Time: " + seconds + " seconds";
-        }, 1000);
-    }
-
-    document.addEventListener('keydown', (event) => {
-        if (!gameActive) return;
-
-        let newX = playerPos.x;
-        let newY = playerPos.y;
-
-        // Move player with arrow keys
-        if (event.key === 'ArrowUp') newY -= 30;
-        if (event.key === 'ArrowDown') newY += 30;
-        if (event.key === 'ArrowLeft') newX -= 30;
-        if (event.key === 'ArrowRight') newX += 30;
-
-        // Sound effect on move
-        document.getElementById('moveSound').play();
-
-        // Check for collision and boundary
-        if (!isColliding(newX, newY)) {
-            playerPos = { x: newX, y: newY };
-            updatePlayerPosition();
-            checkGoal();
-        }
-    });
-
-    function isColliding(x, y) {
-        const playerBounds = { left: x, top: y, right: x + 30, bottom: y + 30 };
-        for (let wall of walls) {
-            const wallBounds = wall.getBoundingClientRect();
-            if (playerBounds.right > wallBounds.left &&
-                playerBounds.left < wallBounds.right &&
-                playerBounds.bottom > wallBounds.top &&
-                playerBounds.top < wallBounds.bottom) {
-                return true;
+                if (newCell.classList.contains('end')) {
+                    alert('Congratulations! You reached the end!');
+                }
             }
         }
-        return false;
-    }
-
-    function updatePlayerPosition() {
-        player.style.left = `${playerPos.x}px`;
-        player.style.top = `${playerPos.y}px`;
-    }
-
-    function checkGoal() {
-        if (playerPos.x >= 760 && playerPos.x <= 790 && playerPos.y >= 560 && playerPos.y <= 590) {
-            alert("You've reached the goal!");
-            document.getElementById('winSound').play();
-            clearInterval(timer);
-            gameActive = false;
-        }
-    }
-</script>
-
+    </script>
 </body>
 </html>
