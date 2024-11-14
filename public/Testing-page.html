@@ -28,6 +28,13 @@
         .wall {
             background-color: #333;
             position: absolute;
+            z-index: 1; 
+        }
+
+        .passable-wall {
+            background-color: #aaa; /* Different color for passable walls */
+            position: absolute;
+            z-index: 1; // Behind the player
         }
 
         #player {
@@ -36,6 +43,7 @@
             background-color: red;
             border-radius: 50%;
             position: absolute;
+            z-index: 2; // On top of the walls
         }
 
         #goal {
@@ -46,6 +54,7 @@
             border-radius: 50%;
             top: 550px; 
             left: 750px; 
+            z-index: 2; // On top of the walls
         }
 
         #controls {
@@ -73,29 +82,26 @@
 </div>
 
 <div id="maze" style="display: none;">
-    <!-- Improved wall layout to represent a classic maze -->
+    <!-- Maze layout -->
     <div class="wall" style="top: 0; left: 0; width: 800px; height: 20px;"></div>
     <div class="wall" style="top: 0; left: 0; width: 20px; height: 600px;"></div>
     <div class="wall" style="top: 0; left: 780px; width: 20px; height: 600px;"></div>
     <div class="wall" style="top: 580px; left: 0; width: 800px; height: 20px;"></div>
 
+    <!-- Regular walls -->
     <div class="wall" style="top: 100px; left: 50px; width: 20px; height: 400px;"></div>
-    <div class="wall" style="top: 100px; left: 150px; width: 20px; height: 50px;"></div>
-    <div class="wall" style="top: 150px; left: 100px; width: 100px; height: 20px;"></div>
-    <div class="wall" style="top: 250px; left: 100px; width: 200px; height: 20px;"></div>
-    
-    <div class="wall" style="top: 250px; left: 300px; width: 20px; height: 150px;"></div>
-    <div class="wall" style="top: 400px; left: 150px; width: 20px; height: 150px;"></div>
-    <div class="wall" style="top: 400px; left: 200px; width: 100px; height: 20px;"></div>
-    
-    <div class="wall" style="top: 200px; left: 400px; width: 20px; height: 150px;"></div>
-    <div class="wall" style="top: 400px; left: 500px; width: 20px; height: 100px;"></div>
-    <div class="wall" style="top: 300px; left: 550px; width: 100px; height: 20px;"></div>
-    
-    <div class="wall" style="top: 50px; left: 600px; width: 20px; height: 150px;"></div>
-    <div class="wall" style="top: 200px; left: 600px; width: 100px; height: 20px;"></div>
-    <div class="wall" style="top: 400px; left: 600px; width: 20px; height: 300px;"></div>
-    <div class="wall" style="top: 500px; left: 600px; width: 100px; height: 20px;"></div>
+    <div class="wall" style="top: 100px; left: 150px; width: 220px; height: 20px;"></div>
+    <div class="wall" style="top: 120px; left: 350px; width: 20px; height: 100px;"></div>
+    <div class="wall" style="top: 220px; left: 400px; width: 20px; height: 200px;"></div>
+    <div class="wall" style="top: 400px; left: 250px; width: 200px; height: 20px;"></div>
+    <div class="wall" style="top: 400px; left: 450px; width: 20px; height: 100px;"></div>
+    <div class="wall" style="top: 500px; left: 150px; width: 100px; height: 20px;"></div>
+    <div class="wall" style="top: 100px; left: 600px; width: 20px; height: 200px;"></div>
+  
+    <!-- Passable walls -->
+    <div class="passable-wall" style="top: 100px; left: 400px; width: 80px; height: 20px;"></div>
+    <div class="passable-wall" style="top: 150px; left: 500px; width: 80px; height: 20px;"></div>
+    <div class="passable-wall" style="top: 250px; left: 525px; width: 20px; height: 90px;"></div>
 
     <div id="goal"></div>
     <div id="player" style="top: 30px; left: 30px;"></div>
@@ -107,6 +113,7 @@
 <script>
     const player = document.getElementById('player');
     const walls = document.querySelectorAll('.wall');
+    const passableWalls = document.querySelectorAll('.passable-wall');
     const goal = document.getElementById('goal');
     const maze = document.getElementById('maze');
     const timerDisplay = document.getElementById('timer');
@@ -166,18 +173,30 @@
     });
 
     function isColliding(x, y) {
-        // Check collision with walls
         const playerBounds = { left: x, top: y, right: x + 30, bottom: y + 30 };
+        
         for (let wall of walls) {
             const wallBounds = wall.getBoundingClientRect();
             if (playerBounds.right > wallBounds.left &&
                 playerBounds.left < wallBounds.right &&
                 playerBounds.bottom > wallBounds.top &&
                 playerBounds.top < wallBounds.bottom) {
-                return true;
+                return true; // Collision with non-passable wall
             }
         }
-        return false;
+
+        // Allow passing through passable walls
+        for (let wall of passableWalls) {
+            const wallBounds = wall.getBoundingClientRect();
+            if (playerBounds.right > wallBounds.left &&
+                playerBounds.left < wallBounds.right &&
+                playerBounds.bottom > wallBounds.top &&
+                playerBounds.top < wallBounds.bottom) {
+                return false; // No collision with passable wall
+            }
+        }
+
+        return false; // No collision
     }
 
     function updatePlayerPosition() {
