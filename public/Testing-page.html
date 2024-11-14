@@ -3,22 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Large Maze Game</title>
+    <title>Full-Screen Maze Game</title>
     <style>
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            overflow: hidden; /* Prevent scrollbars */
         }
         #maze {
             position: relative;
-            width: 600px; /* Increased size */
-            height: 600px; /* Increased size */
-            border: 2px solid #333;
+            width: 100vw; /* Full width */
+            height: 100vh; /* Full height */
             background-color: #fff;
         }
         .wall {
@@ -31,32 +25,47 @@
             background-color: red;
             position: absolute;
         }
+        #goal {
+            width: 30px;
+            height: 30px;
+            background-color: green;
+            position: absolute;
+            top: 550px; /* Position the goal towards the bottom */
+            left: 550px; /* Position the goal towards the right */
+        }
     </style>
 </head>
 <body>
 
 <div id="maze">
-    <!-- Maze walls. Adjusted for a larger maze -->
-    <div class="wall" style="top: 0; left: 150px; width: 300px; height: 20px;"></div>
-    <div class="wall" style="top: 100px; left: 0; width: 20px; height: 400px;"></div>
-    <div class="wall" style="top: 100px; left: 300px; width: 20px; height: 300px;"></div>
-    <div class="wall" style="top: 100px; left: 80px; width: 240px; height: 20px;"></div>
-    <div class="wall" style="top: 300px; left: 150px; width: 150px; height: 20px;"></div>
-    <div class="wall" style="top: 300px; left: 450px; width: 20px; height: 200px;"></div>
-    <div class="wall" style="top: 500px; left: 150px; width: 300px; height: 20px;"></div>
-    <div class="wall" style="top: 200px; left: 400px; width: 150px; height: 20px;"></div>
-    <div class="wall" style="top: 200px; left: 250px; width: 20px; height: 200px;"></div>
-    <div class="wall" style="top: 450px; left: 400px; width: 20px; height: 50px;"></div>
+    <!-- Maze walls -->
+    <div class="wall" style="top: 0; left: 0; width: 100%; height: 20px;"></div>
+    <div class="wall" style="top: 0; left: 0; width: 20px; height: 100%;"></div>
+    <div class="wall" style="top: 0; left: 780px; width: 20px; height: 100%;"></div>
+    <div class="wall" style="top: 580px; left: 0; width: 800px; height: 20px;"></div>
     
-    <div id="player" style="top: 0; left: 0;"></div>
+    <div class="wall" style="top: 100px; left: 150px; width: 20px; height: 300px;"></div>
+    <div class="wall" style="top: 100px; left: 300px; width: 20px; height: 400px;"></div>
+    <div class="wall" style="top: 180px; left: 200px; width: 200px; height: 20px;"></div>
+    <div class="wall" style="top: 300px; left: 200px; width: 200px; height: 20px;"></div>
+    <div class="wall" style="top: 480px; left: 200px; width: 360px; height: 20px;"></div>
+    
+    <div class="wall" style="top: 300px; left: 500px; width: 20px; height: 300px;"></div>
+    <div class="wall" style="top: 300px; left: 600px; width: 20px; height: 60px;"></div>
+    <div class="wall" style="top: 360px; left: 550px; width: 20px; height: 120px;"></div>
+    <div class="wall" style="top: 460px; left: 600px; width: 100px; height: 20px;"></div>
+    
+    <div id="goal"></div>
+    <div id="player" style="top: 30px; left: 30px;"></div>
 </div>
 
 <script>
     const player = document.getElementById('player');
     const walls = document.querySelectorAll('.wall');
+    const goal = document.getElementById('goal');
     const maze = document.getElementById('maze');
 
-    let playerPos = { x: 0, y: 0 };
+    let playerPos = { x: 30, y: 30 };
 
     document.addEventListener('keydown', (event) => {
         let newX = playerPos.x;
@@ -68,10 +77,11 @@
         if (event.key === 'ArrowLeft') newX -= 30;
         if (event.key === 'ArrowRight') newX += 30;
 
-        // Check for collision
+        // Check for collision and boundary
         if (!isColliding(newX, newY)) {
             playerPos = { x: newX, y: newY };
             updatePlayerPosition();
+            checkGoal();
         }
     });
 
@@ -93,6 +103,15 @@
     function updatePlayerPosition() {
         player.style.left = `${playerPos.x}px`;
         player.style.top = `${playerPos.y}px`;
+    }
+
+    function checkGoal() {
+        if (playerPos.x >= 550 && playerPos.x <= 580 && playerPos.y >= 550 && playerPos.y <= 580) {
+            alert("You've reached the goal!");
+            // Reset player position for another attempt
+            playerPos = { x: 30, y: 30 };
+            updatePlayerPosition();
+        }
     }
 </script>
 
