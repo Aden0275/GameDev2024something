@@ -5,113 +5,209 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maze Game</title>
     <style>
+        /* styles.css */
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
         }
 
-        h1 {
-            margin: 20px;
+        #game-container {
+            text-align: center;
+            width: 80%;
         }
 
         #maze {
             display: grid;
-            grid-template-columns: repeat(5, 50px);
-            grid-template-rows: repeat(5, 50px);
-            gap: 1px;
-            background-color: black;
+            grid-template-columns: repeat(10, 40px);
+            grid-template-rows: repeat(10, 40px);
+            gap: 2px;
+            margin-top: 20px;
+            position: relative;
         }
 
         .cell {
-            width: 50px;
-            height: 50px;
-        }
-
-        .start {
-            background-color: green;
-        }
-
-        .end {
-            background-color: red;
-        }
-
-        .path {
-            background-color: white;
+            width: 40px;
+            height: 40px;
+            background-color: #ddd;
         }
 
         .wall {
-            background-color: black;
+            background-color: #333;
+        }
+
+        .player {
+            background-color: red;
+        }
+
+        .end {
+            background-color: green;
+        }
+
+        #game-status {
+            margin-top: 20px;
+        }
+
+        #controls {
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            margin: 5px;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .control-btn:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <h1>Maze Game</h1>
-    <div id="maze">
-        <div class="cell start" id="start"></div>
-        <div class="cell path"></div>
-        <div class="cell wall"></div>
-        <div class="cell path"></div>
-        <div class="cell wall"></div>
-        
-        <div class="cell wall"></div>
-        <div class="cell path"></div>
-        <div class="cell path"></div>
-        <div class="cell wall"></div>
-        <div class="cell wall"></div>
-
-        <div class="cell wall"></div>
-        <div class="cell path"></div>
-        <div class="cell wall"></div>
-        <div class="cell path"></div>
-        <div class="cell wall"></div>
-
-        <div class="cell wall"></div>
-        <div class="cell path"></div>
-        <div class="cell path"></div>
-        <div class="cell wall"></div>
-        <div class="cell end" id="end"></div>
+    <div id="game-container">
+        <h1>Maze Game</h1>
+        <div id="maze"></div>
+        <div id="game-status">
+            <p id="status">Use arrow keys to move!</p>
+        </div>
+        <div id="controls">
+            <button id="up" class="control-btn">↑</button>
+            <button id="left" class="control-btn">←</button>
+            <button id="right" class="control-btn">→</button>
+            <button id="down" class="control-btn">↓</button>
+        </div>
     </div>
+
     <script>
-        const startCell = document.getElementById('start');
-        const endCell = document.getElementById('end');
-        let position = { x: 0, y: 0 };
+        // script.js
 
-        // Listen for arrow key presses
-        document.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case 'ArrowUp':
-                    move(-1, 0);
-                    break;
-                case 'ArrowDown':
-                    move(1, 0);
-                    break;
-                case 'ArrowLeft':
-                    move(0, -1);
-                    break;
-                case 'ArrowRight':
-                    move(0, 1);
-                    break;
-            }
-        });
+        const mazeWidth = 10;
+        const mazeHeight = 10;
+        let playerPosition = { x: 0, y: 0 };
+        let endPosition = { x: 9, y: 9 };
 
-        function move(dx, dy) {
-            const newX = position.x + dx;
-            const newY = position.y + dy;
+        // Maze generation algorithm using recursive backtracking
+        const maze = generateMaze(mazeWidth, mazeHeight);
 
-            const newCell = document.querySelector(`.cell:nth-child(${(newX * 5) + (newY + 1)})`);
+        // Sound effects
+        const winSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+        const moveSound = new Audio('https://www.soundjay.com/button/beep-03.wav');
+        const hitWallSound = new Audio('https://www.soundjay.com/button/beep-09.wav');
 
-            // Check if the new cell is a path or the end cell
-            if (newCell && (newCell.classList.contains('path') || newCell.classList.contains('end'))) {
-                position.x = newX;
-                position.y = newY;
+        // Create maze grid dynamically
+        function createMaze() {
+            const mazeContainer = document.getElementById('maze');
+            mazeContainer.innerHTML = ''; // Clear the maze before redrawing
 
-                if (newCell.classList.contains('end')) {
-                    alert('Congratulations! You reached the end!');
+            for (let row = 0; row < mazeHeight; row++) {
+                for (let col = 0; col < mazeWidth; col++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    if (maze[row][col] === 1) {
+                        cell.classList.add('wall');
+                    }
+                    if (row === playerPosition.y && col === playerPosition.x) {
+                        cell.classList.add('player');
+                    }
+                    if (row === endPosition.y && col === endPosition.x) {
+                        cell.classList.add('end');
+                    }
+                    mazeContainer.appendChild(cell);
                 }
             }
         }
+
+        // Move player function
+        function movePlayer(direction) {
+            let newX = playerPosition.x;
+            let newY = playerPosition.y;
+
+            switch (direction) {
+                case 'up': newY -= 1; break;
+                case 'down': newY += 1; break;
+                case 'left': newX -= 1; break;
+                case 'right': newX += 1; break;
+            }
+
+            if (isValidMove(newX, newY)) {
+                playerPosition.x = newX;
+                playerPosition.y = newY;
+                moveSound.play();
+            } else {
+                hitWallSound.play();
+            }
+
+            // Check if the player has reached the end
+            if (playerPosition.x === endPosition.x && playerPosition.y === endPosition.y) {
+                winSound.play();
+                document.getElementById('status').innerText = 'You Win!';
+            } else {
+                document.getElementById('status').innerText = 'Use arrow keys to move!';
+            }
+
+            createMaze();
+        }
+
+        // Check if the move is within bounds and not a wall
+        function isValidMove(x, y) {
+            return x >= 0 && x < mazeWidth && y >= 0 && y < mazeHeight && maze[y][x] !== 1;
+        }
+
+        // Generate maze using recursive backtracking algorithm
+        function generateMaze(width, height) {
+            const maze = Array.from({ length: height }, () => Array(width).fill(1));
+
+            function carve(x, y) {
+                const directions = [
+                    [-2, 0], [2, 0], [0, -2], [0, 2]
+                ];
+                directions.sort(() => Math.random() - 0.5); // Shuffle directions
+
+                for (const [dx, dy] of directions) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+
+                    if (nx >= 0 && nx < width && ny >= 0 && ny < height && maze[ny][nx] === 1) {
+                        maze[ny][nx] = 0;
+                        maze[ny + dy / 2][nx + dx / 2] = 0; // Carve path
+                        carve(nx, ny); // Recurse
+                    }
+                }
+            }
+
+            maze[1][1] = 0; // Start carving from position (1, 1)
+            carve(1, 1);
+
+            maze[height - 2][width - 2] = 0; // Set end position
+            return maze;
+        }
+
+        // Set up control buttons
+        document.getElementById('up').addEventListener('click', () => movePlayer('up'));
+        document.getElementById('down').addEventListener('click', () => movePlayer('down'));
+        document.getElementById('left').addEventListener('click', () => movePlayer('left'));
+        document.getElementById('right').addEventListener('click', () => movePlayer('right'));
+
+        // Arrow key listener for desktop
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowUp') movePlayer('up');
+            if (event.key === 'ArrowDown') movePlayer('down');
+            if (event.key === 'ArrowLeft') movePlayer('left');
+            if (event.key === 'ArrowRight') movePlayer('right');
+        });
+
+        // Initialize the game
+        createMaze();
     </script>
 </body>
 </html>
