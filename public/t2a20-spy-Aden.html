@@ -1,4 +1,7 @@
-
++150
+-2
+Original file line number	Diff line number	Diff line change
+@@ -1,185 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,7 +126,7 @@
 
 <div class="container">
     <h1 class="glitch">Spy Name Encryptor</h1>
-    
+
     <div class="terminal">
         <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
     </div>
@@ -151,10 +154,85 @@
         for (let myLoop = 0; myLoop < myString.length; myLoop++) {
             myTemp = myString[myLoop];
             if (myString[myLoop] === 'e') {
+            
+            if (myString[myLoop] === 'a') {
+                myTemp = 'b';
+            } else if (myString[myLoop] === 'b') {
+                myTemp = 'c';
+            } else if (myString[myLoop] === 'c') {
+                myTemp = 'd';
+            } else if (myString[myLoop] === 'd') {
+                myTemp = 'e';
+            } else if (myString[myLoop] === 'e') {
                 myTemp = 'f';
+            } else if (myString[myLoop] === 'f') {
+                myTemp = 'g';
+            } else if (myString[myLoop] === 'g') {
+                myTemp = 'h';
             } else if (myString[myLoop] === 'h') {
                 myTemp = 'i';
+            } else if (myString[myLoop] === 'i') {
+                myTemp = 'j';
+            } else if (myString[myLoop] === 'j') {
+                myTemp = 'k';
+            } else if (myString[myLoop] === 'k') {
+                myTemp = 'l';
+            } else if (myString[myLoop] === 'l') {
+                myTemp = 'm';
+            } else if (myString[myLoop] === 'm') {
+                myTemp = 'n';
+            } else if (myString[myLoop] === 'n') {
+                myTemp = 'o';
+            } else if (myString[myLoop] === 'o') {
+                myTemp = 'p';
+            } else if (myString[myLoop] === 'p') {
+                myTemp = 'q';
+            } else if (myString[myLoop] === 'q') {
+                myTemp = 'r';
+            } else if (myString[myLoop] === 'r') {
+                myTemp = 's';
+            } else if (myString[myLoop] === 's') {
+                myTemp = 't';
+            } else if (myString[myLoop] === 't') {
+                myTemp = 'u';
+            } else if (myString[myLoop] === 'u') {
+                myTemp = 'v';
+            } else if (myString[myLoop] === 'v') {
+                myTemp = 'w';
+            } else if (myString[myLoop] === 'w') {
+                myTemp = 'x';
+            } else if (myString[myLoop] === 'x') {
+                myTemp = 'y';
+            } else if (myString[myLoop] === 'y') {
+                myTemp = 'z';
+            } else if (myString[myLoop] === 'z') {
+                myTemp = 'a';
+            } else if (myString[myLoop] === ' ') {
+                myTemp = '_';
+            } else if (myString[myLoop] === '!') {
+                myTemp = '@';
+            } else if (myString[myLoop] === '@') {
+                myTemp = '#';
+            } else if (myString[myLoop] === '#') {
+                myTemp = '$';
+            } else if (myString[myLoop] === '$') {
+                myTemp = '%';
+            } else if (myString[myLoop] === '%') {
+                myTemp = '^';
+            } else if (myString[myLoop] === '^') {
+                myTemp = '&';
+            } else if (myString[myLoop] === '&') {
+                myTemp = '*';
+            } else if (myString[myLoop] === '*') {
+                myTemp = '(';
+            } else if (myString[myLoop] === '(') {
+                myTemp = ')';
+            } else if (myString[myLoop] === ')') {
+                myTemp = '-';
+            } else if (myString[myLoop] === '-') {
+                myTemp = '+';
             }
+            
             myString[myLoop] = myTemp;
         }
         document.getElementById('myArea02').value = myString.join('');
@@ -166,9 +244,82 @@
         for (let myLoop = 0; myLoop < myString.length; myLoop++) {
             myTemp = myString[myLoop];
             if (myString[myLoop] === 'f') {
+            if (myString[myLoop] === 'b') {
+                myTemp = 'a';
+            } else if (myString[myLoop] === 'c') {
+                myTemp = 'b';
+            } else if (myString[myLoop] === 'd') {
+                myTemp = 'c';
+            } else if (myString[myLoop] === 'e') {
+                myTemp = 'd';
+            } else if (myString[myLoop] === 'f') {
                 myTemp = 'e';
+            } else if (myString[myLoop] === 'g') {
+                myTemp = 'f';
+            } else if (myString[myLoop] === 'h') {
+                myTemp = 'g';
             } else if (myString[myLoop] === 'i') {
                 myTemp = 'h';
+            } else if (myString[myLoop] === 'j') {
+                myTemp = 'i';
+            } else if (myString[myLoop] === 'k') {
+                myTemp = 'j';
+            } else if (myString[myLoop] === 'l') {
+                myTemp = 'k';
+            } else if (myString[myLoop] === 'm') {
+                myTemp = 'l';
+            } else if (myString[myLoop] === 'n') {
+                myTemp = 'm';
+            } else if (myString[myLoop] === 'o') {
+                myTemp = 'n';
+            } else if (myString[myLoop] === 'p') {
+                myTemp = 'o';
+            } else if (myString[myLoop] === 'q') {
+                myTemp = 'p';
+            } else if (myString[myLoop] === 'r') {
+                myTemp = 'q';
+            } else if (myString[myLoop] === 's') {
+                myTemp = 'r';
+            } else if (myString[myLoop] === 't') {
+                myTemp = 's';
+            } else if (myString[myLoop] === 'u') {
+                myTemp = 't';
+            } else if (myString[myLoop] === 'v') {
+                myTemp = 'u';
+            } else if (myString[myLoop] === 'w') {
+                myTemp = 'v';
+            } else if (myString[myLoop] === 'x') {
+                myTemp = 'w';
+            } else if (myString[myLoop] === 'y') {
+                myTemp = 'x';
+            } else if (myString[myLoop] === 'z') {
+                myTemp = 'y';
+            } else if (myString[myLoop] === 'a') {
+                myTemp = 'z';
+            } else if (myString[myLoop] === '_') {
+                myTemp = ' ';
+            } else if (myString[myLoop] === '@') {
+                myTemp = '!';
+            } else if (myString[myLoop] === '#') {
+                myTemp = '@';
+            } else if (myString[myLoop] === '$') {
+                myTemp = '#';
+            } else if (myString[myLoop] === '%') {
+                myTemp = '$';
+            } else if (myString[myLoop] === '^') {
+                myTemp = '%';
+            } else if (myString[myLoop] === '&') {
+                myTemp = '^';
+            } else if (myString[myLoop] === '*') {
+                myTemp = '&';
+            } else if (myString[myLoop] === '(') {
+                myTemp = '*';
+            } else if (myString[myLoop] === ')') {
+                myTemp = '(';
+            } else if (myString[myLoop] === '-') {
+                myTemp = ')';
+            } else if (myString[myLoop] === '+') {
+                myTemp = '-';
             }
             myString[myLoop] = myTemp;
         }
