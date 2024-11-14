@@ -54,7 +54,6 @@
     <h2 align="center">t2a08-canvas by Fred</h2>
 
     <div>
-        <!-- Button to draw an animated triangle -->
         <button class="button" onclick="startAnimatedTriangle();">Animate Triangle</button>
         <button class="button" onclick="drawLine();">.lineTo(30,200)</button>
         <button class="button" onclick="drawArc();">.arc(95, 50, 40, 0, 2 * Math.PI)</button>
@@ -116,15 +115,12 @@
                         drawLine(lastX, lastY, x, y);
                         break;
                     case 'rectangle':
-                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
                         drawRectangle(lastX, lastY, x, y);
                         break;
                     case 'circle':
-                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
                         drawCircle(lastX, lastY, x, y);
                         break;
                     case 'triangle':
-                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
                         drawTriangle(lastX, lastY, x, y);
                         break;
                 }
@@ -135,7 +131,6 @@
 
         myCanvas.addEventListener('mouseup', () => {
             drawing = false;
-            finalizeShape(); // Finalize the shape if not free drawing
         });
 
         myCanvas.addEventListener('mouseout', () => {
@@ -333,18 +328,18 @@
         }
 
         function clearRectangle() {
-            myContext.clearRect(20, 20, 50, 50);
+            myContext.clearRect(20, 20, 50, 50); // This clears a small section
         }
 
         function clearAll() {
-            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear the whole canvas
         }
 
         function finalizeShape() {
             // Finalize the shape for rectangle, circle, triangle mode
             // This function is simplified as needed
         }
-        
+
         function setDrawingMode(mode) {
             drawingMode = mode;
         }
