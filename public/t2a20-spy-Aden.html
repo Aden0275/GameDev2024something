@@ -3,357 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canvas Drawing Example</title>
+    <title>Spy Name Encryptor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"> <!-- Hacker-like font -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(to right, purple, yellow); /* Gradient background from purple to yellow */
+            font-family: 'Share Tech Mono', monospace; /* Use hacker-style font */
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            height: 100vh;
+            background-color: #000; /* Solid black background */
+            color: #00ff00; /* Bright green text */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
-        canvas {
-            margin-top: 20px;
-            border: 1px solid #000;
-            cursor: crosshair; /* Changes cursor to crosshair for drawing */
-            background-color: white; /* Sets the background color of the canvas */
+        .container {
+            background-color: rgba(20, 20, 20, 0.9); /* Semi-transparent black */
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); /* Green glow around container */
+            padding: 30px;
+            max-width: 500px; /* Slightly smaller for sleekness */
+            width: 90%;
+            text-align: center;
         }
-        .button {
-            margin: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px; /* Rounded corners */
-            background-color: white;
-            color: purple;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s; /* Smooth transition effect */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        h1 {
+            font-family: 'Share Tech Mono', monospace; /* Hacker-style font */
+            color: #00ff00; /* Neon green color */
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #00ff00; /* Glowing green text effect */
+            font-size: 2.5em;
         }
-        .button:hover {
-            background-color: lightgray; /* Hover effect for buttons */
-            transform: scale(1.05); /* Slightly enlarge the button on hover */
-        }
-        .button:active {
-            transform: scale(0.95); /* Slightly shrink the button on click */
-        }
-        label {
-            font-size: 16px;
-            color: white; /* White text for labels for better contrast */
-        }
-        input[type="color"], input[type="range"] {
-            margin: 5px;
+        textarea {
+            width: 100%;
+            height: 100px; /* Increased height for better visibility */
+            font-size: 18px;
             padding: 10px;
-            border: none;
-            border-radius: 5px; /* Rounded corners */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            border: 2px solid #00ff00; /* Light green border */
+            border-radius: 5px;
+            color: #00ff00; /* Green text color */
+            background-color: #1b1b1b; /* Very dark background for contrast */
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green glow effect */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+            resize: none; /* Disable resize */
+        }
+        textarea::placeholder {
+            color: rgba(0, 255, 0, 0.7); /* Dimmed placeholder color */
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #00cc00; /* Lighter green border on focus */
+            box-shadow: 0 0 15px rgba(0, 204, 0, 0.8); /* Enhanced green glow */
+        }
+        .glitch {
+            animation: glitch-title 1s infinite; /* Glitch animation for title */
+        }
+        .glitch-textarea {
+            animation: glitch-textarea 0.5s infinite; /* Enhanced glitch animation for text areas */
+        }
+        .button-container {
+            display: flex; /* Use flexbox for button alignment */
+            justify-content: center; /* Center align the buttons */
+            margin: 10px 0; /* Add margin for spacing */
+        }
+        input[type=button] {
+            padding: 12px 20px;
+            font-size: 16px;
+            margin: 0 5px; /* Add horizontal margin between buttons */
+            cursor: pointer;
+            border: 2px solid #00ff00; /* Light green border */
+            border-radius: 5px;
+            background-color: #1a1a1a; /* Matching dark background */
+            color: #00ff00; /* Bright green text */
+            transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.5); /* Green box shadow */
+        }
+        input[type=button]:hover {
+            background-color: #00ff00; /* Button background changes to green on hover */
+            color: black; /* Black text on hover */
+            transform: translateY(-2px); /* Lifting effect during hover */
+            box-shadow: 0 6px 20px rgba(0, 255, 0, 0.8); /* Enhanced green shadow on hover */
+        }
+        .terminal {
+            margin: 20px 0;
+            border-left: 4px solid #00ff00; /* Bold left border to mimic terminal */
+            padding-left: 15px;
+            text-align: left;
+        }
+        @keyframes glitch-title {
+            0% { opacity: 1; transform: translate(0); }
+            10% { opacity: 0.8; transform: translate(-2px, -2px); }
+            20% { opacity: 1; transform: translate(2px, -2px); }
+            30% { opacity: 0.9; transform: translate(-2px, 2px); }
+            40% { opacity: 1; transform: translate(2px, 2px); }
+            50% { opacity: 0.7; transform: translate(-2px, 0); }
+            60% { opacity: 1; transform: translate(0, -2px); }
+            70% { opacity: 0.9; transform: translate(2px, 2px); }
+            80% { opacity: 1; transform: translate(-2px, -2px); }
+            90% { opacity: 0.8; transform: translate(0); }
+            100% { opacity: 1; transform: translate(0); }
+        }
+        @keyframes glitch-textarea {
+            0% { opacity: 1; }
+            10% { opacity: 0.9; transform: skewX(-1deg); }
+            20% { opacity: 0.8; transform: skewX(1deg); }
+            30% { opacity: 0.9; transform: skewX(-2deg); }
+            40% { opacity: 0.8; }
+            50% { opacity: 1; }
+            60% { opacity: 0.8; transform: skewX(2deg); }
+            70% { opacity: 0.9; transform: skewX(-1deg); }
+            80% { opacity: 0.8; }
+            90% { opacity: 0.9; transform: skewX(1deg); }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <h2 align="center">t2a08-canvas by Fred</h2>
+
+<div class="container">
+    <h1 class="glitch">Spy Name Encryptor</h1>
     
-    <div>
-        <button class="button" onclick="startAnimatedTriangle();">Animate Triangle</button>
-        <button class="button" onclick="drawLine();">.lineTo(30,200)</button>
-        <button class="button" onclick="drawArc();">.arc(95, 50, 40, 0, 2 * Math.PI)</button>
-        <button class="button" onclick="drawText();">.fillText('Hello World', 400, 100)</button>
-        <button class="button" onclick="drawQuadraticCurve();">.quadraticCurveTo(100,220,240,110)</button>
-        <button class="button" onclick="drawGradient();">.createLinearGradient(100, 300, 200, 400)</button><br><br>
-
-        <button class="button" onclick="drawRectangle();">Draw Rectangle</button>
-        <button class="button" onclick="fillCircle();">Fill Circle</button>
-        <button class="button" onclick="drawBezierCurve();">Draw Bezier Curve</button>
-        <button class="button" onclick="drawStar(500, 300, 30, 70, 5);">Draw Star</button>
-        <button class="button" onclick="drawCube();">Draw 3D Cube</button>
-        <button class="button" onclick="drawImage();">Draw Image</button><br><br>
-
-        <button class="button" onclick="clearRectangle();">Clear Rect</button>
-        <button class="button" onclick="clearAll();">Clear All</button><br><br>
-
-        <label for="color">Choose Color:</label>
-        <input type="color" id="color" value="#000000">
-        
-        <label for="lineWidth">Line Width:</label>
-        <input type="range" id="lineWidth" min="1" max="10" value="1"><br><br>
-
-        <button class="button" onclick="setDrawingMode('free')">Draw Free</button>
-        <button class="button" onclick="setDrawingMode('rectangle')">Draw Rectangle</button>
-        <button class="button" onclick="setDrawingMode('circle')">Draw Circle</button>
-        <button class="button" onclick="setDrawingMode('triangle')">Draw Triangle</button>
+    <div class="terminal">
+        <textarea id="myArea01" placeholder="Enter your text here...">Hello, how are you?</textarea>
     </div>
 
-    <canvas id="myCoolTag" width="1000" height="600"></canvas>
+    <div class="button-container">
+        <input type="button" value="Encrypt" onclick="encryptText()">
+        <input type="button" value="Reset" onclick="resetFields()">
+    </div>
 
-    <script>
-        // Set up global variables
-        let myCanvas = document.getElementById('myCoolTag');
-        let myContext = myCanvas.getContext('2d');
+    <div class="terminal">
+        <textarea id="myArea02" placeholder="Your encrypted text will appear here..." class="glitch-textarea" readonly></textarea>
+    </div>
 
-        // Variables for drawing with the mouse
-        let drawing = false;
-        let lastX = 0;
-        let lastY = 0;
-        let drawingMode = 'free'; // Default drawing mode
-        let currentColor = '#000000'; // Default color
-        let currentLineWidth = 1; // Default line width
-        let angle = 0; // For animated triangle rotation
-        let scale = 1; // For animated triangle scaling
-        let animationId; // Variable to hold the requestAnimationFrame ID
+    <input type="button" value="Decrypt" onclick="decryptText()"><br>
 
-        myCanvas.addEventListener('mousedown', (e) => {
-            drawing = true;
-            [lastX, lastY] = getMousePos(e);
-        });
+    <div class="terminal">
+        <textarea id="myArea03" placeholder="Your decrypted text will appear here..." class="glitch-textarea" readonly></textarea>
+    </div>
+</div>
 
-        myCanvas.addEventListener('mousemove', (e) => {
-            if (drawing) {
-                const [x, y] = getMousePos(e);
-                switch (drawingMode) {
-                    case 'free':
-                        drawLine(lastX, lastY, x, y);
-                        break;
-                    case 'rectangle':
-                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
-                        drawRectangle(lastX, lastY, x, y);
-                        break;
-                    case 'circle':
-                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
-                        drawCircle(lastX, lastY, x, y);
-                        break;
-                    case 'triangle':
-                        myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear before redrawing
-                        drawTriangle(lastX, lastY, x, y);
-                        break;
-                }
-                lastX = x;
-                lastY = y;
-            }
-        });
+<script>
+    function encryptText() {
+        let myString = document.getElementById('myArea01').value.toLowerCase();
+        let encryptedString = '';
+        
+        const encryptMap = {
+            'a': 'b', 'b': 'c', 'c': 'd', 'd': 'e', 'e': 'f', 'f': 'g', 'g': 'h', 'h': 'i', 'i': 'j', 'j': 'k', 
+            'k': 'l', 'l': 'm', 'm': 'n', 'n': 'o', 'o': 'p', 'p': 'q', 'q': 'r', 'r': 's', 's': 't', 't': 'u', 
+            'u': 'v', 'v': 'w', 'w': 'x', 'x': 'y', 'y': 'z', 'z': 'a', ' ': '_', '!': '@', '@': '#', '#': '$', 
+            '$': '%', '%': '^', '^': '&', '&': '*', '*': '(', '(': ')', ')': '-', '-': '+'
+        };
 
-        myCanvas.addEventListener('mouseup', () => {
-            if (drawing) {
-                drawing = false; 
-                finalizeShape(); // Finalize the shape if not free drawing 
-            }
-        });
-
-        myCanvas.addEventListener('mouseout', () => {
-            drawing = false; // Stop drawing when mouse leaves canvas
-        });
-
-        document.getElementById('color').addEventListener('input', (e) => {
-            currentColor = e.target.value; // Update current color
-        });
-
-        document.getElementById('lineWidth').addEventListener('input', (e) => {
-            currentLineWidth = e.target.value; // Update current line width
-        });
-
-        function getMousePos(evt) {
-            const rect = myCanvas.getBoundingClientRect();
-            const x = evt.clientX - rect.left;
-            const y = evt.clientY - rect.top;
-            return [x, y];
+        for (let char of myString) {
+            encryptedString += encryptMap[char] || char; // Default to char if no mapping
         }
 
-        function drawLine(fromX, fromY, toX, toY) {
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.beginPath();
-            myContext.moveTo(fromX, fromY);
-            myContext.lineTo(toX, toY);
-            myContext.stroke();
+        document.getElementById('myArea02').value = encryptedString;
+    }
+
+    function decryptText() {
+        let myString = document.getElementById('myArea02').value.toLowerCase();
+        let decryptedString = '';
+        
+        const decryptMap = {
+            'b': 'a', 'c': 'b', 'd': 'c', 'e': 'd', 'f': 'e', 'g': 'f', 'h': 'g', 'i': 'h', 'j': 'i', 'k': 'j', 
+            'l': 'k', 'm': 'l', 'n': 'm', 'o': 'n', 'p': 'o', 'q': 'p', 'r': 'q', 's': 'r', 't': 's', 'u': 't', 
+            'v': 'u', 'w': 'v', 'x': 'w', 'y': 'x', 'z': 'y', 'a': 'z', '_': ' ', '@': '!', '#': '@', '$': '#', 
+            '%': '$', '^': '%', '&': '^', '*': '&', '(': '*', ')': '(', '-': ')', '+': '-'
+        };
+
+        for (let char of myString) {
+            decryptedString += decryptMap[char] || char; // Default to char if no mapping
         }
 
-        function drawArc() {
-            myContext.beginPath();
-            myContext.lineWidth = currentLineWidth;
-            myContext.strokeStyle = currentColor;
-            myContext.arc(95, 50, 40, 0, 2 * Math.PI);
-            myContext.stroke();
-        }
+        document.getElementById('myArea03').value = decryptedString;
+    }
 
-        function drawText() {
-            myContext.font = '20px Arial';
-            myContext.fillStyle = currentColor;
-            myContext.fillText('Hello World', 400, 100);
-        }
+    function resetFields() {
+        document.getElementById('myArea01').value = ''; // Clear input field
+        document.getElementById('myArea02').value = ''; // Clear encrypted output field
+        document.getElementById('myArea03').value = ''; // Clear decrypted output field
+    }
+</script>
 
-        function drawQuadraticCurve() {
-            myContext.beginPath();
-            myContext.moveTo(300, 100);
-            myContext.quadraticCurveTo(100, 220, 240, 110);
-            myContext.stroke();
-        }
-
-        function drawGradient() {
-            let myGradient = myContext.createLinearGradient(100, 300, 200, 400);
-            myGradient.addColorStop(0, 'red');
-            myGradient.addColorStop(0.5, 'blue');
-            myGradient.addColorStop(1, 'yellow');
-
-            myContext.fillStyle = myGradient;
-            myContext.fillRect(100, 300, 200, 100);
-        }
-
-        function drawRectangle(fromX, fromY, toX, toY) {
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.beginPath();
-            myContext.rect(fromX, fromY, toX - fromX, toY - fromY);
-            myContext.stroke();
-        }
-
-        function fillCircle() {
-            myContext.beginPath();
-            myContext.fillStyle = currentColor;
-            myContext.arc(300, 300, 40, 0, 2 * Math.PI);
-            myContext.fill();
-        }
-
-        function drawCircle(fromX, fromY, toX, toY) {
-            const radius = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.beginPath();
-            myContext.arc(fromX, fromY, radius, 0, Math.PI * 2);
-            myContext.stroke();
-        }
-
-        function drawTriangle(fromX, fromY, toX, toY) {
-            const size = Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2)) / 2; // Create size based on distance
-            myContext.save();
-            myContext.translate(fromX, fromY); // Move to the starting point
-            myContext.beginPath();
-            myContext.moveTo(0, -size); // Top point
-            myContext.lineTo(size, size); // Bottom right point
-            myContext.lineTo(-size, size); // Bottom left point
-            myContext.closePath();
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.stroke();
-            myContext.restore(); // Restore state
-        }
-
-        function animateTriangle() {
-            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear the canvas
-            drawTriangle(myCanvas.width / 2, myCanvas.height / 2, scale * Math.sin(angle), scale * Math.sin(angle / 2)); // Draw animated triangle
-            scale += 0.5; // Increase size gradually
-            angle += 0.1; // Increase rotation angle
-
-            if (scale < 100) { // Maintain a size limit
-                animationId = requestAnimationFrame(animateTriangle);
-            }
-        }
-
-        function startAnimatedTriangle() {
-            angle = 0; // Reset angle for animation
-            scale = 1; // Reset size for animation
-            animateTriangle(); // Start the animation
-        }
-
-        function drawBezierCurve() {
-            myContext.beginPath();
-            myContext.moveTo(200, 300);
-            myContext.bezierCurveTo(250, 100, 350, 500, 400, 300);
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.stroke();
-        }
-
-        function drawStar(cx, cy, spikes, outerRadius, innerRadius) {
-            let rot = (Math.PI / 2) * 3; // Starting rotation
-            const step = Math.PI / spikes; // Angle between spikes
-            myContext.beginPath();
-            myContext.moveTo(cx, cy - outerRadius);
-
-            for (let i = 0; i < spikes; i++) {
-                let x = cx + Math.cos(rot) * outerRadius;
-                let y = cy + Math.sin(rot) * outerRadius;
-                myContext.lineTo(x, y);
-                rot += step;
-
-                x = cx + Math.cos(rot) * innerRadius;
-                y = cy + Math.sin(rot) * innerRadius;
-                myContext.lineTo(x, y);
-                rot += step;
-            }
-            myContext.lineTo(cx, cy - outerRadius);
-            myContext.closePath();
-            myContext.fillStyle = 'gold';
-            myContext.fill();
-        }
-
-        function drawCube() {
-            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height); // Clear previous drawings
-
-            let size = 100;
-            let x = 500; // Center x for the cube
-            let y = 300; // Center y for the cube
-            
-            // Define the vertices of the cube
-            let vertices = [
-                {x: x - size, y: y - size, z: -size}, // Front top left
-                {x: x + size, y: y - size, z: -size}, // Front top right
-                {x: x + size, y: y + size, z: -size}, // Front bottom right
-                {x: x - size, y: y + size, z: -size}, // Front bottom left
-                {x: x - size, y: y - size, z: size},  // Back top left
-                {x: x + size, y: y - size, z: size},  // Back top right
-                {x: x + size, y: y + size, z: size},  // Back bottom right
-                {x: x - size, y: y + size, z: size}   // Back bottom left
-            ];
-
-            let projectedVertices = vertices.map(v => ({
-                x: v.x * 200 / (v.z + 200) + x,
-                y: v.y * 200 / (v.z + 200) + y
-            }));
-
-            // Draw the cube edges
-            myContext.beginPath();
-            for (let i = 0; i < 4; i++) {
-                myContext.moveTo(projectedVertices[i].x, projectedVertices[i].y);
-                myContext.lineTo(projectedVertices[(i + 1) % 4].x, projectedVertices[(i + 1) % 4].y); // Front face
-                myContext.moveTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y);
-                myContext.lineTo(projectedVertices[(i + 1) % 4 + 4].x, projectedVertices[(i + 1) % 4 + 4].y); // Back face
-                myContext.moveTo(projectedVertices[i].x, projectedVertices[i].y);
-                myContext.lineTo(projectedVertices[i + 4].x, projectedVertices[i + 4].y); // Connecting edges
-            }
-            myContext.strokeStyle = currentColor;
-            myContext.lineWidth = currentLineWidth;
-            myContext.stroke();
-        }
-
-        function drawImage() {
-            const img = new Image();
-            img.src = 'https://via.placeholder.com/150'; // Placeholder image
-            img.onload = function() {
-                myContext.drawImage(img, 450, 250, 150, 150);
-            };
-        }
-
-        function clearRectangle() {
-            myContext.clearRect(20, 20, 50, 50);
-        }
-
-        function clearAll() {
-            myContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
-        }
-
-        function finalizeShape() {
-            // This function will be used for any actions required for the current drawing mode
-            if (drawingMode === 'rectangle') {
-                drawRectangle(lastX, lastY, lastX + 0, lastY + 0); // To finalize without moving cursor
-            } else if (drawingMode === 'circle') {
-                drawCircle(lastX, lastY, lastX + 0, lastY + 0); // To finalize without moving cursor
-            } else if (drawingMode === 'triangle') {
-                drawTriangle(lastX, lastY, lastX + 0, lastY + 0); // To finalize without moving cursor
-            }
-        }
-
-        function setDrawingMode(mode) {
-            drawingMode = mode;
-        }
-    </script>
 </body>
 </html>
