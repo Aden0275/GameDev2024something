@@ -3,42 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full-Screen Maze Game</title>
+    <title>Maze Game</title>
     <style>
         body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             margin: 0;
-            overflow: hidden; /* Prevent scrollbars */
+            background-color: #cce7ff;
+            font-family: Arial, sans-serif;
         }
+
         #maze {
             position: relative;
-            width: 100vw; /* Full width */
-            height: 100vh; /* Full height */
+            width: 100vw; 
+            height: 100vh; 
             background-color: #fff;
+            overflow: hidden; 
+            border: 5px solid #333;
         }
+
         .wall {
             background-color: #333;
             position: absolute;
         }
+
         #player {
             width: 30px;
             height: 30px;
             background-color: red;
+            border-radius: 50%; /* Round shape */
             position: absolute;
         }
+
         #goal {
             width: 30px;
             height: 30px;
             background-color: green;
             position: absolute;
-            top: 550px; /* Position the goal towards the bottom */
-            left: 550px; /* Position the goal towards the right */
+            top: 90%; 
+            left: 90%; 
+            border-radius: 50%; /* Round shape */
+        }
+
+        #controls {
+            margin: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #timer {
+            font-size: 20px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-<div id="maze">
-    <!-- Maze walls -->
+<div id="controls">
+    <button onclick="startGame()">Start Game</button>
+    <button onclick="resetGame()">Reset Game</button>
+    <div id="timer">Time: 0 seconds</div>
+</div>
+
+<div id="maze" style="display: none;">
     <div class="wall" style="top: 0; left: 0; width: 100%; height: 20px;"></div>
     <div class="wall" style="top: 0; left: 0; width: 20px; height: 100%;"></div>
     <div class="wall" style="top: 0; left: 780px; width: 20px; height: 100%;"></div>
@@ -59,15 +93,50 @@
     <div id="player" style="top: 30px; left: 30px;"></div>
 </div>
 
+<audio id="winSound" src="win_sound.mp3" preload="auto"></audio>
+<audio id="moveSound" src="move_sound.mp3" preload="auto"></audio>
+
 <script>
     const player = document.getElementById('player');
     const walls = document.querySelectorAll('.wall');
     const goal = document.getElementById('goal');
     const maze = document.getElementById('maze');
+    const timerDisplay = document.getElementById('timer');
 
     let playerPos = { x: 30, y: 30 };
+    let gameActive = false;
+    let timer;
+    let seconds = 0;
+
+    function startGame() {
+        gameActive = true;
+        maze.style.display = 'block';
+        playerPos = { x: 30, y: 30 };
+        updatePlayerPosition();
+        startTimer();
+    }
+
+    function resetGame() {
+        clearInterval(timer);
+        seconds = 0;
+        timerDisplay.textContent = "Time: 0 seconds";
+        maze.style.display = 'none';
+        player.style.left = '30px';
+        player.style.top = '30px';
+        playerPos = { x: 30, y: 30 };
+        gameActive = false;
+    }
+
+    function startTimer() {
+        timer = setInterval(() => {
+            seconds++;
+            timerDisplay.textContent = "Time: " + seconds + " seconds";
+        }, 1000);
+    }
 
     document.addEventListener('keydown', (event) => {
+        if (!gameActive) return;
+
         let newX = playerPos.x;
         let newY = playerPos.y;
 
@@ -76,6 +145,9 @@
         if (event.key === 'ArrowDown') newY += 30;
         if (event.key === 'ArrowLeft') newX -= 30;
         if (event.key === 'ArrowRight') newX += 30;
+
+        // Sound effect on move
+        document.getElementById('moveSound').play();
 
         // Check for collision and boundary
         if (!isColliding(newX, newY)) {
@@ -108,9 +180,9 @@
     function checkGoal() {
         if (playerPos.x >= 550 && playerPos.x <= 580 && playerPos.y >= 550 && playerPos.y <= 580) {
             alert("You've reached the goal!");
-            // Reset player position for another attempt
-            playerPos = { x: 30, y: 30 };
-            updatePlayerPosition();
+            document.getElementById('winSound').play();
+            clearInterval(timer);
+            gameActive = false;
         }
     }
 </script>
