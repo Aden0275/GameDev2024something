@@ -90,10 +90,6 @@
 
         // Speed for movement
         const speed = 5;
-        
-        // Background movement variables
-        let moveBackground = false;
-        let myGlobalX = 0;
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -113,7 +109,7 @@
             // Check for loss
             if (myHitOther('myImg01', 'myImg02')) {
                 showLossModal();
-                document.getElementById('myImg01').style.left = '20px';
+                document.getElementById('myImg01').style.left = '20px';  // Reset Greninja position
             }
             // Check for win
             if (myHitOther('myImg01', 'winArea')) {
@@ -132,19 +128,10 @@
             if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
             if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
 
-            // Move myImg02 (Charizard)
-            // The movement towards Greninja is already defined above
-
-            // Move background if the flag is set
-            if (moveBackground) {
-                myGlobalX += 5;  // Move background to the left
-                document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
-            }
-
             myCheckHit(); // Check for collisions
         }
 
-        // Set interval to regularly move images and background
+        // Set interval to regularly move images
         setInterval(moveImages, 100);
 
         // Keydown event listener for movement
@@ -212,7 +199,7 @@
             }
         }
 
-        // Initialize Charizard's position
+        // Initialize position of images and win area on page load
         window.onload = function() {
             const img2 = document.getElementById('myImg02');
             img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // start Charizard on the right side of the screen
@@ -228,13 +215,6 @@
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-
-    <input type="button" id="autoBackgroundButton" value="Start Background Movement" onclick="toggleBackgroundMovement()">
-
-    <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-        document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-        myCheckHit(); // Checks for all collisions
-    }"><br><br>
 
 </body>
 </html>
