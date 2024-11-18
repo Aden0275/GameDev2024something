@@ -57,6 +57,15 @@
             background-color: red; /* Red color to signify it's the win box */
             z-index: 1; /* Ensure it appears above the background */
         }
+        /* Bow Styles */
+        #bow {
+            position: absolute;
+            width: 30px;   /* Width of the bow image */
+            height: 30px;  /* Height of the bow image */
+            top: calc(50% - 15px); /* Center it vertically in the win box */
+            left: calc(50% - 15px); /* Center it horizontally in the win box */
+            z-index: 2; /* Ensure it appears above the win box */
+        }
     </style>
 </head>
 
@@ -84,7 +93,9 @@
         </div>
     </div>
 
-    <div id="winBox"></div> <!-- Win Box -->
+    <div id="winBox">
+        <img id="bow" src="https://i.ibb.co/CBH3Swd/bow.png" alt="Bow"> <!-- Bow inside the win box -->
+    </div> <!-- Win Box -->
 
     <script>
         // Global movement flags
@@ -114,9 +125,9 @@
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02')) {
                 showLossModal();
-                document.getElementById('myImg01').style.left = '20px';
+                document.getElementById('myImg01').style.left = '20px'; // Reset position on lose
             }
-            if (myHitOther('myImg01', 'winBox')) {
+            if (myHitOther('myImg01', 'bow')) { // Check for collision with the bow
                 showWinModal(); // Show winning modal
                 document.getElementById('myImg01').style.left = '20px'; // Optionally reset position
             }
@@ -196,13 +207,13 @@
             }
         });
 
-        // Show loss modal
+        // Show the loss modal
         function showLossModal() {
             const modal = document.getElementById('lossModal');
             modal.style.display = 'block';
         }
 
-        // Show win modal
+        // Show the win modal
         function showWinModal() {
             const modal = document.getElementById('winModal');
             modal.style.display = 'block';
@@ -229,8 +240,8 @@
         // Initialize Charizard's position
         window.onload = function() {
             const img2 = document.getElementById('myImg02');
-            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // start Charizard on the right side of the screen
-            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // random vertical position
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // Start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // Random vertical position
         };
 
     </script>
