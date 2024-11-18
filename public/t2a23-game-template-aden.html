@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +69,6 @@
     <script>
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
-        let moveImg2 = { left: false, up: false, right: false, down: false };
 
         // Speed for movement
         const speed = 5;
@@ -98,7 +98,7 @@
             }
         }
 
-        // Function to move images based on movement flags
+        // Move images based on movement flags
         function moveImages() {
             const img1 = document.getElementById('myImg01');
             const img2 = document.getElementById('myImg02');
@@ -109,11 +109,20 @@
             if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
             if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
 
-            // Move myImg02 (Charizard) based on flags
-            if (moveImg2.left) img2.style.left = (parseInt(img2.style.left) - speed) + 'px';
-            if (moveImg2.up) img2.style.top = (parseInt(img2.style.top) - speed) + 'px';
-            if (moveImg2.right) img2.style.left = (parseInt(img2.style.left) + speed) + 'px';
-            if (moveImg2.down) img2.style.top = (parseInt(img2.style.top) + speed) + 'px';
+            // Calculate distance between img1 and img2
+            const deltaX = parseInt(img1.style.left) - parseInt(img2.style.left);
+            const deltaY = parseInt(img1.style.top) - parseInt(img2.style.top);
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            // Move myImg02 (Charizard) towards myImg01 (Greninja)
+            if (distance > 0) {
+                // Normalize the direction
+                const moveX = (deltaX / distance) * speed; 
+                const moveY = (deltaY / distance) * speed; 
+                
+                img2.style.left = (parseInt(img2.style.left) + (moveX > 0 ? Math.min(moveX, speed) : Math.max(moveX, -speed))) + 'px';
+                img2.style.top = (parseInt(img2.style.top) + (moveY > 0 ? Math.min(moveY, speed) : Math.max(moveY, -speed))) + 'px';
+            }
 
             // Move background if the flag is set
             if (moveBackground) {
@@ -142,18 +151,6 @@
                 case 'ArrowDown':
                     moveImg1.down = true;
                     break;
-                case 'a':
-                    moveImg2.left = true;
-                    break;
-                case 'w':
-                    moveImg2.up = true;
-                    break;
-                case 'd':
-                    moveImg2.right = true;
-                    break;
-                case 's':
-                    moveImg2.down = true;
-                    break;
             }
         });
 
@@ -171,18 +168,6 @@
                     break;
                 case 'ArrowDown':
                     moveImg1.down = false;
-                    break;
-                case 'a':
-                    moveImg2.left = false;
-                    break;
-                case 'w':
-                    moveImg2.up = false;
-                    break;
-                case 'd':
-                    moveImg2.right = false;
-                    break;
-                case 's':
-                    moveImg2.down = false;
                     break;
             }
         });
