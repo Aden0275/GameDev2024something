@@ -14,7 +14,7 @@
             text-align: center;
             color: white; /* Change text color for visibility */
         }
-        /* Modal styles for losing message */
+        /* Modal styles */
         .modal {
             display: none; 
             position: fixed; 
@@ -24,6 +24,7 @@
             width: 100%; 
             height: 100%; 
             overflow: auto; 
+            background-color: rgb(0,0,0); 
             background-color: rgba(0,0,0,0.4); 
             padding-top: 100px; 
         }
@@ -35,7 +36,7 @@
             width: 80%; 
             text-align: center; 
         }
-        #nextPage, #nextPageWin {
+        #nextPage {
             background-color: #4CAF50; 
             color: white; 
             border: none; 
@@ -43,28 +44,8 @@
             cursor: pointer; 
             font-size: 16px; 
         }
-        #nextPage:hover, #nextPageWin:hover {
+        #nextPage:hover {
             background-color: #45a049; 
-        }
-        /* Win Box Styles: This is the red box representing the win condition */
-        #winBox {
-            position: absolute;
-            width: 50px;   /* Width of the win box */
-            height: 50px;  /* Height of the win box */
-            top: 50%;      /* Center it vertically */
-            left: calc(100% - 70px); /* Position on the right */
-            transform: translateY(-50%); /* Vertically center */
-            background-color: red; /* Red color to signify it's the win box */
-            z-index: 1; /* Ensure it appears above the background */
-        }
-        /* Small Box (Image) Styles */
-        #smallBox {
-            position: absolute;
-            width: 30px;   /* Width of the small box image */
-            height: 30px;  /* Height of the small box image */
-            top: calc(50% + 60px); /* Position below the win box */
-            left: calc(100% - 85px); /* Center horizontally relative to win box */
-            z-index: 2; /* Ensure it appears above the background */
         }
     </style>
 </head>
@@ -84,18 +65,6 @@
         </div>
     </div>
 
-    <!-- Modal for winning message -->
-    <div id="winModal" class="modal">
-        <div class="modal-content">
-            <h2>You Win!</h2>
-            <p>Please click below to proceed to the next page.</p>
-            <button id="nextPageWin" onclick="goToNextPage()">Next Page</button>
-        </div>
-    </div>
-
-    <div id="winBox"></div> <!-- Red Win Box -->
-    <img id="smallBox" src="https://i.ibb.co/p0Jj1G9/smallbox.png" alt="Small Box"> <!-- Small Box (Image) -->
-
     <script>
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
@@ -107,7 +76,7 @@
         let moveBackground = false;
         let myGlobalX = 0;
 
-        // Hit detection function for collisions
+        // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
             let left1 = parseInt(document.getElementById(my1).style.left);
             let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -120,17 +89,11 @@
             return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
         }
 
-        // Function to check for collisions and win/lose condition
+        // Function to check for collisions
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02')) {
-                alert('You Lose');
-                document.getElementById('myImg01').style.left = '20px'; // Reset position on lose
-                location.href = 't2a13-keydown.html'; // Navigate to your next level
-            }
-            if (myHitOther('myImg01', 'smallBox')) { // Check for collision with the small box
-                alert('You Win!'); // Show winning alert
-                document.getElementById('myImg01').style.left = '20px'; // Optionally reset position
-                showWinModal(); // Show winning modal
+                showLossModal();
+                document.getElementById('myImg01').style.left = '20px';
             }
         }
 
@@ -208,15 +171,9 @@
             }
         });
 
-        // Show the loss modal
+        // Show loss modal
         function showLossModal() {
             const modal = document.getElementById('lossModal');
-            modal.style.display = 'block';
-        }
-
-        // Show the win modal
-        function showWinModal() {
-            const modal = document.getElementById('winModal');
             modal.style.display = 'block';
         }
 
@@ -227,22 +184,17 @@
 
         // Close modal when clicking outside of it
         window.onclick = function(event) {
-            const lossModal = document.getElementById('lossModal');
-            if (event.target === lossModal) {
-                lossModal.style.display = "none";
-            }
-
-            const winModal = document.getElementById('winModal');
-            if (event.target === winModal) {
-                winModal.style.display = "none";
+            const modal = document.getElementById('lossModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
             }
         }
 
         // Initialize Charizard's position
         window.onload = function() {
             const img2 = document.getElementById('myImg02');
-            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // Start Charizard on the right side of the screen
-            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // Random vertical position
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // random vertical position
         };
 
     </script>
