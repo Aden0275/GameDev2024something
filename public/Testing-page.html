@@ -47,6 +47,16 @@
         #nextPage:hover {
             background-color: #45a049; 
         }
+        /* Win Box Styles */
+        #winBox {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 200px; /* Adjust position as needed */
+            left: 300px; /* Adjust position as needed */
+            background-color: red;
+            z-index: 1; /* Make sure it appears above the background */
+        }
     </style>
 </head>
 
@@ -64,6 +74,8 @@
             <button id="nextPage" onclick="goToNextPage()">Next Page</button>
         </div>
     </div>
+
+    <div id="winBox"></div> <!-- Win Box -->
 
     <script>
         // Global movement flags
@@ -89,11 +101,15 @@
             return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
         }
 
-        // Function to check for collisions
+        // Function to check for collisions and win condition
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
+            }
+            if (myHitOther('myImg01', 'winBox')) {
+                alert("You Win!"); // Display winning message
+                document.getElementById('myImg01').style.left = '20px'; // Optionally reset position
             }
         }
 
