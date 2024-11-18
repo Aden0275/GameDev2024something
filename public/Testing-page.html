@@ -57,14 +57,14 @@
             background-color: red; /* Red color to signify it's the win box */
             z-index: 1; /* Ensure it appears above the background */
         }
-        /* Bow Styles */
-        #bow {
+        /* Small Box (Image) Styles */
+        #smallBox {
             position: absolute;
-            width: 30px;   /* Width of the bow image */
-            height: 30px;  /* Height of the bow image */
-            top: calc(50% - 15px); /* Center it vertically in the win box */
-            left: calc(50% - 15px); /* Center it horizontally in the win box */
-            z-index: 2; /* Ensure it appears above the win box */
+            width: 30px;   /* Width of the small box image */
+            height: 30px;  /* Height of the small box image */
+            top: calc(50% + 60px); /* Position below the win box */
+            left: calc(100% - 85px); /* Center horizontally relative to win box */
+            z-index: 2; /* Ensure it appears above the background */
         }
     </style>
 </head>
@@ -93,9 +93,8 @@
         </div>
     </div>
 
-    <div id="winBox">
-        <img id="bow" src="https://i.ibb.co/CBH3Swd/bow.png" alt="Bow"> <!-- Bow inside the win box -->
-    </div> <!-- Win Box -->
+    <div id="winBox"></div> <!-- Red Win Box -->
+    <img id="smallBox" src="https://i.ibb.co/p0Jj1G9/smallbox.png" alt="Small Box"> <!-- Small Box (Image) -->
 
     <script>
         // Global movement flags
@@ -124,12 +123,19 @@
         // Function to check for collisions and win/lose condition
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02')) {
-                showLossModal();
-                document.getElementById('myImg01').style.left = '20px'; // Reset position on lose
+                // Display a loss alert and navigate to next page
+                alert('You Lose');
+                document.getElementById('myImg01').style.left = '20px';
+                location.href = 't2a13-keydown.html'; // Navigate to your next level
             }
-            if (myHitOther('myImg01', 'bow')) { // Check for collision with the bow
+            if (myHitOther('myImg01', 'winBox')) { // Check for collision with the red win box (if needed)
                 showWinModal(); // Show winning modal
                 document.getElementById('myImg01').style.left = '20px'; // Optionally reset position
+            }
+            if (myHitOther('myImg01', 'smallBox')) { // Check for collision with the small box
+                alert('You Lose');
+                document.getElementById('myImg01').style.left = '20px'; // Reset position on lose
+                location.href = 't2a13-keydown.html'; // Navigate to your next level
             }
         }
 
