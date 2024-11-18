@@ -3,211 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maze Game</title>
+    <title>T2A11 Game Template</title>
     <style>
-        /* styles.css */
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
+            background-repeat: no-repeat; 
+            background-size: cover; 
+            background-image: url('https://i.ibb.co/ggWykJY/cool-desktop-wallpaper-wallpapers-backgrounds-images-art-photos-pictures-free-best-1920x1080-coolwal.jpg');
         }
-
-        #game-container {
+        h1, h6 {
             text-align: center;
-            width: 80%;
+            color: white; /* Change text color for visibility */
         }
-
-        #maze {
-            display: grid;
-            grid-template-columns: repeat(10, 40px);
-            grid-template-rows: repeat(10, 40px);
-            gap: 2px;
-            margin-top: 20px;
-            position: relative;
+        /* Modal styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 999; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 100px; 
         }
-
-        .cell {
-            width: 40px;
-            height: 40px;
-            background-color: #ddd;
+        .modal-content {
+            background-color: white; 
+            margin: 5% auto; 
+            padding: 20px; 
+            border: 1px solid #888; 
+            width: 80%; 
+            text-align: center; 
         }
-
-        .wall {
-            background-color: #333;
+        #nextPage {
+            background-color: #4CAF50; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            font-size: 16px; 
         }
-
-        .player {
-            background-color: red;
-        }
-
-        .end {
-            background-color: green;
-        }
-
-        #game-status {
-            margin-top: 20px;
-        }
-
-        #controls {
-            margin-top: 20px;
-        }
-
-        .control-btn {
-            margin: 5px;
-            padding: 10px;
-            font-size: 20px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-
-        .control-btn:hover {
-            background-color: #45a049;
+        #nextPage:hover {
+            background-color: #45a049; 
         }
     </style>
 </head>
-<body>
-    <div id="game-container">
-        <h1>Maze Game</h1>
-        <div id="maze"></div>
-        <div id="game-status">
-            <p id="status">Use arrow keys to move!</p>
-        </div>
-        <div id="controls">
-            <button id="up" class="control-btn">↑</button>
-            <button id="left" class="control-btn">←</button>
-            <button id="right" class="control-btn">→</button>
-            <button id="down" class="control-btn">↓</button>
+
+<body id="myBody">
+
+    <h1>T2A11 Game Template by Fred</h1>
+    <h6>Version 0.0.1</h6>
+    <br><br><br><br>
+
+    <!-- Modal for losing message -->
+    <div id="lossModal" class="modal">
+        <div class="modal-content">
+            <h2>You Lose</h2>
+            <p>Please click below to proceed to the next page.</p>
+            <button id="nextPage" onclick="goToNextPage()">Next Page</button>
         </div>
     </div>
 
     <script>
-        // script.js
+        // Global movement flags
+        let moveImg1 = { left: false, up: false, right: false, down: false };
 
-        const mazeWidth = 10;
-        const mazeHeight = 10;
-        let playerPosition = { x: 0, y: 0 };
-        let endPosition = { x: 9, y: 9 };
+        // Speed for movement
+        const speed = 5;
+        
+        // Background movement variables
+        let moveBackground = false;
+        let myGlobalX = 0;
 
-        // Maze generation algorithm using recursive backtracking
-        const maze = generateMaze(mazeWidth, mazeHeight);
+        // Function to check if two elements are colliding
+        function myHitOther(my1, my2) {
+            let left1 = parseInt(document.getElementById(my1).style.left);
+            let right1 = left1 + parseInt(document.getElementById(my1).style.width);
+            let top1 = parseInt(document.getElementById(my1).style.top);
+            let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
+            let left2 = parseInt(document.getElementById(my2).style.left);
+            let right2 = left2 + parseInt(document.getElementById(my2).style.width);
+            let top2 = parseInt(document.getElementById(my2).style.top);
+            let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
+            return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
+        }
 
-        // Sound effects
-        const winSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
-        const moveSound = new Audio('https://www.soundjay.com/button/beep-03.wav');
-        const hitWallSound = new Audio('https://www.soundjay.com/button/beep-09.wav');
-
-        // Create maze grid dynamically
-        function createMaze() {
-            const mazeContainer = document.getElementById('maze');
-            mazeContainer.innerHTML = ''; // Clear the maze before redrawing
-
-            for (let row = 0; row < mazeHeight; row++) {
-                for (let col = 0; col < mazeWidth; col++) {
-                    const cell = document.createElement('div');
-                    cell.classList.add('cell');
-                    if (maze[row][col] === 1) {
-                        cell.classList.add('wall');
-                    }
-                    if (row === playerPosition.y && col === playerPosition.x) {
-                        cell.classList.add('player');
-                    }
-                    if (row === endPosition.y && col === endPosition.x) {
-                        cell.classList.add('end');
-                    }
-                    mazeContainer.appendChild(cell);
-                }
+        // Function to check for collisions
+        function myCheckHit() {
+            if (myHitOther('myImg01', 'myImg02')) {
+                showLossModal();
+                document.getElementById('myImg01').style.left = '20px';
             }
         }
 
-        // Move player function
-        function movePlayer(direction) {
-            let newX = playerPosition.x;
-            let newY = playerPosition.y;
+        // Move images based on movement flags
+        function moveImages() {
+            const img1 = document.getElementById('myImg01');
+            const img2 = document.getElementById('myImg02');
 
-            switch (direction) {
-                case 'up': newY -= 1; break;
-                case 'down': newY += 1; break;
-                case 'left': newX -= 1; break;
-                case 'right': newX += 1; break;
+            // Move myImg01 (Greninja) based on flags
+            if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - speed) + 'px';
+            if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - speed) + 'px';
+            if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
+            if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
+
+            // Calculate distance between img1 and img2
+            const deltaX = parseInt(img1.style.left) - parseInt(img2.style.left);
+            const deltaY = parseInt(img1.style.top) - parseInt(img2.style.top);
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            // Move myImg02 (Charizard) towards myImg01 (Greninja)
+            if (distance > 0) {
+                // Normalize the direction
+                const moveX = (deltaX / distance) * speed; 
+                const moveY = (deltaY / distance) * speed; 
+                
+                img2.style.left = (parseInt(img2.style.left) + (moveX > 0 ? Math.min(moveX, speed) : Math.max(moveX, -speed))) + 'px';
+                img2.style.top = (parseInt(img2.style.top) + (moveY > 0 ? Math.min(moveY, speed) : Math.max(moveY, -speed))) + 'px';
             }
 
-            if (isValidMove(newX, newY)) {
-                playerPosition.x = newX;
-                playerPosition.y = newY;
-                moveSound.play();
-            } else {
-                hitWallSound.play();
+            // Move background if the flag is set
+            if (moveBackground) {
+                myGlobalX += 5;  // Move background to the left
+                document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
             }
 
-            // Check if the player has reached the end
-            if (playerPosition.x === endPosition.x && playerPosition.y === endPosition.y) {
-                winSound.play();
-                document.getElementById('status').innerText = 'You Win!';
-            } else {
-                document.getElementById('status').innerText = 'Use arrow keys to move!';
-            }
-
-            createMaze();
+            myCheckHit(); // Check for collisions
         }
 
-        // Check if the move is within bounds and not a wall
-        function isValidMove(x, y) {
-            return x >= 0 && x < mazeWidth && y >= 0 && y < mazeHeight && maze[y][x] !== 1;
-        }
+        // Set interval to regularly move images and background
+        setInterval(moveImages, 100);
 
-        // Generate maze using recursive backtracking algorithm
-        function generateMaze(width, height) {
-            const maze = Array.from({ length: height }, () => Array(width).fill(1));
-
-            function carve(x, y) {
-                const directions = [
-                    [-2, 0], [2, 0], [0, -2], [0, 2]
-                ];
-                directions.sort(() => Math.random() - 0.5); // Shuffle directions
-
-                for (const [dx, dy] of directions) {
-                    const nx = x + dx;
-                    const ny = y + dy;
-
-                    if (nx >= 0 && nx < width && ny >= 0 && ny < height && maze[ny][nx] === 1) {
-                        maze[ny][nx] = 0;
-                        maze[ny + dy / 2][nx + dx / 2] = 0; // Carve path
-                        carve(nx, ny); // Recurse
-                    }
-                }
+        // Keydown event listener for movement
+        document.addEventListener('keydown', function(event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    moveImg1.left = true;
+                    break;
+                case 'ArrowUp':
+                    moveImg1.up = true;
+                    break;
+                case 'ArrowRight':
+                    moveImg1.right = true;
+                    break;
+                case 'ArrowDown':
+                    moveImg1.down = true;
+                    break;
             }
-
-            maze[1][1] = 0; // Start carving from position (1, 1)
-            carve(1, 1);
-
-            maze[height - 2][width - 2] = 0; // Set end position
-            return maze;
-        }
-
-        // Set up control buttons
-        document.getElementById('up').addEventListener('click', () => movePlayer('up'));
-        document.getElementById('down').addEventListener('click', () => movePlayer('down'));
-        document.getElementById('left').addEventListener('click', () => movePlayer('left'));
-        document.getElementById('right').addEventListener('click', () => movePlayer('right'));
-
-        // Arrow key listener for desktop
-        window.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowUp') movePlayer('up');
-            if (event.key === 'ArrowDown') movePlayer('down');
-            if (event.key === 'ArrowLeft') movePlayer('left');
-            if (event.key === 'ArrowRight') movePlayer('right');
         });
 
-        // Initialize the game
-        createMaze();
+        // Keyup event listener to stop movement when key is released
+        document.addEventListener('keyup', function(event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    moveImg1.left = false;
+                    break;
+                case 'ArrowUp':
+                    moveImg1.up = false;
+                    break;
+                case 'ArrowRight':
+                    moveImg1.right = false;
+                    break;
+                case 'ArrowDown':
+                    moveImg1.down = false;
+                    break;
+            }
+        });
+
+        // Show loss modal
+        function showLossModal() {
+            const modal = document.getElementById('lossModal');
+            modal.style.display = 'block';
+        }
+
+        // Navigate to the next page
+        function goToNextPage() {
+            location.href = 't2a13-keydown.html'; // Replace with your next page URL
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('lossModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Initialize Charizard's position
+        window.onload = function() {
+            const img2 = document.getElementById('myImg02');
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // random vertical position
+        };
+
     </script>
+
+    <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
+    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+
+    <input type="button" id="autoBackgroundButton" value="Start Background Movement" onclick="toggleBackgroundMovement()">
+
+    <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+        document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+        myCheckHit(); // Checks for all collisions
+    }"><br><br>
+
 </body>
 </html>
