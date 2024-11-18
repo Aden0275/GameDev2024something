@@ -35,7 +35,7 @@
             width: 80%; 
             text-align: center; 
         }
-        #nextPage {
+        #nextPage, #nextPageWin {
             background-color: #4CAF50; 
             color: white; 
             border: none; 
@@ -43,18 +43,18 @@
             cursor: pointer; 
             font-size: 16px; 
         }
-        #nextPage:hover {
+        #nextPage:hover, #nextPageWin:hover {
             background-color: #45a049; 
         }
-        /* Win Box Styles */
+        /* Win Box Styles: This is the red box representing the win condition */
         #winBox {
             position: absolute;
-            width: 50px;   /* Smaller width */
-            height: 50px;  /* Smaller height */
-            top: 50%;      /* Center vertically */
-            left: calc(100% - 70px); /* Positioned to the right */
-            transform: translateY(-50%); /* Center it vertically */
-            background-color: red;
+            width: 50px;   /* Width of the win box */
+            height: 50px;  /* Height of the win box */
+            top: 50%;      /* Center it vertically */
+            left: calc(100% - 70px); /* Position on the right */
+            transform: translateY(-50%); /* Vertically center */
+            background-color: red; /* Red color to signify it's the win box */
             z-index: 1; /* Ensure it appears above the background */
         }
     </style>
@@ -97,7 +97,7 @@
         let moveBackground = false;
         let myGlobalX = 0;
 
-        // Function to check if two elements are colliding
+        // Hit detection function for collisions
         function myHitOther(my1, my2) {
             let left1 = parseInt(document.getElementById(my1).style.left);
             let right1 = left1 + parseInt(document.getElementById(my1).style.width);
