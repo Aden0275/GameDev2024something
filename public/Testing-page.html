@@ -123,19 +123,14 @@
         // Function to check for collisions and win/lose condition
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02')) {
-                // Display a loss alert and navigate to next page
-                alert('You Lose');
-                document.getElementById('myImg01').style.left = '20px';
-                location.href = 't2a13-keydown.html'; // Navigate to your next level
-            }
-            if (myHitOther('myImg01', 'winBox')) { // Check for collision with the red win box (if needed)
-                showWinModal(); // Show winning modal
-                document.getElementById('myImg01').style.left = '20px'; // Optionally reset position
-            }
-            if (myHitOther('myImg01', 'smallBox')) { // Check for collision with the small box
                 alert('You Lose');
                 document.getElementById('myImg01').style.left = '20px'; // Reset position on lose
                 location.href = 't2a13-keydown.html'; // Navigate to your next level
+            }
+            if (myHitOther('myImg01', 'smallBox')) { // Check for collision with the small box
+                alert('You Win!'); // Show winning alert
+                document.getElementById('myImg01').style.left = '20px'; // Optionally reset position
+                showWinModal(); // Show winning modal
             }
         }
 
