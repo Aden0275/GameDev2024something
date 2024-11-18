@@ -47,7 +47,7 @@
         #nextPage:hover {
             background-color: #45a049; 
         }
-        /* Finer adjustment: Win Box Styles */
+        /* Win Box Styles */
         #winBox {
             position: absolute;
             width: 50px;   /* Smaller width */
@@ -66,6 +66,15 @@
     <h1>T2A11 Game Template by Fred</h1>
     <h6>Version 0.0.1</h6>
     <br><br><br><br>
+
+    <!-- Modal for winning message -->
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <h2>You Have Won!</h2>
+            <p>Please click below to proceed to the next page.</p>
+            <button id="nextPage" onclick="goToNextPage()">Next Page</button>
+        </div>
+    </div>
 
     <!-- Modal for losing message -->
     <div id="lossModal" class="modal">
@@ -102,14 +111,14 @@
             return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
         }
 
-        // Function to check for collisions and win condition
+        // Function to check for collisions and win/lose conditions
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
             }
             if (myHitOther('myImg01', 'winBox')) {
-                alert("You Win!"); // Display winning message
+                showWinModal(); // Show winning modal instead of alert
                 document.getElementById('myImg01').style.left = '20px'; // Optionally reset position
             }
         }
@@ -188,6 +197,12 @@
             }
         });
 
+        // Show the winning modal
+        function showWinModal() {
+            const winModal = document.getElementById('winModal');
+            winModal.style.display = 'block';
+        }
+
         // Show loss modal
         function showLossModal() {
             const modal = document.getElementById('lossModal');
@@ -201,9 +216,13 @@
 
         // Close modal when clicking outside of it
         window.onclick = function(event) {
-            const modal = document.getElementById('lossModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
+            const winModal = document.getElementById('winModal');
+            const lossModal = document.getElementById('lossModal');
+            if (event.target == winModal) {
+                winModal.style.display = "none";
+            }
+            if (event.target == lossModal) {
+                lossModal.style.display = "none";
             }
         }
 
