@@ -47,15 +47,16 @@
         #nextPage:hover {
             background-color: #45a049; 
         }
-        /* Win Box Styles */
+        /* Finer adjustment: Win Box Styles */
         #winBox {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            top: 200px; /* Adjust position as needed */
-            left: 300px; /* Adjust position as needed */
+            width: 50px;   /* Smaller width */
+            height: 50px;  /* Smaller height */
+            top: 50%;      /* Center vertically */
+            left: calc(100% - 70px); /* Positioned to the right */
+            transform: translateY(-50%); /* Center it vertically */
             background-color: red;
-            z-index: 1; /* Make sure it appears above the background */
+            z-index: 1; /* Ensure it appears above the background */
         }
     </style>
 </head>
