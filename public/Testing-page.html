@@ -47,6 +47,16 @@
         #nextPage:hover {
             background-color: #45a049; 
         }
+        /* Styles for win area */
+        #winArea {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(0, 255, 0, 0.5); /* green with some transparency */
+            left: calc(100% - 150px); /* 150px from the right edge */
+            top: calc(100% - 150px); /* 150px from the bottom edge */
+            border: 2px solid #0f0;
+        }
     </style>
 </head>
 
@@ -60,6 +70,15 @@
     <div id="lossModal" class="modal">
         <div class="modal-content">
             <h2>You Lose</h2>
+            <p>Please click below to proceed to the next page.</p>
+            <button id="nextPage" onclick="goToNextPage()">Next Page</button>
+        </div>
+    </div>
+
+    <!-- Modal for winning message -->
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <h2>You Win!</h2>
             <p>Please click below to proceed to the next page.</p>
             <button id="nextPage" onclick="goToNextPage()">Next Page</button>
         </div>
@@ -91,9 +110,14 @@
 
         // Function to check for collisions
         function myCheckHit() {
+            // Check for loss
             if (myHitOther('myImg01', 'myImg02')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
+            }
+            // Check for win
+            if (myHitOther('myImg01', 'winArea')) {
+                showWinModal();
             }
         }
 
@@ -108,20 +132,8 @@
             if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
             if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
 
-            // Calculate distance between img1 and img2
-            const deltaX = parseInt(img1.style.left) - parseInt(img2.style.left);
-            const deltaY = parseInt(img1.style.top) - parseInt(img2.style.top);
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-            // Move myImg02 (Charizard) towards myImg01 (Greninja)
-            if (distance > 0) {
-                // Normalize the direction
-                const moveX = (deltaX / distance) * speed; 
-                const moveY = (deltaY / distance) * speed; 
-                
-                img2.style.left = (parseInt(img2.style.left) + (moveX > 0 ? Math.min(moveX, speed) : Math.max(moveX, -speed))) + 'px';
-                img2.style.top = (parseInt(img2.style.top) + (moveY > 0 ? Math.min(moveY, speed) : Math.max(moveY, -speed))) + 'px';
-            }
+            // Move myImg02 (Charizard)
+            // The movement towards Greninja is already defined above
 
             // Move background if the flag is set
             if (moveBackground) {
@@ -177,6 +189,12 @@
             modal.style.display = 'block';
         }
 
+        // Show win modal
+        function showWinModal() {
+            const modal = document.getElementById('winModal');
+            modal.style.display = 'block';
+        }
+
         // Navigate to the next page
         function goToNextPage() {
             location.href = 't2a13-keydown.html'; // Replace with your next page URL
@@ -184,9 +202,13 @@
 
         // Close modal when clicking outside of it
         window.onclick = function(event) {
-            const modal = document.getElementById('lossModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
+            const lossModal = document.getElementById('lossModal');
+            const winModal = document.getElementById('winModal');
+            if (event.target == lossModal) {
+                lossModal.style.display = "none";
+            }
+            if (event.target == winModal) {
+                winModal.style.display = "none";
             }
         }
 
@@ -195,6 +217,11 @@
             const img2 = document.getElementById('myImg02');
             img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // start Charizard on the right side of the screen
             img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // random vertical position
+
+            // Add win area
+            const winArea = document.createElement('div');
+            winArea.id = 'winArea';
+            document.body.appendChild(winArea);
         };
 
     </script>
