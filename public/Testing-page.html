@@ -6,18 +6,12 @@
     <title>T2A11 Game Template</title>
     <style>
         body {
-            /* Simple striped background */
-            background: repeating-linear-gradient(
-                to bottom,    /* Change to 'to right' for horizontal stripes */
-                red,          /* Start with red */
-                red 50px,     /* Red will fill the first 50px */
-                blue 50px,    /* Transition to blue */
-                blue 100px    /* Blue will fill the next 50px */
-            );
+            /* Set background to dark blue */
+            background-color: darkblue;
         }
         h1, h6 {
             text-align: center;
-            color: white; /* Change text color for visibility */
+            color: white; /* Maintain text color for visibility */
         }
         /* Modal styles */
         .modal {
@@ -29,8 +23,7 @@
             width: 100%; 
             height: 100%; 
             overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4); 
+            background-color: rgba(0, 0, 0, 0.4); 
             padding-top: 100px; 
         }
         .modal-content {
@@ -41,7 +34,7 @@
             width: 80%; 
             text-align: center; 
         }
-        #nextPage, #winPage {
+        #nextPage, #winPage, #stopMovement {
             background-color: #4CAF50; 
             color: white; 
             border: none; 
@@ -49,7 +42,7 @@
             cursor: pointer; 
             font-size: 16px; 
         }
-        #nextPage:hover, #winPage:hover {
+        #nextPage:hover, #winPage:hover, #stopMovement:hover {
             background-color: #45a049; 
         }
         /* myImage4 styles */
@@ -93,13 +86,10 @@
     <script>
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
+        let movingEnemy = true; // Flag to control movement of myImage2 and myImage3
 
         // Speed for movement
         const speed = 5;
-
-        // Background movement variables
-        let moveBackground = false;
-        let myGlobalX = 0;
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -140,38 +130,35 @@
             if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
             if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
 
-            // Calculate distance between img1 and img2
-            const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
-            const deltaY2 = parseInt(img1.style.top) - parseInt(img2.style.top);
-            const distance2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
+            // Only move enemy images if movingEnemy is true
+            if (movingEnemy) {
+                // Calculate distance between img1 and img2
+                const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
+                const deltaY2 = parseInt(img1.style.top) - parseInt(img2.style.top);
+                const distance2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
 
-            // Move myImg02 (Charizard) towards myImg01 (Greninja)
-            if (distance2 > 0) {
-                const moveX2 = (deltaX2 / distance2) * speed; 
-                const moveY2 = (deltaY2 / distance2) * speed; 
-                
-                img2.style.left = (parseInt(img2.style.left) + (moveX2 > 0 ? Math.min(moveX2, speed) : Math.max(moveX2, -speed))) + 'px';
-                img2.style.top = (parseInt(img2.style.top) + (moveY2 > 0 ? Math.min(moveY2, speed) : Math.max(moveY2, -speed))) + 'px';
-            }
+                // Move myImg02 (Charizard) towards myImg01 (Greninja)
+                if (distance2 > 0) {
+                    const moveX2 = (deltaX2 / distance2) * speed; 
+                    const moveY2 = (deltaY2 / distance2) * speed; 
+                    
+                    img2.style.left = (parseInt(img2.style.left) + (moveX2 > 0 ? Math.min(moveX2, speed) : Math.max(moveX2, -speed))) + 'px';
+                    img2.style.top = (parseInt(img2.style.top) + (moveY2 > 0 ? Math.min(moveY2, speed) : Math.max(moveY2, -speed))) + 'px';
+                }
 
-            // Calculate distance between img1 and img3
-            const deltaX3 = parseInt(img1.style.left) - parseInt(img3.style.left);
-            const deltaY3 = parseInt(img1.style.top) - parseInt(img3.style.top);
-            const distance3 = Math.sqrt(deltaX3 * deltaX3 + deltaY3 * deltaY3);
+                // Calculate distance between img1 and img3
+                const deltaX3 = parseInt(img1.style.left) - parseInt(img3.style.left);
+                const deltaY3 = parseInt(img1.style.top) - parseInt(img3.style.top);
+                const distance3 = Math.sqrt(deltaX3 * deltaX3 + deltaY3 * deltaY3);
 
-            // Move myImg03 (New Chaser) towards myImg01 (Greninja)
-            if (distance3 > 0) {
-                const moveX3 = (deltaX3 / distance3) * speed;
-                const moveY3 = (deltaY3 / distance3) * speed;
+                // Move myImg03 (New Chaser) towards myImg01 (Greninja)
+                if (distance3 > 0) {
+                    const moveX3 = (deltaX3 / distance3) * speed;
+                    const moveY3 = (deltaY3 / distance3) * speed;
 
-                img3.style.left = (parseInt(img3.style.left) + (moveX3 > 0 ? Math.min(moveX3, speed) : Math.max(moveX3, -speed))) + 'px';
-                img3.style.top = (parseInt(img3.style.top) + (moveY3 > 0 ? Math.min(moveY3, speed) : Math.max(moveY3, -speed))) + 'px';
-            }
-
-            // Move background if the flag is set
-            if (moveBackground) {
-                myGlobalX += 5;  // Move background to the left
-                document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
+                    img3.style.left = (parseInt(img3.style.left) + (moveX3 > 0 ? Math.min(moveX3, speed) : Math.max(moveX3, -speed))) + 'px';
+                    img3.style.top = (parseInt(img3.style.top) + (moveY3 > 0 ? Math.min(moveY3, speed) : Math.max(moveY3, -speed))) + 'px';
+                }
             }
 
             myCheckHit(); // Check for collisions
@@ -233,6 +220,11 @@
             location.href = 't2a13-keydown.html'; // Replace with your next page URL
         }
 
+        // Stop movement of enemies
+        function stopEnemyMovement() {
+            movingEnemy = false; // Disable enemy movement
+        }
+
         // Close modal when clicking outside of it
         window.onclick = function(event) {
             const lossModal = document.getElementById('lossModal');
@@ -261,11 +253,12 @@
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
     <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
-    
+
     <!-- New white box as myImage4 -->
     <div id="myImage4"></div> <!-- Win area as myImage4 -->
 
     <input type="button" id="autoBackgroundButton" value="Start Background Movement" onclick="toggleBackgroundMovement()">
+    <input type="button" id="stopMovement" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
 
     <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
         document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
