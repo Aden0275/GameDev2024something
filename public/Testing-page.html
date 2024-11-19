@@ -36,7 +36,7 @@
             width: 80%; 
             text-align: center; 
         }
-        #nextPage {
+        #nextPage, #winPage {
             background-color: #4CAF50; 
             color: white; 
             border: none; 
@@ -44,8 +44,19 @@
             cursor: pointer; 
             font-size: 16px; 
         }
-        #nextPage:hover {
+        #nextPage:hover, #winPage:hover {
             background-color: #45a049; 
+        }
+        /* Win area styles */
+        #winArea {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%); /* Center vertically */
+            background-color: white;
+            border: 2px solid black; /* Optional border */
         }
     </style>
 </head>
@@ -62,6 +73,15 @@
             <h2>You Lose</h2>
             <p>Please click below to proceed to the next page.</p>
             <button id="nextPage" onclick="goToNextPage()">Next Page</button>
+        </div>
+    </div>
+
+    <!-- Modal for winning message -->
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <h2>You Win!</h2>
+            <p>Congratulations! You've reached the win area.</p>
+            <button id="winPage" onclick="goToNextPage()">Next Page</button>
         </div>
     </div>
 
@@ -94,6 +114,12 @@
             if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
+            }
+
+            // Check for collision with win area
+            if (myHitOther('myImg01', 'winArea')) {
+                showWinModal();
+                document.getElementById('myImg01').style.left = '20px'; // Reset position if needed
             }
         }
 
@@ -130,9 +156,9 @@
 
             // Move myImg03 (New Chaser) towards myImg01 (Greninja)
             if (distance3 > 0) {
-                const moveX3 = (deltaX3 / distance3) * speed; 
-                const moveY3 = (deltaY3 / distance3) * speed; 
-                
+                const moveX3 = (deltaX3 / distance3) * speed;
+                const moveY3 = (deltaY3 / distance3) * speed;
+
                 img3.style.left = (parseInt(img3.style.left) + (moveX3 > 0 ? Math.min(moveX3, speed) : Math.max(moveX3, -speed))) + 'px';
                 img3.style.top = (parseInt(img3.style.top) + (moveY3 > 0 ? Math.min(moveY3, speed) : Math.max(moveY3, -speed))) + 'px';
             }
@@ -191,6 +217,12 @@
             modal.style.display = 'block';
         }
 
+        // Show win modal
+        function showWinModal() {
+            const modal = document.getElementById('winModal');
+            modal.style.display = 'block';
+        }
+
         // Navigate to the next page
         function goToNextPage() {
             location.href = 't2a13-keydown.html'; // Replace with your next page URL
@@ -198,9 +230,13 @@
 
         // Close modal when clicking outside of it
         window.onclick = function(event) {
-            const modal = document.getElementById('lossModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
+            const lossModal = document.getElementById('lossModal');
+            const winModal = document.getElementById('winModal');
+            if (event.target == lossModal) {
+                lossModal.style.display = "none";
+            }
+            if (event.target == winModal) {
+                winModal.style.display = "none";
             }
         }
 
@@ -220,6 +256,8 @@
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
     <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
+
+    <div id="winArea"></div> <!-- Win area on the right side -->
 
     <input type="button" id="autoBackgroundButton" value="Start Background Movement" onclick="toggleBackgroundMovement()">
 
