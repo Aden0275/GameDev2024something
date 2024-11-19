@@ -52,15 +52,15 @@
         #nextPage:hover, #winPage:hover {
             background-color: #45a049; 
         }
-        /* Win area styles */
-        #winArea {
+        /* myImage4 styles */
+        #myImage4 {
             position: absolute;
             width: 100px;
             height: 100px;
             right: 20px;
             top: 50%;
             transform: translateY(-50%); /* Center vertically */
-            background-color: white;
+            background-color: white; /* Optional white background */
             border: 2px solid black; /* Optional border */
         }
     </style>
@@ -121,8 +121,8 @@
                 document.getElementById('myImg01').style.left = '20px';
             }
 
-            // Check for collision with win area
-            if (myHitOther('myImg01', 'winArea')) {
+            // Check for collision with myImage4
+            if (myHitOther('myImg01', 'myImage4')) {
                 showWinModal();
                 document.getElementById('myImg01').style.left = '20px'; // Reset position if needed
             }
@@ -261,8 +261,9 @@
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
     <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
-
-    <div id="winArea"></div> <!-- Win area on the right side -->
+    
+    <!-- New white box as myImage4 -->
+    <div id="myImage4"></div> <!-- Win area as myImage4 -->
 
     <input type="button" id="autoBackgroundButton" value="Start Background Movement" onclick="toggleBackgroundMovement()">
 
