@@ -107,8 +107,6 @@
 
             if (myHitOther('myImg01', 'myImage4')) {
                 showWinModal(); 
-                // Optional: Reset position after winning
-                // document.getElementById('myImg01').style.left = '20px'; 
             }
         }
 
@@ -205,7 +203,7 @@
 
         function increaseSpeed() {
             speed += speedIncreaseAmount; // Increase the speed
-            alert(`Current speed: ${speed}`); // Display the current speed
+            // alert(`Current speed: ${speed}`); // Removed alert
         }
 
         window.onclick = function(event) {
