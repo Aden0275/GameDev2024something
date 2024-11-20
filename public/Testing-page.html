@@ -44,15 +44,16 @@
         #nextPage:hover, #winPage:hover, #stopMovement:hover, #increaseSpeed:hover {
             background-color: #45a049; 
         }
+        /* myImage4 styles */
         #myImage4 {
             position: absolute;
             width: 100px;
             height: 100px;
             right: 20px;
             top: 50%;
-            transform: translateY(-50%);
-            background-color: white; 
-            border: 2px solid black; 
+            transform: translateY(-50%); /* Center vertically */
+            background-color: white; /* Optional white background */
+            border: 2px solid black; /* Optional border */
         }
     </style>
 </head>
@@ -82,11 +83,15 @@
     </div>
 
     <script>
+        // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
-        let movingEnemy = true; 
-        let speed = 5; 
-        const speedIncreaseAmount = 2; 
+        let movingEnemy = true; // Flag to control movement of myImage2 and myImage3
+        
+        // Speed for movement
+        let speed = 5; // Initial speed of myImage1
+        const speedIncreaseAmount = 2; // Amount to increase speed
 
+        // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
             let left1 = parseInt(document.getElementById(my1).style.left);
             let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -99,28 +104,35 @@
             return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
         }
 
+        // Function to check for collisions
         function myCheckHit() {
             if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
             }
 
+            // Check for collision with the white box (win condition)
             if (myHitOther('myImg01', 'myImage4')) {
-                showWinModal(); 
+                showWinModal();  // Show the win modal when Greninja hits the white box
+                document.getElementById('myImg01').style.left = '20px'; // Optional: reset position
             }
         }
 
+        // Move images based on movement flags
         function moveImages() {
             const img1 = document.getElementById('myImg01');
             const img2 = document.getElementById('myImg02');
             const img3 = document.getElementById('myImg03');
 
+            // Move myImg01 (Greninja) based on flags
             if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - speed) + 'px';
             if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - speed) + 'px';
             if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
             if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
 
+            // Only move enemy images if movingEnemy is true
             if (movingEnemy) {
+                // Calculate distance and move myImg02 and myImg03 towards myImg01
                 const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
                 const deltaY2 = parseInt(img1.style.top) - parseInt(img2.style.top);
                 const distance2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
@@ -147,8 +159,10 @@
             myCheckHit(); // Check for collisions
         }
 
+        // Set interval to regularly move images and background
         setInterval(moveImages, 100);
 
+        // Keydown event listener for movement
         document.addEventListener('keydown', function(event) {
             switch (event.key) {
                 case 'ArrowLeft':
@@ -166,6 +180,7 @@
             }
         });
 
+        // Keyup event listener to stop movement when key is released
         document.addEventListener('keyup', function(event) {
             switch (event.key) {
                 case 'ArrowLeft':
@@ -183,29 +198,35 @@
             }
         });
 
+        // Show loss modal
         function showLossModal() {
             const modal = document.getElementById('lossModal');
             modal.style.display = 'block';
         }
 
+        // Show win modal
         function showWinModal() {
             const modal = document.getElementById('winModal');
             modal.style.display = 'block';
         }
 
+        // Navigate to the next page
         function goToNextPage() {
             location.href = 't2a13-keydown.html'; // Replace with your next page URL
         }
 
+        // Stop movement of enemies
         function stopEnemyMovement() {
             movingEnemy = false; // Disable enemy movement
         }
 
+        // Increase speed of myImage1
         function increaseSpeed() {
             speed += speedIncreaseAmount; // Increase the speed
-            // alert(`Current speed: ${speed}`); // Removed alert
+            alert(`Current speed: ${speed}`); // Display the current speed
         }
 
+        // Close modal when clicking outside of it
         window.onclick = function(event) {
             const lossModal = document.getElementById('lossModal');
             const winModal = document.getElementById('winModal');
@@ -217,26 +238,28 @@
             }
         }
 
+        // Initialize images' positions
         window.onload = function() {
             const img2 = document.getElementById('myImg02');
-            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; 
-            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; 
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // Start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // Random vertical position
             
             const img3 = document.getElementById('myImg03');
-            img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; 
-            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; 
+            img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; // Random horizontal position
+            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; // Random vertical position
         };
+
     </script>
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
     <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
-    <img id="myImg04" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="<a href="https://imgbb.com/"><img src="https://i.ibb.co/jGjGZSf/OIP-5.jpg" alt="OIP-5" border="0"></a>" alt="New Chaser">
 
+    <!-- New white box as myImage4 -->
     <div id="myImage4"></div> <!-- Win area as myImage4 -->
 
     <input type="button" id="stopMovement" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
-    <input type="button" id="increaseSpeed" value="Increase Speed" onclick="increaseSpeed()"> <!-- Speed increase button -->
+    <input type="button" id="increaseSpeed" value="Increase Speed" onclick="increaseSpeed()"> <!-- New speed increase button -->
 
     <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
         document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
