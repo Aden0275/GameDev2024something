@@ -47,11 +47,11 @@
         /* Positioning myImage4 */
         #myImage4 {
             position: absolute;
-            width: 100px; 
-            height: 100px; 
-            top: 50%; 
-            right: 20px; 
-            transform: translateY(-50%); 
+            width: 100px; /* Set your desired width */
+            height: 100px; /* Set your desired height */
+            top: 50%; /* Center it vertically */
+            right: 20px; /* Spacing from the right */
+            transform: translateY(-50%); /* Center it */
         }
     </style>
 </head>
@@ -107,12 +107,15 @@
             // Check for Greninja hitting the enemies
             if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
                 showLossModal();
-                document.getElementById('myImg01').style.left = '20px'; // Reset Greninja position
+                document.getElementById('myImg01').style.left = '20px';
             }
 
-            // Check for collision with the win area (myImage4)
+            // Check for collision with the new image (myImage4)
             if (myHitOther('myImg01', 'myImage4')) {
+                console.log("Greninja has collided with myImage4."); // Debugging line
                 showWinModal(); // Show the win modal when Greninja hits myImage4
+            } else {
+                console.log("No collision with myImage4."); // Debugging line
             }
         }
 
@@ -130,26 +133,32 @@
 
             // Only move enemy images if movingEnemy is true
             if (movingEnemy) {
-                moveEnemy(img2, img1);
-                moveEnemy(img3, img1);
+                // Calculate distance and move myImg02 and myImg03 towards myImg01
+                const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
+                const deltaY2 = parseInt(img1.style.top) - parseInt(img2.style.top);
+                const distance2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
+                if (distance2 > 0) {
+                    const moveX2 = (deltaX2 / distance2) * speed; 
+                    const moveY2 = (deltaY2 / distance2) * speed; 
+                    
+                    img2.style.left = (parseInt(img2.style.left) + (moveX2 > 0 ? Math.min(moveX2, speed) : Math.max(moveX2, -speed))) + 'px';
+                    img2.style.top = (parseInt(img2.style.top) + (moveY2 > 0 ? Math.min(moveY2, speed) : Math.max(moveY2, -speed))) + 'px';
+                }
+
+                const deltaX3 = parseInt(img1.style.left) - parseInt(img3.style.left);
+                const deltaY3 = parseInt(img1.style.top) - parseInt(img3.style.top);
+                const distance3 = Math.sqrt(deltaX3 * deltaX3 + deltaY3 * deltaY3);
+                if (distance3 > 0) {
+                    const moveX3 = (deltaX3 / distance3) * speed;
+                    const moveY3 = (deltaY3 / distance3) * speed;
+
+                    img3.style.left = (parseInt(img3.style.left) + (moveX3 > 0 ? Math.min(moveX3, speed) : Math.max(moveX3, -speed))) + 'px';
+                    img3.style.top = (parseInt(img3.style.top) + (moveY3 > 0 ? Math.min(moveY3, speed) : Math.max(moveY3, -speed))) + 'px';
+                }
             }
 
             // Check for collisions after moving
             myCheckHit(); 
-        }
-
-        // Move enemy images towards Greninja
-        function moveEnemy(enemy, target) {
-            const deltaX = parseInt(target.style.left) - parseInt(enemy.style.left);
-            const deltaY = parseInt(target.style.top) - parseInt(enemy.style.top);
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-            if (distance > 0) {
-                const moveX = (deltaX / distance) * speed; 
-                const moveY = (deltaY / distance) * speed; 
-                
-                enemy.style.left = (parseInt(enemy.style.left) + (moveX > 0 ? Math.min(moveX, speed) : Math.max(moveX, -speed))) + 'px';
-                enemy.style.top = (parseInt(enemy.style.top) + (moveY > 0 ? Math.min(moveY, speed) : Math.max(moveY, -speed))) + 'px';
-            }
         }
 
         // Set interval to regularly move images and check for collisions
@@ -223,22 +232,45 @@
         window.onclick = function(event) {
             const lossModal = document.getElementById('lossModal');
             const winModal = document.getElementById('winModal');
-            if (event.target === lossModal || event.target === winModal) {
-                lossModal.style.display = 'none';
-                winModal.style.display = 'none';
+            if (event.target == lossModal) {
+                lossModal.style.display = "none";
+            }
+            if (event.target == winModal) {
+                winModal.style.display = "none";
             }
         }
+
+        // Initialize images' positions
+        window.onload = function() {
+            const img2 = document.getElementById('myImg02');
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // Start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // Random vertical position
+            
+            const img3 = document.getElementById('myImg03');
+            img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; // Random horizontal position
+            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; // Random vertical position
+            
+            // Initialize myImage4
+            const winImage = document.getElementById('myImage4');
+            winImage.style.top = (window.innerHeight / 2 - 50) + 'px'; // Center vertically
+        };
+
     </script>
 
-    <!-- Image elements -->
-    <div id="myImg01" style="position: absolute; left: 20px; top: 50%; width: 50px; height: 50px; background-color: yellow;"></div>
-    <div id="myImg02" style="position: absolute; left: 300px; top: 100px; width: 50px; height: 50px; background-color: red;"></div>
-    <div id="myImg03" style="position: absolute; left: 500px; top: 200px; width: 50px; height: 50px; background-color: green;"></div>
-    <div id="myImage4" style="position: absolute; right: 20px; top: 50%; width: 100px; height: 100px; background-color: blue;"></div>
+    <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
+    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+    <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
+    
+    <!-- New image myImage4 -->
+    <img id="myImage4" src="https://i.ibb.co/p02Fkgx/OIP-5.jpg" alt="Win Area" />
 
-    <!-- Buttons -->
-    <button id="stopMovement" onclick="stopEnemyMovement()">Stop Movement</button>
-    <button id="increaseSpeed" onclick="increaseSpeed()">Increase Speed</button>
+    <input type="button" id="stopMovement" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
+    <input type="button" id="increaseSpeed" value="Increase Speed" onclick="increaseSpeed()"> <!-- New speed increase button -->
+
+    <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+        document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+        myCheckHit(); // Checks for all collisions
+    }"><br><br>
 
 </body>
 </html>
