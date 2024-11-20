@@ -1,3 +1,8 @@
+Certainly! To remove the white box (`myImage4`) from the game while keeping the functionality to detect a win scenario, you'll need to eliminate anything associated with it: the HTML element representing the box, the collision checking code for it, and any styles related to it.
+
+Here’s the updated code without the white box:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,17 +48,6 @@
         }
         #nextPage:hover, #winPage:hover, #stopMovement:hover, #increaseSpeed:hover {
             background-color: #45a049; 
-        }
-        /* myImage4 styles */
-        #myImage4 {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%); /* Center vertically */
-            background-color: white; /* Optional white background */
-            border: 2px solid black; /* Optional border */
         }
     </style>
 </head>
@@ -111,11 +105,240 @@
                 document.getElementById('myImg01').style.left = '20px';
             }
 
-            // Check for collision with the white box (win condition)
-            if (myHitOther('myImg01', 'myImage4')) {
-                showWinModal();  // Show the win modal when Greninja hits the white box
-                document.getElementById('myImg01').style.left = '20px'; // Optional: reset position
+            // Here you can add a new win condition based on your game logic.
+            // For example, if you want Greninja to win after a certain distance traveled.
+            // if (parseInt(document.getElementById('myImg01').style.left) > 800) {
+            //     showWinModal();
+            // }
+        }
+
+        // Move images based on movement flags
+        function moveImages() {
+            const img1 = document.getElementById('myImg01');
+            const img2 = document.getElementById('myImg02');
+            const img3 = document.getElementById('myImg03');
+
+            // Move myImg01 (Greninja) based on flags
+            if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - speed) + 'px';
+            if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - speed) + 'px';
+            if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
+            if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
+
+            // Only move enemy images if movingEnemy is true
+            if (movingEnemy) {
+                // Calculate distance and move myImg02 and myImg03 towards myImg01
+                const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
+                const deltaY2 = parseInt(img1.style.top) - parseInt(img2.style.top);
+                const distance2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
+                if (distance2 > 0) {
+                    const moveX2 = (deltaX2 / distance2) * speed; 
+                    const moveY2 = (deltaY2 / distance2) * speed; 
+                    
+                    img2.style.left = (parseInt(img2.style.left) + (moveX2 > 0 ? Math.min(moveX2, speed) : Math.max(moveX2, -speed))) + 'px';
+                    img2.style.top = (parseInt(img2.style.top) + (moveY2 > 0 ? Math.min(moveY2, speed) : Math.max(moveY2, -speed))) + 'px';
+                }
+
+                const deltaX3 = parseInt(img1.style.left) - parseInt(img3.style.left);
+                const deltaY3 = parseInt(img1.style.top) - parseInt(img3.style.top);
+                const distance3 = Math.sqrt(deltaX3 * deltaX3 + deltaY3 * deltaY3);
+                if (distance3 > 0) {
+                    const moveX3 = (deltaX3 / distance3) * speed;
+                    const moveY3 = (deltaY3 / distance3) * speed;
+
+                    img3.style.left = (parseInt(img3.style.left) + (moveX3 > 0 ? Math.min(moveX3, speed) : Math.max(moveX3, -speed))) + 'px';
+                    img3.style.top = (parseInt(img3.style.top) + (moveY3 > 0 ? Math.min(moveY3, speed) : Math.max(moveY3, -speed))) + 'px';
+                }
             }
+
+            myCheckHit(); // Check for collisions
+        }
+
+        // Set interval to regularly move images and background
+        setInterval(moveImages, 100);
+
+        // Keydown event listener for movement
+        document.addEventListener('keydown', function(event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    moveImg1.left = true;
+                    break;
+                case 'ArrowUp':
+                    moveImg1.up = true;
+                    break;
+                case 'ArrowRight':
+                    moveImg1.right = true;
+                    break;
+                case 'ArrowDown':
+                    moveImg1.down = true;
+                    break;
+            }
+        });
+
+        // Keyup event listener to stop movement when key is released
+        document.addEventListener('keyup', function(event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    moveImg1.left = false;
+                    break;
+                case 'ArrowUp':
+                    moveImg1.up = false;
+                    break;
+                case 'ArrowRight':
+                    moveImg1.right = false;
+                    break;
+                case 'ArrowDown':
+                    moveImg1.down = false;
+                    break;
+            }
+        });
+
+        // Show loss modal
+        function showLossModal() {
+            const modal = document.getElementById('lossModal');
+            modal.style.display = 'block';
+        }
+
+        // Show win modal
+        function showWinModal() {
+            const modal = document.getElementById('winModal');
+            modal.style.display = 'block';
+        }
+
+        // Navigate to the next page
+        function goToNextPage() {
+            location.href = 't2a13-keydown.html'; // Replace with your next page URL
+        }
+
+        // Stop movement of enemies
+        function stopEnemyMovement() {
+            movingEnemy = false; // Disable enemy movement
+        }
+
+        // Increase speed of myImage1
+        function increaseSpeed() {
+            speed += speedIncreaseAmount; // Increase the speed
+            alert(`Current speed: ${speed}`); // Display the current speed
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const lossModal = document.getElementById('lossModal');
+            const winModal = document.getElementById('winModal');
+            if (event.target == lossModal) {
+                lossModal.style.display = "none";
+            }
+            if (event.target == winModal) {
+                winModal.style.display = "none";
+            }
+        }
+
+        // Initialize images' positions<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T2A11 Game Template</title>
+    <style>
+        body {
+            background-color: darkblue;
+        }
+        h1, h6 {
+            text-align: center;
+            color: white;
+        }
+        /* Modal styles */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 999; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.4); 
+            padding-top: 100px; 
+        }
+        .modal-content {
+            background-color: white; 
+            margin: 5% auto; 
+            padding: 20px; 
+            border: 1px solid #888; 
+            width: 80%; 
+            text-align: center; 
+        }
+        #nextPage, #winPage, #stopMovement, #increaseSpeed {
+            background-color: #4CAF50; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            font-size: 16px; 
+        }
+        #nextPage:hover, #winPage:hover, #stopMovement:hover, #increaseSpeed:hover {
+            background-color: #45a049; 
+        }
+    </style>
+</head>
+
+<body id="myBody">
+
+    <h1>T2A11 Game Template by Fred</h1>
+    <h6>Version 0.0.1</h6>
+    <br><br><br><br>
+
+    <!-- Modal for losing message -->
+    <div id="lossModal" class="modal">
+        <div class="modal-content">
+            <h2>You Lose</h2>
+            <p>Please click below to proceed to the next page.</p>
+            <button id="nextPage" onclick="goToNextPage()">Next Page</button>
+        </div>
+    </div>
+
+    <!-- Modal for winning message -->
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <h2>You Win!</h2>
+            <p>Congratulations! You've reached the win area.</p>
+            <button id="winPage" onclick="goToNextPage()">Next Page</button>
+        </div>
+    </div>
+
+    <script>
+        // Global movement flags
+        let moveImg1 = { left: false, up: false, right: false, down: false };
+        let movingEnemy = true; // Flag to control movement of myImage2 and myImage3
+        
+        // Speed for movement
+        let speed = 5; // Initial speed of myImage1
+        const speedIncreaseAmount = 2; // Amount to increase speed
+
+        // Function to check if two elements are colliding
+        function myHitOther(my1, my2) {
+            let left1 = parseInt(document.getElementById(my1).style.left);
+            let right1 = left1 + parseInt(document.getElementById(my1).style.width);
+            let top1 = parseInt(document.getElementById(my1).style.top);
+            let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
+            let left2 = parseInt(document.getElementById(my2).style.left);
+            let right2 = left2 + parseInt(document.getElementById(my2).style.width);
+            let top2 = parseInt(document.getElementById(my2).style.top);
+            let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
+            return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
+        }
+
+        // Function to check for collisions
+        function myCheckHit() {
+            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
+                showLossModal();
+                document.getElementById('myImg01').style.left = '20px';
+            }
+
+            // Here you can add a new win condition based on your game logic.
+            // For example, if you want Greninja to win after a certain distance traveled.
+            // if (parseInt(document.getElementById('myImg01').style.left) > 800) {
+            //     showWinModal();
+            // }
         }
 
         // Move images based on movement flags
@@ -254,10 +477,7 @@
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
     <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
-
-    <!-- New white box as myImage4 -->
-    <div id="myImage4"></div> <!-- Win area as myImage4 -->
-
+    
     <input type="button" id="stopMovement" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
     <input type="button" id="increaseSpeed" value="Increase Speed" onclick="increaseSpeed()"> <!-- New speed increase button -->
 
@@ -268,3 +488,39 @@
 
 </body>
 </html>
+        window.onload = function() {
+            const img2 = document.getElementById('myImg02');
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // Start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // Random vertical position
+            
+            const img3 = document.getElementById('myImg03');
+            img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; // Random horizontal position
+            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; // Random vertical position
+        };
+
+    </script>
+
+    <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
+    <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+    <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
+    
+    <input type="button" id="stopMovement" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
+    <input type="button" id="increaseSpeed" value="Increase Speed" onclick="increaseSpeed()"> <!-- New speed increase button -->
+
+    <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+        document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
+        myCheckHit(); // Checks for all collisions
+    }"><br><br>
+
+</body>
+</html>
+```
+
+### Key Changes:
+1. **Removed `myImage4`**: The white box element (which served as the win area) has been removed from the HTML. If you had any styling associated with the box, it's also removed.
+  
+2. **Collision Check for Win Condition**: Since there's no longer a win area to check against, you'll need to decide on a new win condition — whether it's reaching a certain position, collecting an item, etc. I've commented out a placeholder condition that you can implement based on your specific game mechanics.
+
+3. **Game Logic**: The basic game loop, character movement, and collision detection with enemy characters have been preserved. 
+
+Feel free to adjust the win conditions based on your gameplay needs! If you have any specific conditions in mind for winning the game without the white box, let me know, and I can help integrate that logic.
