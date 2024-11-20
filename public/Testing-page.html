@@ -104,6 +104,7 @@
 
         // Function to check for collisions
         function myCheckHit() {
+            // Check for Greninja hitting the enemies
             if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
@@ -156,10 +157,11 @@
                 }
             }
 
-            myCheckHit(); // Check for collisions
+            // Check for collisions after moving
+            myCheckHit(); 
         }
 
-        // Set interval to regularly move images and background
+        // Set interval to regularly move images and check for collisions
         setInterval(moveImages, 100);
 
         // Keydown event listener for movement
@@ -220,10 +222,10 @@
             movingEnemy = false; // Disable enemy movement
         }
 
-        // Increase speed of myImage1
+        // Increase speed of myImage1 without alert
         function increaseSpeed() {
             speed += speedIncreaseAmount; // Increase the speed
-            alert(`Current speed: ${speed}`); // Display the current speed
+            console.log(`Current speed: ${speed}`); // Log the current speed to the console
         }
 
         // Close modal when clicking outside of it
