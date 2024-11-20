@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -102,7 +102,7 @@
             return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
         }
 
-     <br>   // Function to check for collisions
+        // Function to check for collisions
         function myCheckHit() {
             // Check for Greninja hitting the enemies
             if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
@@ -114,7 +114,10 @@
             if (myHitOther('myImg01', 'myImage4')) {
                 console.log("Greninja has collided with myImage4."); // Debugging line
                 showWinModal(); // Show the win modal when Greninja hits myImage4
-             } <br>
+            } else {
+                console.log("No collision with myImage4."); // Debugging line
+            }
+        }
 
         // Move images based on movement flags
         function moveImages() {
@@ -250,6 +253,7 @@
             // Initialize myImage4
             const winImage = document.getElementById('myImage4');
             winImage.style.top = (window.innerHeight / 2 - 50) + 'px'; // Center vertically
+            winImage.style.left = (window.innerWidth - 150) + 'px'; // Position on the right side of the screen
         };
 
     </script>
