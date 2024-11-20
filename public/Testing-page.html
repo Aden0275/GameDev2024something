@@ -44,6 +44,15 @@
         #nextPage:hover, #winPage:hover, #stopMovement:hover, #increaseSpeed:hover {
             background-color: #45a049; 
         }
+        /* Positioning myImage4 */
+        #myImage4 {
+            position: absolute;
+            width: 100px; /* Set your desired width */
+            height: 100px; /* Set your desired height */
+            top: 50%; /* Center it vertically */
+            right: 20px; /* Spacing from the right */
+            transform: translateY(-50%); /* Center it */
+        }
     </style>
 </head>
 
@@ -100,11 +109,10 @@
                 document.getElementById('myImg01').style.left = '20px';
             }
 
-            // Here you can add a new win condition based on your game logic.
-            // For example, if you want Greninja to win after a certain distance traveled.
-            // if (parseInt(document.getElementById('myImg01').style.left) > 800) {
-            //     showWinModal();
-            // }
+            // Check for collision with the new image (myImage4)
+            if (myHitOther('myImg01', 'myImage4')) {
+                showWinModal(); // Show the win modal when Greninja hits myImage4
+            }
         }
 
         // Move images based on movement flags
@@ -236,6 +244,10 @@
             const img3 = document.getElementById('myImg03');
             img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; // Random horizontal position
             img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; // Random vertical position
+            
+            // Initialize myImage4
+            const winImage = document.getElementById('myImage4');
+            winImage.style.top = (window.innerHeight / 2 - 50) + 'px'; // Center vertically
         };
 
     </script>
@@ -244,6 +256,9 @@
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
     <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
     
+    <!-- New image myImage4 -->
+    <img id="myImage4" src="https://i.ibb.co/p02Fkgx/OIP-5.jpg" alt="Win Area" />
+
     <input type="button" id="stopMovement" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
     <input type="button" id="increaseSpeed" value="Increase Speed" onclick="increaseSpeed()"> <!-- New speed increase button -->
 
