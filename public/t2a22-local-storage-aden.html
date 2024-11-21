@@ -1,24 +1,79 @@
-<h2>t2a09-local-storage-name by Aden. Instructions:</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Storage Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        input[type="button"] {
+            padding: 10px 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 10px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
 
-<body onload="{
-   myStorage = localStorage.getItem('myStoredText')
-   if(myStorage  != null){
-      document.getElementById('myText1').value = myStorage 
-    }
-}">
+<h2>Local Storage Demo by Aden</h2>
 
-<body onunload="{
-   localstorage.setItem('myStoredText',document.getElementById('myText1').value)
-}">   
+Text example: <input id="myText1" type="text" placeholder="Write here to store"><br>
 
-Text example: <input id="myText1" type=text size=70 value="" placeholder="Write here to store"><br>
+<input type="button" value="Store Text" id="storeButton">
+<input type="button" value="Retrieve Text" id="retrieveButton">
 
-<input type="button" value="Store Text" onClick="{
-   localStorage.setItem('myStoredText', document.getElementById('myText1').value)
-   alert(document.getElementById('myText1').value + ' \nHas been stored')
-   document.getElementById('myText1').value = ''
-}">
+<div class="message" id="message"></div>
 
-<input type="button" value="Retrieve Text" onClick="{
-   document.getElementById('myText1').value = localStorage.getItem('myStoredText')
-}"> 
+<script>
+    // Function to retrieve stored text on page load
+    window.onload = function() {
+        const myStorage = localStorage.getItem('myStoredText');
+        if (myStorage !== null) {
+            document.getElementById('myText1').value = myStorage;
+        }
+    };
+
+    // Function to store text in local storage and provide feedback
+    document.getElementById('storeButton').addEventListener('click', function() {
+        const textValue = document.getElementById('myText1').value;
+        if (textValue.trim() !== '') {
+            localStorage.setItem('myStoredText', textValue);
+            document.getElementById('message').innerText = `${textValue} has been stored.`;
+            document.getElementById('myText1').value = ''; // Clear input
+        } else {
+            document.getElementById('message').innerText = 'Please enter text to store.';
+        }
+    });
+    
+    // Function to retrieve text from local storage
+    document.getElementById('retrieveButton').addEventListener('click', function() {
+        const retrievedText = localStorage.getItem('myStoredText');
+        if (retrievedText !== null) {
+            document.getElementById('myText1').value = retrievedText;
+            document.getElementById('message').innerText = 'Text retrieved successfully.';
+        } else {
+            document.getElementById('message').innerText = 'No text found in storage.';
+        }
+    });
+
+    // Save to local storage when the page unloads
+    window.addEventListener('beforeunload', function() {
+        const currentText = document.getElementById('myText1').value;
+        localStorage.setItem('myStoredText', currentText);
+    });
+</script>
+
+</body>
+</html>
