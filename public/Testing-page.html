@@ -204,17 +204,6 @@
             location.href = 't2a13-keydown.html'; // Replace with your next page URL
         }
 
-        // Stop movement of enemies
-        function stopEnemyMovement() {
-            movingEnemy = false; // Disable enemy movement
-        }
-
-        // Increase speed of myImage1
-        function increaseSpeed() {
-            speed += speedIncreaseAmount; // Increase the speed
-            console.log(`Current speed: ${speed}`); // Log the current speed to the console
-        }
-
         // Close modal when clicking outside of modal content
         window.onclick = function(event) {
             const lossModal = document.getElementById('lossModal');
@@ -246,15 +235,7 @@
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
     <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-    <img id="myImg04" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5"> <!-- Updated to the new image source -->
-
-    <input type="button" id="stopMovement" class="button" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
-    <input type="button" id="increaseSpeed" class="button" value="Increase Speed" onclick="increaseSpeed()">
-
-    <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-        document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-        myCheckHit(); // Checks for all collisions
-    }"><br><br>
+    <img id="myImg04" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5">
 
 </body>
 </html>
