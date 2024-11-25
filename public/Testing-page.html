@@ -33,7 +33,7 @@
             width: 80%; 
             text-align: center; 
         }
-        #nextPage, #winPage, #stopMovement, #increaseSpeed {
+        .button {
             background-color: #4CAF50; 
             color: white; 
             border: none; 
@@ -41,7 +41,7 @@
             cursor: pointer; 
             font-size: 16px; 
         }
-        #nextPage:hover, #winPage:hover, #stopMovement:hover, #increaseSpeed:hover {
+        .button:hover {
             background-color: #45a049; 
         }
         /* Positioning myImage4 */
@@ -67,7 +67,7 @@
         <div class="modal-content">
             <h2>You Lose</h2>
             <p>Please click below to proceed to the next page.</p>
-            <button id="nextPage" onclick="goToNextPage()">Next Page</button>
+            <button id="nextPage" class="button" onclick="goToNextPage()">Next Page</button>
         </div>
     </div>
 
@@ -76,7 +76,7 @@
         <div class="modal-content">
             <h2>You Win!</h2>
             <p>Congratulations! You've reached the win area.</p>
-            <button id="winPage" onclick="goToNextPage()">Next Page</button>
+            <button id="winPage" class="button" onclick="goToNextPage()">Next Page</button>
         </div>
     </div>
 
@@ -84,8 +84,6 @@
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
         let movingEnemy = true; // Flag to control movement of myImage2 and myImage3
-        
-        // Speed for movement
         let speed = 5; // Initial speed of myImage1
         const speedIncreaseAmount = 2; // Amount to increase speed
 
@@ -105,7 +103,7 @@
         // Function to check for collisions
         function myCheckHit() {
             // Check for Greninja hitting the enemies
-            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) || myHitOther('myImg01', 'myImg04')) {
+            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03') || myHitOther('myImg01', 'myImage4')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
             }
@@ -228,14 +226,14 @@
             console.log(`Current speed: ${speed}`); // Log the current speed to the console
         }
 
-        // Close modal when clicking outside of it
+        // Close modal when clicking outside of modal content
         window.onclick = function(event) {
             const lossModal = document.getElementById('lossModal');
             const winModal = document.getElementById('winModal');
-            if (event.target == lossModal) {
+            if (event.target === lossModal) {
                 lossModal.style.display = "none";
             }
-            if (event.target == winModal) {
+            if (event.target === winModal) {
                 winModal.style.display = "none";
             }
         }
@@ -254,7 +252,6 @@
             const winImage = document.getElementById('myImage4');
             winImage.style.top = (window.innerHeight / 2 - 50) + 'px'; // Center vertically
         };
-
     </script>
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
@@ -264,8 +261,8 @@
     <!-- New image myImage4 -->
     <img id="myImage4" src="https://i.ibb.co/p02Fkgx/OIP-5.jpg" alt="Win Area" />
 
-    <input type="button" id="stopMovement" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
-    <input type="button" id="increaseSpeed" value="Increase Speed" onclick="increaseSpeed()"> <!-- New speed increase button -->
+    <input type="button" id="stopMovement" class="button" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
+    <input type="button" id="increaseSpeed" class="button" value="Increase Speed" onclick="increaseSpeed()">
 
     <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
         document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
