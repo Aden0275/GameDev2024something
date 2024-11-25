@@ -7,13 +7,11 @@
     <title>T2A11 Game Template</title>
     <style>
         body {
-            background-repeat: no-repeat; 
-            background-size: cover; 
-            background-image: url('https://i.ibb.co/ggWykJY/cool-desktop-wallpaper-wallpapers-backgrounds-images-art-photos-pictures-free-best-1920x1080-coolwal.jpg');
+            background-color: darkblue;
         }
         h1, h6 {
             text-align: center;
-            color: white; /* Change text color for visibility */
+            color: white;
         }
         /* Modal styles */
         .modal {
@@ -25,8 +23,7 @@
             width: 100%; 
             height: 100%; 
             overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4); 
+            background-color: rgba(0, 0, 0, 0.4); 
             padding-top: 100px; 
         }
         .modal-content {
@@ -37,7 +34,7 @@
             width: 80%; 
             text-align: center; 
         }
-        #nextPage {
+        .button {
             background-color: #4CAF50; 
             color: white; 
             border: none; 
@@ -45,7 +42,7 @@
             cursor: pointer; 
             font-size: 16px; 
         }
-        #nextPage:hover {
+        .button:hover {
             background-color: #45a049; 
         }
     </style>
@@ -53,7 +50,7 @@
 
 <body id="myBody">
 
-    <h1>T2A11 Game Template by Fred</h1>
+    <h1>Level 1</h1>
     <h6>Version 0.0.1</h6>
     <br><br><br><br>
 
@@ -62,20 +59,25 @@
         <div class="modal-content">
             <h2>You Lose</h2>
             <p>Please click below to proceed to the next page.</p>
-            <button id="nextPage" onclick="goToNextPage()">Next Page</button>
+            <button id="nextPage" class="button" onclick="goToNextPage()">Next Page</button>
+        </div>
+    </div>
+
+    <!-- Modal for winning message -->
+    <div id="winModal" class="modal">
+        <div class="modal-content">
+            <h2>You Won</h2>
+            <p>Please click below to proceed to the next page.</p>
+            <button id="nextPageWin" class="button" onclick="goToNextPage()">Next Page</button>
         </div>
     </div>
 
     <script>
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
-
-        // Speed for movement
-        const speed = 5;
-        
-        // Background movement variables
-        let moveBackground = false;
-        let myGlobalX = 0;
+        let movingEnemy = true; // Flag to control movement of myImage2 and myImage3
+        let speed = 5; // Initial speed of myImage1
+        const speedIncreaseAmount = 2; // Amount to increase speed
 
         // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
@@ -92,8 +94,15 @@
 
         // Function to check for collisions
         function myCheckHit() {
-            if (myHitOther('myImg01', 'myImg02')) {
+            // Check for Greninja hitting the enemies
+            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
                 showLossModal();
+                document.getElementById('myImg01').style.left = '20px';
+            }
+
+            // Check for winning condition with myImg04
+            if (myHitOther('myImg01', 'myImg04')) {
+                showWinModal();
                 document.getElementById('myImg01').style.left = '20px';
             }
         }
@@ -102,6 +111,7 @@
         function moveImages() {
             const img1 = document.getElementById('myImg01');
             const img2 = document.getElementById('myImg02');
+            const img3 = document.getElementById('myImg03');
 
             // Move myImg01 (Greninja) based on flags
             if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - speed) + 'px';
@@ -109,31 +119,37 @@
             if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
             if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
 
-            // Calculate distance between img1 and img2
-            const deltaX = parseInt(img1.style.left) - parseInt(img2.style.left);
-            const deltaY = parseInt(img1.style.top) - parseInt(img2.style.top);
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            // Only move enemy images if movingEnemy is true
+            if (movingEnemy) {
+                // Calculate distance and move myImg02 and myImg03 towards myImg01
+                const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
+                const deltaY2 = parseInt(img1.style.top) - parseInt(img2.style.top);
+                const distance2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
+                if (distance2 > 0) {
+                    const moveX2 = (deltaX2 / distance2) * speed; 
+                    const moveY2 = (deltaY2 / distance2) * speed; 
+                    
+                    img2.style.left = (parseInt(img2.style.left) + (moveX2 > 0 ? Math.min(moveX2, speed) : Math.max(moveX2, -speed))) + 'px';
+                    img2.style.top = (parseInt(img2.style.top) + (moveY2 > 0 ? Math.min(moveY2, speed) : Math.max(moveY2, -speed))) + 'px';
+                }
 
-            // Move myImg02 (Charizard) towards myImg01 (Greninja)
-            if (distance > 0) {
-                // Normalize the direction
-                const moveX = (deltaX / distance) * speed; 
-                const moveY = (deltaY / distance) * speed; 
-                
-                img2.style.left = (parseInt(img2.style.left) + (moveX > 0 ? Math.min(moveX, speed) : Math.max(moveX, -speed))) + 'px';
-                img2.style.top = (parseInt(img2.style.top) + (moveY > 0 ? Math.min(moveY, speed) : Math.max(moveY, -speed))) + 'px';
+                const deltaX3 = parseInt(img1.style.left) - parseInt(img3.style.left);
+                const deltaY3 = parseInt(img1.style.top) - parseInt(img3.style.top);
+                const distance3 = Math.sqrt(deltaX3 * deltaX3 + deltaY3 * deltaY3);
+                if (distance3 > 0) {
+                    const moveX3 = (deltaX3 / distance3) * speed;
+                    const moveY3 = (deltaY3 / distance3) * speed;
+
+                    img3.style.left = (parseInt(img3.style.left) + (moveX3 > 0 ? Math.min(moveX3, speed) : Math.max(moveX3, -speed))) + 'px';
+                    img3.style.top = (parseInt(img3.style.top) + (moveY3 > 0 ? Math.min(moveY3, speed) : Math.max(moveY3, -speed))) + 'px';
+                }
             }
 
-            // Move background if the flag is set
-            if (moveBackground) {
-                myGlobalX += 5;  // Move background to the left
-                document.getElementById('myBody').style.backgroundPosition = myGlobalX + 'px 0px';
-            }
-
-            myCheckHit(); // Check for collisions
+            // Check for collisions after moving
+            myCheckHit(); 
         }
 
-        // Set interval to regularly move images and background
+        // Set interval to regularly move images and check for collisions
         setInterval(moveImages, 100);
 
         // Keydown event listener for movement
@@ -178,37 +194,49 @@
             modal.style.display = 'block';
         }
 
+        // Show win modal
+        function showWinModal() {
+            const modal = document.getElementById('winModal');
+            modal.style.display = 'block';
+        }
+
         // Navigate to the next page
         function goToNextPage() {
             location.href = 't2a13-keydown.html'; // Replace with your next page URL
         }
 
-        // Close modal when clicking outside of it
+        // Close modal when clicking outside of modal content
         window.onclick = function(event) {
-            const modal = document.getElementById('lossModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
+            const lossModal = document.getElementById('lossModal');
+            const winModal = document.getElementById('winModal');
+            if (event.target === lossModal) {
+                lossModal.style.display = "none";
+            }
+            if (event.target === winModal) {
+                winModal.style.display = "none";
             }
         }
 
-        // Initialize Charizard's position
+        // Initialize images' positions
         window.onload = function() {
             const img2 = document.getElementById('myImg02');
-            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // start Charizard on the right side of the screen
-            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // random vertical position
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // Start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // Random vertical position
+            
+            const img3 = document.getElementById('myImg03');
+            img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; // Random horizontal position
+            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; // Random vertical position
+            
+            const img4 = document.getElementById('myImg04');
+            img4.style.left = (window.innerWidth - parseInt(img4.style.width) - 20) + 'px'; // Align to the right
+            img4.style.top = (window.innerHeight / 2 - parseInt(img4.style.height) / 2) + 'px'; // Center vertically
         };
-
     </script>
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-
-    <input type="button" id="autoBackgroundButton" value="Start Background Movement" onclick="toggleBackgroundMovement()">
-
-    <input type="button" value="Image Right Fast Button" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-        document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-        myCheckHit(); // Checks for all collisions
-    }"><br><br>
+    <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+    <img id="myImg04" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5">
 
 </body>
 </html>
