@@ -44,21 +44,12 @@
         .button:hover {
             background-color: #45a049; 
         }
-        /* Positioning myImage4 */
-        #myImage4 {
-            position: absolute;
-            width: 100px; /* Set your desired width */
-            height: 100px; /* Set your desired height */
-            top: 50%; /* Center it vertically */
-            right: 20px; /* Spacing from the right */
-            transform: translateY(-50%); /* Center it */
-        }
     </style>
 </head>
 
 <body id="myBody">
 
-    <h1>T2A11 Game Template by Fred</h1>
+    <h1>Level 1</h1>
     <h6>Version 0.0.1</h6>
     <br><br><br><br>
 
@@ -71,15 +62,16 @@
         </div>
     </div>
 
-    <!-- Modal for winning message -->
-    <div id="winModal" class="modal">
+
+      <div id="WinModal" class="modal">
         <div class="modal-content">
-            <h2>You Win!</h2>
-            <p>Congratulations! You've reached the win area.</p>
-            <button id="winPage" class="button" onclick="goToNextPage()">Next Page</button>
+            <h2>You Won</h2>
+            <p>Please click below to proceed to the next page.</p>
+            <button id="nextPage" class="button" onclick="goToNextPage()">Next Page</button>
         </div>
     </div>
 
+    
     <script>
         // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
@@ -103,17 +95,17 @@
         // Function to check for collisions
         function myCheckHit() {
             // Check for Greninja hitting the enemies
-            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03') || myHitOther('myImg01', 'myImage4')) {
+            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
             }
-
-            // Check for collision with the new image (myImage4)
-            if (myHitOther('myImg01', 'myImage4')) {
-                console.log("Greninja has collided with myImage4."); // Debugging line
-                showWinModal(); // Show the win modal when Greninja hits myImage4
-            } else {
-                console.log("No collision with myImage4."); // Debugging line
+        }
+           // Function to check for collisions
+        function myCheckHit() {
+            // Check for Greninja hitting the enemies
+            if (myHitOther('myImg01', 'myImg04') {
+                showWinModal();
+                document.getElementById('myImg01').style.left = '20px';
             }
         }
 
@@ -204,9 +196,9 @@
             modal.style.display = 'block';
         }
 
-        // Show win modal
-        function showWinModal() {
-            const modal = document.getElementById('winModal');
+
+          function showWonModal() {
+            const modal = document.getElementById('WonModal');
             modal.style.display = 'block';
         }
 
@@ -229,15 +221,17 @@
         // Close modal when clicking outside of modal content
         window.onclick = function(event) {
             const lossModal = document.getElementById('lossModal');
-            const winModal = document.getElementById('winModal');
             if (event.target === lossModal) {
                 lossModal.style.display = "none";
             }
-            if (event.target === winModal) {
-                winModal.style.display = "none";
-            }
         }
 
+            window.onclick = function(event) {
+            const lossModal = document.getElementById('WonModal');
+            if (event.target === WonModal) {
+                lossModal.style.display = "none";
+            }
+        }
         // Initialize images' positions
         window.onload = function() {
             const img2 = document.getElementById('myImg02');
@@ -247,19 +241,18 @@
             const img3 = document.getElementById('myImg03');
             img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; // Random horizontal position
             img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; // Random vertical position
-            
-            // Initialize myImage4
-            const winImage = document.getElementById('myImage4');
-            winImage.style.top = (window.innerHeight / 2 - 50) + 'px'; // Center vertically
+
+           
+            const img4 = document.getElementById('myImg04');
+            img4.style.left = (Math.random() * (window.innerWidth - parseInt(img4.style.width))) + 'px'; // Random horizontal position
+            img4.style.top = (Math.random() * (window.innerHeight - parseInt(img4.style.height))) + 'px'; // Random vertical position 
         };
     </script>
 
     <img id="myImg01" style="position:absolute; width:100px; height:80px; top:0px; left:50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
     <img id="myImg02" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-    <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="New Chaser">
-    
-    <!-- New image myImage4 -->
-    <img id="myImage4" src="https://i.ibb.co/p02Fkgx/OIP-5.jpg" alt="Win Area" />
+    <img id="myImg03" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+     <img id="myImg04" style="position:absolute; width:100px; height:80px; top:0px; left:0px;" src="https://ibb.co/g64h03Y" alt="Coin">
 
     <input type="button" id="stopMovement" class="button" value="Stop Enemy Movement" onclick="stopEnemyMovement()">
     <input type="button" id="increaseSpeed" class="button" value="Increase Speed" onclick="increaseSpeed()">
