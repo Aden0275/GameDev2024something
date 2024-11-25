@@ -105,7 +105,7 @@
         // Function to check for collisions
         function myCheckHit() {
             // Check for Greninja hitting the enemies
-            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
+            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) || myHitOther('myImg01', 'myImg04')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
             }
