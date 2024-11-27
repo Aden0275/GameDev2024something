@@ -93,9 +93,18 @@
     </div>
 
     <script>
+        // Physics variables
         let moveImg1 = { left: false, up: false, right: false, down: false };
         let movingEnemy = true; // Flag to control movement of enemies
-        let speed = 5; // Initial speed of Greninja
+        let speed = 0; // Initial speed of Greninja
+        const MAX_SPEED = 10; // Maximum speed
+        const ACCELERATION = 1; // Acceleration per frame
+        const DECELERATION = 0.5; // Deceleration per frame
+
+        // Gravity variables
+        let gravity = 0.5; // Gravity acceleration
+        let verticalSpeed = 0; // Vertical speed of Greninja
+        const JUMP_STRENGTH = -10; // Initial jump speed
 
         function myHitOther(my1, my2) {
             let left1 = parseInt(document.getElementById(my1).style.left);
@@ -126,10 +135,30 @@
             const img2 = document.getElementById('myImg02');
             const img3 = document.getElementById('myImg03');
 
-            if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - speed) + 'px';
-            if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - speed) + 'px';
-            if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
-            if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
+            // Apply horizontal movement using physics
+            if (moveImg1.left) {
+                speed = Math.max(speed - ACCELERATION, -MAX_SPEED); // Accelerate left
+            } else if (moveImg1.right) {
+                speed = Math.min(speed + ACCELERATION, MAX_SPEED); // Accelerate right
+            } else { // Apply deceleration when no horizontal key is pressed
+                if (speed > 0) {
+                    speed = Math.max(speed - DECELERATION, 0);
+                } else if (speed < 0) {
+                    speed = Math.min(speed + DECELERATION, 0);
+                }
+            }
+            
+            img1.style.left = (parseInt(img1.style.left) + speed) + 'px'; // Update position based on speed
+
+            // Vertical movement with gravity
+            verticalSpeed += gravity; // Apply gravity
+            img1.style.top = (parseInt(img1.style.top) + verticalSpeed) + 'px'; // Update position with vertical speed
+
+            // Prevent Greninja from falling off the bottom of the screen
+            if (parseInt(img1.style.top) + img1.height > window.innerHeight) {
+                img1.style.top = (window.innerHeight - img1.height) + 'px';
+                verticalSpeed = 0; // Stop falling when hitting the ground
+            }
 
             if (movingEnemy) {
                 const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
@@ -166,7 +195,9 @@
                     moveImg1.left = true;
                     break;
                 case 'ArrowUp':
-                    moveImg1.up = true;
+                    if (parseInt(document.getElementById('myImg01').style.top) + 80 >= window.innerHeight) { // Simple ground check
+                        verticalSpeed = JUMP_STRENGTH; // Set jump velocity
+                    }
                     break;
                 case 'ArrowRight':
                     moveImg1.right = true;
@@ -240,7 +271,7 @@
 
         // Function to increase speed
         function increaseSpeed() {
-            speed += 1; // Increase speed by 1
+            speed = Math.min(speed + 1, MAX_SPEED); // Ensure speed does not exceed MAX_SPEED
             alert('Speed increased to ' + speed);
         }
 
