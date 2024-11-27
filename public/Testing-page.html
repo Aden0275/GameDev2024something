@@ -6,21 +6,45 @@
     <title>Local Storage Example</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f0f8ff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
         h2 {
             color: #4CAF50;
+            margin-bottom: 20px;
         }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+
         input[type="text"] {
-            width: 70%;
+            width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            transition: border-color 0.3s ease;
         }
+        
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
         input[type="button"] {
             padding: 10px 20px;
             margin-right: 10px;
@@ -29,45 +53,71 @@
             color: white;
             border: none;
             border-radius: 4px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
         }
+
         input[type="button"]:hover {
             background-color: #45a049;
+            transform: translateY(-1px);
         }
+
+        input[type="button"]:active {
+            transform: translateY(1px);
+        }
+
         .message {
             margin-top: 10px;
             color: green;
+            font-weight: bold;
         }
+
         .stored-items {
             margin-top: 20px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            background-color: #fff;
+            background-color: #f9f9f9;
         }
+
         .item {
             margin: 5px 0;
             padding: 5px;
             border-bottom: 1px solid #ddd;
         }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 600px) {
+            input[type="button"] {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<h2>Local Storage Demo by Aden</h2>
+<div class="container">
+    <h2>Local Storage Demo by Aden</h2>
 
-<label for="myText1">Text example:</label>
-<input id="myText1" type="text" placeholder="Write here to store"><br>
+    <label for="myText1">Text example:</label>
+    <input id="myText1" type="text" placeholder="Write here to store">
 
-<input type="button" value="Store Text" id="storeButton">
-<input type="button" value="Retrieve Text" id="retrieveButton">
-<input type="button" value="Clear Storage" id="clearButton">
+    <div>
+        <input type="button" value="Store Text" id="storeButton">
+        <input type="button" value="Retrieve Text" id="retrieveButton">
+        <input type="button" value="Clear Storage" id="clearButton">
+    </div>
 
-<div class="message" id="message"></div>
+    <div class="message" id="message"></div>
 
-<div class="stored-items" id="storedItemsContainer">
-    <h3>Stored Items:</h3>
-    <div id="storedItems"></div>
+    <div class="stored-items" id="storedItemsContainer">
+        <h3>Stored Items:</h3>
+        <div id="storedItems"></div>
+    </div>
 </div>
 
 <script>
