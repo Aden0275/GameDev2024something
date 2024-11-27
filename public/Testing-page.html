@@ -11,7 +11,7 @@
             color: #fff;
             text-align: center;
             overflow: hidden; /* Prevent scrollbars */
-            position: relative; /* Added for positioning */
+            margin: 0; /* Reset default body margin */
         }
         h1 {
             font-size: 3em;
@@ -58,8 +58,9 @@
             background-color: #c70039;
         }
         .game-elements {
-            position: relative;
+            position: relative; /* Ensure the floor is positioned relative to this container */
             margin: 0 auto;
+            height: 100vh; /* Full height of the viewport */
         }
         img {
             border-radius: 8px;
@@ -67,7 +68,7 @@
         }
         #floor {
             position: absolute;
-            bottom: 0;
+            bottom: 0; /* Stick to the bottom */
             left: 0;
             right: 0;
             height: 20px; /* Height of the floor */
@@ -268,7 +269,7 @@
             img2.style.left = enemyX + 'px';
             img2.style.top = (window.innerHeight - parseInt(img2.style.height) - floorHeight) + 'px'; // Position above the floor
             
-            img3.style.left = enemyX + 'px';
+            img3.style.left = enemyX + 'px'; 
             img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height) - floorHeight)) + 'px'; // Random vertical position above the floor
 
             const img4 = document.getElementById('myImg04');
@@ -291,10 +292,10 @@
     </script>
 
     <div class="game-elements">
-        <img id="myImg01" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
-        <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-        <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-        <img id="myImg04" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5">
+        <img id="myImg01" style="width: 100px; height: 80px; top: 0px; left: 50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
+        <img id="myImg02" style="width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+        <img id="myImg03" style="width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+        <img id="myImg04" style="width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5">
         <div id="floor"></div> <!-- Added floor element -->
     </div>
 
