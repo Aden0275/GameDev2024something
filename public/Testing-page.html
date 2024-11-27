@@ -11,7 +11,6 @@
             color: #fff;
             text-align: center;
             overflow: hidden; /* Prevent scrollbars */
-            margin: 0; /* Reset default body margin */
         }
         h1 {
             font-size: 3em;
@@ -21,58 +20,48 @@
             font-size: 1.5em;
             margin-bottom: 20px;
         }
+        /* Modal styles */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 999;
+            display: none; 
+            position: fixed; 
+            z-index: 999; 
             left: 0;
             top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding-top: 100px;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.8); 
+            padding-top: 100px; 
         }
         .modal-content {
-            background-color: #fff;
+            background-color: #fff; 
             color: #333;
-            margin: 5% auto;
-            padding: 20px;
+            margin: 5% auto; 
+            padding: 20px; 
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            width: 80%;
-            text-align: center;
+            width: 80%; 
+            text-align: center; 
         }
         .button {
-            background-color: #ff5733;
-            color: white;
-            border: none;
-            padding: 15px 25px;
+            background-color: #ff5733; 
+            color: white; 
+            border: none; 
+            padding: 15px 25px; 
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+            cursor: pointer; 
+            font-size: 16px; 
             transition: background-color 0.3s;
-            margin: 5px; /* Add some spacing between buttons */
         }
         .button:hover {
-            background-color: #c70039;
+            background-color: #c70039; 
         }
         .game-elements {
-            position: relative; /* Ensure the floor is positioned relative to this container */
+            position: relative;
             margin: 0 auto;
-            height: 100vh; /* Full height of the viewport */
         }
         img {
             border-radius: 8px;
-            position: absolute; /* Ensure images are positioned absolutely */
-        }
-        #floor {
-            position: absolute;
-            bottom: 0; /* Stick to the bottom */
-            left: 0;
-            right: 0;
-            height: 20px; /* Height of the floor */
-            background-color: #333; /* Color of the floor */
         }
     </style>
 </head>
@@ -82,11 +71,7 @@
     <h1>Level 1</h1>
     <h6>Version 0.0.1</h6>
 
-    <div>
-        <button id="stopEnemyButton" class="button" onclick="toggleEnemyMovement()">Stop Enemy</button>
-        <button id="increaseSpeedButton" class="button" onclick="increaseSpeed()">Increase Speed</button>
-    </div>
-    
+    <!-- Modal for losing message -->
     <div id="lossModal" class="modal">
         <div class="modal-content">
             <h2>You Lose</h2>
@@ -95,6 +80,7 @@
         </div>
     </div>
 
+    <!-- Modal for winning message -->
     <div id="winModal" class="modal">
         <div class="modal-content">
             <h2>You Won</h2>
@@ -104,20 +90,12 @@
     </div>
 
     <script>
-        // Physics variables
+        // Global movement flags
         let moveImg1 = { left: false, up: false, right: false, down: false };
-        let movingEnemy = true; // Flag to control movement of enemies
-        let speed = 0; // Initial speed of Greninja
-        const MAX_SPEED = 10; // Maximum speed
-        const ACCELERATION = 1; // Acceleration per frame
-        const DECELERATION = 0.5; // Deceleration per frame
+        let movingEnemy = true; // Flag to control movement of myImage2 and myImage3
+        let speed = 5; // Initial speed of myImage1
 
-        // Gravity variables
-        let gravity = 0.5; // Gravity acceleration
-        let verticalSpeed = 0; // Vertical speed of Greninja
-        const JUMP_STRENGTH = -10; // Initial jump speed
-        const floorHeight = 20; // Height of the floor
-
+        // Function to check if two elements are colliding
         function myHitOther(my1, my2) {
             let left1 = parseInt(document.getElementById(my1).style.left);
             let right1 = left1 + parseInt(document.getElementById(my1).style.width);
@@ -130,49 +108,36 @@
             return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
         }
 
+        // Function to check for collisions
         function myCheckHit() {
+            // Check for Greninja hitting the enemies
             if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
                 showLossModal();
                 document.getElementById('myImg01').style.left = '20px';
             }
 
+            // Check for winning condition with myImg04
             if (myHitOther('myImg01', 'myImg04')) {
                 showWinModal();
                 document.getElementById('myImg01').style.left = '20px';
             }
         }
 
+        // Move images based on movement flags
         function moveImages() {
             const img1 = document.getElementById('myImg01');
             const img2 = document.getElementById('myImg02');
             const img3 = document.getElementById('myImg03');
 
-            // Apply horizontal movement using physics
-            if (moveImg1.left) {
-                speed = Math.max(speed - ACCELERATION, -MAX_SPEED); // Accelerate left
-            } else if (moveImg1.right) {
-                speed = Math.min(speed + ACCELERATION, MAX_SPEED); // Accelerate right
-            } else { // Apply deceleration when no horizontal key is pressed
-                if (speed > 0) {
-                    speed = Math.max(speed - DECELERATION, 0);
-                } else if (speed < 0) {
-                    speed = Math.min(speed + DECELERATION, 0);
-                }
-            }
-            
-            img1.style.left = (parseInt(img1.style.left) + speed) + 'px'; // Update position based on speed
+            // Move myImg01 (Greninja) based on flags
+            if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - speed) + 'px';
+            if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - speed) + 'px';
+            if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
+            if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
 
-            // Vertical movement with gravity
-            verticalSpeed += gravity; // Apply gravity
-            img1.style.top = (parseInt(img1.style.top) + verticalSpeed) + 'px'; // Update position with vertical speed
-
-            // Prevent Greninja from falling off the bottom of the screen
-            if (parseInt(img1.style.top) + img1.height > window.innerHeight - floorHeight) {
-                img1.style.top = (window.innerHeight - floorHeight - img1.height) + 'px';
-                verticalSpeed = 0; // Stop falling when hitting the ground
-            }
-
+            // Only move enemy images if movingEnemy is true
             if (movingEnemy) {
+                // Calculate distance and move myImg02 and myImg03 towards myImg01
                 const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
                 const deltaY2 = parseInt(img1.style.top) - parseInt(img2.style.top);
                 const distance2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
@@ -196,20 +161,21 @@
                 }
             }
 
-            myCheckHit();
+            // Check for collisions after moving
+            myCheckHit(); 
         }
 
+        // Set interval to regularly move images and check for collisions
         setInterval(moveImages, 100);
 
+        // Keydown event listener for movement
         document.addEventListener('keydown', function(event) {
             switch (event.key) {
                 case 'ArrowLeft':
                     moveImg1.left = true;
                     break;
                 case 'ArrowUp':
-                    if (parseInt(document.getElementById('myImg01').style.top) + 80 >= window.innerHeight - floorHeight) { // Simple ground check
-                        verticalSpeed = JUMP_STRENGTH; // Set jump velocity
-                    }
+                    moveImg1.up = true;
                     break;
                 case 'ArrowRight':
                     moveImg1.right = true;
@@ -220,6 +186,7 @@
             }
         });
 
+        // Keyup event listener to stop movement when key is released
         document.addEventListener('keyup', function(event) {
             switch (event.key) {
                 case 'ArrowLeft':
@@ -237,66 +204,56 @@
             }
         });
 
+        // Show loss modal
         function showLossModal() {
             const modal = document.getElementById('lossModal');
             modal.style.display = 'block';
         }
 
+        // Show win modal
         function showWinModal() {
             const modal = document.getElementById('winModal');
             modal.style.display = 'block';
         }
 
+        // Navigate to the next page
         function goToNextPage() {
-            location.href = 't2a13-keydown.html';
+            location.href = 't2a13-keydown.html'; // Replace with your next page URL
         }
 
+        // Close modal when clicking outside of modal content
         window.onclick = function(event) {
-            if (event.target === document.getElementById('lossModal')) {
-                document.getElementById('lossModal').style.display = "none";
+            const lossModal = document.getElementById('lossModal');
+            const winModal = document.getElementById('winModal');
+            if (event.target === lossModal) {
+                lossModal.style.display = "none";
             }
-            if (event.target === document.getElementById('winModal')) {
-                document.getElementById('winModal').style.display = "none";
+            if (event.target === winModal) {
+                winModal.style.display = "none";
             }
         }
 
+        // Initialize images' positions
         window.onload = function() {
             const img2 = document.getElementById('myImg02');
+            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // Start Charizard on the right side of the screen
+            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // Random vertical position
+            
             const img3 = document.getElementById('myImg03');
+            img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; // Random horizontal position
+            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; // Random vertical position
             
-            // Spawn enemies on the right side of the screen
-            const enemyX = window.innerWidth - parseInt(img2.style.width) - 50; // 50px from the right side
-            img2.style.left = enemyX + 'px';
-            img2.style.top = (window.innerHeight - parseInt(img2.style.height) - floorHeight) + 'px'; // Position above the floor
-            
-            img3.style.left = enemyX + 'px'; 
-            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height) - floorHeight)) + 'px'; // Random vertical position above the floor
-
             const img4 = document.getElementById('myImg04');
-            img4.style.left = (window.innerWidth - parseInt(img4.style.width) - 20) + 'px';
-            img4.style.top = (window.innerHeight / 2 - parseInt(img4.style.height) / 2) + 'px';
+            img4.style.left = (window.innerWidth - parseInt(img4.style.width) - 20) + 'px'; // Align to the right
+            img4.style.top = (window.innerHeight / 2 - parseInt(img4.style.height) / 2) + 'px'; // Center vertically
         };
-
-        // Function to toggle enemy movement
-        function toggleEnemyMovement() {
-            movingEnemy = !movingEnemy; // Toggle the state
-            const buttonText = movingEnemy ? 'Stop Enemy' : 'Start Enemy';
-            document.getElementById('stopEnemyButton').innerText = buttonText; // Update button text
-        }
-
-        // Function to increase speed
-        function increaseSpeed() {
-            speed = Math.min(speed + 1, MAX_SPEED); // Ensure speed does not exceed MAX_SPEED
-        }
-
     </script>
 
     <div class="game-elements">
-        <img id="myImg01" style="width: 100px; height: 80px; top: 0px; left: 50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
-        <img id="myImg02" style="width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-        <img id="myImg03" style="width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-        <img id="myImg04" style="width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5">
-        <div id="floor"></div> <!-- Added floor element -->
+        <img id="myImg01" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
+        <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+        <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
+        <img id="myImg04" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5">
     </div>
 
 </body>
