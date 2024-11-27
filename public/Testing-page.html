@@ -11,6 +11,7 @@
             color: #fff;
             text-align: center;
             overflow: hidden; /* Prevent scrollbars */
+            position: relative; /* Added for positioning */
         }
         h1 {
             font-size: 3em;
@@ -21,40 +22,40 @@
             margin-bottom: 20px;
         }
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 999; 
+            display: none;
+            position: fixed;
+            z-index: 999;
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0, 0, 0, 0.8); 
-            padding-top: 100px; 
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding-top: 100px;
         }
         .modal-content {
-            background-color: #fff; 
+            background-color: #fff;
             color: #333;
-            margin: 5% auto; 
-            padding: 20px; 
+            margin: 5% auto;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            width: 80%; 
-            text-align: center; 
+            width: 80%;
+            text-align: center;
         }
         .button {
-            background-color: #ff5733; 
-            color: white; 
-            border: none; 
-            padding: 15px 25px; 
+            background-color: #ff5733;
+            color: white;
+            border: none;
+            padding: 15px 25px;
             border-radius: 5px;
-            cursor: pointer; 
-            font-size: 16px; 
+            cursor: pointer;
+            font-size: 16px;
             transition: background-color 0.3s;
             margin: 5px; /* Add some spacing between buttons */
         }
         .button:hover {
-            background-color: #c70039; 
+            background-color: #c70039;
         }
         .game-elements {
             position: relative;
@@ -62,6 +63,15 @@
         }
         img {
             border-radius: 8px;
+            position: absolute; /* Ensure images are positioned absolutely */
+        }
+        #floor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 20px; /* Height of the floor */
+            background-color: #333; /* Color of the floor */
         }
     </style>
 </head>
@@ -105,6 +115,7 @@
         let gravity = 0.5; // Gravity acceleration
         let verticalSpeed = 0; // Vertical speed of Greninja
         const JUMP_STRENGTH = -10; // Initial jump speed
+        const floorHeight = 20; // Height of the floor
 
         function myHitOther(my1, my2) {
             let left1 = parseInt(document.getElementById(my1).style.left);
@@ -155,8 +166,8 @@
             img1.style.top = (parseInt(img1.style.top) + verticalSpeed) + 'px'; // Update position with vertical speed
 
             // Prevent Greninja from falling off the bottom of the screen
-            if (parseInt(img1.style.top) + img1.height > window.innerHeight) {
-                img1.style.top = (window.innerHeight - img1.height) + 'px';
+            if (parseInt(img1.style.top) + img1.height > window.innerHeight - floorHeight) {
+                img1.style.top = (window.innerHeight - floorHeight - img1.height) + 'px';
                 verticalSpeed = 0; // Stop falling when hitting the ground
             }
 
@@ -195,7 +206,7 @@
                     moveImg1.left = true;
                     break;
                 case 'ArrowUp':
-                    if (parseInt(document.getElementById('myImg01').style.top) + 80 >= window.innerHeight) { // Simple ground check
+                    if (parseInt(document.getElementById('myImg01').style.top) + 80 >= window.innerHeight - floorHeight) { // Simple ground check
                         verticalSpeed = JUMP_STRENGTH; // Set jump velocity
                     }
                     break;
@@ -250,13 +261,16 @@
 
         window.onload = function() {
             const img2 = document.getElementById('myImg02');
-            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px';
-            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px';
-            
             const img3 = document.getElementById('myImg03');
-            img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px';
-            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px';
             
+            // Spawn enemies on the right side of the screen
+            const enemyX = window.innerWidth - parseInt(img2.style.width) - 50; // 50px from the right side
+            img2.style.left = enemyX + 'px';
+            img2.style.top = (window.innerHeight - parseInt(img2.style.height) - floorHeight) + 'px'; // Position above the floor
+            
+            img3.style.left = enemyX + 'px';
+            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height) - floorHeight)) + 'px'; // Random vertical position above the floor
+
             const img4 = document.getElementById('myImg04');
             img4.style.left = (window.innerWidth - parseInt(img4.style.width) - 20) + 'px';
             img4.style.top = (window.innerHeight / 2 - parseInt(img4.style.height) / 2) + 'px';
@@ -272,7 +286,6 @@
         // Function to increase speed
         function increaseSpeed() {
             speed = Math.min(speed + 1, MAX_SPEED); // Ensure speed does not exceed MAX_SPEED
-            alert('Speed increased to ' + speed);
         }
 
     </script>
@@ -282,6 +295,7 @@
         <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
         <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
         <img id="myImg04" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5">
+        <div id="floor"></div> <!-- Added floor element -->
     </div>
 
 </body>
