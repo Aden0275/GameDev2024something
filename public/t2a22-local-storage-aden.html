@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,72 +7,185 @@
     <title>Local Storage Example</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+
         input[type="text"] {
-            width: 70%;
+            width: 100%;
             padding: 10px;
             margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s ease;
         }
+        
+        input[type="text"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
         input[type="button"] {
             padding: 10px 20px;
             margin-right: 10px;
             cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s, transform 0.2s;
         }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+            transform: translateY(-1px);
+        }
+
+        input[type="button"]:active {
+            transform: translateY(1px);
+        }
+
         .message {
             margin-top: 10px;
             color: green;
+            font-weight: bold;
+        }
+
+        .stored-items {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .item {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 600px) {
+            input[type="button"] {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
 
-<h2>Local Storage Demo by Aden</h2>
+<div class="container">
+    <h2>Local Storage Demo by Aden</h2>
 
-Text example: <input id="myText1" type="text" placeholder="Write here to store"><br>
+    <label for="myText1">Text example:</label>
+    <input id="myText1" type="text" placeholder="Write here to store">
 
-<input type="button" value="Store Text" id="storeButton">
-<input type="button" value="Retrieve Text" id="retrieveButton">
+    <div>
+        <input type="button" value="Store Text" id="storeButton">
+        <input type="button" value="Retrieve Text" id="retrieveButton">
+        <input type="button" value="Clear Storage" id="clearButton">
+    </div>
 
-<div class="message" id="message"></div>
+    <div class="message" id="message"></div>
+
+    <div class="stored-items" id="storedItemsContainer">
+        <h3>Stored Items:</h3>
+        <div id="storedItems"></div>
+    </div>
+</div>
 
 <script>
-    // Function to retrieve stored text on page load
-    window.onload = function() {
-        const myStorage = localStorage.getItem('myStoredText');
-        if (myStorage !== null) {
-            document.getElementById('myText1').value = myStorage;
+    const myTextField = document.getElementById('myText1');
+    const messageDiv = document.getElementById('message');
+    const storedItemsContainer = document.getElementById('storedItems');
+
+    // Function to display stored items
+    function displayStoredItems() {
+        const storedItems = localStorage.getItem('myStoredText');
+        storedItemsContainer.innerHTML = '';
+        if (storedItems) {
+            const items = storedItems.split(';'); // Split by ; to save multiple items
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.textContent = item.trim();
+                storedItemsContainer.appendChild(div);
+            });
+        } else {
+            storedItemsContainer.innerHTML = '<div>No items found.</div>';
         }
+    }
+
+    // Load stored items on page load
+    window.onload = function() {
+        myTextField.value = localStorage.getItem('myStoredText') || '';
+        displayStoredItems();
     };
 
-    // Function to store text in local storage and provide feedback
+    // Store text in local storage
     document.getElementById('storeButton').addEventListener('click', function() {
-        const textValue = document.getElementById('myText1').value;
+        const textValue = myTextField.value;
         if (textValue.trim() !== '') {
-            localStorage.setItem('myStoredText', textValue);
-            document.getElementById('message').innerText = `${textValue} has been stored.`;
-            document.getElementById('myText1').value = ''; // Clear input
+            const storedItems = localStorage.getItem('myStoredText');
+            const newItems = storedItems ? storedItems + '; ' + textValue : textValue;
+            localStorage.setItem('myStoredText', newItems);
+            messageDiv.innerText = `${textValue} has been stored.`;
+            myTextField.value = ''; // Clear input
+            displayStoredItems();
         } else {
-            document.getElementById('message').innerText = 'Please enter text to store.';
+            messageDiv.innerText = 'Please enter text to store.';
         }
     });
     
-    // Function to retrieve text from local storage
+    // Retrieve text from local storage
     document.getElementById('retrieveButton').addEventListener('click', function() {
-        const retrievedText = localStorage.getItem('myStoredText');
-        if (retrievedText !== null) {
-            document.getElementById('myText1').value = retrievedText;
-            document.getElementById('message').innerText = 'Text retrieved successfully.';
+        myTextField.value = localStorage.getItem('myStoredText') || '';
+        if (myTextField.value) {
+            messageDiv.innerText = 'Text retrieved successfully.';
         } else {
-            document.getElementById('message').innerText = 'No text found in storage.';
+            messageDiv.innerText = 'No text found in storage.';
         }
+    });
+
+    // Clear storage
+    document.getElementById('clearButton').addEventListener('click', function() {
+        localStorage.removeItem('myStoredText');
+        messageDiv.innerText = 'Storage cleared.';
+        myTextField.value = '';
+        displayStoredItems();
     });
 
     // Save to local storage when the page unloads
     window.addEventListener('beforeunload', function() {
-        const currentText = document.getElementById('myText1').value;
-        localStorage.setItem('myStoredText', currentText);
+        const currentText = myTextField.value;
+        localStorage.setItem('myStoredText', currentText); // Keep this if you want to preserve the last input
     });
 </script>
 
