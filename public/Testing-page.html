@@ -1,260 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T2A11 Game Template</title>
-    <style>
-        body {
-            background: linear-gradient(135deg, #0099ff, #66ccff);
-            font-family: 'Arial', sans-serif;
-            color: #fff;
-            text-align: center;
-            overflow: hidden; /* Prevent scrollbars */
-        }
-        h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        h6 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-        }
-        /* Modal styles */
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 999; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0, 0, 0, 0.8); 
-            padding-top: 100px; 
-        }
-        .modal-content {
-            background-color: #fff; 
-            color: #333;
-            margin: 5% auto; 
-            padding: 20px; 
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            width: 80%; 
-            text-align: center; 
-        }
-        .button {
-            background-color: #ff5733; 
-            color: white; 
-            border: none; 
-            padding: 15px 25px; 
-            border-radius: 5px;
-            cursor: pointer; 
-            font-size: 16px; 
-            transition: background-color 0.3s;
-        }
-        .button:hover {
-            background-color: #c70039; 
-        }
-        .game-elements {
-            position: relative;
-            margin: 0 auto;
-        }
-        img {
-            border-radius: 8px;
-        }
-    </style>
-</head>
 
-<body id="myBody">
 
-    <h1>Level 1</h1>
-    <h6>Version 0.0.1</h6>
+<body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg" onload="{myAuto()}" onclick="{
 
-    <!-- Modal for losing message -->
-    <div id="lossModal" class="modal">
-        <div class="modal-content">
-            <h2>You Lose</h2>
-            <p>Please click below to proceed to the next page.</p>
-            <button id="nextPage" class="button" onclick="goToNextPage()">Next Page</button>
-        </div>
-    </div>
+      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + myJump + 'px'
 
-    <!-- Modal for winning message -->
-    <div id="winModal" class="modal">
-        <div class="modal-content">
-            <h2>You Won</h2>
-            <p>Please click below to proceed to the next page.</p>
-            <button id="nextPageWin" class="button" onclick="goToNextPage()">Next Page</button>
-        </div>
-    </div>
+      myDoGravity()
+}">
 
-    <script>
-        // Global movement flags
-        let moveImg1 = { left: false, up: false, right: false, down: false };
-        let movingEnemy = true; // Flag to control movement of myImage2 and myImage3
-        let speed = 5; // Initial speed of myImage1
+<h1 align=center><font color=red>T4A04 Maze by Fred</font></h1>
 
-        // Function to check if two elements are colliding
-        function myHitOther(my1, my2) {
-            let left1 = parseInt(document.getElementById(my1).style.left);
-            let right1 = left1 + parseInt(document.getElementById(my1).style.width);
-            let top1 = parseInt(document.getElementById(my1).style.top);
-            let bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
-            let left2 = parseInt(document.getElementById(my2).style.left);
-            let right2 = left2 + parseInt(document.getElementById(my2).style.width);
-            let top2 = parseInt(document.getElementById(my2).style.top);
-            let bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
-            return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
-        }
 
-        // Function to check for collisions
-        function myCheckHit() {
-            // Check for Greninja hitting the enemies
-            if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
-                showLossModal();
-                document.getElementById('myImg01').style.left = '20px';
-            }
+<script>
 
-            // Check for winning condition with myImg04
-            if (myHitOther('myImg01', 'myImg04')) {
-                showWinModal();
-                document.getElementById('myImg01').style.left = '20px';
-            }
-        }
+   // global variables here
+   let myGlobalX = 0
+   let myClock
+   let myGravity = 0.03
+   let myJump = -40;
+   let myHorizontalJump = 5;
+   let myVertical;
+   let myHorizontal;
 
-        // Move images based on movement flags
-        function moveImages() {
-            const img1 = document.getElementById('myImg01');
-            const img2 = document.getElementById('myImg02');
-            const img3 = document.getElementById('myImg03');
+   // global functions here
+function myHitOther(my1,my2){
+   left1   = parseInt(document.getElementById(my1).style.left)
+   right1  = left1 + parseInt(document.getElementById(my1).style.width)
+   top1    = parseInt(document.getElementById(my1).style.top)   
+   bottom1 = top1   + parseInt(document.getElementById(my1).style.height)
+   left2   = parseInt(document.getElementById(my2).style.left)
+   right2  = left2 + parseInt(document.getElementById(my2).style.width)
+   top2    = parseInt(document.getElementById(my2).style.top)   
+   bottom2 = top2   + parseInt(document.getElementById(my2).style.height)
+   if ((right1  >=  left2  ) &&      	   
+       (bottom1 >=  top2   ) &&
+       (left1   <=  right2 ) &&
+       (top1    <=  bottom2) ){
+       return true
+   }
+}
 
-            // Move myImg01 (Greninja) based on flags
-            if (moveImg1.left) img1.style.left = (parseInt(img1.style.left) - speed) + 'px';
-            if (moveImg1.up) img1.style.top = (parseInt(img1.style.top) - speed) + 'px';
-            if (moveImg1.right) img1.style.left = (parseInt(img1.style.left) + speed) + 'px';
-            if (moveImg1.down) img1.style.top = (parseInt(img1.style.top) + speed) + 'px';
+function myDoGravity(){
+     myVertical = parseInt(document.getElementById('myImg01').style.top) + 2
+     myHorizontal = parseInt(document.getElementById('myImg01').style.left) 
+     document.getElementById('myImg01').style.left = myHorizontal + myHorizontalJump
+     document.getElementById('myImg01').style.top = myVertical + (myVertical * myGravity) + 'px'
+}
 
-            // Only move enemy images if movingEnemy is true
-            if (movingEnemy) {
-                // Calculate distance and move myImg02 and myImg03 towards myImg01
-                const deltaX2 = parseInt(img1.style.left) - parseInt(img2.style.left);
-                const deltaY2 = parseInt(img1.style.top) - parseInt(img2.style.top);
-                const distance2 = Math.sqrt(deltaX2 * deltaX2 + deltaY2 * deltaY2);
-                if (distance2 > 0) {
-                    const moveX2 = (deltaX2 / distance2) * speed; 
-                    const moveY2 = (deltaY2 / distance2) * speed; 
-                    
-                    img2.style.left = (parseInt(img2.style.left) + (moveX2 > 0 ? Math.min(moveX2, speed) : Math.max(moveX2, -speed))) + 'px';
-                    img2.style.top = (parseInt(img2.style.top) + (moveY2 > 0 ? Math.min(moveY2, speed) : Math.max(moveY2, -speed))) + 'px';
-                }
 
-                const deltaX3 = parseInt(img1.style.left) - parseInt(img3.style.left);
-                const deltaY3 = parseInt(img1.style.top) - parseInt(img3.style.top);
-                const distance3 = Math.sqrt(deltaX3 * deltaX3 + deltaY3 * deltaY3);
-                if (distance3 > 0) {
-                    const moveX3 = (deltaX3 / distance3) * speed;
-                    const moveY3 = (deltaY3 / distance3) * speed;
 
-                    img3.style.left = (parseInt(img3.style.left) + (moveX3 > 0 ? Math.min(moveX3, speed) : Math.max(moveX3, -speed))) + 'px';
-                    img3.style.top = (parseInt(img3.style.top) + (moveY3 > 0 ? Math.min(moveY3, speed) : Math.max(moveY3, -speed))) + 'px';
-                }
-            }
+   // global functions here
+function myAuto(){
+  clearInterval(myClock)
+  myTimer02 = setInterval(function(){
+      myDoGravity()
+      myCheckHit()     // checks for all collisions
+  }, 100)
 
-            // Check for collisions after moving
-            myCheckHit(); 
-        }
+}
 
-        // Set interval to regularly move images and check for collisions
-        setInterval(moveImages, 100);
 
-        // Keydown event listener for movement
-        document.addEventListener('keydown', function(event) {
-            switch (event.key) {
-                case 'ArrowLeft':
-                    moveImg1.left = true;
-                    break;
-                case 'ArrowUp':
-                    moveImg1.up = true;
-                    break;
-                case 'ArrowRight':
-                    moveImg1.right = true;
-                    break;
-                case 'ArrowDown':
-                    moveImg1.down = true;
-                    break;
-            }
-        });
+function myCheckHit(){
 
-        // Keyup event listener to stop movement when key is released
-        document.addEventListener('keyup', function(event) {
-            switch (event.key) {
-                case 'ArrowLeft':
-                    moveImg1.left = false;
-                    break;
-                case 'ArrowUp':
-                    moveImg1.up = false;
-                    break;
-                case 'ArrowRight':
-                    moveImg1.right = false;
-                    break;
-                case 'ArrowDown':
-                    moveImg1.down = false;
-                    break;
-            }
-        });
+   if ( myHitOther('myImg01','myImg02') ){
+       //alert('you lose')
+      document.getElementById('myImg01').style.left = '20px'
+      document.getElementById('myImg01').style.top = '60px'
+   }   
+   
+   if ( myHitOther('myImg01','myImg03') ){
+       //alert('you lose')
+      document.getElementById('myImg01').style.left = '20px'
+      document.getElementById('myImg01').style.top = '60px'
+   }   
+   
 
-        // Show loss modal
-        function showLossModal() {
-            const modal = document.getElementById('lossModal');
-            modal.style.display = 'block';
-        }
 
-        // Show win modal
-        function showWinModal() {
-            const modal = document.getElementById('winModal');
-            modal.style.display = 'block';
-        }
+   // YOU WIN and go to next level!
 
-        // Navigate to the next page
-        function goToNextPage() {
-            location.href = 't2a13-keydown.html'; // Replace with your next page URL
-        }
+   if ( myHitOther('myImg01','myImg04') ){
+       alert('You Win, now go to the next level')
+      document.getElementById('myImg01').style.left = '20px'
+      location = 'https://www.google.ca'
+   }
 
-        // Close modal when clicking outside of modal content
-        window.onclick = function(event) {
-            const lossModal = document.getElementById('lossModal');
-            const winModal = document.getElementById('winModal');
-            if (event.target === lossModal) {
-                lossModal.style.display = "none";
-            }
-            if (event.target === winModal) {
-                winModal.style.display = "none";
-            }
-        }
+   // more if statements here
 
-        // Initialize images' positions
-        window.onload = function() {
-            const img2 = document.getElementById('myImg02');
-            img2.style.left = (window.innerWidth - parseInt(img2.style.width) - 50) + 'px'; // Start Charizard on the right side of the screen
-            img2.style.top = (Math.random() * (window.innerHeight - parseInt(img2.style.height))) + 'px'; // Random vertical position
-            
-            const img3 = document.getElementById('myImg03');
-            img3.style.left = (Math.random() * (window.innerWidth - parseInt(img3.style.width))) + 'px'; // Random horizontal position
-            img3.style.top = (Math.random() * (window.innerHeight - parseInt(img3.style.height))) + 'px'; // Random vertical position
-            
-            const img4 = document.getElementById('myImg04');
-            img4.style.left = (window.innerWidth - parseInt(img4.style.width) - 20) + 'px'; // Align to the right
-            img4.style.top = (window.innerHeight / 2 - parseInt(img4.style.height) / 2) + 'px'; // Center vertically
-        };
-    </script>
+}
 
-    <div class="game-elements">
-        <img id="myImg01" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 50px;" src="https://i.ibb.co/NtcGP2L/greninja.jpg" alt="Greninja">
-        <img id="myImg02" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-        <img id="myImg03" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/b612Tcx/charizard.jpg" alt="Charizard">
-        <img id="myImg04" style="position: absolute; width: 100px; height: 80px; top: 0px; left: 0px;" src="https://i.ibb.co/WDXHg9m/OIP-5.jpg" alt="OIP-5">
-    </div>
 
-</body>
-</html>
+</script>
+
+
+
+
+<input type=button value="Auto Background Left" onclick="{
+  clearInterval(myClock)
+  let myTemp = '100px 0px'
+  myClock = setInterval(function(){
+      myGlobalX -= 5
+      myTemp =  myGlobalX + 'px 0px'
+      document.getElementById('myBody').style.backgroundPosition = myTemp
+  }, 100)
+    
+}">
+
+
+<input type=button value="Right" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+  document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px'
+  myCheckHit()     // checks for all collisions
+}">
+
+<input type=button value="Down" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
+  document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px'
+  myCheckHit()     // checks for all collisions
+}"><br><br>
+
+
+
+
+<img id="myImg01" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left: 50px; top:190px;">
+<img id="myImg02" src="myImgNew.jpg"  style="position:absolute; width:10px; height:200px; left:350px; top:90px;">
+<img id="myImg03" src="myImgNew.jpg"  style="position:absolute; width:200px; height:10px; left:500px; top:400px;">
+<img id="myImg04" src="myImgNew.jpg"  style="position:absolute; width:100px; height:80px; left:800px; top:400px;">
