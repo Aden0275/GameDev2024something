@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .upgrades {
+            margin-top: 20px;
+        }
+
+        .upgrades div {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Clicker Game</h1>
+        <div class="score">
+            <h2>Points: <span id="points">0</span></h2>
+        </div>
+        <button id="clickButton">Click Me!</button>
+        <div class="upgrades">
+            <h3>Upgrades</h3>
+            <div>
+                <button id="upgradeButton">Upgrade Click (Cost: 10 Points)</button>
+                <p id="upgradeStatus">Upgrade Level: 0</p>
+            </div>
+            <div>
+                <button id="autoClickButton">Auto Clicker (Cost: 50 Points)</button>
+                <p id="autoClickStatus">Auto Clicker Active: No</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let points = 0;
+        let clickValue = 1;
+        let autoClickerActive = false;
+        let autoClickInterval;
+
+        document.getElementById('clickButton').addEventListener('click', () => {
+            points += clickValue;
+            updatePointsDisplay();
+        });
+
+        document.getElementById('upgradeButton').addEventListener('click', () => {
+            if (points >= 10) {
+                points -= 10;
+                clickValue++;
+                document.getElementById('upgradeStatus').innerText = `Upgrade Level: ${clickValue - 1}`;
+                updatePointsDisplay();
+            } else {
+                alert('Not enough points to upgrade!');
+            }
+        });
+
+        document.getElementById('autoClickButton').addEventListener('click', () => {
+            if (points >= 50) {
+                points -= 50;
+                autoClickerActive = true;
+                document.getElementById('autoClickStatus').innerText = 'Auto Clicker Active: Yes';
+                updatePointsDisplay();
+
+                if (!autoClickInterval) {
+                    autoClickInterval = setInterval(() => {
+                        points += clickValue;
+                        updatePointsDisplay();
+                    }, 1000);
+                }
+            } else {
+                alert('Not enough points to buy the Auto Clicker!');
+            }
+        });
+
+        function updatePointsDisplay() {
+            document.getElementById('points').innerText = points;
+        }
+    </script>
+</body>
+</html>
