@@ -32,6 +32,7 @@
             background-color: #28a745;
             color: white;
             cursor: pointer;
+            margin: 5px;
         }
 
         button:hover {
@@ -61,6 +62,14 @@
                 <p id="upgradeStatus">Upgrade Level: 0</p>
             </div>
             <div>
+                <button id="hundredUpgradeButton">Upgrade Click +100 (Cost: 1000 Points)</button>
+                <p id="hundredUpgradeStatus">Upgrade Level: 0</p>
+            </div>
+            <div>
+                <button id="thousandUpgradeButton">Upgrade Click +1000 (Cost: 10000 Points)</button>
+                <p id="thousandUpgradeStatus">Upgrade Level: 0</p>
+            </div>
+            <div>
                 <button id="autoClickButton">Auto Clicker (Cost: 50 Points)</button>
                 <p id="autoClickStatus">Auto Clicker Active: No</p>
             </div>
@@ -83,6 +92,28 @@
                 points -= 10;
                 clickValue++;
                 document.getElementById('upgradeStatus').innerText = `Upgrade Level: ${clickValue - 1}`;
+                updatePointsDisplay();
+            } else {
+                alert('Not enough points to upgrade!');
+            }
+        });
+
+        document.getElementById('hundredUpgradeButton').addEventListener('click', () => {
+            if (points >= 1000) {
+                points -= 1000;
+                clickValue += 100;
+                document.getElementById('hundredUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 101}`;
+                updatePointsDisplay();
+            } else {
+                alert('Not enough points to upgrade!');
+            }
+        });
+
+        document.getElementById('thousandUpgradeButton').addEventListener('click', () => {
+            if (points >= 10000) {
+                points -= 10000;
+                clickValue += 1000;
+                document.getElementById('thousandUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 1001}`;
                 updatePointsDisplay();
             } else {
                 alert('Not enough points to upgrade!');
