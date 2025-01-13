@@ -121,6 +121,7 @@
             <button id="autoClickButton">Auto Clicker (Cost: 50 Points)</button>
             <p id="autoClickStatus">Auto Clicker Active: No</p>
             <button id="rebirthButton">Rebirth (Cost: 1,000,000,000 Points)</button>
+            <button id="autoRebirthButton">Auto Rebirth: Off</button>
         </div>
         <div class="column">
             <h3>Multipliers</h3>
@@ -149,6 +150,7 @@
         let rebirths = 0;
         let initialClickValue = 10; // Starting click value after rebirth
         let autoClickerSpeed = 1000; // Initial auto clicker speed is 1000 milliseconds (1 second)
+        let autoRebirthActive = false; // Auto rebirth flag
 
         let multipliers = {
             x10: { cost: 1000000, purchased: false },
@@ -162,6 +164,7 @@
         function updatePointsDisplay() {
             document.getElementById('points').innerText = points.toLocaleString(); // Format number
             checkMultipliersAvailability();
+            checkAutoRebirth(); // Check if auto rebirth should trigger
         }
 
         // Check if multipliers can be purchased after 2 rebirths
@@ -184,6 +187,17 @@
                 document.getElementById('autoSpeed05Button').disabled = false;
                 document.getElementById('autoSpeed02Button').disabled = false;
                 document.getElementById('autoSpeed001Button').disabled = false;
+            }
+        }
+
+        // Check if auto rebirth should happen
+        function checkAutoRebirth() {
+            if (autoRebirthActive && points >= 1000000000) {
+                points -= 1000000000; // Cost of rebirth
+                rebirths++;
+                clickValue = initialClickValue * Math.pow(10, rebirths - 1); // Update click value based on rebirths
+                document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
+                updatePointsDisplay();
             }
         }
 
@@ -211,8 +225,6 @@
                 clickValue++;
                 document.getElementById('upgradeStatus').innerText = `Upgrade Level: ${clickValue - 1}`;
                 updatePointsDisplay();
-            } else {
-                alert('Not enough points to upgrade!');
             }
         });
 
@@ -222,8 +234,6 @@
                 clickValue += 100;
                 document.getElementById('hundredUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 101}`;
                 updatePointsDisplay();
-            } else {
-                alert('Not enough points to upgrade!');
             }
         });
 
@@ -233,8 +243,6 @@
                 clickValue += 1000;
                 document.getElementById('thousandUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 1001}`;
                 updatePointsDisplay();
-            } else {
-                alert('Not enough points to upgrade!');
             }
         });
 
@@ -244,8 +252,6 @@
                 clickValue += 10000;
                 document.getElementById('tenThousandUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 10001}`;
                 updatePointsDisplay();
-            } else {
-                alert('Not enough points to upgrade!');
             }
         });
 
@@ -255,8 +261,6 @@
                 clickValue += 100000;
                 document.getElementById('hundredThousandUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 100001}`;
                 updatePointsDisplay();
-            } else {
-                alert('Not enough points to upgrade!');
             }
         });
 
@@ -266,8 +270,6 @@
                 clickValue += 1000000;
                 document.getElementById('millionUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 1000001}`;
                 updatePointsDisplay();
-            } else {
-                alert('Not enough points to upgrade!');
             }
         });
 
@@ -289,7 +291,7 @@
                 clearInterval(autoClickInterval); // Clear interval when auto clicker is turned off
                 autoClickInterval = null; // Reset the interval
             } else {
-                alert('Not enough points to buy the Auto Clicker!');
+                // Not enough points to buy the Auto Clicker (No alert)
             }
         });
 
@@ -299,10 +301,7 @@
         document.getElementById('autoSpeed001Button').addEventListener('click', () => purchaseAutoClickSpeedUpgrades(10)); // 0.01 seconds
 
         function purchaseAutoClickSpeedUpgrades(speed) {
-            if (rebirths < 3) {
-                alert('You need at least 3 rebirths to purchase auto clicker speed upgrades!');
-                return;
-            }
+            if (rebirths < 3) return; // Cannot purchase speed upgrades
 
             if (speed === 500) { // For 0.5 speed
                 if (points >= 100000 && !document.getElementById('autoSpeed05Button').disabled) {
@@ -310,8 +309,6 @@
                     autoClickerSpeed = 500; // Set auto click speed to 0.5 seconds
                     document.getElementById('autoSpeed05Button').disabled = true; // Disable button after purchase
                     updatePointsDisplay();
-                } else {
-                    alert('Not enough points or speed already purchased!');
                 }
             }
 
@@ -321,8 +318,6 @@
                     autoClickerSpeed = 200; // Set auto click speed to 0.2 seconds
                     document.getElementById('autoSpeed02Button').disabled = true; // Disable button after purchase
                     updatePointsDisplay();
-                } else {
-                    alert('Not enough points or speed already purchased!');
                 }
             }
 
@@ -332,8 +327,6 @@
                     autoClickerSpeed = 10; // Set auto click speed to 0.01 seconds
                     document.getElementById('autoSpeed001Button').disabled = true; // Disable button after purchase
                     updatePointsDisplay();
-                } else {
-                    alert('Not enough points or speed already purchased!');
                 }
             }
         }
@@ -342,19 +335,14 @@
         document.getElementById('rebirthButton').addEventListener('click', () => {
             if (points >= 1000000000) { // Check for 1 billion points
                 points = 0; // Reset points
-                rebirths += 1; // Increment rebirth count
+                rebirths++; // Increment rebirth count
                 clickValue = initialClickValue * Math.pow(10, rebirths - 1); // Update click value based on rebirths
                 document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
                 updatePointsDisplay();
-
                 // Reset what you need for the next gameplay
                 autoClickerActive = false;
                 clearInterval(autoClickInterval);
                 autoClickInterval = null; // Reset auto click interval on rebirth
-
-                alert(`Rebirth successful! You are now on rebirth number ${rebirths}.`);
-            } else {
-                alert('Not enough points to rebirth!');
             }
         });
 
@@ -366,20 +354,22 @@
         document.getElementById('multiplier100000Button').addEventListener('click', () => purchaseMultiplier('x100000'));
 
         function purchaseMultiplier(multiplier) {
-            if (rebirths < 2) {
-                alert('You need at least 2 rebirths to purchase multipliers!');
-                return;
-            }
+            if (rebirths < 2) return; // Need at least 2 rebirths
 
             if (points >= multipliers[multiplier].cost && !multipliers[multiplier].purchased) {
                 points -= multipliers[multiplier].cost;
                 multipliers[multiplier].purchased = true;
                 document.getElementById(`multiplier${multiplier.replace('x', '')}Button`).disabled = true;
                 updatePointsDisplay();
-            } else {
-                alert('Not enough points or multiplier already purchased!');
             }
         }
+
+        // Auto rebirth toggle functionality
+        document.getElementById('autoRebirthButton').addEventListener('click', () => {
+            autoRebirthActive = !autoRebirthActive; // Toggle status
+            document.getElementById('autoRebirthButton').innerText = `Auto Rebirth: ${autoRebirthActive ? 'On' : 'Off'}`;
+            if (autoRebirthActive) checkAutoRebirth(); // Check immediately if it needs to rebirth
+        });
     </script>
 </body>
 </html>
