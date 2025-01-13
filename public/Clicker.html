@@ -180,18 +180,22 @@
 
         // Auto clicker functionality
         document.getElementById('autoClickButton').addEventListener('click', () => {
-            if (points >= 50) {
+            if (points >= 50 && !autoClickerActive) {
                 points -= 50;
                 autoClickerActive = true;
                 document.getElementById('autoClickStatus').innerText = 'Auto Clicker Active: Yes';
                 updatePointsDisplay();
 
-                if (!autoClickInterval) {
-                    autoClickInterval = setInterval(() => {
-                        points += clickValue;
-                        updatePointsDisplay();
-                    }, 10); // Providing clicks every 0.01 seconds (10 milliseconds)
-                }
+                autoClickInterval = setInterval(() => {
+                    points += clickValue;
+                    updatePointsDisplay();
+                }, 500); // Providing clicks every 0.5 seconds
+            } else if (autoClickerActive) {
+                // Turn off auto clicker if it's already active
+                autoClickerActive = false;
+                document.getElementById('autoClickStatus').innerText = 'Auto Clicker Active: No';
+                clearInterval(autoClickInterval);
+                autoClickInterval = null; // Reset the interval
             } else {
                 alert('Not enough points to buy the Auto Clicker!');
             }
