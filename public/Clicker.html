@@ -105,7 +105,7 @@
         let autoClickInterval;
         let rebirths = 0;
         let initialClickValue = 10; // Starting click value after rebirth
-        let autoClickerSpeed = 'normal'; // 'normal', 'fast', 'ultra-fast'
+        let autoClickerSpeed = 1000; // Initial auto clicker speed is 1000 milliseconds (1 second)
 
         let multipliers = {
             x10: { cost: 1000000, purchased: false },
@@ -141,24 +141,6 @@
                 document.getElementById('autoSpeed05Button').disabled = false;
                 document.getElementById('autoSpeed02Button').disabled = false;
                 document.getElementById('autoSpeed001Button').disabled = false;
-                // Check for previously purchased upgrades
-                checkPurchasedAutoClickSpeedUpgrades();
-            }
-        }
-
-        // Check for previously purchased auto click speed upgrades
-        function checkPurchasedAutoClickSpeedUpgrades() {
-            if (!localStorage.getItem('autoClickSpeed05Purchased')) {
-                document.getElementById('autoSpeed05Button').disabled = true;
-                localStorage.setItem('autoClickSpeed05Purchased', true);
-                if (!localStorage.getItem('autoClickSpeed02Purchased')) {
-                    document.getElementById('autoSpeed02Button').disabled = true;
-                    localStorage.setItem('autoClickSpeed02Purchased', true);
-                    if (!localStorage.getItem('autoClickSpeed001Purchased')) {
-                        document.getElementById('autoSpeed001Button').disabled = true;
-                        localStorage.setItem('autoClickSpeed001Purchased', true);
-                    }
-                }
             }
         }
 
@@ -255,113 +237,107 @@
                 updatePointsDisplay();
 
                 autoClickInterval = setInterval(() => {
-                    points += clickValue * getMultiplier(); // Apply the multiplier
+                    points += clickValue * getMultiplier(); // Apply the multiplier for auto clicker points
                     updatePointsDisplay();
-                    if (autoClickerSpeed === 'fast') {
-                        clickValue += Math.floor(Math.random() * clickValue); // Randomly increase click value when using fast speed
-                    }
-                    if (autoClickerSpeed === 'ultra-fast') {
-                        clickValue += Math.floor(Math.random() * Math.floor(clickValue * Math.random())); // Randomly increase click value with higher chance when using ultra-fast speed
-                    }
-                    if (!autoClickerActive) { // Check for auto clicker being turned off
-                        clearInterval(autoClickInterval); // Clear interval when auto clicker is turned off
-                        autoClickInterval = null; // Reset the interval
-                    }
-                }, autoClickerSpeed === 'normal' ? Math.floor(Math.random() * Math.floor(500)) : autoClickerSpeed === 'fast' ? Math.floor(Math.random() * Math.floor(200)) : Math.floor(Math.random() * Math.floor(50))); // Provide clicks at random intervals between normal and ultra-fast speeds
+                }, autoClickerSpeed); // Default speed of 1000ms (1 second)
             } else if (autoClickerActive) {
                 autoClickerActive = false;
                 document.getElementById('autoClickStatus').innerText = 'Auto Clicker Active: No';
                 clearInterval(autoClickInterval); // Clear interval when auto clicker is turned off
                 autoClickInterval = null; // Reset the interval
-                clickValue *= Math.random(); // Randomly decrease click value when auto clicker is turned off
-                updatePointsDisplay();
             } else {
                 alert('Not enough points to buy the Auto Clicker!');
             }
         });
 
         // Auto click speed upgrades functionality
-        document.getElementById('autoSpeed05Button').addEventListener('click', () => purchaseAutoClickSpeedUpgrades(5));
-        document.getElementById('autoSpeed02Button').addEventListener('click', () => purchaseAutoClickSpeedUpgrades(2));
-        document.getElementById('autoSpeed001Button').addEventListener('click', () => purchaseAutoClickSpeedUpgrades(0.01));
+        document.getElementById('autoSpeed05Button').addEventListener('click', () => purchaseAutoClickSpeedUpgrades(500)); // 500 ms speed
+        document.getElementById('autoSpeed02Button').addEventListener('click', () => purchaseAutoClickSpeedUpgrades(200)); // 200 ms speed
+        document.getElementById('autoSpeed001Button').addEventListener('click', () => purchaseAutoClickSpeedUpgrades(10)); // 10 ms speed
 
-        function purchaseAutoClickSpeedUpgrades(speed) { // Purchase auto click speed upgrades
-            if (speed === 'fast') { // Check for fast speed upgrade cost and restrictions
-                if (!localStorage.getItem('fastAutoClickPurchased')) { 
-                    if (points >= Math.pow(10,9)) { // Check for enough points
-                        points -= Math.pow(10,9); // Deduct cost from points
-                        autoClickerSpeed = 'fast'; // Update auto click speed to fast
-                        document.getElementById('autoSpeed05Button').disabled = true; // Disable fast speed upgrade button after purchase
-                        localStorage.setItem('fastAutoClickPurchased', true); // Store fast speed purchase in local storage
-                        alert("Fast Auto Click Speed Purchased!"); 
-                    } else { alert("Not enough points to purchase Fast Auto Click Speed!"); } 
-                } else { alert("Fast Auto Click Speed already purchased!"); } 
+        function purchaseAutoClickSpeedUpgrades(speed) {
+            // Checks to ensure upgrades can only be purchased once
+            if (rebirths < 3) {
+                alert('You need at least 3 rebirths to purchase auto clicker speed upgrades!');
+                return;
             }
-            if (speed === 'ultra-fast') { 
-                if (!localStorage.getItem('ultraFastAutoClickPurchased')) { 
-                    if (points >= Math.pow(10,12)) { 
-                        points -= Math.pow(10,12); 
-                        autoClickerSpeed = 'ultra-fast'; 
-                        document.getElementById('autoSpeed02Button').disabled = true; 
-                        localStorage.setItem('ultraFastAutoClickPurchased', true); 
-                        alert("Ultra-Fast Auto Click Speed Purchased!"); 
-                    } else { alert("Not enough points to purchase Ultra-Fast Auto Click Speed!"); } 
-                } else { alert("Ultra-Fast Auto Click Speed already purchased!"); } 
+
+            if (speed === 500) { // For 0.5 speed
+                if (points >= 100000 && !document.getElementById('autoSpeed05Button').disabled) {
+                    points -= 100000;
+                    autoClickerSpeed = 500; // Set auto click speed to 0.5 seconds
+                    document.getElementById('autoSpeed05Button').disabled = true; // Disable button after purchase
+                    updatePointsDisplay();
+                } else {
+                    alert('Not enough points or speed already purchased!');
+                }
             }
-            if (speed === 'normal') { 
-                if (!localStorage.getItem('normalAutoClickPurchased')) { 
-                    if (points >= Math.pow(10,8)) { 
-                        points -= Math.pow(10,8); 
-                        autoClickerSpeed = 'normal'; 
-                        document.getElementById('autoSpeed001Button').disabled = true; 
-                        localStorage.setItem('normalAutoClickPurchased', true); 
-                        alert("Normal Auto Click Speed Purchased!"); 
-                    } else { alert("Not enough points to purchase Normal Auto Click Speed!"); } 
-                } else { alert("Normal Auto Click Speed already purchased!"); } 
+
+            if (speed === 200) { // For 0.2 speed
+                if (points >= 100000000 && !document.getElementById('autoSpeed02Button').disabled) {
+                    points -= 100000000;
+                    autoClickerSpeed = 200; // Set auto click speed to 0.2 seconds
+                    document.getElementById('autoSpeed02Button').disabled = true; // Disable button after purchase
+                    updatePointsDisplay();
+                } else {
+                    alert('Not enough points or speed already purchased!');
+                }
             }
-            updatePointsDisplay(); // Update points display after purchasing or upgrading auto click speed
+
+            if (speed === 10) { // For 0.01 speed
+                if (points >= 100000000000 && !document.getElementById('autoSpeed001Button').disabled) {
+                    points -= 100000000000;
+                    autoClickerSpeed = 10; // Set auto click speed to 0.01 seconds
+                    document.getElementById('autoSpeed001Button').disabled = true; // Disable button after purchase
+                    updatePointsDisplay();
+                } else {
+                    alert('Not enough points or speed already purchased!');
+                }
+            }
         }
 
-        document.getElementById('rebirthButton').addEventListener('click', () => rebirth());
-
-        function rebirth() { // Rebirth functionality with restrictions and effects on game state
-            if (points >= Math.pow(10,9)) { 
-                points = Math.floor(points / Math.floor(Math.random() * Math.floor(Math.random() * Math.floor(Math.random())))); // Randomly reduce points when rebirthing
-                rebirths++; // Increment rebirth count
-                clickValue = initialClickValue * Math.pow(10,rebirths -1); // Update click value based on rebirth count
+        // Rebirth functionality
+        document.getElementById('rebirthButton').addEventListener('click', () => {
+            if (points >= 1000000000) { // Check for 1 billion points
+                points = 0; // Reset points
+                rebirths += 1; // Increment rebirth count
+                clickValue = initialClickValue * Math.pow(10, rebirths - 1); // Update click value based on rebirths
                 document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
-                document.getElementById('points').innerText = points.toLocaleString(); // Update points display after rebirth
-                updatePointsDisplay(); // Update points display after rebirth
+                updatePointsDisplay();
 
-                document.getElementById("upgradeStatus").innerHTML= "Rebirthed Upgrade Level "+ rebirths + " times";
-                document.getElementById("upgradeStatus").innerHTML+= " Current Upgrade Level is " + clickValue;
+                // Reset what you need for the next gameplay
+                autoClickerActive = false;
+                clearInterval(autoClickInterval);
+                autoClickInterval = null; // Reset auto click interval on rebirth
 
-                autoClickerActive=false; // Turn off auto clicker after rebirth
+                alert(`Rebirth successful! You are now on rebirth number ${rebirths}.`);
+            } else {
+                alert('Not enough points to rebirth!');
+            }
+        });
 
-                document.getElementById("rebirthCount").innerHTML= "Your current level is "+ rebirths;
+        // Multiplier functionality
+        document.getElementById('multiplier10Button').addEventListener('click', () => purchaseMultiplier('x10'));
+        document.getElementById('multiplier100Button').addEventListener('click', () => purchaseMultiplier('x100'));
+        document.getElementById('multiplier1000Button').addEventListener('click', () => purchaseMultiplier('x1000'));
+        document.getElementById('multiplier10000Button').addEventListener('click', () => purchaseMultiplier('x10000'));
+        document.getElementById('multiplier100000Button').addEventListener('click', () => purchaseMultiplier('x100000'));
 
-                localStorage.setItem("rebirthCount", rebirths); // Store rebirth count in local storage
+        function purchaseMultiplier(multiplier) {
+            if (rebirths < 2) {
+                alert('You need at least 2 rebirths to purchase multipliers!');
+                return;
+            }
 
-                checkMultipliersAvailability(); // Check for multiplier availability after rebirth
-
-                checkPurchasedAutoClickSpeedUpgrades(); // Check for purchased auto click speed upgrades after rebirth
-
-            } else { alert("Not enough points to rebirth!"); } 
-
-            updatePointsDisplay(); 
-
+            if (points >= multipliers[multiplier].cost && !multipliers[multiplier].purchased) {
+                points -= multipliers[multiplier].cost;
+                multipliers[multiplier].purchased = true;
+                document.getElementById(`multiplier${multiplier.replace('x', '')}Button`).disabled = true;
+                updatePointsDisplay();
+            } else {
+                alert('Not enough points or multiplier already purchased!');
+            }
         }
-
     </script>
 </body>
 </html>
-
-The final code includes multiple features such as:
-
-*   Multipliers that can be purchased with a specific cost and have a multiplier effect on clicks.
-*   An auto-clicker feature that can be purchased with a specific cost and automatically clicks on the "click" button at a random interval.
-*   A rebirth feature that resets the game state and can be triggered with a specific cost.
-*   Different speeds for the auto-clicker feature.
-*   Local storage support for storing game state information.
-
-You can run this code in a web browser to experience the game.
