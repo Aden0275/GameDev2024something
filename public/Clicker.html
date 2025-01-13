@@ -130,6 +130,7 @@
             <button id="multiplier1000Button" disabled>Times 1,000 (Cost: 1,000,000,000 Points)</button>
             <button id="multiplier10000Button" disabled>Times 10,000 (Cost: 100,000,000,000 Points)</button>
             <button id="multiplier100000Button" disabled>Times 100,000 (Cost: 1,000,000,000,000 Points)</button>
+            <p id="multiplierStatus"></p>
         </div>
     </div>
 
@@ -143,11 +144,11 @@
 
     <script>
         let points = 0;
-        let clickValue = 10; // Starting click value
+        let clickValue = 1;
         let autoClickerActive = false;
         let autoClickInterval;
         let rebirths = 0;
-        let initialClickValue = 10; // Base click value after each rebirth
+        let initialClickValue = 10; // Starting click value after rebirth
         let autoClickerSpeed = 1000; // Initial auto clicker speed is 1000 milliseconds (1 second)
         let autoRebirthActive = false; // Auto rebirth flag
 
@@ -192,22 +193,37 @@
         // Check if auto rebirth should happen
         function checkAutoRebirth() {
             if (autoRebirthActive && points >= 1000000000) {
-                rebirth(); // Rebirths if the condition is met
+                points -= 1000000000; // Cost of rebirth
+                rebirths++;
+                clickValue = initialClickValue * Math.pow(10, rebirths - 1); // Update click value based on rebirths
+                document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
+                updatePointsDisplay();
             }
         }
 
         // Function to handle clicking
         document.getElementById('clickButton').addEventListener('click', () => {
-            points += clickValue; // Simply add current click value
+            points += clickValue * getMultiplier();
             updatePointsDisplay();
         });
+
+        // Get the current multiplier
+        function getMultiplier() {
+            let totalMultiplier = 1;
+            for (let key in multipliers) {
+                if (multipliers[key].purchased) {
+                    totalMultiplier *= parseInt(key.replace('x', ''));
+                }
+            }
+            return totalMultiplier;
+        }
 
         // Upgrade functionality
         document.getElementById('upgradeButton').addEventListener('click', () => {
             if (points >= 10) {
                 points -= 10;
-                clickValue += 10; // Increment click value by 10
-                document.getElementById('upgradeStatus').innerText = `Upgrade Level: ${(clickValue - 10) / 10}`;
+                clickValue++;
+                document.getElementById('upgradeStatus').innerText = `Upgrade Level: ${clickValue - 1}`;
                 updatePointsDisplay();
             }
         });
@@ -215,8 +231,8 @@
         document.getElementById('hundredUpgradeButton').addEventListener('click', () => {
             if (points >= 1000) {
                 points -= 1000;
-                clickValue += 100; // Increment click value by 100
-                document.getElementById('hundredUpgradeStatus').innerText = `Upgrade Level: ${(clickValue - 100) / 100}`;
+                clickValue += 100;
+                document.getElementById('hundredUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 101}`;
                 updatePointsDisplay();
             }
         });
@@ -224,8 +240,8 @@
         document.getElementById('thousandUpgradeButton').addEventListener('click', () => {
             if (points >= 10000) {
                 points -= 10000;
-                clickValue += 1000; // Increment click value by 1000
-                document.getElementById('thousandUpgradeStatus').innerText = `Upgrade Level: ${(clickValue - 1000) / 1000}`;
+                clickValue += 1000;
+                document.getElementById('thousandUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 1001}`;
                 updatePointsDisplay();
             }
         });
@@ -233,8 +249,8 @@
         document.getElementById('tenThousandUpgradeButton').addEventListener('click', () => {
             if (points >= 100000) {
                 points -= 100000;
-                clickValue += 10000; // Increment click value by 10000
-                document.getElementById('tenThousandUpgradeStatus').innerText = `Upgrade Level: ${(clickValue - 10000) / 10000}`;
+                clickValue += 10000;
+                document.getElementById('tenThousandUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 10001}`;
                 updatePointsDisplay();
             }
         });
@@ -242,8 +258,8 @@
         document.getElementById('hundredThousandUpgradeButton').addEventListener('click', () => {
             if (points >= 1000000) {
                 points -= 1000000;
-                clickValue += 100000; // Increment click value by 100000
-                document.getElementById('hundredThousandUpgradeStatus').innerText = `Upgrade Level: ${(clickValue - 100000) / 100000}`;
+                clickValue += 100000;
+                document.getElementById('hundredThousandUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 100001}`;
                 updatePointsDisplay();
             }
         });
@@ -251,24 +267,11 @@
         document.getElementById('millionUpgradeButton').addEventListener('click', () => {
             if (points >= 10000000) {
                 points -= 10000000;
-                clickValue += 1000000; // Increment click value by 1000000
-                document.getElementById('millionUpgradeStatus').innerText = `Upgrade Level: ${(clickValue - 1000000) / 1000000}`;
+                clickValue += 1000000;
+                document.getElementById('millionUpgradeStatus').innerText = `Upgrade Level: ${clickValue - 1000001}`;
                 updatePointsDisplay();
             }
         });
-
-        // Rebirth functionality
-        document.getElementById('rebirthButton').addEventListener('click', () => rebirth());
-
-        function rebirth() {
-            if (points >= 1000000000) { // Check for 1 billion points
-                points -= 1000000000; // Cost of rebirth
-                rebirths++; // Increment rebirth count
-                clickValue = initialClickValue + (rebirths * 10); // Update click value based on rebirths
-                document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
-                updatePointsDisplay();
-            }
-        }
 
         // Auto clicker functionality
         document.getElementById('autoClickButton').addEventListener('click', () => {
@@ -279,7 +282,7 @@
                 updatePointsDisplay();
 
                 autoClickInterval = setInterval(() => {
-                    points += clickValue; // Points multiply for auto clicker
+                    points += clickValue * getMultiplier(); // Points multiply for auto clicker
                     updatePointsDisplay();
                 }, autoClickerSpeed); // Speed of auto click
             } else if (autoClickerActive) {
@@ -287,6 +290,8 @@
                 document.getElementById('autoClickStatus').innerText = 'Auto Clicker Active: No';
                 clearInterval(autoClickInterval); // Clear interval when auto clicker is turned off
                 autoClickInterval = null; // Reset the interval
+            } else {
+                // Not enough points to buy the Auto Clicker (No alert)
             }
         });
 
@@ -325,6 +330,21 @@
                 }
             }
         }
+
+        // Rebirth functionality
+        document.getElementById('rebirthButton').addEventListener('click', () => {
+            if (points >= 1000000000) { // Check for 1 billion points
+                points = 0; // Reset points
+                rebirths++; // Increment rebirth count
+                clickValue = initialClickValue * Math.pow(10, rebirths - 1); // Update click value based on rebirths
+                document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
+                updatePointsDisplay();
+                // Reset what you need for the next gameplay
+                autoClickerActive = false;
+                clearInterval(autoClickInterval);
+                autoClickInterval = null; // Reset auto click interval on rebirth
+            }
+        });
 
         // Multiplier functionality
         document.getElementById('multiplier10Button').addEventListener('click', () => purchaseMultiplier('x10'));
