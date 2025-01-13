@@ -98,12 +98,20 @@
         let autoClickerActive = false;
         let autoClickInterval;
         let rebirths = 0;
+        let initialClickValue = 10; // Starting click value after rebirth
 
+        // Function to update points display
+        function updatePointsDisplay() {
+            document.getElementById('points').innerText = points.toLocaleString(); // Format number
+        }
+
+        // Function to handle clicking
         document.getElementById('clickButton').addEventListener('click', () => {
             points += clickValue;
             updatePointsDisplay();
         });
 
+        // Upgrade functionality
         document.getElementById('upgradeButton').addEventListener('click', () => {
             if (points >= 10) {
                 points -= 10;
@@ -170,6 +178,7 @@
             }
         });
 
+        // Auto clicker functionality
         document.getElementById('autoClickButton').addEventListener('click', () => {
             if (points >= 50) {
                 points -= 50;
@@ -181,29 +190,25 @@
                     autoClickInterval = setInterval(() => {
                         points += clickValue;
                         updatePointsDisplay();
-                    }, 1000);
+                    }, 10); // Providing clicks every 0.01 seconds (10 milliseconds)
                 }
             } else {
                 alert('Not enough points to buy the Auto Clicker!');
             }
         });
 
+        // Rebirth functionality
         document.getElementById('rebirthButton').addEventListener('click', () => {
             if (points >= 1000000000) { // Check for 1 billion points
                 points = 0; // Reset points
-                clickValue = 1; // Reset click value
                 rebirths += 1; // Increment rebirth count
-                points *= 3; // Apply multiplier (This will not do anything since points will be 0)
+                clickValue = initialClickValue * Math.pow(10, rebirths - 1); // Update click value based on rebirths
                 document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
                 updatePointsDisplay();
             } else {
                 alert('Not enough points to rebirth!');
             }
         });
-
-        function updatePointsDisplay() {
-            document.getElementById('points').innerText = points.toLocaleString(); // Format number
-        }
     </script>
 </body>
 </html>
