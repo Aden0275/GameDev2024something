@@ -14,9 +14,9 @@
 
         .container {
             display: flex;
-            justify-content: space-between; /* Space between the columns */
-            max-width: 1200px; /* Maximum width of the container */
-            margin: 0 auto; /* Center the container */
+            justify-content: space-between;
+            max-width: 1200px; 
+            margin: 0 auto; 
             background: white;
             border-radius: 8px;
             padding: 20px;
@@ -24,7 +24,7 @@
         }
 
         .column {
-            flex: 1; /* Each column takes equal width */
+            flex: 1; 
             padding: 10px;
         }
 
@@ -40,7 +40,7 @@
             background-color: #28a745;
             color: white;
             cursor: pointer;
-            margin: 5px 0; /* Vertical margins between buttons */
+            margin: 5px 0; 
         }
 
         button:hover {
@@ -79,6 +79,15 @@
             <p id="autoClickStatus">Auto Clicker Active: No</p>
             <button id="rebirthButton">Rebirth (Cost: 1,000,000,000 Points)</button>
         </div>
+        <div class="column">
+            <h3>Multipliers</h3>
+            <button id="multiplier10Button" disabled>Times 10 (Cost: 1,000,000 Points)</button>
+            <button id="multiplier100Button" disabled>Times 100 (Cost: 100,000,000 Points)</button>
+            <button id="multiplier1000Button" disabled>Times 1,000 (Cost: 1,000,000,000 Points)</button>
+            <button id="multiplier10000Button" disabled>Times 10,000 (Cost: 100,000,000,000 Points)</button>
+            <button id="multiplier100000Button" disabled>Times 100,000 (Cost: 1,000,000,000,000 Points)</button>
+            <p id="multiplierStatus"></p>
+        </div>
     </div>
 
     <script>
@@ -88,17 +97,48 @@
         let autoClickInterval;
         let rebirths = 0;
         let initialClickValue = 10; // Starting click value after rebirth
+        
+        let multipliers = {
+            x10: { cost: 1000000, purchased: false },
+            x100: { cost: 100000000, purchased: false },
+            x1000: { cost: 1000000000, purchased: false },
+            x10000: { cost: 100000000000, purchased: false },
+            x100000: { cost: 1000000000000, purchased: false },
+        };
 
         // Function to update points display
         function updatePointsDisplay() {
             document.getElementById('points').innerText = points.toLocaleString(); // Format number
+            checkMultipliersAvailability();
+        }
+
+        // Check if multipliers can be purchased after 2 rebirths
+        function checkMultipliersAvailability() {
+            if (rebirths >= 2) {
+                for (let key in multipliers) {
+                    if (!multipliers[key].purchased) {
+                        document.getElementById(`multiplier${key.replace('x', '')}Button`).disabled = false;
+                    }
+                }
+            }
         }
 
         // Function to handle clicking
         document.getElementById('clickButton').addEventListener('click', () => {
-            points += clickValue;
+            points += clickValue * getMultiplier();
             updatePointsDisplay();
         });
+
+        // Get the current multiplier
+        function getMultiplier() {
+            let totalMultiplier = 1;
+            for (let key in multipliers) {
+                if (multipliers[key].purchased) {
+                    totalMultiplier *= parseInt(key.replace('x', ''));
+                }
+            }
+            return totalMultiplier;
+        }
 
         // Upgrade functionality
         document.getElementById('upgradeButton').addEventListener('click', () => {
@@ -176,11 +216,10 @@
                 updatePointsDisplay();
 
                 autoClickInterval = setInterval(() => {
-                    points += clickValue;
+                    points += clickValue * getMultiplier(); // Apply the multiplier
                     updatePointsDisplay();
                 }, 500); // Providing clicks every 0.5 seconds
             } else if (autoClickerActive) {
-                // Turn off auto clicker if it's already active
                 autoClickerActive = false;
                 document.getElementById('autoClickStatus').innerText = 'Auto Clicker Active: No';
                 clearInterval(autoClickInterval);
@@ -202,6 +241,29 @@
                 alert('Not enough points to rebirth!');
             }
         });
+
+        // Multiplier functionality
+        document.getElementById('multiplier10Button').addEventListener('click', () => purchaseMultiplier('x10'));
+        document.getElementById('multiplier100Button').addEventListener('click', () => purchaseMultiplier('x100'));
+        document.getElementById('multiplier1000Button').addEventListener('click', () => purchaseMultiplier('x1000'));
+        document.getElementById('multiplier10000Button').addEventListener('click', () => purchaseMultiplier('x10000'));
+        document.getElementById('multiplier100000Button').addEventListener('click', () => purchaseMultiplier('x100000'));
+
+        function purchaseMultiplier(multiplier) {
+            if (rebirths < 2) {
+                alert('You need at least 2 rebirths to purchase multipliers!');
+                return;
+            }
+
+            if (points >= multipliers[multiplier].cost && !multipliers[multiplier].purchased) {
+                points -= multipliers[multiplier].cost;
+                multipliers[multiplier].purchased = true;
+                document.getElementById(`multiplier${multiplier.replace('x', '')}Button`).disabled = true;
+                updatePointsDisplay();
+            } else {
+                alert('Not enough points or multiplier already purchased!');
+            }
+        }
     </script>
 </body>
 </html>
