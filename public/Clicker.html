@@ -53,6 +53,7 @@
         <h1>Clicker Game</h1>
         <div class="score">
             <h2>Points: <span id="points">0</span></h2>
+            <h2>Rebirths: <span id="rebirthCount">0</span></h2>
         </div>
         <button id="clickButton">Click Me!</button>
         <div class="upgrades">
@@ -73,6 +74,9 @@
                 <button id="autoClickButton">Auto Clicker (Cost: 50 Points)</button>
                 <p id="autoClickStatus">Auto Clicker Active: No</p>
             </div>
+            <div>
+                <button id="rebirthButton">Rebirth (Cost: 10000 Points)</button>
+            </div>
         </div>
     </div>
 
@@ -81,6 +85,7 @@
         let clickValue = 1;
         let autoClickerActive = false;
         let autoClickInterval;
+        let rebirths = 0;
 
         document.getElementById('clickButton').addEventListener('click', () => {
             points += clickValue;
@@ -135,6 +140,19 @@
                 }
             } else {
                 alert('Not enough points to buy the Auto Clicker!');
+            }
+        });
+
+        document.getElementById('rebirthButton').addEventListener('click', () => {
+            if (points >= 10000) {
+                points = 0; // Reset points
+                clickValue = 1; // Reset click value
+                rebirths += 1; // Increment rebirth count
+                points *= 3; // Apply multiplier
+                document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
+                updatePointsDisplay();
+            } else {
+                alert('Not enough points to rebirth!');
             }
         });
 
