@@ -13,11 +13,19 @@
         }
 
         .container {
+            display: flex;
+            justify-content: space-between; /* Space between the columns */
+            max-width: 1200px; /* Maximum width of the container */
+            margin: 0 auto; /* Center the container */
             background: white;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: inline-block;
+        }
+
+        .column {
+            flex: 1; /* Each column takes equal width */
+            padding: 10px;
         }
 
         h1 {
@@ -32,63 +40,44 @@
             background-color: #28a745;
             color: white;
             cursor: pointer;
-            margin: 5px;
+            margin: 5px 0; /* Vertical margins between buttons */
         }
 
         button:hover {
             background-color: #218838;
         }
-
-        .upgrades {
-            margin-top: 20px;
-        }
-
-        .upgrades div {
-            margin: 10px 0;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Clicker Game</h1>
-        <div class="score">
-            <h2>Points: <span id="points">0</span></h2>
-            <h2>Rebirths: <span id="rebirthCount">0</span></h2>
-        </div>
-        <button id="clickButton">Click Me!</button>
-        <div class="upgrades">
+        <div class="column">
             <h3>Upgrades</h3>
-            <div>
-                <button id="upgradeButton">Upgrade Click (Cost: 10 Points)</button>
-                <p id="upgradeStatus">Upgrade Level: 0</p>
+            <button id="upgradeButton">Upgrade Click (Cost: 10 Points)</button>
+            <p id="upgradeStatus">Upgrade Level: 0</p>
+            <button id="hundredUpgradeButton">Upgrade Click +100 (Cost: 1000 Points)</button>
+            <p id="hundredUpgradeStatus">Upgrade Level: 0</p>
+            <button id="thousandUpgradeButton">Upgrade Click +1000 (Cost: 10000 Points)</button>
+            <p id="thousandUpgradeStatus">Upgrade Level: 0</p>
+            <button id="tenThousandUpgradeButton">Upgrade Click +10,000 (Cost: 100,000 Points)</button>
+            <p id="tenThousandUpgradeStatus">Upgrade Level: 0</p>
+            <button id="hundredThousandUpgradeButton">Upgrade Click +100,000 (Cost: 1,000,000 Points)</button>
+            <p id="hundredThousandUpgradeStatus">Upgrade Level: 0</p>
+            <button id="millionUpgradeButton">Upgrade Click +1,000,000 (Cost: 10,000,000 Points)</button>
+            <p id="millionUpgradeStatus">Upgrade Level: 0</p>
+        </div>
+        <div class="column">
+            <h1>Clicker Game</h1>
+            <div class="score">
+                <h2>Points: <span id="points">0</span></h2>
+                <h2>Rebirths: <span id="rebirthCount">0</span></h2>
             </div>
-            <div>
-                <button id="hundredUpgradeButton">Upgrade Click +100 (Cost: 1000 Points)</button>
-                <p id="hundredUpgradeStatus">Upgrade Level: 0</p>
-            </div>
-            <div>
-                <button id="thousandUpgradeButton">Upgrade Click +1000 (Cost: 10000 Points)</button>
-                <p id="thousandUpgradeStatus">Upgrade Level: 0</p>
-            </div>
-            <div>
-                <button id="tenThousandUpgradeButton">Upgrade Click +10,000 (Cost: 100,000 Points)</button>
-                <p id="tenThousandUpgradeStatus">Upgrade Level: 0</p>
-            </div>
-            <div>
-                <button id="hundredThousandUpgradeButton">Upgrade Click +100,000 (Cost: 1,000,000 Points)</button>
-                <p id="hundredThousandUpgradeStatus">Upgrade Level: 0</p>
-            </div>
-            <div>
-                <button id="millionUpgradeButton">Upgrade Click +1,000,000 (Cost: 10,000,000 Points)</button>
-                <p id="millionUpgradeStatus">Upgrade Level: 0</p>
-            </div>
-            <div>
-                <button id="autoClickButton">Auto Clicker (Cost: 50 Points)</button>
-                <p id="autoClickStatus">Auto Clicker Active: No</p>
-            </div>
-            <div>
-                <button id="rebirthButton">Rebirth (Cost: 1,000,000,000 Points)</button>
-            </div>
+            <button id="clickButton">Click Me!</button>
+        </div>
+        <div class="column">
+            <h3>Auto Clicker & Rebirth</h3>
+            <button id="autoClickButton">Auto Clicker (Cost: 50 Points)</button>
+            <p id="autoClickStatus">Auto Clicker Active: No</p>
+            <button id="rebirthButton">Rebirth (Cost: 1,000,000,000 Points)</button>
         </div>
     </div>
 
