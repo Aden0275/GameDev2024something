@@ -75,7 +75,7 @@
                 <p id="autoClickStatus">Auto Clicker Active: No</p>
             </div>
             <div>
-                <button id="rebirthButton">Rebirth (Cost: 10000 Points)</button>
+                <button id="rebirthButton">Rebirth (Cost: 1,000,000,000 Points)</button>
             </div>
         </div>
     </div>
@@ -144,11 +144,11 @@
         });
 
         document.getElementById('rebirthButton').addEventListener('click', () => {
-            if (points >= 10000) {
+            if (points >= 1000000000) { // Check for 1 billion points
                 points = 0; // Reset points
                 clickValue = 1; // Reset click value
                 rebirths += 1; // Increment rebirth count
-                points *= 3; // Apply multiplier
+                points *= 3; // Apply multiplier (This will not do anything since points will be 0)
                 document.getElementById('rebirthCount').innerText = rebirths; // Update rebirth display
                 updatePointsDisplay();
             } else {
@@ -157,7 +157,7 @@
         });
 
         function updatePointsDisplay() {
-            document.getElementById('points').innerText = points;
+            document.getElementById('points').innerText = points.toLocaleString(); // Format number
         }
     </script>
 </body>
