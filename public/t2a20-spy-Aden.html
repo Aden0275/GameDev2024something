@@ -1,110 +1,78 @@
-<div class="container">
-    <h1>Text Encryptor/Decryptor</h1>
+<h1 align=center>t2a06-spy-name.html</h1>
+<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br> 
 
-    <textarea id="myArea01" rows="4" placeholder="Enter text here...">Hello, World!</textarea>
-    <div>
-        <input type="button" value="Encrypt" onclick="encryptText()">
-        <input type="button" value="Decrypt" onclick="decryptText()">
-        <input type="button" value="Clear" onclick="clearFields()">
-    </div>
-    
-    <h3>Encrypted Text:</h3>
-    <textarea id="myArea02" rows="4" placeholder="Encrypted text will appear here..." readonly>Hello, World!</textarea>
-    
-    <h3>Decrypted Text:</h3>
-    <textarea id="myArea03" rows="4" placeholder="Decrypted text will appear here..." readonly>Khoor, Zruog!</textarea>
-    
-    <div id="message" class="message"></div>
-</div>
+<input type=button value="encrypt" onclick="{
+   let myTemp = ''
+   myString = document.getElementById('myArea01').value.toLowerCase().split('')
+   for (let myLoop=0; myLoop < myString.length; myLoop++){
+      myTemp = myString[myLoop]
+      if (myString[myLoop] == 'a') {myTemp  = 'b'}
+      if (myString[myLoop] == 'b') {myTemp  = 'c'}
+      if (myString[myLoop] == 'c') {myTemp  = 'd'}
+      if (myString[myLoop] == 'd') {myTemp  = 'e'}
+      if (myString[myLoop] == 'e') {myTemp  = 'f'}
+      if (myString[myLoop] == 'f') {myTemp  = 'g'}
+      if (myString[myLoop] == 'g') {myTemp  = 'h'}
+      if (myString[myLoop] == 'h') {myTemp  = 'i'}
+      if (myString[myLoop] == 'i') {myTemp  = 'j'}
+      if (myString[myLoop] == 'j') {myTemp  = 'k'}
+      if (myString[myLoop] == 'k') {myTemp  = 'l'}
+      if (myString[myLoop] == 'l') {myTemp  = 'm'}
+      if (myString[myLoop] == 'm') {myTemp  = 'n'}
+      if (myString[myLoop] == 'n') {myTemp  = 'o'}
+      if (myString[myLoop] == 'o') {myTemp  = 'p'}
+      if (myString[myLoop] == 'p') {myTemp  = 'q'}
+      if (myString[myLoop] == 'q') {myTemp  = 'r'}
+      if (myString[myLoop] == 'r') {myTemp  = 's'}
+      if (myString[myLoop] == 's') {myTemp  = 't'}
+      if (myString[myLoop] == 't') {myTemp  = 'u'}
+      if (myString[myLoop] == 'u') {myTemp  = 'v'}
+      if (myString[myLoop] == 'v') {myTemp  = 'w'}
+      if (myString[myLoop] == 'w') {myTemp  = 'x'}
+      if (myString[myLoop] == 'x') {myTemp  = 'y'}
+      if (myString[myLoop] == 'y') {myTemp  = 'z'}
+      if (myString[myLoop] == 'z') {myTemp  = 'a'}
+      myString[myLoop] = myTemp
+   }
+   document.getElementById('myArea02').value = myString.join('')
+}"><br><br>
 
-<script>
-    const shift = 3;
+<textarea id="myArea02" rows=4 cols=70></textarea><br> 
 
-    // Function to generate random salt
-    function generateSalt(length = 8) {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let salt = '';
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * chars.length);
-            salt += chars[randomIndex];
-        }
-        return salt;
-    }
+<input type=button value="decrypt" onclick="{
+   let myTemp = ''
+   myString = document.getElementById('myArea02').value.toLowerCase().split('')
+   for (let myLoop=0; myLoop < myString.length; myLoop++){
+      myTemp = myString[myLoop]
+      if (myString[myLoop] == 'b') {myTemp  = 'a'}
+      if (myString[myLoop] == 'c') {myTemp  = 'b'}
+      if (myString[myLoop] == 'd') {myTemp  = 'c'}
+      if (myString[myLoop] == 'e') {myTemp  = 'd'}
+      if (myString[myLoop] == 'f') {myTemp  = 'e'}
+      if (myString[myLoop] == 'g') {myTemp  = 'f'}
+      if (myString[myLoop] == 'h') {myTemp  = 'g'}
+      if (myString[myLoop] == 'i') {myTemp  = 'h'}
+      if (myString[myLoop] == 'j') {myTemp  = 'i'}
+      if (myString[myLoop] == 'k') {myTemp  = 'j'}
+      if (myString[myLoop] == 'l') {myTemp  = 'k'}
+      if (myString[myLoop] == 'm') {myTemp  = 'l'}
+      if (myString[myLoop] == 'n') {myTemp  = 'm'}
+      if (myString[myLoop] == 'o') {myTemp  = 'n'}
+      if (myString[myLoop] == 'p') {myTemp  = 'o'}
+      if (myString[myLoop] == 'q') {myTemp  = 'p'}
+      if (myString[myLoop] == 'r') {myTemp  = 'q'}
+      if (myString[myLoop] == 's') {myTemp  = 'r'}
+      if (myString[myLoop] == 't') {myTemp  = 's'}
+      if (myString[myLoop] == 'u') {myTemp  = 't'}
+      if (myString[myLoop] == 'v') {myTemp  = 'u'}
+      if (myString[myLoop] == 'w') {myTemp  = 'v'}
+      if (myString[myLoop] == 'x') {myTemp  = 'w'}
+      if (myString[myLoop] == 'y') {myTemp  = 'x'}
+      if (myString[myLoop] == 'z') {myTemp  = 'y'}
+      if (myString[myLoop] == 'a') {myTemp  = 'z'}
+      myString[myLoop] = myTemp
+   }
+   document.getElementById('myArea03').value = myString.join('')
+}"><br><br>
 
-    // Encrypt the input text with salt
-    function encryptText() {
-        let inputText = document.getElementById('myArea01').value;
-        if (!inputText) {
-            showMessage("Please enter text to encrypt.");
-            return;
-        }
-
-        // Generate a random salt and append it to the text
-        let salt = generateSalt();
-        let saltedText = inputText + salt;  // Append the salt to the input text
-
-        let encryptedText = caesarCipher(saltedText, shift);
-        // Store the salt in the encrypted text for later use during decryption
-        document.getElementById('myArea02').value = encryptedText + ":" + salt;
-        document.getElementById('myArea01').value = '';
-        showMessage("Text encrypted successfully!");
-    }
-
-    // Decrypt the encrypted text with salt
-    function decryptText() {
-        let encryptedText = document.getElementById('myArea02').value;
-        if (!encryptedText) {
-            showMessage("Please enter text to decrypt.");
-            return;
-        }
-
-        // Extract the salt and the encrypted text
-        let parts = encryptedText.split(":");
-        if (parts.length !== 2) {
-            showMessage("Invalid encrypted text format.");
-            return;
-        }
-
-        let cipherText = parts[0];
-        let salt = parts[1];
-
-        // Decrypt the ciphered text
-        let decryptedText = caesarCipher(cipherText, -shift);
-        document.getElementById('myArea03').value = decryptedText.replace(salt, '');  // Remove salt from decrypted text
-        document.getElementById('myArea02').value = '';
-        showMessage("Text decrypted successfully!");
-    }
-
-    // Clear all fields
-    function clearFields() {
-        document.getElementById('myArea01').value = 'Hello, World!';
-        document.getElementById('myArea02').value = 'Encrypted text will appear here...';
-        document.getElementById('myArea03').value = 'Decrypted text will appear here...';
-        showMessage("");
-    }
-
-    // Caesar cipher encryption and decryption logic
-    function caesarCipher(text, shift) {
-        return text.split('').map(char => {
-            let code = char.charCodeAt(0);
-            if (char.match(/[a-z]/i)) {
-                let base = char.charCodeAt(0) < 91 ? 65 : 97; // Uppercase or lowercase
-                return String.fromCharCode((code - base + shift + 26) % 26 + base);
-            }
-            return char; // Non-alphabetic characters are unchanged
-        }).join('');
-    }
-
-    // Display a message
-    function showMessage(message) {
-        const messageDiv = document.getElementById('message');
-        messageDiv.textContent = message;
-        messageDiv.classList.add('show');
-        setTimeout(() => {
-            messageDiv.classList.remove('show');
-        }, 3000); // Message fades out after 3 seconds
-    }
-</script>
-
-</body>
-</html>
+<textarea id="myArea03" rows=4 cols=70></textarea><br>
