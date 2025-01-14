@@ -1,76 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Encryptor/Decryptor</title>
-    <style>
-        .container {
-            text-align: center;
-            margin: 20px;
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
-        }
-        input[type="button"] {
-            margin: 5px;
-        }
-        .message {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Text Encryptor/Decryptor</h1>
-        
-        <textarea id="myArea01" placeholder="Enter text here..."></textarea>
-        <div>
-            <input type="button" value="Encrypt" onclick="encryptText()">
-            <input type="button" value="Decrypt" onclick="decryptText()">
-            <input type="button" value="Clear" onclick="clearFields()">
-        </div>
-        
-        <h3>Encrypted Text:</h3>
-        <textarea id="myArea02" placeholder="Encrypted text will appear here..." readonly></textarea>
-        
-        <h3>Decrypted Text:</h3>
-        <textarea id="myArea03" placeholder="Decrypted text will appear here..." readonly></textarea>
-        
-        <div id="message" class="message"></div>
+<div class="container">
+    <h1>Text Encryptor/Decryptor</h1>
+
+    <textarea id="myArea01" rows="4" placeholder="Enter text here...">Hello, World!</textarea>
+    <div>
+        <input type="button" value="Encrypt" onclick="encryptText()">
+        <input type="button" value="Decrypt" onclick="decryptText()">
+        <input type="button" value="Clear" onclick="clearFields()">
     </div>
     
-    <script>
-        function encryptText() {
-            let inputText = document.getElementById('myArea01').value.toLowerCase();
-            let encryptedText = inputText.split('').map(char => {
-                if (char >= 'a' && char <= 'z') {
-                    return String.fromCharCode(219 - char.charCodeAt(0));
-                }
-                return char;
-            }).join('');
-            document.getElementById('myArea02').value = encryptedText;
-            document.getElementById('myArea03').value = "";
+    <h3>Encrypted Text:</h3>
+    <textarea id="myArea02" rows="4" placeholder="Encrypted text will appear here..." readonly>Hello, World!</textarea>
+    
+    <h3>Decrypted Text:</h3>
+    <textarea id="myArea03" rows="4" placeholder="Decrypted text will appear here..." readonly>Khoor, Zruog!</textarea>
+    
+    <div id="message" class="message"></div>
+</div>
+
+<script>
+    const shift = 3;
+
+    // Function to generate random salt
+    function generateSalt(length = 8) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let salt = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * chars.length);
+            salt += chars[randomIndex];
+        }
+        return salt;
+    }
+
+    // Encrypt the input text with salt
+    function encryptText() {
+        let inputText = document.getElementById('myArea01').value;
+        if (!inputText) {
+            showMessage("Please enter text to encrypt.");
+            return;
         }
 
-        function decryptText() {
-            let encryptedText = document.getElementById('myArea02').value.toLowerCase();
-            let decryptedText = encryptedText.split('').map(char => {
-                if (char >= 'a' && char <= 'z') {
-                    return String.fromCharCode(219 - char.charCodeAt(0));
-                }
-                return char;
-            }).join('');
-            document.getElementById('myArea03').value = decryptedText;
+        // Generate a random salt and append it to the text
+        let salt = generateSalt();
+        let saltedText = inputText + salt;  // Append the salt to the input text
+
+        let encryptedText = caesarCipher(saltedText, shift);
+        // Store the salt in the encrypted text for later use during decryption
+        document.getElementById('myArea02').value = encryptedText + ":" + salt;
+        document.getElementById('myArea01').value = '';
+        showMessage("Text encrypted successfully!");
+    }
+
+    // Decrypt the encrypted text with salt
+    function decryptText() {
+        let encryptedText = document.getElementById('myArea02').value;
+        if (!encryptedText) {
+            showMessage("Please enter text to decrypt.");
+            return;
         }
 
-        function clearFields() {
-            document.getElementById('myArea01').value = "";
-            document.getElementById('myArea02').value = "";
-            document.getElementById('myArea03').value = "";
-            document.getElementById('message').innerText = "";
+        // Extract the salt and the encrypted text
+        let parts = encryptedText.split(":");
+        if (parts.length !== 2) {
+            showMessage("Invalid encrypted text format.");
+            return;
         }
-    </script>
+
+        let cipherText = parts[0];
+        let salt = parts[1];
+
+        // Decrypt the ciphered text
+        let decryptedText = caesarCipher(cipherText, -shift);
+        document.getElementById('myArea03').value = decryptedText.replace(salt, '');  // Remove salt from decrypted text
+        document.getElementById('myArea02').value = '';
+        showMessage("Text decrypted successfully!");
+    }
+
+    // Clear all fields
+    function clearFields() {
+        document.getElementById('myArea01').value = 'Hello, World!';
+        document.getElementById('myArea02').value = 'Encrypted text will appear here...';
+        document.getElementById('myArea03').value = 'Decrypted text will appear here...';
+        showMessage("");
+    }
+
+    // Caesar cipher encryption and decryption logic
+    function caesarCipher(text, shift) {
+        return text.split('').map(char => {
+            let code = char.charCodeAt(0);
+            if (char.match(/[a-z]/i)) {
+                let base = char.charCodeAt(0) < 91 ? 65 : 97; // Uppercase or lowercase
+                return String.fromCharCode((code - base + shift + 26) % 26 + base);
+            }
+            return char; // Non-alphabetic characters are unchanged
+        }).join('');
+    }
+
+    // Display a message
+    function showMessage(message) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = message;
+        messageDiv.classList.add('show');
+        setTimeout(() => {
+            messageDiv.classList.remove('show');
+        }, 3000); // Message fades out after 3 seconds
+    }
+</script>
+
 </body>
 </html>
