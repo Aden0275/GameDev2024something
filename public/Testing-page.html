@@ -1,69 +1,114 @@
-<body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg" onload="{myAuto()}" onclick="{
-      myDoGravity();
-}">
+<body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg" onload="{myAuto()}">
 
-<h1 align=center><font color=red>T4A04 Maze by Fred</font></h1>
+<h1 align=center><font color=red>T4A04 Flappy Bird Style Game</font></h1>
 
 <script>
-   // global variables here
-   let myGlobalX = 0;
+   // Global variables
    let myClock;
    let myGravity = 0.5; // Gravity force
    let myJumpStrength = -10; // Jump strength
    let myVerticalVelocity = 0; // Current vertical velocity
    let isJumping = false; // To check if the character is jumping
-   let myHorizontalJump = 5;
+   let score = 0; // Score variable
+   let gameOver = false; // Game over state
+   const pipeWidth = 50; // Width of the pipes
+   const pipeGap = 150; // Gap between pipes
+   const pipeFrequency = 2000; // Frequency of pipe generation in milliseconds
 
-   // global functions here
-   function myHitOther(my1, my2) {
-       left1 = parseInt(document.getElementById(my1).style.left);
-       right1 = left1 + parseInt(document.getElementById(my1).style.width);
-       top1 = parseInt(document.getElementById(my1).style.top);
-       bottom1 = top1 + parseInt(document.getElementById(my1).style.height);
-       left2 = parseInt(document.getElementById(my2).style.left);
-       right2 = left2 + parseInt(document.getElementById(my2).style.width);
-       top2 = parseInt(document.getElementById(my2).style.top);
-       bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
-       return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
+   // Initialize the game
+   function myAuto() {
+       clearInterval(myClock);
+       myClock = setInterval(function() {
+           if (!gameOver) {
+               myDoGravity();
+               myCheckHit(); // Check for collisions
+           }
+       }, 100);
+       setInterval(createPipe, pipeFrequency); // Create pipes at intervals
    }
 
+   // Create pipes
+   function createPipe() {
+       const pipeHeight = Math.floor(Math.random() * (window.innerHeight - pipeGap - 100)) + 50; // Random height
+       const pipeTop = document.createElement('div');
+       const pipeBottom = document.createElement('div');
+
+       pipeTop.style.position = 'absolute';
+       pipeTop.style.width = pipeWidth + 'px';
+       pipeTop.style.height = pipeHeight + 'px';
+       pipeTop.style.left = window.innerWidth + 'px';
+       pipeTop.style.top = '0';
+       pipeTop.style.backgroundColor = 'green';
+       document.body.appendChild(pipeTop);
+
+       pipeBottom.style.position = 'absolute';
+       pipeBottom.style.width = pipeWidth + 'px';
+       pipeBottom.style.height = (window.innerHeight - pipeHeight - pipeGap) + 'px';
+       pipeBottom.style.left = window.innerWidth + 'px';
+       pipeBottom.style.bottom = '0';
+       pipeBottom.style.backgroundColor = 'green';
+       document.body.appendChild(pipeBottom);
+
+       movePipes(pipeTop, pipeBottom);
+   }
+
+   // Move pipes across the screen
+   function movePipes(pipeTop, pipeBottom) {
+       const moveInterval = setInterval(function() {
+           if (gameOver) {
+               clearInterval(moveInterval);
+               return;
+           }
+           const pipeLeft = parseInt(pipeTop.style.left);
+           pipeTop.style.left = (pipeLeft - 5) + 'px';
+           pipeBottom.style.left = (pipeLeft - 5) + 'px';
+
+           // Check if the pipe is off-screen
+           if (pipeLeft < -pipeWidth) {
+               clearInterval(moveInterval);
+               document.body.removeChild(pipeTop);
+               document.body.removeChild(pipeBottom);
+               score++; // Increase score
+               console.log("Score: " + score); // Display score in console
+           }
+       }, 100);
+   }
+
+   // Gravity and movement
    function myDoGravity() {
        let img = document.getElementById('myImg01');
        myVerticalVelocity += myGravity; // Apply gravity to vertical velocity
        img.style.top = parseInt(img.style.top) + myVerticalVelocity + 'px'; // Update position
 
-       // Check for ground collision (you can adjust the ground level as needed)
-       if (parseInt(img.style.top) >= 190) { // Assuming 190px is the ground level
-           img.style.top = '190px'; // Reset to ground level
+       // Check for ground collision
+       if (parseInt(img.style.top) >= window.innerHeight - img.offsetHeight) {
+           img.style.top = (window.innerHeight - img.offsetHeight) + 'px'; // Reset to ground level
            myVerticalVelocity = 0; // Reset vertical velocity
-           isJumping = false; // Reset jumping state
+           gameOver = true; // Set game over state
+           alert("Game Over! Your score: " + score);
        }
    }
 
-   function myAuto() {
-       clearInterval(myClock);
-       myClock = setInterval(function() {
-           myDoGravity();
-           myCheckHit(); // checks for all collisions
-       }, 100);
-   }
-
+   // Check for collisions with pipes
    function myCheckHit() {
-       if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
-           document.getElementById('myImg01').style.left = '20px';
-           document.getElementById('myImg01').style.top = '60px';
-       }
+       const img = document.getElementById('myImg01');
+       const pipes = document.querySelectorAll('div'); // Get all pipes
 
-       if (myHitOther('myImg01', 'myImg04')) {
-           alert('You Win, now go to the next level');
-           document.getElementById('myImg01').style.left = '20px';
-           location = 'https://www.google.ca';
-       }
+       pipes.forEach(pipe => {
+           const pipeRect = pipe.getBoundingClientRect();
+           const imgRect = img.getBoundingClientRect();
+
+           if (pipeRect.left < imgRect.right && pipeRect.right > imgRect.left &&
+               pipeRect.top < imgRect.bottom && pipeRect.bottom > imgRect.top) {
+               gameOver = true; // Set game over state
+               alert("Game Over! Your score: " + score);
+           }
+       });
    }
 
-   // Add this function to handle jumping
+   // Jump function
    function jump() {
-       if (!isJumping) { // Allow jump only if not already jumping
+       if (!isJumping && !gameOver) { // Allow jump only if not already jumping
            myVerticalVelocity = myJumpStrength; // Set the initial jump velocity
            isJumping = true; // Set jumping state
        }
@@ -78,27 +123,6 @@
    });
 </script>
 
-<input type=button value="Auto Background Left" onclick="{
-  clearInterval(myClock);
-  let myTemp = '100px 0px';
-  myClock = setInterval(function() {
-      myGlobalX -= 5;
-      myTemp = myGlobalX + 'px 0px';
-      document.getElementById('myBody').style.backgroundPosition = myTemp;
-  }, 100);
-}">
-
-<input type=button value="Right" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.left = parseInt(document.getElementById('myImg01').style.left) + 10 + 'px';
-  myCheckHit(); // checks for all collisions
-}">
-
-<input type=button value="Down" onTouchStart="{this.click(); event.preventDefault();}" onclick="{
-  document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + 10 + 'px';
-  myCheckHit(); // checks for all collisions
-}"><br><br>
-
 <img id="myImg01" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left: 50px; top:190px;">
-<img id="myImg02" src="myImgNew.jpg" style="position:absolute; width:10px; height:200px; left:350px; top:90px;">
-<img id="myImg03" src="myImgNew.jpg" style="position:absolute; width:200px; height:10px; left:500px; top:400px;">
-<img id="myImg04" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left:800px; top:400px;">
+
+</body>
