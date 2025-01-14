@@ -1,5 +1,4 @@
 <body id="myBody" style="background-repeat:repeat; background-size: 80%" background="myBackground01.jpg" onload="{myAuto()}" onclick="{
-      document.getElementById('myImg01').style.top = parseInt(document.getElementById('myImg01').style.top) + myJump + 'px';
       myDoGravity();
 }">
 
@@ -9,11 +8,11 @@
    // global variables here
    let myGlobalX = 0;
    let myClock;
-   let myGravity = 0.03;
-   let myJump = -40;
+   let myGravity = 0.5; // Gravity force
+   let myJumpStrength = -10; // Jump strength
+   let myVerticalVelocity = 0; // Current vertical velocity
+   let isJumping = false; // To check if the character is jumping
    let myHorizontalJump = 5;
-   let myVertical;
-   let myHorizontal;
 
    // global functions here
    function myHitOther(my1, my2) {
@@ -25,36 +24,32 @@
        right2 = left2 + parseInt(document.getElementById(my2).style.width);
        top2 = parseInt(document.getElementById(my2).style.top);
        bottom2 = top2 + parseInt(document.getElementById(my2).style.height);
-       if ((right1 >= left2) &&
-           (bottom1 >= top2) &&
-           (left1 <= right2) &&
-           (top1 <= bottom2)) {
-           return true;
-       }
+       return (right1 >= left2 && bottom1 >= top2 && left1 <= right2 && top1 <= bottom2);
    }
 
    function myDoGravity() {
-       myVertical = parseInt(document.getElementById('myImg01').style.top) + 2;
-       myHorizontal = parseInt(document.getElementById('myImg01').style.left);
-       document.getElementById('myImg01').style.left = myHorizontal + myHorizontalJump + 'px';
-       document.getElementById('myImg01').style.top = myVertical + (myVertical * myGravity) + 'px';
+       let img = document.getElementById('myImg01');
+       myVerticalVelocity += myGravity; // Apply gravity to vertical velocity
+       img.style.top = parseInt(img.style.top) + myVerticalVelocity + 'px'; // Update position
+
+       // Check for ground collision (you can adjust the ground level as needed)
+       if (parseInt(img.style.top) >= 190) { // Assuming 190px is the ground level
+           img.style.top = '190px'; // Reset to ground level
+           myVerticalVelocity = 0; // Reset vertical velocity
+           isJumping = false; // Reset jumping state
+       }
    }
 
    function myAuto() {
        clearInterval(myClock);
-       myTimer02 = setInterval(function() {
+       myClock = setInterval(function() {
            myDoGravity();
            myCheckHit(); // checks for all collisions
        }, 100);
    }
 
    function myCheckHit() {
-       if (myHitOther('myImg01', 'myImg02')) {
-           document.getElementById('myImg01').style.left = '20px';
-           document.getElementById('myImg01').style.top = '60px';
-       }
-
-       if (myHitOther('myImg01', 'myImg03')) {
+       if (myHitOther('myImg01', 'myImg02') || myHitOther('myImg01', 'myImg03')) {
            document.getElementById('myImg01').style.left = '20px';
            document.getElementById('myImg01').style.top = '60px';
        }
@@ -68,9 +63,10 @@
 
    // Add this function to handle jumping
    function jump() {
-       let img = document.getElementById('myImg01');
-       img.style.top = parseInt(img.style.top) + myJump + 'px';
-       myDoGravity(); // Call gravity function to bring the character back down
+       if (!isJumping) { // Allow jump only if not already jumping
+           myVerticalVelocity = myJumpStrength; // Set the initial jump velocity
+           isJumping = true; // Set jumping state
+       }
    }
 
    // Add an event listener for the space bar
