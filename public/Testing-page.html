@@ -1,79 +1,46 @@
-<h1 align="center">t2a06-spy-name.html</h1>
-<textarea id="myArea01" rows="4" cols="70">Hello how are you</textarea><br>
+<h1 align=center>t2a06-spy-name.html</h1>
+<textarea id="myArea01" rows=4 cols=70>Hello how are you</textarea><br> 
 
-<input type="button" value="Encrypt" onclick="encryptText()"><br><br>
-<textarea id="myArea02" rows="4" cols="70" placeholder="Encrypted text will appear here..."></textarea><br>
-<input type="button" value="Decrypt" onclick="decryptText()"><br><br>
-<textarea id="myArea03" rows="4" cols="70" placeholder="Decrypted text will appear here..."></textarea><br>
+<input type=button value="encrypt" onclick="{
+   let myTemp = ''
+   myString = document.getElementById('myArea01').value.toLowerCase().split('')
+   for (let myLoop=0;   myLoop < myString.length; myLoop++){
+      myTemp = myString[myLoop]
+      if (myString[myLoop] == 'a') {myTemp  = 'b'}
+      if (myString[myLoop] == 'b') {myTemp  = 'c'}
+      if (myString[myLoop] == 'c') {myTemp  = 'd'}
+      if (myString[myLoop] == 'd') {myTemp  = 'e'}
+      if (myString[myLoop] == 'e') {myTemp  = 'f'}
+      if (myString[myLoop] == 'f') {myTemp  = 'g'}
+      if (myString[myLoop] == 'g') {myTemp  = 'h'}
+      if (myString[myLoop] == 'h') {myTemp  = 'i'}
+      if (myString[myLoop] == 'i') {myTemp  = 'j'}
+      if (myString[myLoop] == 'j') {myTemp  = 'k'}
+      if (myString[myLoop] == 'k') {myTemp  = 'l'}
+      if (myString[myLoop] == 'l') {myTemp  = 'm'}
+      if (myString[myLoop] == 'm') {myTemp  = 'n'}
+      if (myString[myLoop] == 'n') {myTemp  = 'o'}
+      if (myString[myLoop] == 'o') {myTemp  = 'p'}
+      if (myString[myLoop] == 'p') {myTemp  = 'q'}
+      if (myString[myLoop] == 'q') {myTemp  = 'r'}
+      if (myString[myLoop] == 'r') {myTemp  = 's'}
+      if (myString[myLoop] == 's') {myTemp  = 't'}
+      if (myString[myLoop] == 't') {myTemp  = 'u'}
+      if (myString[myLoop] == 'u') {myTemp  = 'v'}
+      if (myString[myLoop] == 'v') {myTemp  = 'w'}
+      if (myString[myLoop] == 'w') {myTemp  = 'x'}
+      if (myString[myLoop] == 'x') {myTemp  = 'y'}
+      if (myString[myLoop] == 'y') {myTemp  = 'z'}
+      if (myString[myLoop] == 'z') {myTemp  = 'a'}
+      myString[myLoop] = myTemp
+   }
+   document.getElementById('myArea02').value = myString.join('')
+}"><br><br>
 
-<div id="message" class="message"></div>
+<textarea id="myArea02" rows=4 cols=70></textarea><br> 
 
-<script>
-    const shift = 3;
+<input type=button value="decrypt" onclick="{
+   alert('Sorry, you have to do this!')
+}"><br><br>
 
-    function generateSalt(length = 8) {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let salt = '';
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * chars.length);
-            salt += chars[randomIndex];
-        }
-        return salt;
-    }
-
-    function encryptText() {
-        let inputText = document.getElementById('myArea01').value;
-        if (!inputText) {
-            showMessage("Please enter text to encrypt.");
-            return;
-        }
-
-        let salt = generateSalt();
-        let saltedText = inputText + salt;
-        let encryptedText = caesarCipher(saltedText, shift);
-        document.getElementById('myArea02').value = encryptedText + ":" + salt;
-        document.getElementById('myArea01').value = '';
-        showMessage("Text encrypted successfully!");
-    }
-
-    function decryptText() {
-        let encryptedText = document.getElementById('myArea02').value;
-        if (!encryptedText) {
-            showMessage("Please enter text to decrypt.");
-            return;
-        }
-
-        let parts = encryptedText.split(":");
-        if (parts.length !== 2) {
-            showMessage("Invalid encrypted text format.");
-            return;
-        }
-
-        let cipherText = parts[0];
-        let salt = parts[1];
-        let decryptedText = caesarCipher(cipherText, -shift);
-        document.getElementById('myArea03').value = decryptedText.replace(salt, '');
-        document.getElementById('myArea02').value = '';
-        showMessage("Text decrypted successfully!");
-    }
-
-    function caesarCipher(text, shift) {
-        return text.split('').map(char => {
-            let code = char.charCodeAt(0);
-            if (char.match(/[a-z]/i)) {
-                let base = char.charCodeAt(0) < 91 ? 65 : 97;
-                return String.fromCharCode((code - base + shift + 26) % 26 + base);
-            }
-            return char;
-        }).join('');
-    }
-
-    function showMessage(message) {
-        const messageDiv = document.getElementById('message');
-        messageDiv.textContent = message;
-        messageDiv.classList.add('show');
-        setTimeout(() => {
-            messageDiv.classList.remove('show');
-        }, 3000);
-    }
-</script>
+<textarea id="myArea03" rows=4 cols=70></textarea><br>
