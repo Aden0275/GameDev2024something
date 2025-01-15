@@ -65,7 +65,7 @@
     <h6>Version 0.1.1-5</h6>
     <h1>T4A09 Bounce by Fred</h1>
 
-    <input type="button" class="button" value="Move Background Left" onclick="moveBackgroundLeft()">
+    <input type="button" class="button" id="startButton" value="Start Moving">
     <input type="button" class="button" id="resetButton" value="Reset Image">
 
     <div class="slider-container">
@@ -82,29 +82,39 @@
         const img01 = document.getElementById('myImg01');
         const collisionSound = document.getElementById('collisionSound');
         let verticalDirection = 1; // 1 for down, -1 for up
+        let horizontalDirection = 1; // 1 for right, -1 for left
         let verticalSpeed = 3; // Initial speed of vertical movement
+        let horizontalSpeed = 3; // Initial speed of horizontal movement
+        let isMoving = false; // Flag to check if the image is moving
 
         // Function to reset image
         function resetImage() {
             img01.style.left = '50px';
             img01.style.top = '190px';
+            isMoving = false; // Stop moving when reset
         }
 
         // Function to move the image
         function moveImages() {
-            // Update the vertical position based on the direction and speed
+            if (!isMoving) return; // Exit if not moving
+
+            // Update the vertical and horizontal positions based on the direction and speed
             img01.style.top = (parseInt(img01.style.top) + (verticalSpeed * verticalDirection)) + 'px';
+            img01.style.left = (parseInt(img01.style.left) + (horizontalSpeed * horizontalDirection)) + 'px';
 
             // Check if ball hits top or bottom of the window
             const rect = img01.getBoundingClientRect();
-            if (rect.top <= 0) {
-                verticalDirection = 1; // Ball hits the top, move down
-                collisionSound.play(); // Play sound on collision
-            } else if (rect.bottom >= window.innerHeight) {
-                verticalDirection = -1; // Ball hits the bottom, move up
+            if (rect.top <= 0 || rect.bottom >= window.innerHeight) {
+                verticalDirection *= -1; // Reverse vertical direction
                 collisionSound.play(); // Play sound on collision
             }
-            
+
+            // Check if ball hits left or right wall
+            if (rect.left <= 0 || rect.right >= window.innerWidth) {
+                horizontalDirection *= -1; // Reverse horizontal direction
+                collisionSound.play(); // Play sound on collision
+            }
+
             requestAnimationFrame(moveImages); // Continue the animation
         }
 
@@ -126,6 +136,7 @@
         // Function to update speed when slider value changes
         function updateSpeed() {
             verticalSpeed = document.getElementById('speedSlider').value; // Get value from slider
+            horizontalSpeed = verticalSpeed; // Keep horizontal speed the same as vertical speed
         }
 
         // Event listener for speed slider
@@ -134,8 +145,11 @@
         // Event listener for keydown events
         window.addEventListener('keydown', handleKeydown);
 
-        // Start moving images automatically
-        moveImages();
+        // Start moving images automatically when button is clicked
+        document.getElementById('startButton').addEventListener('click', function() {
+            isMoving = true; // Set moving flag to true
+            moveImages(); // Start moving images
+        });
 
         // Event listener for Reset button
         document.getElementById('resetButton').addEventListener('click', resetImage);
