@@ -5,14 +5,15 @@
 <script>
    // Global variables
    let myClock;
-   let myGravity = 3; // Gravity force
+   let myGravity = 1.0; // Increased gravity force for faster falling
    let myJumpStrength = -10; // Jump strength
    let myVerticalVelocity = 0; // Current vertical velocity
-   let isJumping = true; // To check if the character is jumping
+   let jumpCount = 0; // Counter for jumps
+   let maxJumps = 2; // Maximum number of jumps allowed
    let score = 0; // Score variable
    let gameOver = false; // Game over state
    const pipeWidth = 50; // Width of the pipes
-   const pipeGap = 450; // Gap between pipes
+   const pipeGap = 200; // Increased gap between pipes
    const pipeFrequency = 2000; // Frequency of pipe generation in milliseconds
 
    // Initialize the game
@@ -108,9 +109,9 @@
 
    // Jump function
    function jump() {
-       if (!isJumping && !gameOver) { // Allow jump only if not already jumping
+       if (jumpCount < maxJumps && !gameOver) { // Allow jump if under max jumps
            myVerticalVelocity = myJumpStrength; // Set the initial jump velocity
-           isJumping = true; // Set jumping state
+           jumpCount++; // Increment jump count
        }
    }
 
@@ -121,6 +122,29 @@
            jump();
        }
    });
+
+   // Reset jump count when character lands
+   function resetJump() {
+       if (parseInt(document.getElementById('myImg01').style.top) >= window.innerHeight - document.getElementById('myImg01').offsetHeight) {
+           jumpCount = 0; // Reset jump count when on the ground
+       }
+   }
+
+   // Call resetJump in myDoGravity
+   function myDoGravity() {
+       let img = document.getElementById('myImg01');
+       myVerticalVelocity += myGravity; // Apply gravity to vertical velocity
+       img.style.top = parseInt(img.style.top) + myVerticalVelocity + 'px'; // Update position
+       resetJump(); // Reset jump count if on the ground
+
+       // Check for ground collision
+       if (parseInt(img.style.top) >= window.innerHeight - img.offsetHeight) {
+           img.style.top = (window.innerHeight - img.offsetHeight) + 'px'; // Reset to ground level
+           myVerticalVelocity = 0; // Reset vertical velocity
+           gameOver = true; // Set game over state
+           alert("Game Over! Your score: " + score);
+       }
+   }
 </script>
 
 <img id="myImg01" src="myImgNew.jpg" style="position:absolute; width:100px; height:80px; left: 50px; top:190px;">
