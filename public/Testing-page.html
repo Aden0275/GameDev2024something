@@ -39,8 +39,8 @@
         }
         img {
             position: absolute;
-            width: 100px;
-            height: 80px;
+            width: 100px; /* Set width for the ball image */
+            height: auto; /* Maintain aspect ratio */
             transition: transform 0.3s; /* Optionally add transition for smoother movement */
         }
         #myImg01 {
@@ -73,14 +73,11 @@
         <input type="range" id="speedSlider" min="1" max="20" value="3" step="1">
     </div>
 
-    <img id="myImg01" src="<a href="https://imgbb.com/"><img src="https://i.ibb.co/sF2F5pq/OIP-8.jpg" alt="OIP-8" border="0"></a><br /><a target='_blank' href='https://nonprofitlight.com/wi/racine/woof-gang-rescue-inc'>woof gang rescue</a><br />" title="Bouncing Ball"> <!-- Updated image source -->
-
-    <audio id="collisionSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+    <img id="myImg01" src="https://i.ibb.co/D7t7GPQ/OIP-8.jpg" title="Bouncing Ball"> <!-- Updated image source -->
 
     <script>
         // Global variables
         const img01 = document.getElementById('myImg01');
-        const collisionSound = document.getElementById('collisionSound');
         let verticalDirection = 1; // 1 for down, -1 for up
         let horizontalDirection = 1; // 1 for right, -1 for left
         let verticalSpeed = 3; // Initial speed of vertical movement
@@ -106,13 +103,11 @@
             const rect = img01.getBoundingClientRect();
             if (rect.top <= 0 || rect.bottom >= window.innerHeight) {
                 verticalDirection *= -1; // Reverse vertical direction
-                collisionSound.play(); // Play sound on collision
             }
 
             // Check if ball hits left or right wall
             if (rect.left <= 0 || rect.right >= window.innerWidth) {
                 horizontalDirection *= -1; // Reverse horizontal direction
-                collisionSound.play(); // Play sound on collision
             }
 
             requestAnimationFrame(moveImages); // Continue the animation
