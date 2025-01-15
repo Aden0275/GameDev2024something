@@ -22,13 +22,13 @@
                myDoGravity();
                myCheckHit(); // Check for collisions
            }
-       }, 100);
+       }, 300);
        setInterval(createPipe, pipeFrequency); // Create pipes at intervals
    }
 
    // Create pipes
    function createPipe() {
-       const pipeHeight = Math.floor(Math.random() * (window.innerHeight - pipeGap - 100)) + 50; // Random height
+       const pipeHeight = Math.floor(Math.random() * (window.innerHeight - pipeGap - 300)) + 50; // Random height
        const pipeTop = document.createElement('div');
        const pipeBottom = document.createElement('div');
 
