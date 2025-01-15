@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Image</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, darkblue, red); /* Dark blue to red gradient */
+            overflow: hidden; /* Prevent scrollbars */
+            font-family: Arial, sans-serif; /* Set a modern font */
+            color: #fff; /* Set text color to white for better contrast */
+            text-align: center; /* Center text */
+        }
+        h1 {
+            color: #ffcc00; /* Gold color for the title */
+            margin-top: 20px; /* Add some space above the title */
+        }
+        h6 {
+            color: #ffcc00; /* Gold color for version */
+            margin-bottom: 10px; /* Add some space below the version */
+        }
+        .button {
+            margin: 10px auto;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px 20px;
+            background-color: rgba(255, 0, 0, 0.7);
+            border: none;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        }
+        .button:hover {
+            background-color: rgba(255, 0, 0, 1);
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+        img {
+            position: absolute;
+            width: 100px; /* Adjust width as needed */
+            height: auto; /* Maintain aspect ratio */
+            transition: transform 0.3s; /* Optionally add transition for smoother movement */
+        }
+        #myImg01 {
+            left: 50px;
+            top: 190px;
+        }
+        .slider-container {
+            text-align: center; /* Center the slider */
+            margin: 20px 0; /* Add some space above and below */
+        }
+        label {
+            color: #ffcc00; /* Gold color for label */
+            font-size: 18px; /* Increase font size for label */
+        }
+        input[type="range"] {
+            width: 300px; /* Set a fixed width for the slider */
+            margin: 10px 0; /* Add some space above and below the slider */
+        }
+    </style>
+</head>
+<body id="myBody">
+    <h6>Version 0.1.1-5</h6>
+    <h1>T4A09 Bounce by Fred</h1>
+
+    <input type="button" class="button" id="startButton" value="Start Moving">
+    <input type="button" class="button" id="resetButton" value="Reset Image">
+
+    <div class="slider-container">
+        <label for="speedSlider">Adjust Ball Speed:</label>
+        <input type="range" id="speedSlider" min="1" max="20" value="3" step="1">
+    </div>
+
+    <img id="myImg01" src="https://i.ibb.co/HVrnC05/Spheal-Pokemon-PNG-Transparent-Picture.png" title="Bouncing Spheal"> <!-- Updated image source -->
+
+    <script>
+        // Global variables
+        const img01 = document.getElementById('myImg01');
+        let verticalDirection = 1; // 1 for down, -1 for up
+        let horizontalDirection = 1; // 1 for right, -1 for left
+        let verticalSpeed = 3; // Initial speed of vertical movement
+        let horizontalSpeed = 3; // Initial speed of horizontal movement
+        let isMoving = false; // Flag to check if the image is moving
+
+        // Function to reset image
+        function resetImage() {
+            img01.style.left = '50px';
+            img01.style.top = '190px';
+            isMoving = false; // Stop moving when reset
+        }
+
+        // Function to move the image
+        function moveImages() {
+            if (!isMoving) return; // Exit if not moving
+
+            // Update the vertical and horizontal positions based on the direction and speed
+            img01.style.top = (parseInt(img01.style.top) + (verticalSpeed * verticalDirection)) + 'px';
+            img01.style.left = (parseInt(img01.style.left) + (horizontalSpeed * horizontalDirection)) + 'px';
+
+            // Check if ball hits top or bottom of the window
+            const rect = img01.getBoundingClientRect();
+            if (rect.top <= 0 || rect.bottom >= window.innerHeight) {
+                verticalDirection *= -1; // Reverse vertical direction
+            }
+
+            // Check if ball hits left or right wall
+            if (rect.left <= 0 || rect.right >= window.innerWidth) {
+                horizontalDirection *= -1; // Reverse horizontal direction
+            }
+
+            requestAnimationFrame(moveImages); // Continue the animation
+        }
+
+        // Function to handle arrow key movements
+        function handleKeydown(event) {
+            const leftLimit = 0;
+            const rightLimit = window.innerWidth - img01.width; // Keep within window width
+            
+            switch (event.key) {
+                case "ArrowRight":
+                    img01.style.left = Math.min(parseInt(img01.style.left) + 10, rightLimit) + 'px'; // Move right
+                    break;
+                case "ArrowLeft":
+                    img01.style.left = Math.max(parseInt(img01.style.left) - 10, leftLimit) + 'px'; // Move left
+                    break;
+            }
+        }
+
+        // Function to update speed when slider value changes
+        function updateSpeed() {
+            verticalSpeed = document.getElementById('speedSlider').value; // Get value from slider
+            horizontalSpeed = verticalSpeed; // Keep horizontal speed the same as vertical speed
+        }
+
+        // Event listener for speed slider
+        document.getElementById('speedSlider').addEventListener('input', updateSpeed);
+
+        // Event listener for keydown events
+        window.addEventListener('keydown', handleKeydown);
+
+        // Start moving images automatically when button is clicked
+        document.getElementById('startButton').addEventListener('click', function() {
+            isMoving = true; // Set moving flag to true
+            moveImages(); // Start moving images
+        });
+
+        // Event listener for Reset button
+        document.getElementById('resetButton').addEventListener('click', resetImage);
+    </script>
+</body>
+</html>
